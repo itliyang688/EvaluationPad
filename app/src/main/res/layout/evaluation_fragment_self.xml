@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/knowledge_rv"
+        android:layout_width="220dp"
+        android:layout_height="220dp"
+        android:layout_marginLeft="10dp"
+        android:background="@drawable/bg_self_knowledge"
+        android:paddingTop="35dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="80dp"
+        android:layout_height="22dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bg_paper_header"
+        android:gravity="center_vertical"
+        android:paddingLeft="15dp"
+        android:text="选择知识点"
+        android:textColor="#188C6A"
+        android:textSize="10sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@id/knowledge_rv" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/record_rv"
+        android:layout_width="220dp"
+        android:layout_height="134dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bg_self_knowledge"
+        android:paddingTop="35dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/knowledge_rv" />
+
+    <TextView
+        android:layout_width="80dp"
+        android:layout_height="22dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bg_paper_header"
+        android:gravity="center_vertical"
+        android:paddingLeft="15dp"
+        android:text="自测记录"
+        android:textColor="#188C6A"
+        android:textSize="10sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@id/record_rv" />
+
+    <View
+        android:id="@+id/select_knowledge_background"
+        android:layout_width="0dp"
+        android:layout_height="88dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/bg_self_knowledge"
+        app:layout_constraintLeft_toRightOf="@id/knowledge_rv"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/knowledge_rv" />
+
+    <TextView
+        android:id="@+id/select_knowledge_header"
+        android:layout_width="110dp"
+        android:layout_height="22dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bg_paper_header"
+        android:gravity="center_vertical"
+        android:paddingLeft="15dp"
+        android:text="已选知识点"
+        android:textColor="#188C6A"
+        android:textSize="10sp"
+        app:layout_constraintLeft_toRightOf="@id/knowledge_rv"
+        app:layout_constraintTop_toTopOf="@id/knowledge_rv" />
+
+    <View
+        android:id="@+id/paper_settings_bg"
+        android:layout_width="0dp"
+        android:layout_height="113dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bg_self_knowledge"
+        app:layout_constraintLeft_toLeftOf="@id/select_knowledge_background"
+        app:layout_constraintRight_toRightOf="@id/select_knowledge_background"
+        app:layout_constraintTop_toBottomOf="@id/select_knowledge_background" />
+
+    <TextView
+        android:id="@+id/paper_settings_header"
+        android:layout_width="110dp"
+        android:layout_height="22dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bg_paper_header"
+        android:gravity="center_vertical"
+        android:paddingLeft="15dp"
+        android:text="试卷设置"
+        android:textColor="#188C6A"
+        android:textSize="10sp"
+        app:layout_constraintLeft_toRightOf="@id/knowledge_rv"
+        app:layout_constraintTop_toTopOf="@id/paper_settings_bg" />
+
+    <View
+        android:id="@+id/question_settings_bg"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bg_self_knowledge"
+        app:layout_constraintBottom_toBottomOf="@id/record_rv"
+        app:layout_constraintLeft_toLeftOf="@id/select_knowledge_background"
+        app:layout_constraintRight_toRightOf="@id/select_knowledge_background"
+        app:layout_constraintTop_toBottomOf="@id/paper_settings_bg" />
+
+    <TextView
+        android:id="@+id/question_settings_header"
+        android:layout_width="110dp"
+        android:layout_height="22dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bg_paper_header"
+        android:gravity="center_vertical"
+        android:paddingLeft="15dp"
+        android:text="题型/题量设置"
+        android:textColor="#188C6A"
+        android:textSize="10sp"
+        app:layout_constraintLeft_toRightOf="@id/knowledge_rv"
+        app:layout_constraintTop_toTopOf="@id/question_settings_bg" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

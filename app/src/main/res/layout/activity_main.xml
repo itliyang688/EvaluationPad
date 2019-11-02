@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tl="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".view.activity.MainActivity">
+
+
+    <cn.fek12.evaluation.view.widget.NoScrollViewPager
+        android:id="@+id/viewPage"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:visibility="visible"
+        android:layout_weight="1"/>
+
+    <com.flyco.tablayout.CommonTabLayout
+        android:id="@+id/commonTabLayout"
+        android:layout_width="match_parent"
+        android:background="@color/white"
+        android:layout_height="@dimen/dp_50"
+        tl:tl_iconGravity="LEFT"
+        android:visibility="visible"
+        tl:tl_indicator_color="@color/app_bg"
+        tl:tl_indicator_height="0dp"
+        tl:tl_textSelectColor="@color/app_bg"
+        tl:tl_textUnselectColor="@color/transparent"
+        tl:tl_textsize="@dimen/sp_0"
+        tl:tl_underline_color="@color/transparent"
+        tl:tl_underline_height="1dp"/>
+</LinearLayout>

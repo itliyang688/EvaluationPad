@@ -1,0 +1,93 @@
+<!--所有 Activity 的 Theme-->
+<resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
+
+    <!--activity style-->
+
+    <!-- Base application theme. -->
+    <!--<style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        &lt;!&ndash; Customize your theme here. &ndash;&gt;
+        <item name="colorAccent">@color/colorAccent</item>
+        &lt;!&ndash; 无标题 &ndash;&gt;
+        <item name="windowNoTitle">true</item>
+        &lt;!&ndash; 无默认 ActionBar &ndash;&gt;
+        <item name="windowActionBar">true</item>
+        &lt;!&ndash; 白色背景 &ndash;&gt;
+        <item name="android:windowBackground">@drawable/main_bg</item>
+        &lt;!&ndash; ToolBar 默认高度 48dp &ndash;&gt;
+        <item name="android:screenOrientation">landscape</item>
+        <item name="android:actionBarSize">50dp</item>
+        <item name="toolbarStyle">@style/MyToolbar</item>
+    </style>
+    <style name="MyToolbar" parent="Widget.AppCompat.Toolbar">
+        <item name="contentInsetStart">0dp</item>
+    </style>-->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- 无标题 -->
+        <item name="windowNoTitle">true</item>
+        <!-- 无默认 ActionBar -->
+        <item name="windowActionBar">true</item>
+        <item name="colorPrimary">@color/white</item>
+        <item name="android:windowBackground">@drawable/main_bg</item>
+        <item name="android:statusBarColor" tools:ignore="NewApi">@color/white</item>
+        <item name="android:windowLightStatusBar" tools:ignore="NewApi">true</item>
+    </style>
+
+    <style name="AppTheme.Transparent" parent="AppTheme">
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Translucent</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+    <style name="LauncherTheme" parent="AppTheme">
+        <item name="android:background">@drawable/background_launcher</item>
+    </style>
+
+    <style name="AppTheme.Light" parent="AppTheme">
+        <item name="android:windowBackground">@color/white</item>
+    </style>
+
+    <style name="AppTheme.Light.Fullscreen" parent="AppTheme.Light">
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+    <style name="AppTheme.Dark" parent="AppTheme">
+        <item name="android:windowBackground">@color/black</item>
+    </style>
+
+
+    <!--dialog style-->
+
+
+    <style name="MyDialogStyle">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+    <style name="share_activity_styles" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:windowFullscreen">true</item>
+        <!--设置dialog的背景-->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <!--设置Dialog的windowFrame框为无-->
+        <item name="android:windowFrame">@null</item>
+        <!--设置无标题-->
+        <item name="windowNoTitle">true</item>
+        <!--是否浮现在activity之上-->
+        <item name="android:windowIsFloating">true</item>
+        <!--是否半透明-->
+        <item name="android:windowIsTranslucent">true</item>
+        <!--设置窗口内容不覆盖-->
+        <item name="android:windowContentOverlay">@null</item>
+        <!--设置动画，在这里使用让它继承系统的Animation.Dialog-->
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <!--背景是否模糊显示-->
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+
+</resources>

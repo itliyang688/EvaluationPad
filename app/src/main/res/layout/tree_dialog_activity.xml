@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cn.fek12.evaluation.view.widget.MultipleStatusView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/load_view"
+    android:layout_width="@dimen/dp_498"
+    android:layout_height="@dimen/dp_448"
+    android:background="@mipmap/teaching_material_tree_bg"
+    android:orientation="vertical">
+    <LinearLayout
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/dp_134"
+        android:layout_marginTop="@dimen/dp_42"
+        android:layout_marginBottom="@dimen/dp_40">
+
+
+    </LinearLayout>
+    <TextView
+        android:id="@+id/tvText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/sp_12"
+        android:textColor="@color/white"
+        android:layout_marginTop="@dimen/dp_12"
+        android:layout_alignParentTop="true"
+        android:layout_centerInParent="true"
+        android:text="选择知识点"/>
+</cn.fek12.evaluation.view.widget.MultipleStatusView>

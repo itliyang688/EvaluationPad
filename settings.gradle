@@ -1,0 +1,2 @@
+include ':app', ':viewpagerlib', ':basic', ':tagLibrary'
+rootProject.name='EvaluationPad'

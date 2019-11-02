@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">BaseFrameworkLibrary</string>
+
+    <string name="time_out_connection">连接服务器超时,请稍候重试 !</string>
+    <string name="app_connection_failed">网络连接异常,请检查网络设置!</string>
+</resources>

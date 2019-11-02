@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_1"
+        android:visibility="gone"
+        tools:ignore="MissingConstraints" />
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="@dimen/dp_463"
+        android:layout_height="0dp"
+        android:layout_marginLeft="@dimen/dp_3"
+        android:layout_marginTop="@dimen/dp_18"
+        android:layout_marginBottom="@dimen/dp_20"
+        android:clipChildren="false"
+        app:layout_constraintBottom_toTopOf="@+id/go_list_btn"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+        <com.zhengsr.viewpagerlib.view.BannerViewPager
+            android:id="@+id/loop_viewpager_mz"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/dp_44"
+            android:layout_marginRight="@dimen/dp_44"
+            app:banner_isAutoLoop="true"
+            app:banner_iscycle="true"
+            app:banner_looptime="3000"
+            app:banner_switchtime="600"
+            app:banner_transformer="mz" />
+
+        <com.zhengsr.viewpagerlib.indicator.NormalIndicator
+            android:id="@+id/scale_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_30"
+            android:layout_gravity="bottom|center"
+            android:layout_marginBottom="@dimen/dp_14"
+            app:normal_leftmargin="@dimen/dp_3"
+            app:normal_selector="@drawable/ic_banner_dot" />
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/go_list_btn"
+        android:layout_width="@dimen/dp_468"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/evaluation_btn_go_list"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="468:233"
+        app:layout_constraintLeft_toLeftOf="@id/frameLayout" />
+
+    <TextView
+        android:id="@+id/go_list_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_18"
+        android:gravity="center"
+        android:shadowColor="#80279a65"
+        android:shadowDx="4"
+        android:shadowDy="6"
+        android:shadowRadius="3.0"
+        android:text="我要测评"
+        android:textColor="#ffffffff"
+        android:textSize="@dimen/sp_28"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/go_list_btn"
+        app:layout_constraintStart_toStartOf="@id/go_list_btn"
+        app:layout_constraintTop_toTopOf="@id/go_list_btn" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_10"
+        android:gravity="center"
+        android:shadowColor="#26000000"
+        android:shadowDx="0"
+        android:shadowDy="4"
+        android:shadowRadius="3.0"
+        android:text="已测评次数  6  次\n最近测试时间2019-09-23"
+        android:textColor="#ffffffff"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/go_list_btn"
+        app:layout_constraintStart_toStartOf="@id/go_list_btn"
+        app:layout_constraintTop_toBottomOf="@id/go_list_title" />
+
+    <RelativeLayout
+        android:layout_width="@dimen/dp_478"
+        android:layout_height="0dp"
+        android:layout_marginRight="@dimen/dp_2"
+        android:layout_marginTop="@dimen/dp_16"
+        android:background="@drawable/common_bg_list_half_of_screen"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:padding="@dimen/dp_20"
+        tools:ignore="MissingConstraints">
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/contentView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

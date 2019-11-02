@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cn.fek12.evaluation.view.widget.MultipleStatusView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/load_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/contentView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</cn.fek12.evaluation.view.widget.MultipleStatusView>

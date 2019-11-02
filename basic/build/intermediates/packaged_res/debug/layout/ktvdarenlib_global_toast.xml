@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:maxWidth="300dp"
+    android:background="@drawable/ktvdarenlib_global_toast_bg"
+    android:paddingTop="7dp"
+    android:paddingBottom="8dp"
+    android:paddingLeft="12dp"
+    android:paddingRight="12dp"
+    android:textColor="#ffffffff"
+    android:textSize="18sp"
+    android:text="12345"
+    android:gravity="center"
+    android:orientation="vertical" >
+    
+
+</TextView>

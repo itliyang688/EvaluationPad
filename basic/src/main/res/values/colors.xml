@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black_16">#10000000</color>
+    <color name="color_999">#999999</color>
+
+    <!-- 登录 -->
+    <color name="login_title_colors">#565860</color>
+    <color name="bg_tr_dark">#22000000</color>
+</resources>
