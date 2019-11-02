@@ -114,16 +114,19 @@
                 android:layout_marginLeft="@dimen/dp_35"
                 android:layout_marginRight="@dimen/dp_35"
                 android:layout_marginBottom="@dimen/dp_23">
-                <com.scwang.smartrefresh.layout.SmartRefreshLayout
+                <com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/refreshLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    app:tr_wave_height="180dp"
+                    app:tr_head_height="100dp">
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyclerView"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"/>
-                </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+                </com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout>
             </RelativeLayout>
 
             <TextView

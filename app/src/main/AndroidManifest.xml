@@ -53,6 +53,11 @@
             android:name=".view.activity.TreeViewDialogActivity"
             android:screenOrientation="landscape"
             android:theme="@style/share_activity_styles"/>
+
+        <activity
+            android:name=".view.activity.MenuDialogActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/share_activity_styles"/>
     </application>
 
 </manifest>

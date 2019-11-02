@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.LinearLayout;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,13 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.fek12.basic.base.BaseActivity;
 import com.fek12.basic.base.BasePresenter;
 import com.google.gson.Gson;
-import com.scwang.smartrefresh.header.PhoenixHeader;
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
-import com.scwang.smartrefresh.layout.header.ClassicsHeader;
-import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 import com.unnamed.b.atv.model.TreeNode;
 import com.unnamed.b.atv.view.AndroidTreeView;
 
@@ -55,7 +48,7 @@ public class EvaluationDetailsActivity extends BaseActivity {
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
     @BindView(R.id.refreshLayout)
-    SmartRefreshLayout refreshLayout;
+    TwinklingRefreshLayout refreshLayout;
     private DictionaryListResp mEntry;
     private SectionedRecyclerViewAdapter leftAdapter;
     private TreeDataEntity treeDataEntity;
@@ -91,24 +84,6 @@ public class EvaluationDetailsActivity extends BaseActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         evaluationAdapter = new EvaluationAdapter(EvaluationDetailsActivity.this);
         recyclerView.setAdapter(evaluationAdapter);
-        PhoenixHeader header = new PhoenixHeader(this);
-        //ClassicsHeader header = new ClassicsHeader(this);
-        //header.setTextSizeTime(24f);
-        //header.setTextSizeTime(26f);
-        refreshLayout.setRefreshHeader(header);
-        refreshLayout.setRefreshFooter(new ClassicsFooter(this));
-        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-
-            }
-        });
-        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
-            @Override
-            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-
-            }
-        });
     }
 
     private void initLeftRecycler() {
