@@ -36,6 +36,7 @@ public class TreeChildItemHolder extends TreeNode.BaseNodeViewHolder<TreeChildIt
     }
 
 
+
     @Override
     public void toggle(boolean active) {
         if (active) {

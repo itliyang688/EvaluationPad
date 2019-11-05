@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.fek12.evaluation.R;
+import cn.fek12.evaluation.model.entity.ChildSectionEntity;
 import cn.fek12.evaluation.model.entity.DictionaryListResp;
 import io.github.luizgrp.sectionedrecyclerviewadapter.Section;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionParameters;
@@ -28,8 +29,8 @@ public class EvaluationDetailsParentSection extends Section {
     public interface OnSelectItmeListener {
         void onSelectItme(int pos);
     }
-    List<DictionaryListResp.DataBean> mList = new ArrayList<>();
-    public EvaluationDetailsParentSection(List<DictionaryListResp.DataBean> list, String checkId,EvaluationDetailsParentSection.OnSelectItmeListener onSelectItmeListener) {
+    List<ChildSectionEntity> mList = new ArrayList<>();
+    public EvaluationDetailsParentSection(List<ChildSectionEntity> list, String checkId,EvaluationDetailsParentSection.OnSelectItmeListener onSelectItmeListener) {
         super(SectionParameters.builder()
                 .itemResourceId(R.layout.evaluation_list_item_dictionary)
                 //.headerResourceId(R.layout.evaluation_list_header_dictionary)

@@ -14,6 +14,7 @@ import java.util.List;
 
 import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.model.entity.DictionaryListResp;
+import cn.fek12.evaluation.model.entity.TextbookChildEntity;
 import io.github.luizgrp.sectionedrecyclerviewadapter.Section;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionParameters;
 
@@ -28,12 +29,13 @@ public class EvaluationDetailsTagSection extends Section {
     private Context mContext;
     private String mCheckId;
     private OnSelectItmeListener mOnSelectItmeListener = null;
+
     public interface OnSelectItmeListener {
         void onSelectItme(int pos);
     }
     private int selectPosition = 0;
-    private List<DictionaryListResp.DataBean.TabInfoBean.SubTabInfo> mList = new ArrayList<>();
-    public EvaluationDetailsTagSection(Context context,List<DictionaryListResp.DataBean.TabInfoBean.SubTabInfo> list,String checkId, EvaluationDetailsTagSection.OnSelectItmeListener onSelectItmeListener) {
+    private List<TextbookChildEntity> mList = new ArrayList<>();
+    public EvaluationDetailsTagSection(Context context,List<TextbookChildEntity> list,String checkId, OnSelectItmeListener onSelectItmeListener) {
         super(SectionParameters.builder()
                 .itemResourceId(R.layout.evaluation_list_tag)
                 .headerResourceId(R.layout.evaluation_list_header_dictionary)
@@ -44,12 +46,15 @@ public class EvaluationDetailsTagSection extends Section {
         mCheckId = checkId;
         mOnSelectItmeListener = onSelectItmeListener;
     }
-    public void updateList(List<DictionaryListResp.DataBean.TabInfoBean.SubTabInfo> list){
+    public void updateList(List<TextbookChildEntity> list){
         mList = list;
         selectPosition = 0;
     }
     @Override
     public int getContentItemsTotal() {
+        if(mList == null){
+            return 0;
+        }
         return 1;
     }
 
@@ -66,7 +71,7 @@ public class EvaluationDetailsTagSection extends Section {
             View viewItem = View.inflate(mContext, R.layout.evaluationv_tag_item,null);
             TextView textView = viewItem.findViewById(R.id.title);
             textView.setText(mList.get(i).getName());
-            if(mList.get(i).getId().equals(mCheckId)){
+            if(String.valueOf(mList.get(i).getId()).equals(mCheckId)){
                 textView.setSelected(true);
             }else{
                 textView.setSelected(false);
@@ -77,7 +82,7 @@ public class EvaluationDetailsTagSection extends Section {
                 @Override
                 public void onClick(View view) {
                     if(mOnSelectItmeListener != null){
-                        String childId = mList.get(finalI).getId();
+                        String childId = String.valueOf(mList.get(finalI).getId());
                         if (!childId.equals(mCheckId)) {
                             mCheckId = childId;
                             mOnSelectItmeListener.onSelectItme(finalI);

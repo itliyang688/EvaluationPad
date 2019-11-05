@@ -44,8 +44,8 @@ public class TreeViewDialogActivity extends BaseActivity<TreeViewPresenter> impl
     private String subjectId;
     private String semesterId;
     private String textbookId;
-    private String mEntryJson;
     private TreeDataEntity mEntry;
+    private String containListEntityJson;
 
     @Override
     public int setLayoutResource() {
@@ -61,7 +61,7 @@ public class TreeViewDialogActivity extends BaseActivity<TreeViewPresenter> impl
         subjectId = intent.getStringExtra("subjectId");
         semesterId = intent.getStringExtra("semesterId");
         textbookId = intent.getStringExtra("textbookId");
-        mEntryJson = intent.getStringExtra("mEntryJson");
+        containListEntityJson = intent.getStringExtra("containListEntityJson");
     }
 
     @Override
@@ -71,7 +71,7 @@ public class TreeViewDialogActivity extends BaseActivity<TreeViewPresenter> impl
     }
 
     @Override
-    public void loginSuc(TreeDataEntity entry) {
+    public void loadSuc(TreeDataEntity entry) {
         if (entry == null || entry.getData() == null || entry.getData().size() == 0) {
             loadView.showEmpty();
             return;
@@ -155,7 +155,7 @@ public class TreeViewDialogActivity extends BaseActivity<TreeViewPresenter> impl
                 intent.putExtra("subjectId", subjectId);
                 intent.putExtra("textbookId", textbookId);
                 intent.putExtra("titleName",titleName);
-                intent.putExtra("mEntryJson",mEntryJson);
+                intent.putExtra("containListEntityJson",containListEntityJson);
                 intent.putExtra("mTreeDataJson",new Gson().toJson(mEntry));
                 TreeViewDialogActivity.this.startActivity(intent);
                 TreeViewDialogActivity.this.finish();
@@ -164,12 +164,12 @@ public class TreeViewDialogActivity extends BaseActivity<TreeViewPresenter> impl
     }
 
     @Override
-    public void loginFail(String msg) {
+    public void loadFail(String msg) {
         loadView.showError();
     }
 
     @Override
-    public void loginEmpty() {
+    public void loadEmpty() {
         loadView.showEmpty();
     }
 

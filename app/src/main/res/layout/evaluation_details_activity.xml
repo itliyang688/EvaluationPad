@@ -107,7 +107,8 @@
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:background="@mipmap/evaluation_list_bg">
-            <RelativeLayout
+            <cn.fek12.evaluation.view.widget.MultipleStatusView
+                android:id="@+id/loadView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:paddingTop="@dimen/dp_47"
@@ -127,7 +128,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"/>
                 </com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout>
-            </RelativeLayout>
+            </cn.fek12.evaluation.view.widget.MultipleStatusView>
 
             <TextView
                 android:layout_width="wrap_content"

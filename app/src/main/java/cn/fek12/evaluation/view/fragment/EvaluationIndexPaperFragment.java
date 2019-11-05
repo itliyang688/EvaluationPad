@@ -81,6 +81,6 @@ public class EvaluationIndexPaperFragment extends BaseFragment<EvaluationIndexPa
 
     @Override
     public void loginFail(String msg) {
-        loadView.showError();
+        loadView.showEmpty();
     }
 }

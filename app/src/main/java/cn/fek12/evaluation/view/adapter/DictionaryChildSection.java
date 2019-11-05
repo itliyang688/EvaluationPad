@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.fek12.evaluation.R;
+import cn.fek12.evaluation.model.entity.ChildSectionEntity;
 import cn.fek12.evaluation.model.entity.DictionaryListResp;
 import io.github.luizgrp.sectionedrecyclerviewadapter.Section;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionParameters;
@@ -27,8 +28,8 @@ public class DictionaryChildSection extends Section {
     }
     private int selectPosition = 0;
     private String mHeader;
-    private List<DictionaryListResp.DataBean.TabInfoBean.SubTabInfo> mList = new ArrayList<>();
-    public DictionaryChildSection(List<DictionaryListResp.DataBean.TabInfoBean.SubTabInfo> list,String header,DictionaryChildSection.OnSelectItmeListener onSelectItmeListener) {
+    private List<ChildSectionEntity> mList = new ArrayList<>();
+    public DictionaryChildSection(List<ChildSectionEntity> list,String header,DictionaryChildSection.OnSelectItmeListener onSelectItmeListener) {
         super(SectionParameters.builder()
                 .itemResourceId(R.layout.evaluation_list_item_dictionary)
                 .headerResourceId(R.layout.evaluation_list_header_dictionary)
@@ -38,7 +39,7 @@ public class DictionaryChildSection extends Section {
         mHeader = header;
         mOnSelectItmeListener = onSelectItmeListener;
     }
-    public void updateList(List<DictionaryListResp.DataBean.TabInfoBean.SubTabInfo> list){
+    public void updateList(List<ChildSectionEntity> list){
         //mList.clear();
         mList = list;
         selectPosition = 0;
@@ -48,6 +49,9 @@ public class DictionaryChildSection extends Section {
     }
     @Override
     public int getContentItemsTotal() {
+        if(mList == null){
+            return 0;
+        }
         return mList.size();
     }
 

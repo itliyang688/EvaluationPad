@@ -8,17 +8,57 @@
     <cn.fek12.evaluation.view.widget.MultipleStatusView
         android:id="@+id/load_view"
         android:layout_width="@dimen/dp_300"
-        android:paddingTop="@dimen/dp_6"
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
-        android:background="#DCEDEA"
+        android:background="@mipmap/menu_bg"
         android:orientation="vertical">
-
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/common_bg_list_one_third_of_screen">
+            android:orientation="vertical">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:paddingLeft="@dimen/dp_10"
+                android:paddingTop="@dimen/dp_60"
+                android:paddingRight="@dimen/dp_10">
 
-        </RelativeLayout>
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_30"
+                android:layout_marginBottom="@dimen/dp_34"
+                android:layout_gravity="center"
+                android:visibility="visible"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/tvSubmit"
+                    android:layout_width="@dimen/dp_80"
+                    android:layout_height="@dimen/dp_22"
+                    android:background="@mipmap/btn_focus_icon"
+                    android:text="确定"
+                    android:textColor="@color/white"
+                    android:gravity="center">
+
+                </TextView>
+                <TextView
+                    android:id="@+id/tvCancel"
+                    android:layout_width="@dimen/dp_80"
+                    android:layout_height="@dimen/dp_22"
+                    android:background="@mipmap/btn_focus_icon"
+                    android:text="重置"
+                    android:layout_marginLeft="@dimen/dp_38"
+                    android:textColor="@color/white"
+                    android:gravity="center">
+
+                </TextView>
+            </LinearLayout>
+        </LinearLayout>
+
     </cn.fek12.evaluation.view.widget.MultipleStatusView>
 </RelativeLayout>

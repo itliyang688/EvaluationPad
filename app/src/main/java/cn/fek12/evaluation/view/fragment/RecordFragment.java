@@ -10,19 +10,19 @@ import cn.fek12.evaluation.R;
 /**
  * @ProjectName: EvaluationPad
  * @Package: cn.fek12.evaluation.view.fragment
- * @ClassName: EvaluationSelfIndexPaperFragment
- * @Description:
- * @CreateDate: 2019/10/29 11:07
+ * @ClassName: EvaluationFragment
+ * @Description: 首页记录
+ * @CreateDate: 2019/10/23 15:12
  */
-public class EvaluationSelfIndexPaperFragment extends BaseFragment {
+public class RecordFragment extends BaseFragment{
     @Override
     protected int getLayoutResource() {
-        return R.layout.evaluation_fragment_self;
+        return R.layout.record_fragment;
     }
 
     @Override
     protected void onInitView(Bundle savedInstanceState) {
-
+        setDefaultTitle("记录",false);
     }
 
     @Override

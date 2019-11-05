@@ -13,8 +13,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
-import com.cunoraz.tagview.Tag;
-import com.cunoraz.tagview.TagView;
 import com.fek12.basic.base.BaseFragment;
 import com.google.gson.Gson;
 
@@ -33,14 +31,22 @@ import java.util.List;
 import butterknife.BindView;
 import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.impl.IEvaluationList;
-import cn.fek12.evaluation.model.entity.DictionaryListResp;
+import cn.fek12.evaluation.model.entity.ChildSectionEntity;
+import cn.fek12.evaluation.model.entity.ContainListEntity;
+import cn.fek12.evaluation.model.entity.GradeDictionaryListEntity;
 import cn.fek12.evaluation.model.entity.PaperTypeListResp;
+import cn.fek12.evaluation.model.entity.SemesterEntity;
+import cn.fek12.evaluation.model.entity.SubjectEntity;
+import cn.fek12.evaluation.model.entity.TextbookChildEntity;
+import cn.fek12.evaluation.model.entity.TextbookEntity;
 import cn.fek12.evaluation.presenter.EvaluationListPresenter;
 import cn.fek12.evaluation.view.activity.TreeViewDialogActivity;
 import cn.fek12.evaluation.view.adapter.DictionaryChildSection;
 import cn.fek12.evaluation.view.adapter.DictionaryParentSection;
+import cn.fek12.evaluation.view.adapter.DictionarySubjectSection;
 import cn.fek12.evaluation.view.adapter.DictionaryTagChildSection;
 import cn.fek12.evaluation.view.widget.CustomViewPager;
+import cn.fek12.evaluation.view.widget.MultipleStatusView;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 
 /**
@@ -57,18 +63,23 @@ public class EvaluationListFragment extends BaseFragment<EvaluationListPresenter
     MagicIndicator magicIndicator;
     @BindView(R.id.view_pager)
     CustomViewPager mViewPager;
+    @BindView(R.id.load_view)
+    MultipleStatusView loadView;
     private OnBackPressedClickListener mOnBackPressedClickListener;
     private SectionedRecyclerViewAdapter leftAdapter;
     private String gradeId;
     private String subjectId;
     private String semesterId = "";
     private String textbookId;
-    private int parentPos;
     private List<Fragment> fragments = new ArrayList<>();
     private MyPagerAdapter adapter;
     private List<PaperTypeListResp.DataBean> mTitleData;
-    private DictionaryListResp mEntry;
     private int tagPos;
+    private List<ChildSectionEntity> gradeList;
+    private List<SubjectEntity.DataBean> subjectList;
+    private List<TextbookChildEntity> textBookList;
+    private List<ChildSectionEntity> semesterList;
+    private boolean isLoadPaerType = false;
 
     public interface OnBackPressedClickListener {
         void onBackPressedEvaluationListFragment();
@@ -106,12 +117,12 @@ public class EvaluationListFragment extends BaseFragment<EvaluationListPresenter
             public void onPageSelected(int position) {
                 /**随堂测，单元测，专项测，复习测页面请求不传semesterId，教材item默认不选中*/
                 DictionaryChildSection semesterSection = (DictionaryChildSection) leftAdapter.getSection("semester");
-                if(mTitleData.get(position).getType() == 1 || mTitleData.get(position).getType() == 3){
+                if (mTitleData.get(position).getType() == 1 || mTitleData.get(position).getType() == 3) {
                     semesterId = "";
                     semesterSection.updateSelect(-1);
-                }else{
-                    if (mEntry.getData() != null && mEntry.getData().size() > 0) {
-                        semesterId = mEntry.getData().get(0).getTabInfo().getSemester().get(0).getId();
+                } else {
+                    if (semesterList != null && semesterList.size() > 0) {
+                        semesterId = String.valueOf(semesterList.get(0).getId());
                         semesterSection.updateSelect(0);
                     }
                 }
@@ -129,9 +140,9 @@ public class EvaluationListFragment extends BaseFragment<EvaluationListPresenter
     @Override
     public void onResume() {
         super.onResume();
-        if(mViewPager != null && mTitleData != null && mTitleData.size() > 0){
+        if (mViewPager != null && mTitleData != null && mTitleData.size() > 0) {
             int position = mViewPager.getCurrentItem();
-            if(mTitleData.get(position).getType() == 1 || mTitleData.get(position).getType() == 3){
+            if (mTitleData.get(position).getType() == 1 || mTitleData.get(position).getType() == 3) {
                 DictionaryChildSection semesterSection = (DictionaryChildSection) leftAdapter.getSection("semester");
                 semesterSection.updateSelect(-1);
                 leftAdapter.getAdapterForSection("semester").notifyAllItemsChanged("payloads");
@@ -147,20 +158,67 @@ public class EvaluationListFragment extends BaseFragment<EvaluationListPresenter
             public int getSpanSize(int position) {
                 if (leftAdapter.getSectionItemViewType(position) == SectionedRecyclerViewAdapter.VIEW_TYPE_HEADER) {
                     return 3;
-                }else if(position == tagPos + 3){
+                } else if (position == tagPos + 3) {
                     return 3;
-                }else {
+                } else {
                     return 1;
                 }
             }
         });
         leftRecycler.setLayoutManager(manager);
         leftRecycler.setAdapter(leftAdapter);
+
+        leftAdapter.addSection("parent", new DictionaryParentSection(gradeList, new DictionaryParentSection.OnSelectItmeListener() {
+            @Override
+            public void onSelectItme(int pos) {
+                gradeId = String.valueOf(gradeList.get(pos).getId());
+                leftAdapter.getAdapterForSection("parent").notifyAllItemsChanged("payloads");
+                isLoadPaerType = true;
+                /**请求二三四级数据*/
+                mPresenter.querySubjectList(getContext(),gradeId);
+            }
+        }));
+
+        leftAdapter.addSection("subject", new DictionarySubjectSection(subjectList, "学科", new DictionarySubjectSection.OnSelectItmeListener() {
+            @Override
+            public void onSelectItme(int pos) {
+                subjectId = String.valueOf(subjectList.get(pos).getId());
+                leftAdapter.getAdapterForSection("subject").notifyAllItemsChanged("payloads");
+
+                mPresenter.queryTextBookList(getContext(),gradeId,subjectId);
+            }
+        }));
+
+        leftAdapter.addSection("textbook", new DictionaryTagChildSection(textBookList, "版本", new DictionaryTagChildSection.OnSelectItmeListener() {
+            @Override
+            public void onSelectItme(String Id) {
+                textbookId = Id;
+
+                /**点击版本去查询教材*/
+                mPresenter.querySemesterList(getContext(),gradeId,subjectId,textbookId);
+            }
+        }));
+
+        leftAdapter.addSection("semester", new DictionaryChildSection(semesterList, "教材", new DictionaryChildSection.OnSelectItmeListener() {
+            @Override
+            public void onSelectItme(int pos) {
+                leftAdapter.getAdapterForSection("semester").notifyAllItemsChanged("payloads");
+                semesterId = String.valueOf(semesterList.get(pos).getId());
+
+                int currentItme = mViewPager.getCurrentItem();
+                if (mTitleData.get(currentItme).getType() == 1 || mTitleData.get(currentItme).getType() == 3) {
+                    initDialogTree(mTitleData.get(currentItme).getName(), mTitleData.get(currentItme).getValue());
+                }
+
+                /**请求右侧页面数据*/
+                updateContent(mViewPager.getCurrentItem());
+            }
+        }));
     }
 
     @Override
     protected void onLoadDataRemote() {
-        mPresenter.queryEvaluationList(getContext());
+        mPresenter.queryGradeDictionaryList(getContext());
     }
 
     @Override
@@ -177,80 +235,127 @@ public class EvaluationListFragment extends BaseFragment<EvaluationListPresenter
     }
 
     @Override
-    public void loadDictionarySuc(DictionaryListResp entry) {
-        this.mEntry = entry;
-        if (mEntry.getData() != null && mEntry.getData().size() > 0) {
-            List<DictionaryListResp.DataBean> list = mEntry.getData();
-            gradeId = String.valueOf(list.get(0).getId());
-            leftAdapter.addSection("parent", new DictionaryParentSection(list, new DictionaryParentSection.OnSelectItmeListener() {
-                @Override
-                public void onSelectItme(int pos) {
-                    parentPos = pos;
-                    gradeId = String.valueOf(list.get(pos).getId());
-                    DictionaryChildSection subjectSection = (DictionaryChildSection) leftAdapter.getSection("subject");
-                    subjectId = list.get(pos).getTabInfo().getSubject().get(0).getId();
-                    /**获取tagpos*/
-                    tagPos = mEntry.getData().size() + list.get(pos).getTabInfo().getSubject().size();
-                    /***/
-                    subjectSection.updateList(list.get(pos).getTabInfo().getSubject());
-                    DictionaryTagChildSection tagChildSection = (DictionaryTagChildSection) leftAdapter.getSection("textbook");
-                    textbookId = list.get(pos).getTabInfo().getTextbook().get(0).getId();
-                    tagChildSection.updateList(list.get(pos).getTabInfo().getTextbook());
-                    DictionaryChildSection semesterSection = (DictionaryChildSection) leftAdapter.getSection("semester");
-                    semesterId = list.get(pos).getTabInfo().getSemester().get(0).getId();
-                    semesterSection.updateList(list.get(pos).getTabInfo().getSemester());
-                    updateContent(mViewPager.getCurrentItem());
-                    leftAdapter.notifyDataSetChanged();
-                }
-            }));
-            tagPos = mEntry.getData().size() + list.get(0).getTabInfo().getSubject().size();
-            subjectId = list.get(0).getTabInfo().getSubject().get(0).getId();
-            leftAdapter.addSection("subject", new DictionaryChildSection(list.get(0).getTabInfo().getSubject(), "学科", new DictionaryChildSection.OnSelectItmeListener() {
-                @Override
-                public void onSelectItme(int pos) {
-                    subjectId = list.get(parentPos).getTabInfo().getSubject().get(pos).getId();
-                    leftAdapter.getAdapterForSection("subject").notifyAllItemsChanged("payloads");
-                    updateContent(mViewPager.getCurrentItem());
-                }
-            }));
-            textbookId = list.get(0).getTabInfo().getTextbook().get(0).getId();
-            leftAdapter.addSection("textbook", new DictionaryTagChildSection(list.get(0).getTabInfo().getTextbook(), "版本", new DictionaryTagChildSection.OnSelectItmeListener() {
-                @Override
-                public void onSelectItme(String Id) {
-                    textbookId = Id;
-                    //leftAdapter.getAdapterForSection("textbook").notifyAllItemsChanged("payloads");
-                    updateContent(mViewPager.getCurrentItem());
-                }
-            }));
-            semesterId = list.get(0).getTabInfo().getSemester().get(0).getId();
-            leftAdapter.addSection("semester", new DictionaryChildSection(list.get(0).getTabInfo().getSemester(), "教材", new DictionaryChildSection.OnSelectItmeListener() {
-                @Override
-                public void onSelectItme(int pos) {
-                    leftAdapter.getAdapterForSection("semester").notifyAllItemsChanged("payloads");
-                    semesterId = list.get(parentPos).getTabInfo().getSemester().get(pos).getId();
-                    int currentItme = mViewPager.getCurrentItem();
-                    if (mTitleData.get(currentItme).getType() == 1){
-                        initDialogTree(mTitleData.get(currentItme).getName(),mTitleData.get(currentItme).getValue());
-                    }
-                    updateContent(currentItme);
-                }
-            }));
-            leftAdapter.notifyDataSetChanged();
-        }
+    public void loadGradeDictionarySuc(GradeDictionaryListEntity entry) {
+        gradeList = entry.getData();
+        if(gradeList != null && gradeList.size() > 0){
+            loadView.showContent();
+            gradeId = String.valueOf(gradeList.get(0).getId());
+            DictionaryParentSection parentSection = (DictionaryParentSection) leftAdapter.getSection("parent");
+            parentSection.updateList(gradeList);
 
-        /**请求右侧title*/
-        mPresenter.getPaperTypeList(getContext());
+            leftAdapter.notifyDataSetChanged();
+
+            /**请求二三四级数据*/
+            mPresenter.querySubjectList(getContext(),gradeId);
+        }else{
+            loadView.showEmpty();
+        }
     }
 
-    private void initDialogTree(String titleName,String value) {
+    @Override
+    public void loadSubjectSuc(SubjectEntity entry) {
+        subjectList = entry.getData();
+        if(subjectList != null && subjectList.size() > 0){
+            loadView.showContent();
+            tagPos = gradeList.size() + subjectList.size();
+            subjectId = String.valueOf(subjectList.get(0).getId());
+
+            DictionarySubjectSection subjectSection = (DictionarySubjectSection) leftAdapter.getSection("subject");
+            subjectSection.updateList(subjectList);
+
+            textBookList = subjectList.get(0).getTextbook();
+            DictionaryTagChildSection tagChildSection = (DictionaryTagChildSection) leftAdapter.getSection("textbook");
+            if(textBookList != null && textBookList.size() > 0){
+                textbookId = String.valueOf(textBookList.get(0).getId());
+                tagChildSection.updateList(textBookList);
+
+                semesterList = textBookList.get(0).getSemester();
+                DictionaryChildSection semesterSection = (DictionaryChildSection) leftAdapter.getSection("semester");
+                if(semesterList != null && semesterList.size() > 0){
+                    semesterId = String.valueOf(semesterList.get(0).getId());
+                    semesterSection.updateList(semesterList);
+                }else{
+                    semesterId = null;
+                    semesterSection.updateList(null);
+                }
+
+            }else{
+                textbookId = null;
+                tagChildSection.updateList(null);
+            }
+
+            leftAdapter.notifyDataSetChanged();
+            if(isLoadPaerType){
+                /**请求右侧页面数据*/
+                updateContent(mViewPager.getCurrentItem());
+            }else{
+                /**请求右侧title*/
+                mPresenter.getPaperTypeList(getContext());
+            }
+        }else{
+            loadView.showEmpty();
+        }
+    }
+
+    @Override
+    public void loadTextBookSuc(TextbookEntity entry) {
+        textBookList = entry.getData();
+        if(textBookList != null && textBookList.size() > 0){
+            loadView.showContent();
+            textbookId = String.valueOf(textBookList.get(0).getId());
+
+            DictionaryTagChildSection tagChildSection = (DictionaryTagChildSection) leftAdapter.getSection("textbook");
+            tagChildSection.updateList(textBookList);
+
+            semesterList = textBookList.get(0).getSemester();
+            DictionaryChildSection semesterSection = (DictionaryChildSection) leftAdapter.getSection("semester");
+            if(semesterList != null && semesterList.size() > 0){
+                semesterId = String.valueOf(semesterList.get(0).getId());
+                semesterSection.updateList(semesterList);
+            }else{
+                semesterId = null;
+                semesterSection.updateList(null);
+            }
+            leftAdapter.notifyDataSetChanged();
+
+            /**请求右侧页面数据*/
+            updateContent(mViewPager.getCurrentItem());
+        }else{
+            loadView.showEmpty();
+        }
+    }
+
+    @Override
+    public void loadSemesterSuc(SemesterEntity entry) {
+        semesterList = entry.getData();
+        if(semesterList != null && semesterList.size() > 0){
+            semesterId = String.valueOf(semesterList.get(0).getId());
+            DictionaryChildSection semesterSection = (DictionaryChildSection) leftAdapter.getSection("semester");
+            semesterSection.updateList(semesterList);
+
+            leftAdapter.getAdapterForSection("semester").notifyAllItemsChanged("payloads");
+
+            /**请求右侧页面数据*/
+            updateContent(mViewPager.getCurrentItem());
+        }else{
+            loadView.showEmpty();
+        }
+    }
+
+    private void initDialogTree(String titleName, String value) {
+        ContainListEntity containListEntity = new ContainListEntity();
+        containListEntity.setGradeList(gradeList);
+        containListEntity.setSemesterList(semesterList);
+        containListEntity.setSubjectList(subjectList);
+        containListEntity.setTextBookList(textBookList);
         Intent intent = new Intent(getContext(), TreeViewDialogActivity.class);
         intent.putExtra("gradeId", gradeId);
         intent.putExtra("semesterId", semesterId);
         intent.putExtra("subjectId", subjectId);
         intent.putExtra("textbookId", textbookId);
-        intent.putExtra("titleName",titleName);
-        intent.putExtra("paperType",value);
-        intent.putExtra("mEntryJson", new Gson().toJson(mEntry));
+        intent.putExtra("titleName", titleName);
+        intent.putExtra("paperType", value);
+        intent.putExtra("containListEntityJson", new Gson().toJson(containListEntity));
         getActivity().startActivity(intent);
     }
 
@@ -268,23 +373,28 @@ public class EvaluationListFragment extends BaseFragment<EvaluationListPresenter
                 if (mTitleData.get(i).getType() == 1 || mTitleData.get(i).getType() == 3 || mTitleData.get(i).getType() == 0) {
                     fragments.add(new EvaluationIndexPaperFragment());
                 } else {
-                    fragments.add(new EvaluationSelfIndexPaperFragment());
+                    fragments.add(new AutonomyEvaluationFragment());
                 }
             }
 
             adapter = new MyPagerAdapter(getChildFragmentManager(), fragments);
             mViewPager.setAdapter(adapter);
 
+            loadView.showContent();
             updateContent(mViewPager.getCurrentItem());
         }
     }
 
     private void updateContent(int pos) {
-        if (adapter != null) {
+        if (adapter != null && mTitleData != null && mTitleData.size() > 0) {
             BaseFragment baseFragment = (BaseFragment) adapter.getItem(mViewPager.getCurrentItem());
             if (baseFragment instanceof EvaluationIndexPaperFragment) {
                 EvaluationIndexPaperFragment fragment = (EvaluationIndexPaperFragment) baseFragment;
                 fragment.queryIndexPagerData(gradeId, semesterId, subjectId, textbookId, mTitleData.get(pos).getId(), "413");
+            }else if(baseFragment instanceof AutonomyEvaluationFragment){
+                int currentItme = mViewPager.getCurrentItem();
+                AutonomyEvaluationFragment fragment = (AutonomyEvaluationFragment) baseFragment;
+                fragment.queryTreeData(gradeId,semesterId,subjectId,textbookId,mTitleData.get(currentItme).getValue(),"413");
             }
         }
 
@@ -311,7 +421,17 @@ public class EvaluationListFragment extends BaseFragment<EvaluationListPresenter
 
     @Override
     public void loadFail(String msg) {
+        loadView.showEmpty();
+    }
 
+    @Override
+    public void loadDictionaryEmpty() {
+        loadView.showEmpty();
+    }
+
+    @Override
+    public void loadPaperTypeEmpty() {
+        loadView.showEmpty();
     }
 
     private void initMagicIndicator(List<PaperTypeListResp.DataBean> mDataList) {

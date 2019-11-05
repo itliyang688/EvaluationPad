@@ -19,7 +19,10 @@ import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.model.entity.TabEntity;
 import cn.fek12.evaluation.view.fragment.EvaluationContainerFragment;
 import cn.fek12.evaluation.view.fragment.EvaluationFragment;
+import cn.fek12.evaluation.view.fragment.MicroLessonFragment;
 import cn.fek12.evaluation.view.fragment.PresentationFragment;
+import cn.fek12.evaluation.view.fragment.PromoteFragment;
+import cn.fek12.evaluation.view.fragment.RecordFragment;
 
 public class MainActivity extends BaseActivity implements BackFragmentInterface {
     private BaseFragment baseFragment;
@@ -49,9 +52,9 @@ public class MainActivity extends BaseActivity implements BackFragmentInterface 
         }
         mFragments.add(new EvaluationContainerFragment());
         mFragments.add(new PresentationFragment());
-        mFragments.add(new PresentationFragment());
-        mFragments.add(new PresentationFragment());
-        mFragments.add(new PresentationFragment());
+        mFragments.add(new MicroLessonFragment());
+        mFragments.add(new PromoteFragment());
+        mFragments.add(new RecordFragment());
         initCommonTabLayout();
         viewPage.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
         viewPage.setOffscreenPageLimit(4);

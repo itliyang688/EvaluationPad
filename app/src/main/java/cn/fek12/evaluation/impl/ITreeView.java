@@ -10,8 +10,8 @@ import cn.fek12.evaluation.model.entity.TreeDataEntity;
 public interface ITreeView {
     void initTreeData(Context context,String pageType, String grade,String semester,String subject,String textbook,String userId);
     interface View extends BaseView {
-        void loginSuc(TreeDataEntity entry);
-        void loginFail(String msg);
-        void loginEmpty();
+        void loadSuc(TreeDataEntity entry);
+        void loadFail(String msg);
+        void loadEmpty();
     }
 }

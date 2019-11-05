@@ -36,15 +36,15 @@ public class TreeViewPresenter extends BasePresenter<ITreeView.View> implements 
                     @Override
                     public void onSuccess(TreeDataEntity entry) {
                         if(entry.getState().equals("0")){
-                            infoView.loginSuc(entry);
+                            infoView.loadSuc(entry);
                         }else{
-                            infoView.loginEmpty();
+                            infoView.loadEmpty();
                         }
                     }
 
                     @Override
                     public void onError(String msg) {
-                        infoView.loginFail(msg);
+                        infoView.loadFail(msg);
                     }
                 });
     }

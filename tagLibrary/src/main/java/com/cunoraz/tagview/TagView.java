@@ -119,7 +119,7 @@ public class TagView extends RelativeLayout {
         this.lineMargin = (int) typeArray.getDimension(R.styleable.TagView_lineMargin, Utils.dipToPx(this.getContext(), Constants.DEFAULT_TAG_TEXT_PADDING_LEFT_10));
         this.tagMargin = (int) typeArray.getDimension(R.styleable.TagView_tagMargin, Utils.dipToPx(this.getContext(), Constants.DEFAULT_TAG_TEXT_PADDING_LEFT_10));
         this.textPaddingLeft = (int) typeArray.getDimension(R.styleable.TagView_textPaddingLeft, Utils.dipToPx(this.getContext(), Constants.DEFAULT_TAG_TEXT_PADDING_LEFT_10));
-        this.textPaddingRight = (int) typeArray.getDimension(R.styleable.TagView_textPaddingRight, Utils.dipToPx(this.getContext(), Constants.DEFAULT_TAG_TEXT_PADDING_LEFT_10));
+        //this.textPaddingRight = (int) typeArray.getDimension(R.styleable.TagView_textPaddingRight, Utils.dipToPx(this.getContext(), Constants.DEFAULT_LINE_MARGIN));
         //this.textPaddingTop = (int) typeArray.getDimension(R.styleable.TagView_textPaddingTop, Utils.dipToPx(this.getContext(), Constants.DEFAULT_TAG_TEXT_PADDING_TOP));
         //this.textPaddingBottom = (int) typeArray.getDimension(R.styleable.TagView_textPaddingBottom, Utils.dipToPx(this.getContext(), Constants.DEFAULT_TAG_TEXT_PADDING_BOTTOM));
         typeArray.recycle();
@@ -226,7 +226,7 @@ public class TagView extends RelativeLayout {
                 deletableView.setVisibility(View.VISIBLE);
                 deletableView.setText(tag.getDeleteIcon());
                 int offset = Utils.dipToPx(getContext(), 2f);
-                deletableView.setPadding(offset, textPaddingTop, textPaddingRight + offset, textPaddingBottom);
+                //deletableView.setPadding(offset, textPaddingTop, textPaddingRight, textPaddingBottom);
                 deletableView.setTextColor(tag.getDeleteIndicatorColor());
                 deletableView.setTextSize(TypedValue.COMPLEX_UNIT_SP, tag.getDeleteIndicatorSize());
                 deletableView.setOnClickListener(new OnClickListener() {

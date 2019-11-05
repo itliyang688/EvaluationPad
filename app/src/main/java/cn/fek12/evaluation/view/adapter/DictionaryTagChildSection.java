@@ -15,6 +15,9 @@ import java.util.List;
 
 import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.model.entity.DictionaryListResp;
+import cn.fek12.evaluation.model.entity.SubjectEntity;
+import cn.fek12.evaluation.model.entity.TextbookChildEntity;
+import cn.fek12.evaluation.model.entity.TextbookEntity;
 import io.github.luizgrp.sectionedrecyclerviewadapter.Section;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionParameters;
 
@@ -32,8 +35,8 @@ public class DictionaryTagChildSection extends Section {
     }
     private int selectPosition = 0;
     private String mHeader;
-    private List<DictionaryListResp.DataBean.TabInfoBean.SubTabInfo> mList = new ArrayList<>();
-    public DictionaryTagChildSection(List<DictionaryListResp.DataBean.TabInfoBean.SubTabInfo> list, String header, DictionaryTagChildSection.OnSelectItmeListener onSelectItmeListener) {
+    private List<TextbookChildEntity> mList = new ArrayList<>();
+    public DictionaryTagChildSection(List<TextbookChildEntity> list, String header, DictionaryTagChildSection.OnSelectItmeListener onSelectItmeListener) {
         super(SectionParameters.builder()
                 .itemResourceId(R.layout.evaluation_tag_item_dictionary)
                 .headerResourceId(R.layout.evaluation_list_header_dictionary)
@@ -43,13 +46,16 @@ public class DictionaryTagChildSection extends Section {
         mHeader = header;
         mOnSelectItmeListener = onSelectItmeListener;
     }
-    public void updateList(List<DictionaryListResp.DataBean.TabInfoBean.SubTabInfo> list){
+    public void updateList(List<TextbookChildEntity> list){
         //mList.clear();
         mList = list;
         selectPosition = 0;
     }
     @Override
     public int getContentItemsTotal() {
+        if(mList == null){
+            return 0;
+        }
         return 1;
     }
 
@@ -64,7 +70,7 @@ public class DictionaryTagChildSection extends Section {
         ArrayList<Tag> tags = new ArrayList<>();
         for (int i = 0; i < mList.size(); i++) {
             Tag tag = new Tag(mList.get(i).getName());
-            tag.setId(mList.get(i).getId());
+            tag.setId(String.valueOf(mList.get(i).getId()));
             tag.setRadius(10f);
             if(i == 0){
                 selectPosition = i;

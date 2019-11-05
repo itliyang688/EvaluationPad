@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fek12.basic.base.BaseActivity;
-import com.fek12.basic.base.BasePresenter;
 import com.google.gson.Gson;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 import com.unnamed.b.atv.model.TreeNode;
@@ -21,14 +20,27 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.fek12.evaluation.R;
-import cn.fek12.evaluation.model.entity.DictionaryListResp;
+import cn.fek12.evaluation.impl.IEvaluationDetails;
+import cn.fek12.evaluation.model.entity.ChildSectionEntity;
+import cn.fek12.evaluation.model.entity.ContainListEntity;
+import cn.fek12.evaluation.model.entity.SemesterEntity;
+import cn.fek12.evaluation.model.entity.SubjectEntity;
+import cn.fek12.evaluation.model.entity.TextbookChildEntity;
+import cn.fek12.evaluation.model.entity.TextbookEntity;
 import cn.fek12.evaluation.model.entity.TreeDataEntity;
+import cn.fek12.evaluation.model.holder.AutoTreeChildItemHolder;
 import cn.fek12.evaluation.model.holder.TreeChildItemHolder;
 import cn.fek12.evaluation.model.holder.TreeParentItemHolder;
+import cn.fek12.evaluation.presenter.EvaluationDetailsPresenter;
+import cn.fek12.evaluation.view.adapter.DictionaryChildSection;
+import cn.fek12.evaluation.view.adapter.DictionarySubjectSection;
+import cn.fek12.evaluation.view.adapter.DictionaryTagChildSection;
 import cn.fek12.evaluation.view.adapter.EvaluationAdapter;
 import cn.fek12.evaluation.view.adapter.EvaluationDetailsChildSection;
 import cn.fek12.evaluation.view.adapter.EvaluationDetailsParentSection;
+import cn.fek12.evaluation.view.adapter.EvaluationDetailsSubjectSection;
 import cn.fek12.evaluation.view.adapter.EvaluationDetailsTagSection;
+import cn.fek12.evaluation.view.widget.MultipleStatusView;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 
 /**
@@ -38,7 +50,7 @@ import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapt
  * @Description:
  * @CreateDate: 2019/10/30 13:14
  */
-public class EvaluationDetailsActivity extends BaseActivity {
+public class EvaluationDetailsActivity extends BaseActivity<EvaluationDetailsPresenter> implements EvaluationDetailsPresenter.View {
     @BindView(R.id.recycler)
     RecyclerView leftRecycler;
     @BindView(R.id.label)
@@ -49,7 +61,8 @@ public class EvaluationDetailsActivity extends BaseActivity {
     RecyclerView recyclerView;
     @BindView(R.id.refreshLayout)
     TwinklingRefreshLayout refreshLayout;
-    private DictionaryListResp mEntry;
+    @BindView(R.id.loadView)
+    MultipleStatusView loadView;
     private SectionedRecyclerViewAdapter leftAdapter;
     private TreeDataEntity treeDataEntity;
     private String checkId;
@@ -60,6 +73,11 @@ public class EvaluationDetailsActivity extends BaseActivity {
     private String subjectId;
     private String semesterId;
     private String textbookId;
+
+    private List<ChildSectionEntity> gradeList;
+    private List<SubjectEntity.DataBean> subjectList;
+    private List<TextbookChildEntity> textBookList;
+    private List<ChildSectionEntity> semesterList;
 
     @Override
     public int setLayoutResource() {
@@ -75,8 +93,15 @@ public class EvaluationDetailsActivity extends BaseActivity {
         subjectId = intent.getStringExtra("subjectId");
         semesterId = intent.getStringExtra("semesterId");
         textbookId = intent.getStringExtra("textbookId");
-        mEntry = new Gson().fromJson(intent.getStringExtra("mEntryJson"), DictionaryListResp.class);
         treeDataEntity = new Gson().fromJson(intent.getStringExtra("mTreeDataJson"), TreeDataEntity.class);
+        ContainListEntity containListEntity = new Gson().fromJson(intent.getStringExtra("containListEntityJson"), ContainListEntity.class);
+        gradeList = containListEntity.getGradeList();
+        subjectList = containListEntity.getSubjectList();
+        textBookList = containListEntity.getTextBookList();
+        semesterList = containListEntity.getSemesterList();
+
+        tagPos = gradeList.size() + subjectList.size();
+
         initLeftRecycler();
         initLabelAdapter();
         initTreeView();
@@ -94,7 +119,7 @@ public class EvaluationDetailsActivity extends BaseActivity {
             public int getSpanSize(int position) {
                 if (leftAdapter.getSectionItemViewType(position) == SectionedRecyclerViewAdapter.VIEW_TYPE_HEADER) {
                     return 12;
-                }else if(position == tagPos+2){
+                } else if (position == tagPos + 2) {
                     return 12;
                 } else {
                     return 1;
@@ -129,20 +154,20 @@ public class EvaluationDetailsActivity extends BaseActivity {
                                 node2.addChild(node3);
                                 /**第四级*/
                                 for (TreeDataEntity.DataBean.ChildsBeanXX.ChildsBeanX.ChildsBean childsBean : node4List) {
-                                    TreeNode file4 = new TreeNode(new TreeChildItemHolder.IconTreeItem(childsBean.getName(), String.valueOf(childsBean.getId()), String.valueOf(childsBean.getParentId()))).setViewHolder(new TreeChildItemHolder(getContext()));
+                                    TreeNode file4 = new TreeNode(new AutoTreeChildItemHolder.IconTreeItem(childsBean.getName(), String.valueOf(childsBean.getId()), String.valueOf(childsBean.getParentId()))).setViewHolder(new AutoTreeChildItemHolder(getContext()));
                                     node3.addChild(file4);
                                     nodeListenerAndUpdate(file4);
                                     defaultCheck(file4, String.valueOf(childsBean.getId()));
                                 }
                             } else {
-                                TreeNode file3 = new TreeNode(new TreeChildItemHolder.IconTreeItem(childsBeanX.getName(), String.valueOf(childsBeanX.getId()), String.valueOf(childsBeanX.getParentId()))).setViewHolder(new TreeChildItemHolder(getContext()));
+                                TreeNode file3 = new TreeNode(new AutoTreeChildItemHolder.IconTreeItem(childsBeanX.getName(), String.valueOf(childsBeanX.getId()), String.valueOf(childsBeanX.getParentId()))).setViewHolder(new AutoTreeChildItemHolder(getContext()));
                                 node2.addChild(file3);
                                 nodeListenerAndUpdate(file3);
                                 defaultCheck(file3, String.valueOf(childsBeanX.getId()));
                             }
                         }
                     } else {
-                        TreeNode file2 = new TreeNode(new TreeChildItemHolder.IconTreeItem(childsBeanXX.getName(), String.valueOf(childsBeanXX.getId()), String.valueOf(childsBeanXX.getParentId()))).setViewHolder(new TreeChildItemHolder(getContext()));
+                        TreeNode file2 = new TreeNode(new AutoTreeChildItemHolder.IconTreeItem(childsBeanXX.getName(), String.valueOf(childsBeanXX.getId()), String.valueOf(childsBeanXX.getParentId()))).setViewHolder(new AutoTreeChildItemHolder(getContext()));
                         node1.addChild(file2);
                         nodeListenerAndUpdate(file2);
                         defaultCheck(file2, String.valueOf(childsBeanXX.getId()));
@@ -151,7 +176,7 @@ public class EvaluationDetailsActivity extends BaseActivity {
                 root.addChild(node1);
             } else {
                 /**添加一级跟文件*/
-                TreeNode file1 = new TreeNode(new TreeChildItemHolder.IconTreeItem(dataBean.getName(), String.valueOf(dataBean.getId()), String.valueOf(0))).setViewHolder(new TreeChildItemHolder(getContext()));
+                TreeNode file1 = new TreeNode(new AutoTreeChildItemHolder.IconTreeItem(dataBean.getName(), String.valueOf(dataBean.getId()), String.valueOf(0))).setViewHolder(new AutoTreeChildItemHolder(getContext()));
                 root.addChild(file1);
                 nodeListenerAndUpdate(file1);
                 defaultCheck(file1, String.valueOf(dataBean.getId()));
@@ -168,12 +193,13 @@ public class EvaluationDetailsActivity extends BaseActivity {
         tView.setDefaultViewHolder(TreeParentItemHolder.class);
         //将树形视图添加到layout中
         layout.addView(tView.getView());
+
     }
 
     private void defaultCheck(TreeNode fileNode, String id) {
         if (checkId.equals(id)) {
             selectNode = fileNode;
-            TreeNode treeNode3 = fileNode.getParent();
+            TreeNode treeNode3 = selectNode.getParent();
             if (treeNode3 != null) {
                 treeNode3.setExpanded(true);
                 TreeNode treeNode2 = treeNode3.getParent();
@@ -185,9 +211,7 @@ public class EvaluationDetailsActivity extends BaseActivity {
                     }
                 }
             }
-            fileNode.setExpanded(true);
-            fileNode.setSelected(true);
-            fileNode.setSelectable(true);
+            selectNode.setExpanded(true);
         }
     }
 
@@ -195,17 +219,13 @@ public class EvaluationDetailsActivity extends BaseActivity {
         fileNode.setClickListener(new TreeNode.TreeNodeClickListener() {
             @Override
             public void onClick(TreeNode node, Object value) {
-                TreeChildItemHolder.IconTreeItem treeItem = (TreeChildItemHolder.IconTreeItem) value;
+                AutoTreeChildItemHolder.IconTreeItem treeItem = (AutoTreeChildItemHolder.IconTreeItem) value;
                 String id = treeItem.id;
                 String parentId = treeItem.parentId;
                 String name = treeItem.text;
-                TreeChildItemHolder holder = (TreeChildItemHolder) node.getViewHolder();
-                holder.arrowView.setImageResource(R.mipmap.check_icon);
-                holder.tvValue.setTextColor(Color.parseColor("#FEAE2D"));
+                isFocusTreeNode(node,true);
                 if (!id.equals(checkId)) {
-                    TreeChildItemHolder selectHolder = (TreeChildItemHolder) selectNode.getViewHolder();
-                    selectHolder.arrowView.setImageResource(R.mipmap.file_icon);
-                    selectHolder.tvValue.setTextColor(Color.parseColor("#333333"));
+                    isFocusTreeNode(selectNode,false);
                     checkId = id;
                     selectNode = node;
                     /**请求数据*/
@@ -214,38 +234,60 @@ public class EvaluationDetailsActivity extends BaseActivity {
         });
     }
 
+    private void isFocusTreeNode(TreeNode treeNode,boolean isFocus){
+        AutoTreeChildItemHolder selectHolder = (AutoTreeChildItemHolder) treeNode.getViewHolder();
+        selectHolder.isCheck = true;
+        if(isFocus){
+            selectHolder.arrowView.setImageResource(R.mipmap.check_icon);
+            selectHolder.tvValue.setTextColor(Color.parseColor("#FEAE2D"));
+        }else{
+            selectHolder.arrowView.setImageResource(R.mipmap.file_icon);
+            selectHolder.tvValue.setTextColor(Color.parseColor("#333333"));
+        }
+    }
+
     private void initLabelAdapter() {
-        List<DictionaryListResp.DataBean> list = mEntry.getData();
-        leftAdapter.addSection("parent", new EvaluationDetailsParentSection(list,gradeId, new EvaluationDetailsParentSection.OnSelectItmeListener() {
+        leftAdapter.addSection("parent", new EvaluationDetailsParentSection(gradeList, gradeId, new EvaluationDetailsParentSection.OnSelectItmeListener() {
             @Override
             public void onSelectItme(int pos) {
-                leftAdapter.notifyDataSetChanged();
+                gradeId = String.valueOf(gradeList.get(pos).getId());
+                leftAdapter.getAdapterForSection("parent").notifyAllItemsChanged("payloads");
+
+                /**请求二三四级数据*/
+                mPresenter.querySubjectList(getContext(), gradeId);
             }
         }));
 
-        tagPos = mEntry.getData().size() + list.get(0).getTabInfo().getSubject().size();
-        leftAdapter.addSection("subject", new EvaluationDetailsChildSection(list.get(0).getTabInfo().getSubject(), subjectId,new EvaluationDetailsChildSection.OnSelectItmeListener() {
+        leftAdapter.addSection("subject", new EvaluationDetailsSubjectSection(subjectList, subjectId, new EvaluationDetailsSubjectSection.OnSelectItmeListener() {
             @Override
             public void onSelectItme(int pos) {
+                subjectId = String.valueOf(subjectList.get(pos).getId());
                 leftAdapter.getAdapterForSection("subject").notifyAllItemsChanged("payloads");
+
+                mPresenter.queryTextBookList(getContext(),gradeId,subjectId);
             }
         }));
 
-        leftAdapter.addSection("textbook", new EvaluationDetailsTagSection(getContext(),list.get(0).getTabInfo().getTextbook(),textbookId, new EvaluationDetailsTagSection.OnSelectItmeListener() {
+        leftAdapter.addSection("textbook", new EvaluationDetailsTagSection(getContext(), textBookList, textbookId, new EvaluationDetailsTagSection.OnSelectItmeListener() {
             @Override
             public void onSelectItme(int pos) {
                 leftAdapter.getAdapterForSection("textbook").notifyAllItemsChanged("payloads");
+                textbookId = String.valueOf(textBookList.get(pos).getId());
+
+                /**点击版本去查询教材*/
+                mPresenter.querySemesterList(getContext(),gradeId,subjectId,textbookId);
 
             }
         }));
-        leftAdapter.addSection("semester", new EvaluationDetailsChildSection(list.get(0).getTabInfo().getSemester(),semesterId, new EvaluationDetailsChildSection.OnSelectItmeListener() {
+        leftAdapter.addSection("semester", new EvaluationDetailsChildSection(semesterList, semesterId, new EvaluationDetailsChildSection.OnSelectItmeListener() {
             @Override
             public void onSelectItme(int pos) {
                 leftAdapter.getAdapterForSection("semester").notifyAllItemsChanged("payloads");
+                semesterId = String.valueOf(semesterList.get(pos).getId());
+                /**请求页面数据*/
             }
         }));
         leftAdapter.notifyDataSetChanged();
-
     }
 
     @Override
@@ -254,14 +296,113 @@ public class EvaluationDetailsActivity extends BaseActivity {
     }
 
     @Override
-    protected BasePresenter onInitLogicImpl() {
-        return super.onInitLogicImpl();
+    protected EvaluationDetailsPresenter onInitLogicImpl() {
+        return new EvaluationDetailsPresenter(this, getContext());
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
+    }
+
+    @Override
+    public void loadSubjectSuc(SubjectEntity entry) {
+        subjectList = entry.getData();
+        if (subjectList != null && subjectList.size() > 0) {
+            loadView.showContent();
+            tagPos = gradeList.size() + subjectList.size();
+            subjectId = String.valueOf(subjectList.get(0).getId());
+
+            EvaluationDetailsSubjectSection subjectSection = (EvaluationDetailsSubjectSection) leftAdapter.getSection("subject");
+            subjectSection.updateList(subjectList);
+
+            textBookList = subjectList.get(0).getTextbook();
+            EvaluationDetailsTagSection tagChildSection = (EvaluationDetailsTagSection) leftAdapter.getSection("textbook");
+            if (textBookList != null && textBookList.size() > 0) {
+                textbookId = String.valueOf(textBookList.get(0).getId());
+                tagChildSection.updateList(textBookList);
+
+                semesterList = textBookList.get(0).getSemester();
+                EvaluationDetailsChildSection semesterSection = (EvaluationDetailsChildSection) leftAdapter.getSection("semester");
+                if (semesterList != null && semesterList.size() > 0) {
+                    semesterId = String.valueOf(semesterList.get(0).getId());
+                    semesterSection.updateList(semesterList);
+                } else {
+                    semesterId = null;
+                    semesterSection.updateList(null);
+                }
+
+            } else {
+                textbookId = null;
+                tagChildSection.updateList(null);
+            }
+
+            leftAdapter.notifyDataSetChanged();
+            /**请求页面数据*/
+
+        } else {
+            loadView.showEmpty();
+        }
+    }
+
+    @Override
+    public void loadTextBookSuc(TextbookEntity entry) {
+        textBookList = entry.getData();
+        if(textBookList != null && textBookList.size() > 0){
+            loadView.showContent();
+            textbookId = String.valueOf(textBookList.get(0).getId());
+
+            EvaluationDetailsTagSection tagChildSection = (EvaluationDetailsTagSection) leftAdapter.getSection("textbook");
+            tagChildSection.updateList(textBookList);
+
+            semesterList = textBookList.get(0).getSemester();
+            EvaluationDetailsChildSection semesterSection = (EvaluationDetailsChildSection) leftAdapter.getSection("semester");
+            if(semesterList != null && semesterList.size() > 0){
+                semesterId = String.valueOf(semesterList.get(0).getId());
+                semesterSection.updateList(semesterList);
+            }else{
+                semesterId = null;
+                semesterSection.updateList(null);
+            }
+            leftAdapter.notifyDataSetChanged();
+
+            /**请求页面数据*/
+
+        }else{
+            loadView.showEmpty();
+        }
+    }
+
+    @Override
+    public void loadSemesterSuc(SemesterEntity entry) {
+        semesterList = entry.getData();
+        if(semesterList != null && semesterList.size() > 0){
+            semesterId = String.valueOf(semesterList.get(0).getId());
+            EvaluationDetailsChildSection semesterSection = (EvaluationDetailsChildSection) leftAdapter.getSection("semester");
+            semesterSection.updateList(semesterList);
+
+            leftAdapter.getAdapterForSection("semester").notifyAllItemsChanged("payloads");
+
+            /**请求页面数据*/
+
+        }else{
+            loadView.showEmpty();
+        }
+    }
+
+    @Override
+    public void loadFail(String msg) {
+
+    }
+
+    @Override
+    public void loadDictionaryEmpty() {
+
+    }
+
+    @Override
+    public void loadPaperTypeEmpty() {
+
     }
 }

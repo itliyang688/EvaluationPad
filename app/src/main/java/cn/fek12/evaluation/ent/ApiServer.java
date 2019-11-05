@@ -1,10 +1,16 @@
 package cn.fek12.evaluation.ent;
 
 import cn.fek12.evaluation.base.BaseEntry;
+import cn.fek12.evaluation.model.entity.AWeekEntity;
 import cn.fek12.evaluation.model.entity.AssessmentIndexPaperResp;
 import cn.fek12.evaluation.model.entity.DictionaryListResp;
+import cn.fek12.evaluation.model.entity.EarlierEntity;
+import cn.fek12.evaluation.model.entity.GradeDictionaryListEntity;
 import cn.fek12.evaluation.model.entity.HomeEvaluationDeta;
 import cn.fek12.evaluation.model.entity.PaperTypeListResp;
+import cn.fek12.evaluation.model.entity.SemesterEntity;
+import cn.fek12.evaluation.model.entity.SubjectEntity;
+import cn.fek12.evaluation.model.entity.TextbookEntity;
 import cn.fek12.evaluation.model.entity.TreeDataEntity;
 import io.reactivex.Observable;
 import retrofit2.http.Field;
@@ -22,8 +28,29 @@ public interface ApiServer {
     @POST("assessment/index")
     Observable<HomeEvaluationDeta> queryEvaluation(@Field("userId") String userId);
 
-    @GET("assessment/dictionaryList")
-    Observable<DictionaryListResp>  getDictionaryList();
+    /**
+     * 查询学科
+     */
+    @FormUrlEncoded
+    @POST("/assessment/dictionaryList")
+    Observable<SubjectEntity> querySubject(@Field("grade") String grade);
+
+    /**
+     * 查询版本
+     */
+    @FormUrlEncoded
+    @POST("/assessment/dictionaryList")
+    Observable<TextbookEntity> queryTextbook(@Field("grade") String grade, @Field("subject") String subject);
+
+    /**
+     * 查询教材
+     */
+    @FormUrlEncoded
+    @POST("/assessment/dictionaryList")
+    Observable<SemesterEntity> querySemester(@Field("grade") String grade, @Field("subject") String subject, @Field("textbook") String textbook);
+
+    @GET("assessment/gradeDictionaryList")
+    Observable<GradeDictionaryListEntity>  queryGradeDictionaryList();
 
     @GET("assessment/paperTypeList")
     Observable<PaperTypeListResp>  getPaperTypeList();
@@ -36,6 +63,26 @@ public interface ApiServer {
            @Field("textbook") String textbook,
            @Field("ptype") String ptype,
            @Field("userId") String userId);
+
+    @FormUrlEncoded
+    @POST("paperReport/weekIndividualReport")
+    Observable<AWeekEntity> queryAWeek(@Field("grade") String grade,
+                                       @Field("semester") String semester,
+                                       @Field("subject") String subject,
+                                       @Field("textbook") String textbook,
+                                       @Field("userId") String userId,
+                                       @Field("userType") String userType);
+
+    @FormUrlEncoded
+    @POST("paperReport/priorityIndividualReport")
+    Observable<EarlierEntity> queryEarlier(@Field("grade") String grade,
+                                           @Field("semester") String semester,
+                                           @Field("subject") String subject,
+                                           @Field("textbook") String textbook,
+                                           @Field("userId") String userId,
+                                           @Field("userType") String userType,
+                                           @Field("currentPage") String currentPage,
+                                           @Field("pageSize") String pageSize);
 
 
     @GET("assessment/subjectCategoryList")

@@ -36,6 +36,7 @@ public class SplashActivity extends BaseActivity {
         try {
             Thread.sleep(1000);
             startActivity(MainActivity.class);
+            SplashActivity.this.finish();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
