@@ -13,10 +13,23 @@ public class MyApplication extends BaseApplication {
     public static MyApplication myApp;
     private static OkHttpClient mOkHttpClient;
     private static final int DEFAULT_TIMEOUT = 30;
+    private String userId = "413";
     @Override
     public void onCreate() {
         super.onCreate();
         myApp = this;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public static MyApplication getMyApplication() {
+        return myApp;
     }
 
     /**

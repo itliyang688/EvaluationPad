@@ -2,13 +2,18 @@ package cn.fek12.evaluation.view.fragment;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.cunoraz.tagview.Tag;
 import com.cunoraz.tagview.TagView;
 import com.fek12.basic.base.BaseFragment;
+import com.google.gson.Gson;
+import com.stx.xmarqueeview.XMarqueeView;
 import com.unnamed.b.atv.model.TreeNode;
 import com.unnamed.b.atv.view.AndroidTreeView;
 
@@ -20,11 +25,16 @@ import java.util.Map;
 
 import butterknife.BindView;
 import cn.fek12.evaluation.R;
-import cn.fek12.evaluation.impl.IAutonomyEvaluation;
+import cn.fek12.evaluation.model.entity.DictionaryListResp;
+import cn.fek12.evaluation.model.entity.QueryTopicEntity;
+import cn.fek12.evaluation.model.entity.RecordsEntitiy;
+import cn.fek12.evaluation.model.entity.TopicCountEntity;
 import cn.fek12.evaluation.model.entity.TreeDataEntity;
 import cn.fek12.evaluation.model.holder.AutoTreeChildItemHolder;
 import cn.fek12.evaluation.model.holder.TreeParentItemHolder;
 import cn.fek12.evaluation.presenter.AutonomyEvaluationPresenter;
+import cn.fek12.evaluation.utils.InputFilterMinMax;
+import cn.fek12.evaluation.view.adapter.RecordsListAdapter;
 
 /**
  * @ProjectName: EvaluationPad
@@ -40,13 +50,79 @@ public class AutonomyEvaluationFragment extends BaseFragment<AutonomyEvaluationP
     TagView tagGroup;
     @BindView(R.id.tvEliminate)
     ImageView tvEliminate;
+    @BindView(R.id.tvTopicType1)
+    TextView tvTopicType1;
+    @BindView(R.id.tvTopicType2)
+    TextView tvTopicType2;
+    @BindView(R.id.tvThisYear)
+    TextView tvThisYear;
+    @BindView(R.id.tvLastYear)
+    TextView tvLastYear;
+    @BindView(R.id.tvEarlier)
+    TextView tvEarlier;
+    @BindView(R.id.etName)
+    EditText etName;
+    @BindView(R.id.tvSingle)
+    TextView tvSingle;
+    @BindView(R.id.etSingle1)
+    EditText etSingle1;
+    @BindView(R.id.tvCountSingle1)
+    TextView tvCountSingle1;
+    @BindView(R.id.etSingle2)
+    EditText etSingle2;
+    @BindView(R.id.tvCountSingle2)
+    TextView tvCountSingle2;
+    @BindView(R.id.etSingle3)
+    EditText etSingle3;
+    @BindView(R.id.tvCountSingle3)
+    TextView tvCountSingle3;
+    @BindView(R.id.tvMultiple)
+    TextView tvMultiple;
+    @BindView(R.id.etMultiple1)
+    EditText etMultiple1;
+    @BindView(R.id.tvCountMultiple1)
+    TextView tvCountMultiple1;
+    @BindView(R.id.etMultiple2)
+    EditText etMultiple2;
+    @BindView(R.id.tvCountMultiple2)
+    TextView tvCountMultiple2;
+    @BindView(R.id.etMultiple3)
+    EditText etMultiple3;
+    @BindView(R.id.tvCountMultiple3)
+    TextView tvCountMultiple3;
+    @BindView(R.id.tvJudge)
+    TextView tvJudge;
+    @BindView(R.id.etJudge1)
+    EditText etJudge1;
+    @BindView(R.id.tvCountJudge1)
+    TextView tvCountJudge1;
+    @BindView(R.id.etJudge2)
+    EditText etJudge2;
+    @BindView(R.id.tvCountJudge2)
+    TextView tvCountJudge2;
+    @BindView(R.id.etJudge3)
+    EditText etJudge3;
+    @BindView(R.id.tvCountJudge3)
+    TextView tvCountJudge3;
+    @BindView(R.id.tvGenerate)
+    TextView tvGenerate;
+    @BindView(R.id.marqueeView)
+    XMarqueeView marqueeView;
     private String gradeId;
     private String subjectId;
     private String semesterId;
     private String textbookId;
     private String typePage;
     private ArrayList<Tag> tags = new ArrayList<>();
-    private Map<String,TreeNode> treeNodeMap = new HashMap<>();
+    private Map<String, TreeNode> treeNodeMap = new HashMap<>();
+
+    private String thisYear = "0";
+    private String lastYear = "0";
+    private String earlierYear = "0";
+    private String single = "0";
+    private String multiple = "0";
+    private String judge = "0";
+    private int topicType = 0;
 
     @Override
     protected int getLayoutResource() {
@@ -56,23 +132,33 @@ public class AutonomyEvaluationFragment extends BaseFragment<AutonomyEvaluationP
     @Override
     protected void onInitView(Bundle savedInstanceState) {
         tvEliminate.setOnClickListener(onClickListener);
+        tvTopicType1.setOnClickListener(onClickListener);
+        tvTopicType2.setOnClickListener(onClickListener);
+        tvThisYear.setOnClickListener(onClickListener);
+        tvLastYear.setOnClickListener(onClickListener);
+        tvEarlier.setOnClickListener(onClickListener);
+        tvSingle.setOnClickListener(onClickListener);
+        tvMultiple.setOnClickListener(onClickListener);
+        tvJudge.setOnClickListener(onClickListener);
+
+        etSingle1.setFilters(new InputFilter[]{new InputFilterMinMax("0", "200")});
 
         tagGroup.setOnTagClickListener(new TagView.OnTagClickListener() {
             @Override
             public void onTagClick(Tag tag, int position) {
                 Iterator<Map.Entry<String, TreeNode>> it = treeNodeMap.entrySet().iterator();
-                while(it.hasNext()){
+                while (it.hasNext()) {
                     Map.Entry<String, TreeNode> entry = it.next();
-                    if(tag.getId().equals(entry.getKey())){
+                    if (tag.getId().equals(entry.getKey())) {
                         TreeNode treeNode = entry.getValue();
-                        isFocusTreeNode(treeNode,false);
+                        isFocusTreeNode(treeNode, false);
                     }
                 }
 
                 Iterator<Tag> itTag = tags.iterator();
-                while(itTag.hasNext()){
+                while (itTag.hasNext()) {
                     Tag tagBean = itTag.next();
-                    if(tagBean.getId().equals(tag.getId())){
+                    if (tagBean.getId().equals(tag.getId())) {
                         itTag.remove();
                     }
                 }
@@ -83,10 +169,85 @@ public class AutonomyEvaluationFragment extends BaseFragment<AutonomyEvaluationP
         });
     }
 
-    @Override
-    protected void onLoadDataRemote() {
-
-    }
+    private View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()) {
+                case R.id.tvJudge://判断题
+                    if (judge.equals("0")) {
+                        judge = tvJudge.getText().toString();
+                        tvJudge.setSelected(true);
+                    } else {
+                        judge = "0";
+                        tvJudge.setSelected(false);
+                    }
+                    break;
+                case R.id.tvMultiple://多选题
+                    if (multiple.equals("0")) {
+                        multiple = tvMultiple.getText().toString();
+                        tvMultiple.setSelected(true);
+                    } else {
+                        multiple = "0";
+                        tvMultiple.setSelected(false);
+                    }
+                    break;
+                case R.id.tvSingle://单选题
+                    if (single.equals("0")) {
+                        single = tvSingle.getText().toString();
+                        tvSingle.setSelected(true);
+                    } else {
+                        single = "0";
+                        tvSingle.setSelected(false);
+                    }
+                    break;
+                case R.id.tvThisYear://今年
+                    if (thisYear.equals("0")) {
+                        thisYear = tvThisYear.getText().toString();
+                        tvThisYear.setSelected(true);
+                    } else {
+                        thisYear = "0";
+                        tvThisYear.setSelected(false);
+                    }
+                    break;
+                case R.id.tvLastYear://上一年
+                    if (lastYear.equals("0")) {
+                        lastYear = tvLastYear.getText().toString();
+                        tvLastYear.setSelected(true);
+                    } else {
+                        lastYear = "0";
+                        tvLastYear.setSelected(false);
+                    }
+                    break;
+                case R.id.tvEarlier://更早
+                    if (earlierYear.equals("0")) {
+                        earlierYear = "更早";
+                        tvEarlier.setSelected(true);
+                    } else {
+                        earlierYear = "0";
+                        tvEarlier.setSelected(false);
+                    }
+                    break;
+                case R.id.tvTopicType1://关联出题
+                    topicType = 1;
+                    tvTopicType1.setSelected(true);
+                    tvTopicType2.setSelected(false);
+                    break;
+                case R.id.tvTopicType2://精准出题
+                    topicType = 2;
+                    tvTopicType1.setSelected(false);
+                    tvTopicType2.setSelected(true);
+                    break;
+                case R.id.tvEliminate:
+                    tags.clear();
+                    tagGroup.addTags(tags);
+                    for (Map.Entry<String, TreeNode> entry : treeNodeMap.entrySet()) {
+                        isFocusTreeNode(entry.getValue(), false);
+                    }
+                    treeNodeMap.clear();
+                    break;
+            }
+        }
+    };
 
     public void queryTreeData(String grade, String semester, String subject, String textbook, String type, String userId) {
         gradeId = grade;
@@ -95,6 +256,14 @@ public class AutonomyEvaluationFragment extends BaseFragment<AutonomyEvaluationP
         textbookId = textbook;
         typePage = type;
         mPresenter.initTreeData(getContext(), gradeId, semesterId, subjectId, textbookId, userId, type);
+        mPresenter.queryRecordsList(getContext(),userId);
+        QueryTopicEntity topicEntity = new QueryTopicEntity();
+        topicEntity.setGrade(gradeId);
+        topicEntity.setSemester(semesterId);
+        topicEntity.setSubject(subjectId);
+        topicEntity.setTextbook(textbookId);
+        String json = new Gson().toJson(topicEntity);
+        mPresenter.queryTopicCount(getContext(),json);
     }
 
     @Override
@@ -108,8 +277,51 @@ public class AutonomyEvaluationFragment extends BaseFragment<AutonomyEvaluationP
     }
 
     @Override
+    public void loadTopicCountSuc(TopicCountEntity entity) {
+        TopicCountEntity.DataBean.TopicCountBean singleBean = entity.getData().getSingle();
+        if(singleBean != null){
+            int common = singleBean.getCommon();
+            int difficult = singleBean.getDifficult();
+            int easy = singleBean.getEasy();
+            tvCountSingle3.setText(difficult+"道题可用");
+            tvCountSingle2.setText(common+"道题可用");
+            tvCountSingle1.setText(easy+"道题可用");
+        }
+        TopicCountEntity.DataBean.TopicCountBean multipleBean = entity.getData().getMultiple();
+        if(multipleBean != null){
+            int common = multipleBean.getCommon();
+            int difficult = multipleBean.getDifficult();
+            int easy = multipleBean.getEasy();
+            tvCountMultiple3.setText(difficult+"道题可用");
+            tvCountMultiple2.setText(common+"道题可用");
+            tvCountMultiple1.setText(easy+"道题可用");
+        }
+        TopicCountEntity.DataBean.TopicCountBean judgeBean = entity.getData().getJudge();
+        if(judgeBean != null){
+            int common = judgeBean.getCommon();
+            int difficult = judgeBean.getDifficult();
+            int easy = judgeBean.getEasy();
+            tvCountJudge3.setText(difficult+"道题可用");
+            tvCountJudge2.setText(common+"道题可用");
+            tvCountJudge1.setText(easy+"道题可用");
+        }
+    }
+
+    @Override
+    public void loadRecordsListSuc(RecordsEntitiy entity) {
+        List<RecordsEntitiy.DataBean> list = entity.getData();
+        RecordsListAdapter marqueeFactory = new RecordsListAdapter(list,getContext());
+        marqueeView.setAdapter(marqueeFactory);
+        if(list != null && list.size() <= 5){
+            marqueeView.stopFlipping();
+        }
+    }
+
+    @Override
     public void loadTreeSuc(TreeDataEntity entry) {
         layoutTree.removeAllViews();
+        tags.clear();
+        tagGroup.addTags(tags);
         if (entry == null || entry.getData() == null || entry.getData().size() == 0) {
             return;
         }
@@ -177,19 +389,19 @@ public class AutonomyEvaluationFragment extends BaseFragment<AutonomyEvaluationP
         fileNode.setClickListener(new TreeNode.TreeNodeClickListener() {
             @Override
             public void onClick(TreeNode node, Object value) {
-                isFocusTreeNode(node,true);
+                isFocusTreeNode(node, true);
 
                 AutoTreeChildItemHolder.IconTreeItem treeItem = (AutoTreeChildItemHolder.IconTreeItem) value;
                 String id = treeItem.id;
                 //String parentId = treeItem.parentId;
                 String name = treeItem.text;
                 boolean isAdd = false;
-                for(Tag tagBean : tags){
-                    if(tagBean.getId().equals(id)){
+                for (Tag tagBean : tags) {
+                    if (tagBean.getId().equals(id)) {
                         isAdd = true;
                     }
                 }
-                if(!isAdd){
+                if (!isAdd) {
                     Tag tag = new Tag(name);
                     tag.setRadius(10f);
                     tag.setLayoutColor(Color.parseColor("#ECECEC"));
@@ -200,7 +412,7 @@ public class AutonomyEvaluationFragment extends BaseFragment<AutonomyEvaluationP
                     tag.setId(id);
                     tag.setDeletable(true);
                     setTags(tag);
-                    treeNodeMap.put(id,node);
+                    treeNodeMap.put(id, node);
                 }
             }
         });
@@ -213,28 +425,12 @@ public class AutonomyEvaluationFragment extends BaseFragment<AutonomyEvaluationP
         tagGroup.setLineMargin(6f);
     }
 
-    private View.OnClickListener onClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            switch (view.getId()){
-                case R.id.tvEliminate:
-                    tags.clear();
-                    tagGroup.addTags(tags);
-                    for(Map.Entry<String, TreeNode> entry : treeNodeMap.entrySet()){
-                        isFocusTreeNode(entry.getValue(),false);
-                    }
-                    treeNodeMap.clear();
-                    break;
-            }
-        }
-    };
-
-    private void isFocusTreeNode(TreeNode treeNode,boolean isFocus){
+    private void isFocusTreeNode(TreeNode treeNode, boolean isFocus) {
         AutoTreeChildItemHolder selectHolder = (AutoTreeChildItemHolder) treeNode.getViewHolder();
-        if(isFocus){
+        if (isFocus) {
             selectHolder.arrowView.setImageResource(R.mipmap.check_icon);
             selectHolder.tvValue.setTextColor(Color.parseColor("#FEAE2D"));
-        }else{
+        } else {
             selectHolder.arrowView.setImageResource(R.mipmap.file_icon);
             selectHolder.tvValue.setTextColor(Color.parseColor("#333333"));
         }
@@ -243,11 +439,30 @@ public class AutonomyEvaluationFragment extends BaseFragment<AutonomyEvaluationP
 
     @Override
     public void loadTreeFail() {
-
+        layoutTree.removeAllViews();
+        tags.clear();
+        tagGroup.addTags(tags);
     }
 
     @Override
     public void loadTreeEmpty() {
+        layoutTree.removeAllViews();
+        tags.clear();
+        tagGroup.addTags(tags);
+    }
+
+    @Override
+    public void loadRecordsListEmpty() {
+
+    }
+
+    @Override
+    public void loadTopicCountEmpty() {
+
+    }
+
+    @Override
+    protected void onLoadDataRemote() {
 
     }
 }

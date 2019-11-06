@@ -59,8 +59,7 @@
                 android:layout_weight="1"
                 android:layout_marginLeft="@dimen/dp_10"
                 android:layout_marginTop="@dimen/dp_12"
-                android:layout_marginRight="@dimen/dp_10"
-                android:layout_marginBottom="@dimen/dp_30" />
+                android:layout_marginRight="@dimen/dp_10" />
 
         </LinearLayout>
     </cn.fek12.evaluation.view.widget.MultipleStatusView>

@@ -17,6 +17,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import cn.fek12.evaluation.R;
+import cn.fek12.evaluation.application.MyApplication;
 import cn.fek12.evaluation.impl.IPresentation;
 import cn.fek12.evaluation.model.entity.AWeekEntity;
 import cn.fek12.evaluation.model.entity.DictionaryListResp;
@@ -52,7 +53,6 @@ public class PromoteFragment extends BaseFragment<PresentationPresenter> impleme
     private String semester = null;
     private String subject = null;
     private String textbook = null;
-    private String userId = "413";
     private String userType = null;
     private int currentPage = 1;
     private String pageSize = "18";
@@ -75,7 +75,7 @@ public class PromoteFragment extends BaseFragment<PresentationPresenter> impleme
                         subject = subjectId;
                         textbook = textbookId;
                         userType = type;
-                        mPresenter.queryAWeek(getContext(), grade, semester, subject, textbook, userId, userType);
+                        mPresenter.queryAWeek(getContext(), grade, semester, subject, textbook,  MyApplication.getMyApplication().getUserId(), userType);
                     }
                 });
                 AppUtils.fitPopupWindowOverStatusBar(popupWindow, true);
@@ -99,14 +99,14 @@ public class PromoteFragment extends BaseFragment<PresentationPresenter> impleme
         public void onLoadMore(final TwinklingRefreshLayout refreshLayout) {
             isLoadMore = true;
             currentPage += 1;
-            mPresenter.queryEarlier(getContext(), grade, semester, subject, textbook, userId, userType, String.valueOf(currentPage), pageSize);
+            mPresenter.queryEarlier(getContext(), grade, semester, subject, textbook,  MyApplication.getMyApplication().getUserId(), userType, String.valueOf(currentPage), pageSize);
         }
 
         @Override
         public void onRefresh(final TwinklingRefreshLayout refreshLayout) {
             isLoadMore = false;
             currentPage = 1;
-            mPresenter.queryAWeek(getContext(), grade, semester, subject, textbook, userId, userType);
+            mPresenter.queryAWeek(getContext(), grade, semester, subject, textbook,  MyApplication.getMyApplication().getUserId(), userType);
         }
     };
 
@@ -151,7 +151,7 @@ public class PromoteFragment extends BaseFragment<PresentationPresenter> impleme
     @Override
     protected void onLoadDataRemote() {
         multipleStatusView.showLoading();
-        mPresenter.queryAWeek(getContext(), grade, semester, subject, textbook, userId, userType);
+        mPresenter.queryAWeek(getContext(), grade, semester, subject, textbook,  MyApplication.getMyApplication().getUserId(), userType);
     }
 
     @Override
@@ -179,7 +179,7 @@ public class PromoteFragment extends BaseFragment<PresentationPresenter> impleme
             leftAdapter.getAdapterForSection("aweek").notifyAllItemsChanged("payloads");
 
         }
-        mPresenter.queryEarlier(getContext(), grade, semester, subject, textbook, userId, userType, String.valueOf(currentPage), pageSize);
+        mPresenter.queryEarlier(getContext(), grade, semester, subject, textbook,  MyApplication.getMyApplication().getUserId(), userType, String.valueOf(currentPage), pageSize);
     }
 
     @Override
@@ -205,7 +205,7 @@ public class PromoteFragment extends BaseFragment<PresentationPresenter> impleme
     @Override
     public void loadAWeekFail(String msg) {
         /**一周或三天报告请求失败还要去请求较早的报告*/
-        mPresenter.queryEarlier(getContext(), grade, semester, subject, textbook, userId, userType, String.valueOf(currentPage), pageSize);
+        mPresenter.queryEarlier(getContext(), grade, semester, subject, textbook,  MyApplication.getMyApplication().getUserId(), userType, String.valueOf(currentPage), pageSize);
     }
 
     @Override
@@ -218,7 +218,7 @@ public class PromoteFragment extends BaseFragment<PresentationPresenter> impleme
     @Override
     public void loadAWeekEmpty() {
         /**一周或三天报告请求失败还要去请求较早的报告*/
-        mPresenter.queryEarlier(getContext(), grade, semester, subject, textbook, userId, userType, String.valueOf(currentPage), pageSize);
+        mPresenter.queryEarlier(getContext(), grade, semester, subject, textbook,  MyApplication.getMyApplication().getUserId(), userType, String.valueOf(currentPage), pageSize);
     }
 
     @Override

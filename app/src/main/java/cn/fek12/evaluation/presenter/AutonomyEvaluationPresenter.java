@@ -9,7 +9,12 @@ import cn.fek12.evaluation.ent.ApiRetrofit;
 import cn.fek12.evaluation.ent.RxHelper;
 import cn.fek12.evaluation.impl.IAutonomyEvaluation;
 import cn.fek12.evaluation.model.entity.HomeEvaluationDeta;
+import cn.fek12.evaluation.model.entity.QueryTopicEntity;
+import cn.fek12.evaluation.model.entity.RecordsEntitiy;
+import cn.fek12.evaluation.model.entity.TopicCountEntity;
 import cn.fek12.evaluation.model.entity.TreeDataEntity;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 
 /**
  * @ProjectName: EvaluationPad
@@ -42,6 +47,52 @@ public class AutonomyEvaluationPresenter extends BasePresenter<IAutonomyEvaluati
                     @Override
                     public void onError(String msg) {
                         infoView.loadTreeFail();
+                    }
+                });
+    }
+
+    @Override
+    public void queryRecordsList(Context context, String userId) {
+        ApiRetrofit.getInstance().getApiService().queryRecordsList(userId)
+                .compose(RxHelper.observableIO2Main(context))
+                .subscribe(new BaseObserver<RecordsEntitiy>() {
+
+                    @Override
+                    public void onSuccess(RecordsEntitiy entity) {
+                        if(entity.getState().equals("0")){
+                            infoView.loadRecordsListSuc(entity);
+                        }else{
+                            infoView.loadRecordsListEmpty();
+                        }
+                    }
+
+                    @Override
+                    public void onError(String msg) {
+                        infoView.loadRecordsListEmpty();
+                    }
+                });
+    }
+
+    @Override
+    public void queryTopicCount(Context context, String jsonBody) {
+        MediaType parse = MediaType.parse("application/json; charset=utf-8");
+        RequestBody body = RequestBody.create(parse,jsonBody);
+        ApiRetrofit.getInstance().getApiService().queryTopicCount(body)
+                .compose(RxHelper.observableIO2Main(context))
+                .subscribe(new BaseObserver<TopicCountEntity>() {
+
+                    @Override
+                    public void onSuccess(TopicCountEntity entity) {
+                        if(entity.getState().equals("0")){
+                            infoView.loadTopicCountSuc(entity);
+                        }else{
+                            infoView.loadTopicCountEmpty();
+                        }
+                    }
+
+                    @Override
+                    public void onError(String msg) {
+                        infoView.loadTopicCountEmpty();
                     }
                 });
     }

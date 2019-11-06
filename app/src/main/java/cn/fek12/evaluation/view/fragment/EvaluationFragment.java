@@ -21,6 +21,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 import cn.fek12.evaluation.R;
+import cn.fek12.evaluation.application.MyApplication;
 import cn.fek12.evaluation.base.BaseEntry;
 import cn.fek12.evaluation.impl.IEvaluation;
 import cn.fek12.evaluation.model.entity.HomeEvaluationDeta;
@@ -78,7 +79,7 @@ public class EvaluationFragment extends BaseFragment<EvaluationPresenter> implem
     }
     @Override
     protected void onLoadDataRemote() {
-        mPresenter.initEvaluation(getContext(), "413");
+        mPresenter.initEvaluation(getContext(),  MyApplication.getMyApplication().getUserId());
     }
 
     @Override

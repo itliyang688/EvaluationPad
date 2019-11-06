@@ -30,6 +30,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import cn.fek12.evaluation.R;
+import cn.fek12.evaluation.application.MyApplication;
 import cn.fek12.evaluation.impl.IEvaluationList;
 import cn.fek12.evaluation.model.entity.ChildSectionEntity;
 import cn.fek12.evaluation.model.entity.ContainListEntity;
@@ -254,23 +255,24 @@ public class EvaluationListFragment extends BaseFragment<EvaluationListPresenter
 
     @Override
     public void loadSubjectSuc(SubjectEntity entry) {
+        DictionarySubjectSection subjectSection = (DictionarySubjectSection) leftAdapter.getSection("subject");
+        DictionaryTagChildSection tagChildSection = (DictionaryTagChildSection) leftAdapter.getSection("textbook");
+        DictionaryChildSection semesterSection = (DictionaryChildSection) leftAdapter.getSection("semester");
         subjectList = entry.getData();
         if(subjectList != null && subjectList.size() > 0){
             loadView.showContent();
             tagPos = gradeList.size() + subjectList.size();
             subjectId = String.valueOf(subjectList.get(0).getId());
 
-            DictionarySubjectSection subjectSection = (DictionarySubjectSection) leftAdapter.getSection("subject");
             subjectSection.updateList(subjectList);
 
             textBookList = subjectList.get(0).getTextbook();
-            DictionaryTagChildSection tagChildSection = (DictionaryTagChildSection) leftAdapter.getSection("textbook");
+
             if(textBookList != null && textBookList.size() > 0){
                 textbookId = String.valueOf(textBookList.get(0).getId());
                 tagChildSection.updateList(textBookList);
 
                 semesterList = textBookList.get(0).getSemester();
-                DictionaryChildSection semesterSection = (DictionaryChildSection) leftAdapter.getSection("semester");
                 if(semesterList != null && semesterList.size() > 0){
                     semesterId = String.valueOf(semesterList.get(0).getId());
                     semesterSection.updateList(semesterList);
@@ -282,33 +284,43 @@ public class EvaluationListFragment extends BaseFragment<EvaluationListPresenter
             }else{
                 textbookId = null;
                 tagChildSection.updateList(null);
+
+                semesterId = null;
+                semesterSection.updateList(null);
             }
 
             leftAdapter.notifyDataSetChanged();
-            if(isLoadPaerType){
-                /**请求右侧页面数据*/
-                updateContent(mViewPager.getCurrentItem());
-            }else{
-                /**请求右侧title*/
-                mPresenter.getPaperTypeList(getContext());
-            }
         }else{
-            loadView.showEmpty();
+            subjectId = null;
+            subjectSection.updateList(null);
+            textbookId = null;
+            tagChildSection.updateList(null);
+            semesterId = null;
+            semesterSection.updateList(null);
+        }
+
+        if(isLoadPaerType){
+            /**请求右侧页面数据*/
+            updateContent(mViewPager.getCurrentItem());
+        }else{
+            /**请求右侧title*/
+            mPresenter.getPaperTypeList(getContext());
         }
     }
 
     @Override
     public void loadTextBookSuc(TextbookEntity entry) {
         textBookList = entry.getData();
+        DictionaryTagChildSection tagChildSection = (DictionaryTagChildSection) leftAdapter.getSection("textbook");
+        DictionaryChildSection semesterSection = (DictionaryChildSection) leftAdapter.getSection("semester");
         if(textBookList != null && textBookList.size() > 0){
             loadView.showContent();
             textbookId = String.valueOf(textBookList.get(0).getId());
 
-            DictionaryTagChildSection tagChildSection = (DictionaryTagChildSection) leftAdapter.getSection("textbook");
-            tagChildSection.updateList(textBookList);
 
+            tagChildSection.updateList(textBookList);
             semesterList = textBookList.get(0).getSemester();
-            DictionaryChildSection semesterSection = (DictionaryChildSection) leftAdapter.getSection("semester");
+
             if(semesterList != null && semesterList.size() > 0){
                 semesterId = String.valueOf(semesterList.get(0).getId());
                 semesterSection.updateList(semesterList);
@@ -317,12 +329,15 @@ public class EvaluationListFragment extends BaseFragment<EvaluationListPresenter
                 semesterSection.updateList(null);
             }
             leftAdapter.notifyDataSetChanged();
-
-            /**请求右侧页面数据*/
-            updateContent(mViewPager.getCurrentItem());
         }else{
-            loadView.showEmpty();
+            semesterId = null;
+            semesterSection.updateList(null);
+
+            textbookId = null;
+            tagChildSection.updateList(null);
         }
+        /**请求右侧页面数据*/
+        updateContent(mViewPager.getCurrentItem());
     }
 
     @Override
@@ -334,12 +349,10 @@ public class EvaluationListFragment extends BaseFragment<EvaluationListPresenter
             semesterSection.updateList(semesterList);
 
             leftAdapter.getAdapterForSection("semester").notifyAllItemsChanged("payloads");
-
-            /**请求右侧页面数据*/
-            updateContent(mViewPager.getCurrentItem());
-        }else{
-            loadView.showEmpty();
         }
+
+        /**请求右侧页面数据*/
+        updateContent(mViewPager.getCurrentItem());
     }
 
     private void initDialogTree(String titleName, String value) {
@@ -390,11 +403,11 @@ public class EvaluationListFragment extends BaseFragment<EvaluationListPresenter
             BaseFragment baseFragment = (BaseFragment) adapter.getItem(mViewPager.getCurrentItem());
             if (baseFragment instanceof EvaluationIndexPaperFragment) {
                 EvaluationIndexPaperFragment fragment = (EvaluationIndexPaperFragment) baseFragment;
-                fragment.queryIndexPagerData(gradeId, semesterId, subjectId, textbookId, mTitleData.get(pos).getId(), "413");
+                fragment.queryIndexPagerData(gradeId, semesterId, subjectId, textbookId, mTitleData.get(pos).getId(), MyApplication.getMyApplication().getUserId());
             }else if(baseFragment instanceof AutonomyEvaluationFragment){
                 int currentItme = mViewPager.getCurrentItem();
                 AutonomyEvaluationFragment fragment = (AutonomyEvaluationFragment) baseFragment;
-                fragment.queryTreeData(gradeId,semesterId,subjectId,textbookId,mTitleData.get(currentItme).getValue(),"413");
+                fragment.queryTreeData(gradeId,semesterId,subjectId,textbookId,mTitleData.get(currentItme).getValue(), MyApplication.getMyApplication().getUserId());
             }
         }
 

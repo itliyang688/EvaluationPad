@@ -1,21 +1,25 @@
 package cn.fek12.evaluation.ent;
 
-import cn.fek12.evaluation.base.BaseEntry;
 import cn.fek12.evaluation.model.entity.AWeekEntity;
 import cn.fek12.evaluation.model.entity.AssessmentIndexPaperResp;
-import cn.fek12.evaluation.model.entity.DictionaryListResp;
 import cn.fek12.evaluation.model.entity.EarlierEntity;
 import cn.fek12.evaluation.model.entity.GradeDictionaryListEntity;
 import cn.fek12.evaluation.model.entity.HomeEvaluationDeta;
 import cn.fek12.evaluation.model.entity.PaperTypeListResp;
+import cn.fek12.evaluation.model.entity.QueryTopicEntity;
+import cn.fek12.evaluation.model.entity.RecordsEntitiy;
 import cn.fek12.evaluation.model.entity.SemesterEntity;
 import cn.fek12.evaluation.model.entity.SubjectEntity;
 import cn.fek12.evaluation.model.entity.TextbookEntity;
+import cn.fek12.evaluation.model.entity.TopicCountEntity;
 import cn.fek12.evaluation.model.entity.TreeDataEntity;
 import io.reactivex.Observable;
+import okhttp3.RequestBody;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
@@ -54,6 +58,16 @@ public interface ApiServer {
 
     @GET("assessment/paperTypeList")
     Observable<PaperTypeListResp>  getPaperTypeList();
+    /**自测记录*/
+    @GET("independent/records")
+    Observable<RecordsEntitiy>  queryRecordsList(@Query("userId") String userId);
+
+    /**请求题目数量*/
+    //@FormUrlEncoded
+    //@Headers({"Content-Type: application/json","Accept: application/json"})
+    @POST("independent/usableSubjectNum")
+    Observable<TopicCountEntity>  queryTopicCount(@Body RequestBody reqJson);
+
 
     @FormUrlEncoded
     @POST("assessment/indexPaper")

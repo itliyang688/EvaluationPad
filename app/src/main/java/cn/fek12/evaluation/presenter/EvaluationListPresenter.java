@@ -89,11 +89,7 @@ public class EvaluationListPresenter extends BasePresenter<IEvaluationList.View>
 
                     @Override
                     public void onSuccess(SubjectEntity entry) {
-                        if(entry.getState().equals("0")){
-                            infoView.loadSubjectSuc(entry);
-                        }else{
-                            infoView.loadDictionaryEmpty();
-                        }
+                        infoView.loadSubjectSuc(entry);
                     }
 
                     @Override
@@ -112,11 +108,7 @@ public class EvaluationListPresenter extends BasePresenter<IEvaluationList.View>
 
                     @Override
                     public void onSuccess(TextbookEntity entry) {
-                        if(entry.getState().equals("0")){
-                            infoView.loadTextBookSuc(entry);
-                        }else{
-                            infoView.loadDictionaryEmpty();
-                        }
+                        infoView.loadTextBookSuc(entry);
                     }
 
                     @Override
@@ -134,11 +126,7 @@ public class EvaluationListPresenter extends BasePresenter<IEvaluationList.View>
 
                     @Override
                     public void onSuccess(SemesterEntity entry) {
-                        if(entry.getState().equals("0")){
-                            infoView.loadSemesterSuc(entry);
-                        }else{
-                            infoView.loadDictionaryEmpty();
-                        }
+                        infoView.loadSemesterSuc(entry);
                     }
 
                     @Override
