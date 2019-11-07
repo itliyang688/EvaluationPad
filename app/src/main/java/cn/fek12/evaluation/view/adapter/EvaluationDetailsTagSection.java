@@ -29,6 +29,7 @@ public class EvaluationDetailsTagSection extends Section {
     private Context mContext;
     private String mCheckId;
     private OnSelectItmeListener mOnSelectItmeListener = null;
+    private boolean isUpdate = false;
 
     public interface OnSelectItmeListener {
         void onSelectItme(int pos);
@@ -49,6 +50,7 @@ public class EvaluationDetailsTagSection extends Section {
     public void updateList(List<TextbookChildEntity> list){
         mList = list;
         selectPosition = 0;
+        isUpdate = true;
     }
     @Override
     public int getContentItemsTotal() {
@@ -71,10 +73,14 @@ public class EvaluationDetailsTagSection extends Section {
             View viewItem = View.inflate(mContext, R.layout.evaluationv_tag_item,null);
             TextView textView = viewItem.findViewById(R.id.title);
             textView.setText(mList.get(i).getName());
-            if(String.valueOf(mList.get(i).getId()).equals(mCheckId)){
-                textView.setSelected(true);
+            if(isUpdate){
+                textView.setSelected(selectPosition >= 0 && selectPosition == i);
             }else{
-                textView.setSelected(false);
+                if(String.valueOf(mList.get(i).getId()).equals(mCheckId)){
+                    textView.setSelected(true);
+                }else{
+                    textView.setSelected(false);
+                }
             }
 
             int finalI = i;
@@ -82,9 +88,8 @@ public class EvaluationDetailsTagSection extends Section {
                 @Override
                 public void onClick(View view) {
                     if(mOnSelectItmeListener != null){
-                        String childId = String.valueOf(mList.get(finalI).getId());
-                        if (!childId.equals(mCheckId)) {
-                            mCheckId = childId;
+                        if (finalI != selectPosition) {
+                            selectPosition = finalI;
                             mOnSelectItmeListener.onSelectItme(finalI);
                         }
                     }

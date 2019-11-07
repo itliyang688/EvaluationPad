@@ -75,6 +75,7 @@
         app:layout_constraintTop_toTopOf="@id/go_list_btn" />
 
     <TextView
+        android:id="@+id/tvEvaluationCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_10"

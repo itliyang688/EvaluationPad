@@ -43,7 +43,7 @@ public class PresentationPresenter extends BasePresenter<IPresentation.View> imp
 
                     @Override
                     public void onError(String msg) {
-                        infoView.loadAWeekFail(msg);
+                        infoView.loadEarlierEmpty();
                     }
                 });
     }
@@ -65,7 +65,7 @@ public class PresentationPresenter extends BasePresenter<IPresentation.View> imp
 
                     @Override
                     public void onError(String msg) {
-                        infoView.loadEarlierFail(msg);
+                        infoView.loadEarlierEmpty();
                     }
                 });
     }

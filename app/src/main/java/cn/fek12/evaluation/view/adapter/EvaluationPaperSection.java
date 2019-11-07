@@ -26,14 +26,20 @@ public class EvaluationPaperSection extends Section {
     private int mTypePage;
     private int TYPE_HOT = 1;
     private int TYPE_UPDATE = 2;
+    private OnSelectItmeListener mOnSelectItmeListener = null;
+    public interface OnSelectItmeListener {
+        void onSelectItme(int pos);
+        void onMore();
+    }
     List<AssessmentIndexPaperResp.DataBean.HotAndUpdateBean> mList = new ArrayList<>();
-    public EvaluationPaperSection(List<AssessmentIndexPaperResp.DataBean.HotAndUpdateBean> list,int typePage) {
+    public EvaluationPaperSection(List<AssessmentIndexPaperResp.DataBean.HotAndUpdateBean> list,int typePage,OnSelectItmeListener onSelectItmeListener) {
         super(SectionParameters.builder()
                 .itemResourceId(R.layout.evaluation_list_item_paper)
                 .headerResourceId(R.layout.evaluation_list_header_paper)
                 .build());
         mList = list;
         mTypePage = typePage;
+        mOnSelectItmeListener = onSelectItmeListener;
     }
 
     @Override
@@ -102,6 +108,15 @@ public class EvaluationPaperSection extends Section {
                     0
             );
         }
+
+        holderHolder.tvMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(mOnSelectItmeListener != null){
+                    mOnSelectItmeListener.onMore();
+                }
+            }
+        });
     }
 
 
@@ -124,9 +139,11 @@ public class EvaluationPaperSection extends Section {
 
     class MyHeaderViewHolder extends RecyclerView.ViewHolder {
         private TextView header;
+        private TextView tvMore;
         public MyHeaderViewHolder(View itemView) {
             super(itemView);
             header = itemView.findViewById(R.id.header);
+            tvMore = itemView.findViewById(R.id.tvMore);
         }
     }
 }

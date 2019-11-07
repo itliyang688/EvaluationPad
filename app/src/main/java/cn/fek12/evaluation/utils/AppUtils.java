@@ -4,6 +4,7 @@ import android.os.Build;
 import android.widget.PopupWindow;
 
 import java.lang.reflect.Field;
+import java.util.Calendar;
 
 /**
  * @ProjectName: EvaluationPad
@@ -26,5 +27,14 @@ public class AppUtils {
                 e.printStackTrace();
             }
         }
+    }
+
+    /**
+     * 获取年
+     * @return
+     */
+    public static int getYear(){
+        Calendar cd = Calendar.getInstance();
+        return  cd.get(Calendar.YEAR);
     }
 }

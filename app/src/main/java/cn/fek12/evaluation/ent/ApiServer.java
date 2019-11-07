@@ -3,6 +3,7 @@ package cn.fek12.evaluation.ent;
 import cn.fek12.evaluation.model.entity.AWeekEntity;
 import cn.fek12.evaluation.model.entity.AssessmentIndexPaperResp;
 import cn.fek12.evaluation.model.entity.EarlierEntity;
+import cn.fek12.evaluation.model.entity.EvaluationListEntity;
 import cn.fek12.evaluation.model.entity.GradeDictionaryListEntity;
 import cn.fek12.evaluation.model.entity.HomeEvaluationDeta;
 import cn.fek12.evaluation.model.entity.PaperTypeListResp;
@@ -54,29 +55,34 @@ public interface ApiServer {
     Observable<SemesterEntity> querySemester(@Field("grade") String grade, @Field("subject") String subject, @Field("textbook") String textbook);
 
     @GET("assessment/gradeDictionaryList")
-    Observable<GradeDictionaryListEntity>  queryGradeDictionaryList();
+    Observable<GradeDictionaryListEntity> queryGradeDictionaryList();
 
     @GET("assessment/paperTypeList")
-    Observable<PaperTypeListResp>  getPaperTypeList();
-    /**自测记录*/
-    @GET("independent/records")
-    Observable<RecordsEntitiy>  queryRecordsList(@Query("userId") String userId);
+    Observable<PaperTypeListResp> getPaperTypeList();
 
-    /**请求题目数量*/
+    /**
+     * 自测记录
+     */
+    @GET("independent/records")
+    Observable<RecordsEntitiy> queryRecordsList(@Query("userId") String userId);
+
+    /**
+     * 请求题目数量
+     */
     //@FormUrlEncoded
     //@Headers({"Content-Type: application/json","Accept: application/json"})
     @POST("independent/usableSubjectNum")
-    Observable<TopicCountEntity>  queryTopicCount(@Body RequestBody reqJson);
+    Observable<TopicCountEntity> queryTopicCount(@Body RequestBody reqJson);
 
 
     @FormUrlEncoded
     @POST("assessment/indexPaper")
     Observable<AssessmentIndexPaperResp> getIndexPaper(@Field("grade") String grade,
-           @Field("semester") String semester,
-           @Field("subject") String subject,
-           @Field("textbook") String textbook,
-           @Field("ptype") String ptype,
-           @Field("userId") String userId);
+                                                       @Field("semester") String semester,
+                                                       @Field("subject") String subject,
+                                                       @Field("textbook") String textbook,
+                                                       @Field("ptype") String ptype,
+                                                       @Field("userId") String userId);
 
     @FormUrlEncoded
     @POST("paperReport/weekIndividualReport")
@@ -106,4 +112,18 @@ public interface ApiServer {
                                              @Query("subject") String subject,
                                              @Query("textbook") String textbook,
                                              @Query("userId") String userId);
+
+    @FormUrlEncoded
+    @POST("assessment/paperList")
+    Observable<EvaluationListEntity> queryPaperList(@Field("grade") String grade,
+                                                    @Field("semester") String semester,
+                                                    @Field("subject") String subject,
+                                                    @Field("textbook") String textbook,
+                                                    @Field("userId") String userId,
+                                                    @Field("ptype") String ptype,
+                                                    @Field("userType") String userType,
+                                                    @Field("knowledge") String knowledge,
+                                                    @Field("paperListType") String paperListType,
+                                                    @Field("currentPage") String currentPage);
 }
+

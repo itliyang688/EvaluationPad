@@ -1,16 +1,25 @@
 package cn.fek12.evaluation.view.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fek12.basic.base.BaseFragment;
+import com.google.gson.Gson;
+
+import java.util.List;
 
 import butterknife.BindView;
 import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.model.entity.AssessmentIndexPaperResp;
+import cn.fek12.evaluation.model.entity.ChildSectionEntity;
+import cn.fek12.evaluation.model.entity.ContainListEntity;
+import cn.fek12.evaluation.model.entity.SubjectEntity;
+import cn.fek12.evaluation.model.entity.TextbookChildEntity;
 import cn.fek12.evaluation.presenter.EvaluationIndexPagerPresenter;
+import cn.fek12.evaluation.view.activity.EvaluationListActivity;
 import cn.fek12.evaluation.view.adapter.EvaluationPaperSection;
 import cn.fek12.evaluation.view.widget.MultipleStatusView;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
@@ -28,6 +37,23 @@ public class EvaluationIndexPaperFragment extends BaseFragment<EvaluationIndexPa
     @BindView(R.id.load_view)
     MultipleStatusView loadView;
     private SectionedRecyclerViewAdapter adapter;
+    private String gradeId;
+    private String subjectId;
+    private String semesterId = "";
+    private String textbookId;
+    private String ptype;
+    private String paperType;
+    private List<ChildSectionEntity> gradeList;
+    private List<SubjectEntity.DataBean> subjectList;
+    private List<TextbookChildEntity> textBookList;
+    private List<ChildSectionEntity> semesterList;
+
+    public void setLists(List<ChildSectionEntity> grades,List<SubjectEntity.DataBean> subjects,List<TextbookChildEntity> textBooks,List<ChildSectionEntity> semesters){
+        gradeList = grades;
+        subjectList = subjects;
+        textBookList = textBooks;
+        semesterList = semesters;
+    }
 
     @Override
     protected int getLayoutResource() {
@@ -41,8 +67,13 @@ public class EvaluationIndexPaperFragment extends BaseFragment<EvaluationIndexPa
         contentView.setAdapter(adapter);
     }
 
-    public void queryIndexPagerData(String grade, String semester, String subject, String textbook, String ptype, String userId) {
+    public void queryIndexPagerData(String grade, String semester, String subject, String textbook, String ptypeId, String userId) {
         loadView.showLoading();
+        this.gradeId = grade;
+        this.semesterId = semester;
+        this.subjectId = subject;
+        this.textbookId = textbook;
+        this.ptype = ptypeId;
         mPresenter.getIndexPaper(getContext(),grade,semester,subject,textbook,ptype,userId);
     }
 
@@ -68,8 +99,28 @@ public class EvaluationIndexPaperFragment extends BaseFragment<EvaluationIndexPa
         } else {
             loadView.showContent();
             adapter.removeAllSections();
-            adapter.addSection(new EvaluationPaperSection(entry.getData().getHot(), 1));
-            adapter.addSection(new EvaluationPaperSection(entry.getData().getUpdate(), 2));
+            adapter.addSection(new EvaluationPaperSection(entry.getData().getHot(), 1, new EvaluationPaperSection.OnSelectItmeListener() {
+                @Override
+                public void onSelectItme(int pos) {
+
+                }
+
+                @Override
+                public void onMore() {/**热门测评查看更多*/
+                    startActivityIntent("热门测评","1");
+                }
+            }));
+            adapter.addSection(new EvaluationPaperSection(entry.getData().getUpdate(), 2, new EvaluationPaperSection.OnSelectItmeListener() {
+                @Override
+                public void onSelectItme(int pos) {
+
+                }
+
+                @Override
+                public void onMore() {/**最近更新查看更多*/
+                    startActivityIntent("最近更新","2");
+                }
+            }));
             adapter.notifyDataSetChanged();
         }
     }
@@ -82,5 +133,24 @@ public class EvaluationIndexPaperFragment extends BaseFragment<EvaluationIndexPa
     @Override
     public void loginFail(String msg) {
         loadView.showEmpty();
+    }
+
+    private void startActivityIntent(String titleName,String paperListType) {
+        ContainListEntity containListEntity = new ContainListEntity();
+        containListEntity.setGradeList(gradeList);
+        containListEntity.setSemesterList(semesterList);
+        containListEntity.setSubjectList(subjectList);
+        containListEntity.setTextBookList(textBookList);
+        Intent intent = new Intent(getContext(), EvaluationListActivity.class);
+        intent.putExtra("gradeId", gradeId);
+        intent.putExtra("semesterId", semesterId);
+        intent.putExtra("subjectId", subjectId);
+        intent.putExtra("textbookId", textbookId);
+        intent.putExtra("titleName", titleName);
+        intent.putExtra("ptype", ptype);
+        intent.putExtra("paperListType", paperListType);
+        intent.putExtra("userType", "1");//类型 测评1 自主测2
+        intent.putExtra("containListEntityJson", new Gson().toJson(containListEntity));
+        getActivity().startActivity(intent);
     }
 }

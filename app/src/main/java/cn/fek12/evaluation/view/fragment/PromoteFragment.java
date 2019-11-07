@@ -56,6 +56,8 @@ public class PromoteFragment extends BaseFragment<PresentationPresenter> impleme
     private String userType = null;
     private int currentPage = 1;
     private String pageSize = "18";
+    private List<AWeekEntity.DataBean.WeekAndDayBean> daylist;
+    private List<AWeekEntity.DataBean.WeekAndDayBean> aweeklist;
 
     @Override
     protected int getLayoutResource() {
@@ -166,13 +168,13 @@ public class PromoteFragment extends BaseFragment<PresentationPresenter> impleme
 
     @Override
     public void loadAWeekSuc(AWeekEntity entry) {
-        List<AWeekEntity.DataBean.WeekAndDayBean> Daylist = entry.getData().getDay();
-        if (Daylist != null && Daylist.size() > 0) {
+        daylist = entry.getData().getDay();
+        if (daylist != null && daylist.size() > 0) {
             PresentationAweekItemSection itemSection = (PresentationAweekItemSection) leftAdapter.getSection("threeDays");
-            itemSection.updateList(Daylist);
+            itemSection.updateList(daylist);
             leftAdapter.getAdapterForSection("threeDays").notifyAllItemsChanged("payloads");
         }
-        List<AWeekEntity.DataBean.WeekAndDayBean> aweeklist = entry.getData().getWeek();
+        aweeklist = entry.getData().getWeek();
         if (aweeklist != null && aweeklist.size() > 0) {
             PresentationAweekItemSection itemSection = (PresentationAweekItemSection) leftAdapter.getSection("aweek");
             itemSection.updateList(aweeklist);
@@ -184,17 +186,21 @@ public class PromoteFragment extends BaseFragment<PresentationPresenter> impleme
 
     @Override
     public void loadEarlierSuc(EarlierEntity entry) {
-        multipleStatusView.showContent();
         EarlierEntity.DataBean.PageInfoBean pageInfoBean = entry.getData().getPage_info();
         List<EarlierEntity.DataBean.PapersBean> list = entry.getData().getPapers();
-        if (pageInfoBean.getTotalPage() > currentPage) {
+        if(pageInfoBean.getTotalCount() == 0){
+            isEmpty();
+            return;
+        }
+        multipleStatusView.showContent();
+        if(pageInfoBean.getTotalPage() > currentPage){
             refreshLayout.setEnableLoadmore(true);
-        } else {
+        }else{
             refreshLayout.setEnableLoadmore(false);
         }
-        if (list != null && list.size() > 0) {
+        if(list != null && list.size() > 0){
             PresentationEarlierItemSection itemSection = (PresentationEarlierItemSection) leftAdapter.getSection("earlier");
-            itemSection.updateAndAddList(list, isLoadMore);
+            itemSection.updateAndAddList(list,isLoadMore);
             leftAdapter.getAdapterForSection("earlier").notifyAllItemsChanged("payloads");
         }
 
@@ -210,13 +216,13 @@ public class PromoteFragment extends BaseFragment<PresentationPresenter> impleme
 
     @Override
     public void loadEarlierFail(String msg) {
-        multipleStatusView.showEmpty();
-        refreshLayout.finishLoadmore();
-        refreshLayout.finishRefreshing();
+        isEmpty();
     }
 
     @Override
     public void loadAWeekEmpty() {
+        daylist.clear();
+        aweeklist.clear();
         /**一周或三天报告请求失败还要去请求较早的报告*/
         mPresenter.queryEarlier(getContext(), grade, semester, subject, textbook,  MyApplication.getMyApplication().getUserId(), userType, String.valueOf(currentPage), pageSize);
     }
@@ -228,7 +234,20 @@ public class PromoteFragment extends BaseFragment<PresentationPresenter> impleme
 
     @Override
     public void loadEarlierEmpty() {
-        multipleStatusView.showEmpty();
+        isEmpty();
+    }
+
+    private void isEmpty(){
+        boolean isEmpty = false;
+        if(daylist != null && daylist.size() > 0){
+            isEmpty = true;
+        }
+        if(aweeklist != null && aweeklist.size() > 0){
+            isEmpty = true;
+        }
+        if(!isEmpty){
+            multipleStatusView.showEmpty();
+        }
         refreshLayout.finishLoadmore();
         refreshLayout.finishRefreshing();
     }

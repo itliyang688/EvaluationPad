@@ -44,6 +44,7 @@ public class TreeViewDialogActivity extends BaseActivity<TreeViewPresenter> impl
     private String subjectId;
     private String semesterId;
     private String textbookId;
+    private String ptype;
     private TreeDataEntity mEntry;
     private String containListEntityJson;
 
@@ -61,6 +62,7 @@ public class TreeViewDialogActivity extends BaseActivity<TreeViewPresenter> impl
         subjectId = intent.getStringExtra("subjectId");
         semesterId = intent.getStringExtra("semesterId");
         textbookId = intent.getStringExtra("textbookId");
+        ptype = intent.getStringExtra("ptype");
         containListEntityJson = intent.getStringExtra("containListEntityJson");
     }
 
@@ -155,6 +157,9 @@ public class TreeViewDialogActivity extends BaseActivity<TreeViewPresenter> impl
                 intent.putExtra("subjectId", subjectId);
                 intent.putExtra("textbookId", textbookId);
                 intent.putExtra("titleName",titleName);
+                intent.putExtra("ptype",ptype);
+                intent.putExtra("paperType", paperType);
+                intent.putExtra("userType", "1");//类型 测评1 自主测2
                 intent.putExtra("containListEntityJson",containListEntityJson);
                 intent.putExtra("mTreeDataJson",new Gson().toJson(mEntry));
                 TreeViewDialogActivity.this.startActivity(intent);

@@ -25,6 +25,8 @@ import io.github.luizgrp.sectionedrecyclerviewadapter.utils.EmptyViewHolder;
 public class EvaluationDetailsChildSection extends Section {
     private OnSelectItmeListener mOnSelectItmeListener = null;
     private String mCheckId;
+    private boolean isUpdate = false;
+    private int selectPosition = 0;
     public interface OnSelectItmeListener {
         void onSelectItme(int pos);
     }
@@ -41,6 +43,8 @@ public class EvaluationDetailsChildSection extends Section {
     }
     public void updateList(List<ChildSectionEntity> list){
         mList = list;
+        isUpdate = true;
+        selectPosition = 0;
     }
     @Override
     public int getContentItemsTotal() {
@@ -56,18 +60,22 @@ public class EvaluationDetailsChildSection extends Section {
     public void onBindItemViewHolder(RecyclerView.ViewHolder holder, int position) {
         MyItemViewHolder itemHolder = (MyItemViewHolder) holder;
         itemHolder.tvItem.setText(mList.get(position).getName());
-        if(String.valueOf(mList.get(position).getId()).equals(mCheckId)){
-            itemHolder.tvItem.setSelected(true);
+        if(isUpdate){
+            itemHolder.tvItem.setSelected(selectPosition >= 0 && selectPosition == position);
         }else{
-            itemHolder.tvItem.setSelected(false);
+            if(String.valueOf(mList.get(position).getId()).equals(mCheckId)){
+                selectPosition = position;
+                itemHolder.tvItem.setSelected(true);
+            }else{
+                itemHolder.tvItem.setSelected(false);
+            }
         }
         itemHolder.tvItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(mOnSelectItmeListener != null){
-                    String childId = String.valueOf(mList.get(position).getId());
-                    if (!childId.equals(mCheckId)) {
-                        mCheckId =childId;
+                    if (position != selectPosition) {
+                        selectPosition = position;
                         mOnSelectItmeListener.onSelectItme(position);
                     }
                 }

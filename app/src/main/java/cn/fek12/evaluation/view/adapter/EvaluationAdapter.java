@@ -12,12 +12,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.fek12.evaluation.R;
+import cn.fek12.evaluation.model.entity.EvaluationListEntity;
 
 
 public class EvaluationAdapter extends RecyclerView.Adapter<EvaluationAdapter.EvaluationHolder> {
     private OnItemClickListener mOnItemClickListener = null;
 
-    private List mList = new ArrayList();
+    private List<EvaluationListEntity.DataBean.PapersBean> mList = new ArrayList();
 
     public interface OnItemClickListener {
         void onItemClick(int position);
@@ -34,15 +35,18 @@ public class EvaluationAdapter extends RecyclerView.Adapter<EvaluationAdapter.Ev
         this.context = context;
     }
 
-    public void notifyChanged(List list) {
-        this.mList.clear();
-        this.mList = list;
+    public void notifyChanged(List<EvaluationListEntity.DataBean.PapersBean> list,boolean isAdd) {
+        if(isAdd){
+            mList.addAll(list);
+        }else{
+            mList = list;
+        }
         notifyDataSetChanged();
     }
 
     @Override
     public int getItemCount() {
-        return 18;
+        return mList.size();
     }
 
     @Override
@@ -79,8 +83,8 @@ public class EvaluationAdapter extends RecyclerView.Adapter<EvaluationAdapter.Ev
         }
 
         public void setData(final int position) {
-            title.setText("数学  |  小学数学人教版四年级上亿以内数的计数单位、数级、数位随堂测评");
-            time.setText("2019-09-17");
+            title.setText(mList.get(position).getName());
+            time.setText(mList.get(position).getCreateDate());
         }
     }
 }

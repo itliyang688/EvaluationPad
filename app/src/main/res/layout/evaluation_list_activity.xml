@@ -73,37 +73,7 @@
         android:layout_weight="1">
 
         <RelativeLayout
-            android:layout_width="@dimen/dp_273"
-            android:layout_height="match_parent"
-            android:background="@mipmap/tree_details_bg">
-            <LinearLayout
-                android:id="@+id/layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:paddingTop="@dimen/dp_42"
-                android:layout_marginBottom="@dimen/dp_35"
-                android:orientation="vertical"
-                android:paddingLeft="@dimen/dp_15"
-                android:paddingRight="@dimen/dp_15">
-
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/tvText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_centerInParent="true"
-                android:layout_marginTop="@dimen/dp_13"
-                android:text="选择知识点"
-                android:textColor="@color/white"
-                android:textSize="@dimen/sp_12" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="@dimen/dp_681"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:background="@mipmap/evaluation_list_bg">

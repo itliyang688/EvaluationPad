@@ -22,10 +22,10 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.application.MyApplication;
-import cn.fek12.evaluation.base.BaseEntry;
 import cn.fek12.evaluation.impl.IEvaluation;
 import cn.fek12.evaluation.model.entity.HomeEvaluationDeta;
 import cn.fek12.evaluation.presenter.EvaluationPresenter;
+import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 
 /**
  * @ProjectName: EvaluationPad
@@ -49,13 +49,19 @@ public class EvaluationFragment extends BaseFragment<EvaluationPresenter> implem
     TextView goListTitle;
     @BindView(R.id.contentView)
     RecyclerView contentView;
+    @BindView(R.id.tvEvaluationCount)
+    TextView tvEvaluationCount;
     private OnExaminationClickListener mOnExaminationClickListener = null;
+    private SectionedRecyclerViewAdapter adapter;
+
     public interface OnExaminationClickListener {
         void onExaminationClick();
     }
+
     public void setOnClickListener(OnExaminationClickListener onExaminationClickListener) {
         this.mOnExaminationClickListener = onExaminationClickListener;
     }
+
     @Override
     protected int getLayoutResource() {
         return R.layout.evaluation_fragment;
@@ -69,17 +75,20 @@ public class EvaluationFragment extends BaseFragment<EvaluationPresenter> implem
                 ToastUtils.popUpToast("hahha");
             }
         });
+        adapter = new SectionedRecyclerViewAdapter();
+        contentView.setAdapter(adapter);
     }
 
     @OnClick(R.id.go_list_btn)
     public void onViewClicked() {
-        if(mOnExaminationClickListener != null){
+        if (mOnExaminationClickListener != null) {
             mOnExaminationClickListener.onExaminationClick();
         }
     }
+
     @Override
     protected void onLoadDataRemote() {
-        mPresenter.initEvaluation(getContext(),  MyApplication.getMyApplication().getUserId());
+        mPresenter.initEvaluation(getContext(), MyApplication.getMyApplication().getUserId());
     }
 
     @Override
@@ -110,6 +119,14 @@ public class EvaluationFragment extends BaseFragment<EvaluationPresenter> implem
     @Override
     public void loginSuc(HomeEvaluationDeta entry) {
         initBanner(entry.getData().getBanner());
+        HomeEvaluationDeta.DataBean.MyPaperBean paperBean = entry.getData().getMyPaper();
+        if (paperBean != null) {
+            String count = String.valueOf(paperBean.getCount());
+            String data = paperBean.getDate();
+            tvEvaluationCount.setText("已测评次数  "+count+"  次"+"\n"+"最近测试时间"+data);
+        }
+
+
     }
 
     @Override

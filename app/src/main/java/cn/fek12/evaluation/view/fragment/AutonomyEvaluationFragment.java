@@ -25,7 +25,7 @@ import java.util.Map;
 
 import butterknife.BindView;
 import cn.fek12.evaluation.R;
-import cn.fek12.evaluation.model.entity.DictionaryListResp;
+import cn.fek12.evaluation.impl.IAutonomyEvaluation;
 import cn.fek12.evaluation.model.entity.QueryTopicEntity;
 import cn.fek12.evaluation.model.entity.RecordsEntitiy;
 import cn.fek12.evaluation.model.entity.TopicCountEntity;
@@ -33,6 +33,7 @@ import cn.fek12.evaluation.model.entity.TreeDataEntity;
 import cn.fek12.evaluation.model.holder.AutoTreeChildItemHolder;
 import cn.fek12.evaluation.model.holder.TreeParentItemHolder;
 import cn.fek12.evaluation.presenter.AutonomyEvaluationPresenter;
+import cn.fek12.evaluation.utils.AppUtils;
 import cn.fek12.evaluation.utils.InputFilterMinMax;
 import cn.fek12.evaluation.view.adapter.RecordsListAdapter;
 
@@ -108,6 +109,8 @@ public class AutonomyEvaluationFragment extends BaseFragment<AutonomyEvaluationP
     TextView tvGenerate;
     @BindView(R.id.marqueeView)
     XMarqueeView marqueeView;
+    @BindView(R.id.llContainMarquee)
+    LinearLayout llContainMarquee;
     private String gradeId;
     private String subjectId;
     private String semesterId;
@@ -122,7 +125,7 @@ public class AutonomyEvaluationFragment extends BaseFragment<AutonomyEvaluationP
     private String single = "0";
     private String multiple = "0";
     private String judge = "0";
-    private int topicType = 0;
+    private String topicType = "0";
 
     @Override
     protected int getLayoutResource() {
@@ -131,6 +134,8 @@ public class AutonomyEvaluationFragment extends BaseFragment<AutonomyEvaluationP
 
     @Override
     protected void onInitView(Bundle savedInstanceState) {
+        tvThisYear.setText(String.valueOf(AppUtils.getYear()));
+        tvLastYear.setText(String.valueOf(AppUtils.getYear() - 1));
         tvEliminate.setOnClickListener(onClickListener);
         tvTopicType1.setOnClickListener(onClickListener);
         tvTopicType2.setOnClickListener(onClickListener);
@@ -140,6 +145,7 @@ public class AutonomyEvaluationFragment extends BaseFragment<AutonomyEvaluationP
         tvSingle.setOnClickListener(onClickListener);
         tvMultiple.setOnClickListener(onClickListener);
         tvJudge.setOnClickListener(onClickListener);
+        llContainMarquee.setOnClickListener(onClickListener);
 
         etSingle1.setFilters(new InputFilter[]{new InputFilterMinMax("0", "200")});
 
@@ -165,89 +171,12 @@ public class AutonomyEvaluationFragment extends BaseFragment<AutonomyEvaluationP
 
                 tagGroup.addTags(new ArrayList<Tag>());
                 tagGroup.addTags(tags);
+
+                queryTopic();
             }
         });
     }
 
-    private View.OnClickListener onClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            switch (view.getId()) {
-                case R.id.tvJudge://判断题
-                    if (judge.equals("0")) {
-                        judge = tvJudge.getText().toString();
-                        tvJudge.setSelected(true);
-                    } else {
-                        judge = "0";
-                        tvJudge.setSelected(false);
-                    }
-                    break;
-                case R.id.tvMultiple://多选题
-                    if (multiple.equals("0")) {
-                        multiple = tvMultiple.getText().toString();
-                        tvMultiple.setSelected(true);
-                    } else {
-                        multiple = "0";
-                        tvMultiple.setSelected(false);
-                    }
-                    break;
-                case R.id.tvSingle://单选题
-                    if (single.equals("0")) {
-                        single = tvSingle.getText().toString();
-                        tvSingle.setSelected(true);
-                    } else {
-                        single = "0";
-                        tvSingle.setSelected(false);
-                    }
-                    break;
-                case R.id.tvThisYear://今年
-                    if (thisYear.equals("0")) {
-                        thisYear = tvThisYear.getText().toString();
-                        tvThisYear.setSelected(true);
-                    } else {
-                        thisYear = "0";
-                        tvThisYear.setSelected(false);
-                    }
-                    break;
-                case R.id.tvLastYear://上一年
-                    if (lastYear.equals("0")) {
-                        lastYear = tvLastYear.getText().toString();
-                        tvLastYear.setSelected(true);
-                    } else {
-                        lastYear = "0";
-                        tvLastYear.setSelected(false);
-                    }
-                    break;
-                case R.id.tvEarlier://更早
-                    if (earlierYear.equals("0")) {
-                        earlierYear = "更早";
-                        tvEarlier.setSelected(true);
-                    } else {
-                        earlierYear = "0";
-                        tvEarlier.setSelected(false);
-                    }
-                    break;
-                case R.id.tvTopicType1://关联出题
-                    topicType = 1;
-                    tvTopicType1.setSelected(true);
-                    tvTopicType2.setSelected(false);
-                    break;
-                case R.id.tvTopicType2://精准出题
-                    topicType = 2;
-                    tvTopicType1.setSelected(false);
-                    tvTopicType2.setSelected(true);
-                    break;
-                case R.id.tvEliminate:
-                    tags.clear();
-                    tagGroup.addTags(tags);
-                    for (Map.Entry<String, TreeNode> entry : treeNodeMap.entrySet()) {
-                        isFocusTreeNode(entry.getValue(), false);
-                    }
-                    treeNodeMap.clear();
-                    break;
-            }
-        }
-    };
 
     public void queryTreeData(String grade, String semester, String subject, String textbook, String type, String userId) {
         gradeId = grade;
@@ -256,14 +185,44 @@ public class AutonomyEvaluationFragment extends BaseFragment<AutonomyEvaluationP
         textbookId = textbook;
         typePage = type;
         mPresenter.initTreeData(getContext(), gradeId, semesterId, subjectId, textbookId, userId, type);
-        mPresenter.queryRecordsList(getContext(),userId);
+        mPresenter.queryRecordsList(getContext(), userId);
+        queryTopic();
+    }
+
+    private void queryTopic() {
+        List<String> knowledges = new ArrayList<>();
+        List<String> years = new ArrayList<>();
         QueryTopicEntity topicEntity = new QueryTopicEntity();
+        if (tags.size() > 0) {
+            for (Tag tag : tags) {
+                knowledges.add(tag.getId());
+            }
+            topicEntity.setKnowledges(knowledges);
+        }
+
+        if (!thisYear.equals("0")) {
+            years.add(thisYear);
+        }
+
+        if (!lastYear.equals("0")) {
+            years.add(lastYear);
+        }
+
+        if (!earlierYear.equals("0")) {
+            topicEntity.setEarlyYear(tvLastYear.getText().toString());
+            years.add(tvLastYear.getText().toString());
+        }
+
+        if (years.size() > 0) {
+            topicEntity.setYears(years);
+        }
+        topicEntity.setWay(topicType);
         topicEntity.setGrade(gradeId);
         topicEntity.setSemester(semesterId);
         topicEntity.setSubject(subjectId);
         topicEntity.setTextbook(textbookId);
         String json = new Gson().toJson(topicEntity);
-        mPresenter.queryTopicCount(getContext(),json);
+        mPresenter.queryTopicCount(getContext(), json);
     }
 
     @Override
@@ -279,40 +238,40 @@ public class AutonomyEvaluationFragment extends BaseFragment<AutonomyEvaluationP
     @Override
     public void loadTopicCountSuc(TopicCountEntity entity) {
         TopicCountEntity.DataBean.TopicCountBean singleBean = entity.getData().getSingle();
-        if(singleBean != null){
+        if (singleBean != null) {
             int common = singleBean.getCommon();
             int difficult = singleBean.getDifficult();
             int easy = singleBean.getEasy();
-            tvCountSingle3.setText(difficult+"道题可用");
-            tvCountSingle2.setText(common+"道题可用");
-            tvCountSingle1.setText(easy+"道题可用");
+            tvCountSingle3.setText(difficult > 999 ? "999+道题可用" : difficult + "道题可用");
+            tvCountSingle2.setText(common > 999 ? "999+道题可用" : common + "道题可用");
+            tvCountSingle1.setText(easy > 999 ? "999+道题可用" : easy + "道题可用");
         }
         TopicCountEntity.DataBean.TopicCountBean multipleBean = entity.getData().getMultiple();
-        if(multipleBean != null){
+        if (multipleBean != null) {
             int common = multipleBean.getCommon();
             int difficult = multipleBean.getDifficult();
             int easy = multipleBean.getEasy();
-            tvCountMultiple3.setText(difficult+"道题可用");
-            tvCountMultiple2.setText(common+"道题可用");
-            tvCountMultiple1.setText(easy+"道题可用");
+            tvCountMultiple3.setText(difficult > 999 ? "999+道题可用" : difficult + "道题可用");
+            tvCountMultiple2.setText(common > 999 ? "999+道题可用" : common + "道题可用");
+            tvCountMultiple1.setText(easy > 999 ? "999+道题可用" : easy + "道题可用");
         }
         TopicCountEntity.DataBean.TopicCountBean judgeBean = entity.getData().getJudge();
-        if(judgeBean != null){
+        if (judgeBean != null) {
             int common = judgeBean.getCommon();
             int difficult = judgeBean.getDifficult();
             int easy = judgeBean.getEasy();
-            tvCountJudge3.setText(difficult+"道题可用");
-            tvCountJudge2.setText(common+"道题可用");
-            tvCountJudge1.setText(easy+"道题可用");
+            tvCountJudge3.setText(difficult > 999 ? "999+道题可用" : difficult + "道题可用");
+            tvCountJudge2.setText(common > 999 ? "999+道题可用" : common + "道题可用");
+            tvCountJudge1.setText(easy > 999 ? "999+道题可用" : easy + "道题可用");
         }
     }
 
     @Override
     public void loadRecordsListSuc(RecordsEntitiy entity) {
         List<RecordsEntitiy.DataBean> list = entity.getData();
-        RecordsListAdapter marqueeFactory = new RecordsListAdapter(list,getContext());
+        RecordsListAdapter marqueeFactory = new RecordsListAdapter(list, getContext());
         marqueeView.setAdapter(marqueeFactory);
-        if(list != null && list.size() <= 5){
+        if (list != null && list.size() <= 5) {
             marqueeView.stopFlipping();
         }
     }
@@ -423,6 +382,8 @@ public class AutonomyEvaluationFragment extends BaseFragment<AutonomyEvaluationP
         tagGroup.addTags(new ArrayList<Tag>());
         tagGroup.addTags(tags);
         tagGroup.setLineMargin(6f);
+        /**添加一个tag请求一次数据*/
+        queryTopic();
     }
 
     private void isFocusTreeNode(TreeNode treeNode, boolean isFocus) {
@@ -451,6 +412,95 @@ public class AutonomyEvaluationFragment extends BaseFragment<AutonomyEvaluationP
         tagGroup.addTags(tags);
     }
 
+    private View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()) {
+                case R.id.llContainMarquee://点击自主测
+
+                    break;
+                case R.id.tvJudge://判断题
+                    if (judge.equals("0")) {
+                        judge = tvJudge.getText().toString();
+                        tvJudge.setSelected(true);
+                    } else {
+                        judge = "0";
+                        tvJudge.setSelected(false);
+                    }
+                    break;
+                case R.id.tvMultiple://多选题
+                    if (multiple.equals("0")) {
+                        multiple = tvMultiple.getText().toString();
+                        tvMultiple.setSelected(true);
+                    } else {
+                        multiple = "0";
+                        tvMultiple.setSelected(false);
+                    }
+                    break;
+                case R.id.tvSingle://单选题
+                    if (single.equals("0")) {
+                        single = tvSingle.getText().toString();
+                        tvSingle.setSelected(true);
+                    } else {
+                        single = "0";
+                        tvSingle.setSelected(false);
+                    }
+                    break;
+                case R.id.tvThisYear://今年
+                    if (thisYear.equals("0")) {
+                        thisYear = tvThisYear.getText().toString();
+                        tvThisYear.setSelected(true);
+                    } else {
+                        thisYear = "0";
+                        tvThisYear.setSelected(false);
+                    }
+                    queryTopic();
+                    break;
+                case R.id.tvLastYear://上一年
+                    if (lastYear.equals("0")) {
+                        lastYear = tvLastYear.getText().toString();
+                        tvLastYear.setSelected(true);
+                    } else {
+                        lastYear = "0";
+                        tvLastYear.setSelected(false);
+                    }
+                    queryTopic();
+                    break;
+                case R.id.tvEarlier://更早
+                    if (earlierYear.equals("0")) {
+                        earlierYear = "更早";
+                        tvEarlier.setSelected(true);
+                    } else {
+                        earlierYear = "0";
+                        tvEarlier.setSelected(false);
+                    }
+                    queryTopic();
+                    break;
+                case R.id.tvTopicType1://关联出题
+                    topicType = "1";
+                    tvTopicType1.setSelected(true);
+                    tvTopicType2.setSelected(false);
+                    queryTopic();
+                    break;
+                case R.id.tvTopicType2://精准出题
+                    topicType = "2";
+                    tvTopicType1.setSelected(false);
+                    tvTopicType2.setSelected(true);
+                    queryTopic();
+                    break;
+                case R.id.tvEliminate:
+                    tags.clear();
+                    tagGroup.addTags(tags);
+                    for (Map.Entry<String, TreeNode> entry : treeNodeMap.entrySet()) {
+                        isFocusTreeNode(entry.getValue(), false);
+                    }
+                    treeNodeMap.clear();
+                    queryTopic();
+                    break;
+            }
+        }
+    };
+
     @Override
     public void loadRecordsListEmpty() {
 
@@ -458,7 +508,17 @@ public class AutonomyEvaluationFragment extends BaseFragment<AutonomyEvaluationP
 
     @Override
     public void loadTopicCountEmpty() {
+        tvCountSingle3.setText("0道题可用");
+        tvCountSingle2.setText("0道题可用");
+        tvCountSingle1.setText("0道题可用");
 
+        tvCountMultiple3.setText("0道题可用");
+        tvCountMultiple2.setText("0道题可用");
+        tvCountMultiple1.setText("0道题可用");
+
+        tvCountJudge3.setText("0道题可用");
+        tvCountJudge2.setText("0道题可用");
+        tvCountJudge1.setText("0道题可用");
     }
 
     @Override
