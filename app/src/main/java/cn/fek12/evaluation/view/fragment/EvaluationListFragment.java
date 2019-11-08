@@ -436,7 +436,7 @@ public class EvaluationListFragment extends BaseFragment<EvaluationListPresenter
 
     @Override
     public void loadFail(String msg) {
-        loadView.showEmpty();
+        //loadView.showEmpty();
     }
 
     @Override

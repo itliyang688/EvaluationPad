@@ -77,4 +77,6 @@ dependencies {
     implementation project(path: ':tagLibrary')
     //implementation 'com.gongwen:marqueelibrary:1.1.3'
     implementation 'com.github.xiaohaibin:XMarqueeView:2.0.6'
+    //各式tab
+    implementation 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar'
 }

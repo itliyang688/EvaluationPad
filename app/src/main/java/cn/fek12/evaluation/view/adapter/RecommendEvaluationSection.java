@@ -1,11 +1,14 @@
 package cn.fek12.evaluation.view.adapter;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,15 +28,17 @@ import io.github.luizgrp.sectionedrecyclerviewadapter.SectionParameters;
  */
 public class RecommendEvaluationSection extends Section {
     private OnSelectItmeListener mOnSelectItmeListener = null;
+    private Context mContext;
     public interface OnSelectItmeListener {
         void onSelectItme(int pos);
     }
     List<HomeEvaluationDeta.DataBean.RecommendPaperBean> mList = new ArrayList<>();
-    public RecommendEvaluationSection(List<HomeEvaluationDeta.DataBean.RecommendPaperBean> list, OnSelectItmeListener onSelectItmeListener) {
+    public RecommendEvaluationSection(Context context,List<HomeEvaluationDeta.DataBean.RecommendPaperBean> list, OnSelectItmeListener onSelectItmeListener) {
         super(SectionParameters.builder()
-                .itemResourceId(R.layout.evaluation_list_item_paper)
+                .itemResourceId(R.layout.recommend_itme)
                 .headerResourceId(R.layout.recommend_evaluation_header)
                 .build());
+        mContext = context;
         mList = list;
         mOnSelectItmeListener = onSelectItmeListener;
     }
@@ -51,20 +56,19 @@ public class RecommendEvaluationSection extends Section {
     @Override
     public void onBindItemViewHolder(RecyclerView.ViewHolder holder, int position) {
         MyItemViewHolder itemHolder = (MyItemViewHolder) holder;
-        itemHolder.title.setText(mList.get(position).getName());
-        itemHolder.time.setText(mList.get(position).getCreateDate());
+        itemHolder.tvName.setText(mList.get(position).getName());
+        itemHolder.tvData.setText(mList.get(position).getCreateDate());
+        itemHolder.tvSubject.setText(mList.get(position).getCourseName());
+        Glide.with(mContext)
+                .load(mList.get(position).getImageUrl())
+                .placeholder(R.mipmap.presentation_empty_bg)
+                .error(R.mipmap.presentation_empty_bg)
+                .into(itemHolder.ivSubject);
     }
 
     @Override
     public void onBindHeaderViewHolder(RecyclerView.ViewHolder holder) {
-        MyHeaderViewHolder holderHolder = (MyHeaderViewHolder) holder;
-        holderHolder.header.setText("热门测评");
-        holderHolder.header.setCompoundDrawablesWithIntrinsicBounds(
-                R.drawable.ic_paper_header_hot,
-                0,
-                0,
-                0
-        );
+
     }
 
 
@@ -74,14 +78,16 @@ public class RecommendEvaluationSection extends Section {
     }
 
     class MyItemViewHolder extends RecyclerView.ViewHolder {
-        private TextView title;
-        private TextView time;
-        private ImageView image;
+        private TextView tvName;
+        private TextView tvSubject;
+        private TextView tvData;
+        private ImageView ivSubject;
         public MyItemViewHolder(View itemView) {
             super(itemView);
-            title = itemView.findViewById(R.id.title);
-            time = itemView.findViewById(R.id.time);
-            image = itemView.findViewById(R.id.image);
+            tvName = itemView.findViewById(R.id.tvName);
+            tvSubject = itemView.findViewById(R.id.tvSubject);
+            tvData = itemView.findViewById(R.id.tvData);
+            ivSubject = itemView.findViewById(R.id.ivSubject);
         }
     }
 

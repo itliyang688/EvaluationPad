@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tl="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
@@ -28,41 +29,49 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
-    <cn.fek12.evaluation.view.widget.MultipleStatusView
-        android:id="@+id/load_view"
+    <LinearLayout
         android:layout_width="@dimen/dp_681"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:background="@drawable/common_bg_list_two_thirds_of_screen"
         app:layout_constraintTop_toTopOf="@id/left_recycler"
+        android:paddingTop="@dimen/dp_25"
         android:orientation="vertical">
-        <LinearLayout
-            android:id="@+id/right_content"
-            android:layout_width="@dimen/dp_681"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+        <com.flyco.tablayout.SegmentTabLayout
+            android:id="@+id/mTabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_22"
+            android:layout_gravity="center_horizontal"
+            android:paddingLeft="@dimen/dp_25"
+            android:paddingRight="@dimen/dp_25"
+            tl:tl_indicator_color="@color/app_bg"
+            tl:tl_bar_stroke_color="@color/transparent"
+            app:tl_textSelectColor="@color/white"
+            app:tl_textUnselectColor="@color/color_333"
+            tl:tl_indicator_margin_left="50dp"
+            tl:tl_indicator_margin_right="50dp"
+            app:tl_textsize="@dimen/sp_12"
+            tl:tl_indicator_anim_enable="true"
+            tl:tl_indicator_bounce_enable="true"
+            tl:tl_tab_space_equal="true"/>
 
-            <net.lucode.hackware.magicindicator.MagicIndicator
-                android:id="@+id/magicIndicator"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_22"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginLeft="@dimen/dp_25"
-                android:layout_marginTop="@dimen/dp_25"
-                android:layout_marginRight="@dimen/dp_25" />
+        <cn.fek12.evaluation.view.widget.MultipleStatusView
+            android:id="@+id/load_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <cn.fek12.evaluation.view.widget.CustomViewPager
                 android:id="@+id/view_pager"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="@dimen/dp_10"
-                android:layout_marginTop="@dimen/dp_12"
+                android:layout_marginTop="@dimen/dp_8"
                 android:layout_marginRight="@dimen/dp_10"
-                android:layout_marginBottom="@dimen/dp_30" />
+                android:layout_marginBottom="@dimen/dp_34" />
 
-        </LinearLayout>
-    </cn.fek12.evaluation.view.widget.MultipleStatusView>
+        </cn.fek12.evaluation.view.widget.MultipleStatusView>
+    </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

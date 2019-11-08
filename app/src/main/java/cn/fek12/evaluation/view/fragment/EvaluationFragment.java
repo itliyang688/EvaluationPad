@@ -6,6 +6,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -25,6 +26,8 @@ import cn.fek12.evaluation.application.MyApplication;
 import cn.fek12.evaluation.impl.IEvaluation;
 import cn.fek12.evaluation.model.entity.HomeEvaluationDeta;
 import cn.fek12.evaluation.presenter.EvaluationPresenter;
+import cn.fek12.evaluation.view.adapter.RecommendEvaluationSection;
+import cn.fek12.evaluation.view.widget.MultipleStatusView;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 
 /**
@@ -51,6 +54,8 @@ public class EvaluationFragment extends BaseFragment<EvaluationPresenter> implem
     RecyclerView contentView;
     @BindView(R.id.tvEvaluationCount)
     TextView tvEvaluationCount;
+    @BindView(R.id.multipleStatusView)
+    MultipleStatusView multipleStatusView;
     private OnExaminationClickListener mOnExaminationClickListener = null;
     private SectionedRecyclerViewAdapter adapter;
 
@@ -75,7 +80,15 @@ public class EvaluationFragment extends BaseFragment<EvaluationPresenter> implem
                 ToastUtils.popUpToast("hahha");
             }
         });
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext()){
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        };
         adapter = new SectionedRecyclerViewAdapter();
+        contentView.setLayoutManager(layoutManager);
         contentView.setAdapter(adapter);
     }
 
@@ -88,6 +101,7 @@ public class EvaluationFragment extends BaseFragment<EvaluationPresenter> implem
 
     @Override
     protected void onLoadDataRemote() {
+        multipleStatusView.showLoading();
         mPresenter.initEvaluation(getContext(), MyApplication.getMyApplication().getUserId());
     }
 
@@ -123,9 +137,22 @@ public class EvaluationFragment extends BaseFragment<EvaluationPresenter> implem
         if (paperBean != null) {
             String count = String.valueOf(paperBean.getCount());
             String data = paperBean.getDate();
-            tvEvaluationCount.setText("已测评次数  "+count+"  次"+"\n"+"最近测试时间"+data);
+            tvEvaluationCount.setText("已测评次数  " + count + "  次" + "\n" + "最近测试时间" + data);
         }
+        List<HomeEvaluationDeta.DataBean.RecommendPaperBean> recommendList = entry.getData().getRecommendPaper();
+        if (recommendList != null && recommendList.size() > 0) {
+            multipleStatusView.showContent();
+            adapter.removeAllSections();
+            adapter.addSection(new RecommendEvaluationSection(getContext(),recommendList, new RecommendEvaluationSection.OnSelectItmeListener() {
+                @Override
+                public void onSelectItme(int pos) {
 
+                }
+            }));
+            adapter.notifyDataSetChanged();
+        }else{
+            multipleStatusView.showEmpty();
+        }
 
     }
 

@@ -123,10 +123,19 @@ public class HomeEvaluationDeta implements Serializable {
             private String createDate;
             private String name;
             private String description;
+            private String imageUrl;
             private int score;
             private int second;
             private String courseName;
             private int isanswered;
+
+            public String getImageUrl() {
+                return imageUrl;
+            }
+
+            public void setImageUrl(String imageUrl) {
+                this.imageUrl = imageUrl;
+            }
 
             public int getId() {
                 return id;

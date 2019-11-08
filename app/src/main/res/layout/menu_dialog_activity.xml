@@ -4,10 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
     <cn.fek12.evaluation.view.widget.MultipleStatusView
         android:id="@+id/load_view"
         android:layout_width="@dimen/dp_300"
+        android:visibility="visible"
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
         android:background="@mipmap/menu_bg"

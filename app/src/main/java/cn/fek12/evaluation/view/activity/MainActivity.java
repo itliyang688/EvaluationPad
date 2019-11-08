@@ -57,7 +57,7 @@ public class MainActivity extends BaseActivity implements BackFragmentInterface 
         mFragments.add(new RecordFragment());
         initCommonTabLayout();
         viewPage.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
-        viewPage.setOffscreenPageLimit(4);
+        viewPage.setOffscreenPageLimit(5);
     }
 
     @Override

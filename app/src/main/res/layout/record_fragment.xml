@@ -25,7 +25,40 @@
         tools:ignore="MissingConstraints"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar">
+        <RadioGroup
+            android:id="@+id/rg_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:layout_marginTop="@dimen/dp_42"
+            android:layout_gravity="center_horizontal"
+            android:orientation="vertical" >
 
+            <RadioButton
+                android:id="@+id/tabRecord"
+                android:layout_width="@dimen/dp_200"
+                android:layout_height="@dimen/dp_24"
+                android:layout_gravity="center_vertical"
+                android:button="@null"
+                android:background="@drawable/record_selector"/>
+            <RadioButton
+                android:id="@+id/tabFootprint"
+                android:layout_width="@dimen/dp_200"
+                android:layout_height="@dimen/dp_24"
+                android:layout_marginTop="@dimen/dp_10"
+                android:layout_gravity="center_vertical"
+                android:button="@null"
+                android:background="@drawable/footprint_selector"/>
+            <RadioButton
+                android:id="@+id/tabCollection"
+                android:layout_width="@dimen/dp_200"
+                android:layout_height="@dimen/dp_24"
+                android:layout_marginTop="@dimen/dp_10"
+                android:layout_gravity="center_vertical"
+                android:button="@null"
+                android:background="@drawable/collection_selector"/>
+
+        </RadioGroup>
     </LinearLayout>
 
     <cn.fek12.evaluation.view.widget.MultipleStatusView
@@ -34,34 +67,18 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:background="@drawable/common_bg_list_two_thirds_of_screen"
         app:layout_constraintTop_toTopOf="@id/llLeft"
         android:orientation="vertical">
-        <LinearLayout
-            android:id="@+id/right_content"
+        <cn.fek12.evaluation.view.widget.CustomViewPager
+            android:id="@+id/view_pager"
             android:layout_width="@dimen/dp_681"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_weight="1"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_12"
+            android:layout_marginRight="@dimen/dp_10"
+            android:layout_marginBottom="@dimen/dp_30" />
 
-            <net.lucode.hackware.magicindicator.MagicIndicator
-                android:id="@+id/magicIndicator"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_22"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginLeft="@dimen/dp_25"
-                android:layout_marginRight="@dimen/dp_25" />
-
-            <cn.fek12.evaluation.view.widget.CustomViewPager
-                android:id="@+id/view_pager"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:layout_marginLeft="@dimen/dp_10"
-                android:layout_marginTop="@dimen/dp_12"
-                android:layout_marginRight="@dimen/dp_10"
-                android:layout_marginBottom="@dimen/dp_30" />
-
-        </LinearLayout>
     </cn.fek12.evaluation.view.widget.MultipleStatusView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

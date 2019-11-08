@@ -1,7 +1,12 @@
 package cn.fek12.evaluation.view.activity;
 
-import com.fek12.basic.base.BaseActivity;
+import android.os.Bundle;
 
+import com.fek12.basic.base.BaseActivity;
+import com.flyco.tablayout.SegmentTabLayout;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import cn.fek12.evaluation.R;
 
 /**
@@ -12,6 +17,7 @@ import cn.fek12.evaluation.R;
  * @CreateDate: 2019/11/2 16:37
  */
 public class MenuDialogActivity extends BaseActivity {
+
     @Override
     public int setLayoutResource() {
         return R.layout.menu_dialog_activity;
@@ -19,11 +25,16 @@ public class MenuDialogActivity extends BaseActivity {
 
     @Override
     protected void onInitView() {
-
     }
 
     @Override
     protected void onLoadData() {
 
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ButterKnife.bind(this);
     }
 }
