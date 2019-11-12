@@ -33,12 +33,14 @@ public class PresentationEarlierItemSection extends Section {
     public interface OnSelectItmeListener {
         void onSelectItme(int pos);
     }
+    private int mTypePage;
     private String mHeader;
-    public PresentationEarlierItemSection(Context context,List<EarlierEntity.DataBean.PapersBean> list,String header, PresentationEarlierItemSection.OnSelectItmeListener onSelectItmeListener) {
+    public PresentationEarlierItemSection(int typePage,Context context,List<EarlierEntity.DataBean.PapersBean> list,String header, PresentationEarlierItemSection.OnSelectItmeListener onSelectItmeListener) {
         super(SectionParameters.builder()
                 .itemResourceId(R.layout.presentation_item)
                 .headerResourceId(R.layout.presentation_header)
                 .build());
+        mTypePage = typePage;
         mContext = context;
         mList = list;
         mHeader = header;
@@ -70,6 +72,12 @@ public class PresentationEarlierItemSection extends Section {
         MyItemViewHolder itemHolder = (MyItemViewHolder) holder;
         itemHolder.tvName.setText(mList.get(position).getName());
         itemHolder.tvSubject.setText(mList.get(position).getCourseName());
+        if(mTypePage == 2){//提升item
+            itemHolder.tvTime.setText(mList.get(position).getPaperResultDate().split(" ")[0]);
+        }else{
+            itemHolder.tvTime.setText(mList.get(position).getPaperResultDate().split("\\.")[0]);
+        }
+
         Glide.with(mContext)
                 .load(mList.get(position).getImageUrl())
                 //.load("http://2016.fek12.cn/resources/admin_cp/img/home/banner1.jpg")

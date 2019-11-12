@@ -125,20 +125,20 @@ public class PresentationFragment extends BaseFragment<PresentationPresenter> im
         recycler.setLayoutManager(manager);
         recycler.setAdapter(leftAdapter);
 
-        leftAdapter.addSection("threeDays", new PresentationAweekItemSection(null, getContext(), "近三天", new PresentationAweekItemSection.OnSelectItmeListener() {
+        leftAdapter.addSection("threeDays", new PresentationAweekItemSection(1,null, getContext(), "近三天", new PresentationAweekItemSection.OnSelectItmeListener() {
             @Override
             public void onSelectItme(int pos) {
 
             }
         }));
-        leftAdapter.addSection("aweek", new PresentationAweekItemSection(null, getContext(), "一周内", new PresentationAweekItemSection.OnSelectItmeListener() {
+        leftAdapter.addSection("aweek", new PresentationAweekItemSection(1,null, getContext(), "一周内", new PresentationAweekItemSection.OnSelectItmeListener() {
             @Override
             public void onSelectItme(int pos) {
 
             }
         }));
 
-        leftAdapter.addSection("earlier", new PresentationEarlierItemSection( getContext(),null, "较早", new PresentationEarlierItemSection.OnSelectItmeListener() {
+        leftAdapter.addSection("earlier", new PresentationEarlierItemSection( 1,getContext(),null, "较早", new PresentationEarlierItemSection.OnSelectItmeListener() {
             @Override
             public void onSelectItme(int pos) {
 
@@ -201,6 +201,8 @@ public class PresentationFragment extends BaseFragment<PresentationPresenter> im
             leftAdapter.getAdapterForSection("earlier").notifyAllItemsChanged("payloads");
         }
 
+        leftAdapter.notifyDataSetChanged();
+
         refreshLayout.finishLoadmore();
         refreshLayout.finishRefreshing();
     }
@@ -218,8 +220,12 @@ public class PresentationFragment extends BaseFragment<PresentationPresenter> im
 
     @Override
     public void loadAWeekEmpty() {
-        daylist.clear();
-        aweeklist.clear();
+        if(daylist != null){
+            daylist.clear();
+        }
+        if(aweeklist != null){
+            aweeklist.clear();
+        }
         /**一周或三天报告请求失败还要去请求较早的报告*/
         mPresenter.queryEarlier(getContext(),grade, semester, subject, textbook,  MyApplication.getMyApplication().getUserId(), userType,String.valueOf(currentPage),pageSize);
     }

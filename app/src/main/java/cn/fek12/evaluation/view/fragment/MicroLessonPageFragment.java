@@ -1,9 +1,9 @@
 package cn.fek12.evaluation.view.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fek12.basic.base.BaseFragment;
@@ -11,7 +11,8 @@ import com.fek12.basic.base.BasePresenter;
 
 import butterknife.BindView;
 import cn.fek12.evaluation.R;
-import cn.fek12.evaluation.view.adapter.EvaluationPaperSection;
+import cn.fek12.evaluation.view.activity.FullScreenVideoPlayActivity;
+import cn.fek12.evaluation.view.activity.SpecialVideoActivity;
 import cn.fek12.evaluation.view.adapter.VideoItemSection;
 import cn.fek12.evaluation.view.widget.MultipleStatusView;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
@@ -55,11 +56,15 @@ public class MicroLessonPageFragment extends BaseFragment {
         adapter.addSection(new VideoItemSection(null, 1, new VideoItemSection.OnSelectItmeListener() {
             @Override
             public void onSelectItme(int pos) {
-
+                //Intent intent = new Intent(getContext(), FullScreenVideoPlayActivity.class);
+                Intent intent = new Intent(getContext(), SpecialVideoActivity.class);
+                startActivity(intent);
             }
 
             @Override
             public void onMore() {/**热门测评查看更多*/
+                Intent intent = new Intent(getContext(), FullScreenVideoPlayActivity.class);
+                startActivity(intent);
             }
         }));
     }

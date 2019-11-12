@@ -59,7 +59,6 @@ public class TopicWrongRecordPageFragment extends BaseFragment {
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onInitView(Bundle savedInstanceState) {
-        //webView.loadUrl("file:///android_asset/web/Record.html");
         WebSettings webSettings = webView.getSettings();
         // 不使用缓存：
         webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
@@ -69,7 +68,6 @@ public class TopicWrongRecordPageFragment extends BaseFragment {
         webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         webSettings.setTextZoom(100);
         webSettings.setLoadWithOverviewMode(true);
-        //webView.getSettings().setDomStorageEnabled(true);//打开DOM存储API
         //webView.loadUrl("https://www.baidu.com/?tn=98012088_10_dg&ch=3");
         webView.loadUrl("file:///android_asset/web/Record.html");
         startActivity(new Intent(getContext(), WebViewActivity.class));

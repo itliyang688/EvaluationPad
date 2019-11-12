@@ -2,6 +2,7 @@ package cn.fek12.evaluation.view.adapter;
 
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -54,6 +55,14 @@ public class VideoItemSection extends Section {
     @Override
     public void onBindItemViewHolder(RecyclerView.ViewHolder holder, int position) {
         MyItemViewHolder itemHolder = (MyItemViewHolder) holder;
+        itemHolder.rootView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(mOnSelectItmeListener != null){
+                    mOnSelectItmeListener.onSelectItme(position);
+                }
+            }
+        });
     }
 
     @Override
@@ -107,8 +116,10 @@ public class VideoItemSection extends Section {
         private ImageView ivCover;
         private TextView tvTime;
         private TextView tvPlayNumber;
+        private LinearLayout rootView;
         public MyItemViewHolder(View itemView) {
             super(itemView);
+            rootView = itemView.findViewById(R.id.rootView);
             tvName = itemView.findViewById(R.id.tvName);
             ivCover = itemView.findViewById(R.id.ivCover);
             tvSubject = itemView.findViewById(R.id.tvSubject);

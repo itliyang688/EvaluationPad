@@ -66,6 +66,13 @@
             android:name=".view.activity.MenuDialogActivity"
             android:screenOrientation="landscape"
             android:theme="@style/share_activity_styles"/>
+        <activity
+            android:name=".view.activity.FullScreenVideoPlayActivity"
+            android:screenOrientation="landscape" />
+
+        <activity
+            android:name=".view.activity.SpecialVideoActivity"
+            android:screenOrientation="landscape" />
     </application>
 
 </manifest>
