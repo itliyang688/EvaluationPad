@@ -1,6 +1,11 @@
 package cn.fek12.evaluation.view.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -14,6 +19,7 @@ import com.fek12.basic.base.BasePresenter;
 
 import butterknife.BindView;
 import cn.fek12.evaluation.R;
+import cn.fek12.evaluation.view.activity.WebViewActivity;
 import cn.fek12.evaluation.view.widget.CustomViewPager;
 import cn.fek12.evaluation.view.widget.MultipleStatusView;
 
@@ -40,6 +46,7 @@ public class RecordFragment extends BaseFragment {
     @BindView(R.id.load_view)
     MultipleStatusView loadView;
     private MyPagerAdapter adapter;
+    private boolean mIsVisibleToUser;
 
     @Override
     protected int getLayoutResource() {
@@ -49,8 +56,16 @@ public class RecordFragment extends BaseFragment {
     @Override
     protected void onInitView(Bundle savedInstanceState) {
         setDefaultTitle("记录", false);
+        //initView();
+    }
 
-        initView();
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        mIsVisibleToUser = isVisibleToUser;
+        if(mIsVisibleToUser && adapter == null){
+            initView();
+        }
     }
 
     @Override
@@ -70,6 +85,7 @@ public class RecordFragment extends BaseFragment {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
                     case R.id.tabRecord:
+                        startActivity(new Intent(getContext(), WebViewActivity.class));
                         mViewPager.setCurrentItem(0, false);
                         break;
                     case R.id.tabFootprint:

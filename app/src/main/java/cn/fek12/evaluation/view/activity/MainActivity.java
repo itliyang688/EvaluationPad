@@ -3,11 +3,13 @@ package cn.fek12.evaluation.view.activity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 import com.fek12.basic.base.BackFragmentInterface;
 import com.fek12.basic.base.BaseActivity;
 import com.fek12.basic.base.BaseFragment;
+import com.fek12.basic.utils.toast.ToastUtils;
 import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
@@ -19,6 +21,7 @@ import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.model.entity.TabEntity;
 import cn.fek12.evaluation.view.fragment.EvaluationContainerFragment;
 import cn.fek12.evaluation.view.fragment.EvaluationFragment;
+import cn.fek12.evaluation.view.fragment.EvaluationListFragment;
 import cn.fek12.evaluation.view.fragment.MicroLessonFragment;
 import cn.fek12.evaluation.view.fragment.PresentationFragment;
 import cn.fek12.evaluation.view.fragment.PromoteFragment;
@@ -58,6 +61,24 @@ public class MainActivity extends BaseActivity implements BackFragmentInterface 
         initCommonTabLayout();
         viewPage.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
         viewPage.setOffscreenPageLimit(5);
+
+    }
+
+    private EvaluationFragment evaluationFragment;
+    private FragmentTransaction fragmentTransaction;
+
+    public void showEvaluationFragment() {
+        fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        //如果所有的fragment都不为空的话，把所有的fragment都进行隐藏。最开始进入应用程序，fragment为空时，此方法不执行
+
+        if(evaluationFragment == null){
+            evaluationFragment = new EvaluationFragment();
+            fragmentTransaction.add(R.id.fragment_container, evaluationFragment);
+        }else {
+            fragmentTransaction.setCustomAnimations(R.anim.slide_left_in,0);
+            fragmentTransaction.show(evaluationFragment);
+        }
+        fragmentTransaction.commit();
     }
 
     @Override

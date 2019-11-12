@@ -52,6 +52,10 @@
         <activity
             android:name=".view.activity.EvaluationListActivity"
             android:screenOrientation="landscape" />
+        <activity
+            android:name=".view.activity.WebViewActivity"
+            android:theme="@style/TransparentTheme"
+            android:screenOrientation="landscape" />
 
         <activity
             android:name=".view.activity.TreeViewDialogActivity"

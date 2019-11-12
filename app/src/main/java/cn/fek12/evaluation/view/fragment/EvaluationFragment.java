@@ -40,8 +40,6 @@ import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapt
 public class EvaluationFragment extends BaseFragment<EvaluationPresenter> implements IEvaluation.View {
     @BindView(R.id.toolbar)
     TextView toolbar;
-    @BindView(R.id.frameLayout)
-    FrameLayout frameLayout;
     @BindView(R.id.loop_viewpager_mz)
     BannerViewPager loopViewpagerMz;
     @BindView(R.id.scale_indicator)
@@ -74,13 +72,13 @@ public class EvaluationFragment extends BaseFragment<EvaluationPresenter> implem
 
     @Override
     protected void onInitView(Bundle savedInstanceState) {
-        setDefaultTitle("测评", false).addRightImgButton(R.mipmap.main_ic_scan_code, new View.OnClickListener() {
+        /*setDefaultTitle("测评", false).addRightImgButton(R.mipmap.main_ic_scan_code, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ToastUtils.popUpToast("hahha");
             }
-        });
-
+        });*/
+        setDefaultTitle("测评", false);
         LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext()){
             @Override
             public boolean canScrollVertically() {
@@ -153,7 +151,6 @@ public class EvaluationFragment extends BaseFragment<EvaluationPresenter> implem
         }else{
             multipleStatusView.showEmpty();
         }
-
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.fek12.basic.base;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.LinearLayout;
@@ -79,7 +80,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends RxAppCompatA
         //mViewRoot.setFitsSystemWindows(fitsSystemWindows);
         setContentView(mViewRoot);
         getLayoutInflater().inflate(setLayoutResource(), mViewRoot);
-        //BaseApplication.getApp().addActivity(this);
+        BaseApplication.getApp().addActivity(this);
         myDialog = new MyDialog(this);
         unbinder = ButterKnife.bind(this);
 
@@ -166,6 +167,9 @@ public abstract class BaseActivity<P extends BasePresenter> extends RxAppCompatA
         myDialog.hide();
     }
 
+    public void onResumeBuck(){
+
+    }
 
     @Override
     protected void onResume() {
