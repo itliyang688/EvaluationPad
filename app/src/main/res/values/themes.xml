@@ -54,6 +54,10 @@
         <item name="android:windowBackground">@color/black</item>
     </style>
 
+    <style name="TransparentTheme" parent="AppTheme">
+        <item name="android:background">@color/transparent</item>
+    </style>
+
 
     <!--dialog style-->
 

@@ -2,6 +2,6 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:drawable="@drawable/collection_check" android:state_checked="true"/>
-    <item android:drawable="@drawable/footprint_normal"/>
+    <item android:drawable="@drawable/collection_normal"/>
 
 </selector>

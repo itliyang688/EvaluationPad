@@ -1,84 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
-
-    <TextView
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_1"
-        android:visibility="gone"
-        tools:ignore="MissingConstraints" />
 
     <LinearLayout
         android:id="@+id/llLeft"
         android:layout_width="@dimen/dp_273"
-        android:layout_height="0dp"
-        android:orientation="vertical"
+        android:layout_height="match_parent"
         android:layout_marginTop="@dimen/dp_16"
+        android:background="@drawable/common_bg_list_one_third_of_screen"
+        android:orientation="vertical"
         android:paddingBottom="@dimen/dp_40"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:background="@drawable/common_bg_list_one_third_of_screen"
-        tools:ignore="MissingConstraints"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar">
+        tools:ignore="MissingConstraints">
+
         <RadioGroup
             android:id="@+id/rg_group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:layout_marginTop="@dimen/dp_42"
             android:layout_gravity="center_horizontal"
-            android:orientation="vertical" >
+            android:layout_marginTop="@dimen/dp_42"
+            android:background="@color/white"
+            android:orientation="vertical">
 
             <RadioButton
                 android:id="@+id/tabRecord"
                 android:layout_width="@dimen/dp_200"
                 android:layout_height="@dimen/dp_24"
                 android:layout_gravity="center_vertical"
-                android:button="@null"
-                android:background="@drawable/record_selector"/>
+                android:background="@drawable/record_selector"
+                android:button="@null" />
+
             <RadioButton
                 android:id="@+id/tabFootprint"
                 android:layout_width="@dimen/dp_200"
                 android:layout_height="@dimen/dp_24"
-                android:layout_marginTop="@dimen/dp_10"
                 android:layout_gravity="center_vertical"
-                android:button="@null"
-                android:background="@drawable/footprint_selector"/>
+                android:layout_marginTop="@dimen/dp_10"
+                android:background="@drawable/footprint_selector"
+                android:button="@null" />
+
             <RadioButton
                 android:id="@+id/tabCollection"
                 android:layout_width="@dimen/dp_200"
                 android:layout_height="@dimen/dp_24"
-                android:layout_marginTop="@dimen/dp_10"
                 android:layout_gravity="center_vertical"
-                android:button="@null"
-                android:background="@drawable/collection_selector"/>
+                android:layout_marginTop="@dimen/dp_10"
+                android:background="@drawable/collection_selector"
+                android:button="@null" />
 
         </RadioGroup>
     </LinearLayout>
 
+
     <cn.fek12.evaluation.view.widget.MultipleStatusView
         android:id="@+id/load_view"
         android:layout_width="@dimen/dp_681"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
+        android:layout_alignTop="@+id/llLeft"
+        android:layout_alignParentRight="true"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@id/llLeft"
-        android:orientation="vertical">
+        app:layout_constraintRight_toRightOf="parent">
         <cn.fek12.evaluation.view.widget.CustomViewPager
             android:id="@+id/view_pager"
-            android:layout_width="@dimen/dp_681"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_marginLeft="@dimen/dp_10"
-            android:layout_marginTop="@dimen/dp_12"
-            android:layout_marginRight="@dimen/dp_10"
-            android:layout_marginBottom="@dimen/dp_30" />
+            android:visibility="visible"
+            android:layout_weight="1" />
 
     </cn.fek12.evaluation.view.widget.MultipleStatusView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

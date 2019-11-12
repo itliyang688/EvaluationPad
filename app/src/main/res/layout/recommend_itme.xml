@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:textSize="@dimen/sp_12"
             android:text="数学"
-            android:layout_marginTop="@dimen/dp_8"
+            android:layout_marginTop="@dimen/dp_5"
             android:textColor="#8A531D"/>
 
         <TextView
@@ -43,7 +43,7 @@
             android:layout_height="wrap_content"
             android:textSize="@dimen/sp_12"
             android:text="2019-08-06"
-            android:layout_marginTop="@dimen/dp_8"
+            android:layout_marginTop="@dimen/dp_5"
             android:textColor="#8A531D"/>
     </LinearLayout>
     <ImageView

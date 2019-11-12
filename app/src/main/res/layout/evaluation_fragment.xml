@@ -96,7 +96,7 @@
     <cn.fek12.evaluation.view.widget.MultipleStatusView
         android:id="@+id/multipleStatusView"
         android:layout_width="@dimen/dp_478"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         android:layout_marginTop="@dimen/dp_16"
         android:layout_marginRight="@dimen/dp_2"
         android:background="@drawable/common_bg_list_half_of_screen"
@@ -105,11 +105,10 @@
         android:paddingBottom="@dimen/dp_40"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent">
-
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/contentView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:visibility="gone"/>
     </cn.fek12.evaluation.view.widget.MultipleStatusView>
 </androidx.constraintlayout.widget.ConstraintLayout>
