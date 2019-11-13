@@ -251,6 +251,10 @@ public class BaseTitleView extends FrameLayout {
         return mMiddleTitle;
     }
 
+    public void hideTitle(){
+        mMiddleTitle.setVisibility(GONE);
+    }
+
     /**
      * 左侧按钮使用自定义图片
      *

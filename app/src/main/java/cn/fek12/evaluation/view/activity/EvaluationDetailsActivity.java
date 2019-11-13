@@ -97,7 +97,7 @@ public class EvaluationDetailsActivity extends BaseActivity<EvaluationDetailsPre
     @Override
     protected void onInitView() {
         Intent intent = getIntent();
-        setDefaultTitle(intent.getStringExtra("titleName"));
+        setDefaultTitle(intent.getStringExtra("titleName")).hideTitle();
         checkId = intent.getStringExtra("checkId");
         gradeId = intent.getStringExtra("gradeId");
         subjectId = intent.getStringExtra("subjectId");

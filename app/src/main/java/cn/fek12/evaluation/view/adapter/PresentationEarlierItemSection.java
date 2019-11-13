@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -74,6 +75,7 @@ public class PresentationEarlierItemSection extends Section {
         itemHolder.tvSubject.setText(mList.get(position).getCourseName());
         if(mTypePage == 2){//提升item
             itemHolder.tvTime.setText(mList.get(position).getPaperResultDate().split(" ")[0]);
+            itemHolder.tvScore.setText(mList.get(position).getStudentScore()+"/"+mList.get(position).getScore());
         }else{
             itemHolder.tvTime.setText(mList.get(position).getPaperResultDate().split("\\.")[0]);
         }
@@ -84,6 +86,14 @@ public class PresentationEarlierItemSection extends Section {
                 .placeholder(R.mipmap.presentation_empty_bg)
                 .error(R.mipmap.presentation_empty_bg)
                 .into(itemHolder.ivSubject);
+        itemHolder.rootView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(mOnSelectItmeListener != null){
+                    mOnSelectItmeListener.onSelectItme(position);
+                }
+            }
+        });
     }
 
     @Override
@@ -104,12 +114,16 @@ public class PresentationEarlierItemSection extends Section {
         private TextView tvName;
         private TextView tvSubject;
         private TextView tvTime;
+        private TextView tvScore;
         private ImageView ivSubject;
+        private LinearLayout rootView;
         public MyItemViewHolder(View itemView) {
             super(itemView);
+            rootView = itemView.findViewById(R.id.rootView);
             ivSubject = itemView.findViewById(R.id.ivSubject);
             tvName = itemView.findViewById(R.id.tvName);
             tvSubject = itemView.findViewById(R.id.tvSubject);
+            tvScore = itemView.findViewById(R.id.tvScore);
             tvTime = itemView.findViewById(R.id.tvTime);
         }
     }

@@ -1,5 +1,6 @@
 package cn.fek12.evaluation.view.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -25,6 +26,7 @@ import cn.fek12.evaluation.model.entity.EarlierEntity;
 import cn.fek12.evaluation.presenter.PresentationPresenter;
 import cn.fek12.evaluation.utils.AppUtils;
 import cn.fek12.evaluation.view.PopupWindow.MenuPopupWindow;
+import cn.fek12.evaluation.view.activity.VideoPlayListActivity;
 import cn.fek12.evaluation.view.adapter.PresentationAweekItemSection;
 import cn.fek12.evaluation.view.adapter.PresentationEarlierItemSection;
 import cn.fek12.evaluation.view.widget.MultipleStatusView;
@@ -144,7 +146,7 @@ public class PromoteFragment extends BaseFragment<PresentationPresenter> impleme
         leftAdapter.addSection("earlier", new PresentationEarlierItemSection(2,getContext(), null, "较早", new PresentationEarlierItemSection.OnSelectItmeListener() {
             @Override
             public void onSelectItme(int pos) {
-
+                startActivity(new Intent(getContext(), VideoPlayListActivity.class));
             }
         }));
     }

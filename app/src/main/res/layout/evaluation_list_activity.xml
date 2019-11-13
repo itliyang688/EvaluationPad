@@ -6,8 +6,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_20">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:id="@+id/label"
@@ -101,6 +100,7 @@
             </cn.fek12.evaluation.view.widget.MultipleStatusView>
 
             <TextView
+                android:id="@+id/tvTitleName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"

@@ -47,6 +47,8 @@ public class TreeViewDialogActivity extends BaseActivity<TreeViewPresenter> impl
     private String ptype;
     private TreeDataEntity mEntry;
     private String containListEntityJson;
+    private String typePage;
+    private int typePos;
 
     @Override
     public int setLayoutResource() {
@@ -58,6 +60,8 @@ public class TreeViewDialogActivity extends BaseActivity<TreeViewPresenter> impl
         Intent intent = getIntent();
         titleName = intent.getStringExtra("titleName");
         paperType = intent.getStringExtra("paperType");
+        typePos = intent.getIntExtra("typePos",0);
+        typePage = intent.getStringExtra("typePage");
         gradeId = intent.getStringExtra("gradeId");
         subjectId = intent.getStringExtra("subjectId");
         semesterId = intent.getStringExtra("semesterId");
@@ -150,22 +154,31 @@ public class TreeViewDialogActivity extends BaseActivity<TreeViewPresenter> impl
                 String id = treeItem.id;
                 String parentId = treeItem.parentId;
                 String name = treeItem.text;
-                Intent intent = new Intent(TreeViewDialogActivity.this,EvaluationDetailsActivity.class);
-                intent.putExtra("checkId",id);
-                intent.putExtra("gradeId", gradeId);
-                intent.putExtra("semesterId", semesterId);
-                intent.putExtra("subjectId", subjectId);
-                intent.putExtra("textbookId", textbookId);
-                intent.putExtra("titleName",titleName);
-                intent.putExtra("ptype",ptype);
-                intent.putExtra("paperType", paperType);
-                intent.putExtra("userType", "1");//类型 测评1 自主测2
-                intent.putExtra("containListEntityJson",containListEntityJson);
-                intent.putExtra("mTreeDataJson",new Gson().toJson(mEntry));
-                TreeViewDialogActivity.this.startActivity(intent);
-                TreeViewDialogActivity.this.finish();
+               if(typePage.equals("1")){
+                   startActivityIntent(id,MicroLessonTreeActivity.class);
+               }else{
+                   startActivityIntent(id,EvaluationDetailsActivity.class);
+               }
             }
         });
+    }
+
+    private void startActivityIntent(String id,Class clazz) {
+        Intent intent = new Intent(TreeViewDialogActivity.this,clazz);
+        intent.putExtra("checkId",id);
+        intent.putExtra("gradeId", gradeId);
+        intent.putExtra("semesterId", semesterId);
+        intent.putExtra("subjectId", subjectId);
+        intent.putExtra("textbookId", textbookId);
+        intent.putExtra("titleName",titleName);
+        intent.putExtra("ptype",ptype);
+        intent.putExtra("paperType", paperType);
+        intent.putExtra("typePos", typePos);
+        intent.putExtra("userType", "1");//类型 测评1 自主测2
+        intent.putExtra("containListEntityJson",containListEntityJson);
+        intent.putExtra("mTreeDataJson",new Gson().toJson(mEntry));
+        TreeViewDialogActivity.this.startActivity(intent);
+        TreeViewDialogActivity.this.finish();
     }
 
     @Override

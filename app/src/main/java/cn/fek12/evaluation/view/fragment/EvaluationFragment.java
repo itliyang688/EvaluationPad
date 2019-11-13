@@ -155,7 +155,7 @@ public class EvaluationFragment extends BaseFragment<EvaluationPresenter> implem
 
     @Override
     public void loginFail(String msg) {
-        ToastUtils.popUpToast(msg);
+        multipleStatusView.showEmpty();
     }
 
     @Override

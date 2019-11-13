@@ -71,6 +71,7 @@ public class PresentationAweekItemSection extends Section {
         itemHolder.tvSubject.setText(mList.get(position).getCourseName());
         if(mTypePage == 2){//提升item
             itemHolder.tvTime.setText(mList.get(position).getPaperResultDate().split(" ")[0]);
+            itemHolder.tvScore.setText(mList.get(position).getStudentScore()+"/"+mList.get(position).getScore());
         }else{
             itemHolder.tvTime.setText(mList.get(position).getPaperResultDate().split("\\.")[0]);
         }
@@ -110,9 +111,11 @@ public class PresentationAweekItemSection extends Section {
         private TextView tvName;
         private TextView tvSubject;
         private TextView tvTime;
+        private TextView tvScore;
         private ImageView ivSubject;
         public MyItemViewHolder(View itemView) {
             super(itemView);
+            tvScore = itemView.findViewById(R.id.tvScore);
             tvName = itemView.findViewById(R.id.tvName);
             tvSubject = itemView.findViewById(R.id.tvSubject);
             tvTime = itemView.findViewById(R.id.tvTime);

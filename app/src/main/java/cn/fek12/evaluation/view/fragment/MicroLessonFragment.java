@@ -13,13 +13,17 @@ import androidx.viewpager.widget.ViewPager;
 import com.fek12.basic.base.BaseFragment;
 import com.flyco.tablayout.SegmentTabLayout;
 import com.flyco.tablayout.listener.OnTabSelectListener;
+import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import cn.fek12.evaluation.R;
+import cn.fek12.evaluation.application.MyApplication;
 import cn.fek12.evaluation.impl.IMicorLesson;
 import cn.fek12.evaluation.model.entity.ChildSectionEntity;
+import cn.fek12.evaluation.model.entity.ContainListEntity;
 import cn.fek12.evaluation.model.entity.GradeDictionaryListEntity;
 import cn.fek12.evaluation.model.entity.SemesterEntity;
 import cn.fek12.evaluation.model.entity.SubjectEntity;
@@ -27,6 +31,7 @@ import cn.fek12.evaluation.model.entity.TextbookChildEntity;
 import cn.fek12.evaluation.model.entity.TextbookEntity;
 import cn.fek12.evaluation.presenter.MicroLessonPresenter;
 import cn.fek12.evaluation.view.activity.MenuDialogActivity;
+import cn.fek12.evaluation.view.activity.TreeViewDialogActivity;
 import cn.fek12.evaluation.view.adapter.DictionaryChildSection;
 import cn.fek12.evaluation.view.adapter.DictionaryParentSection;
 import cn.fek12.evaluation.view.adapter.DictionarySubjectSection;
@@ -63,6 +68,7 @@ public class MicroLessonFragment extends BaseFragment<MicroLessonPresenter> impl
     private List<ChildSectionEntity> semesterList;
     private MyPagerAdapter adapter;
     private String[] mTitles = {"全部", "同步", "专题"};
+    private List<Fragment> fragments = new ArrayList<>();
 
     @Override
     protected int getLayoutResource() {
@@ -79,6 +85,13 @@ public class MicroLessonFragment extends BaseFragment<MicroLessonPresenter> impl
     @Override
     protected void onLoadDataRemote() {
         mPresenter.queryGradeDictionaryList(getContext());
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        DictionaryChildSection semesterSection = (DictionaryChildSection) leftAdapter.getSection("semester");
+        emptyCheck(semesterSection);
     }
 
     private void initLeftRecycler() {
@@ -134,10 +147,36 @@ public class MicroLessonFragment extends BaseFragment<MicroLessonPresenter> impl
             public void onSelectItme(int pos) {
                 leftAdapter.getAdapterForSection("semester").notifyAllItemsChanged("payloads");
                 semesterId = String.valueOf(semesterList.get(pos).getId());
-
-                /**请求右侧页面数据*/
+                int currentItme = mViewPager.getCurrentItem();
+                if(currentItme == 1 || currentItme == 2){
+                    /**进入知识树页面*/
+                    String titleName = currentItme==1? "同步视频":"专题视频";
+                    String value = currentItme==1? "SWEETOWN":"SPECIAL";
+                    startActivityIntent(titleName, value, currentItme, TreeViewDialogActivity.class);
+                }else{
+                    /**请求右侧页面数据*/
+                }
             }
         }));
+    }
+
+    private void startActivityIntent(String titleName, String value, int typePos,Class clazz) {
+        ContainListEntity containListEntity = new ContainListEntity();
+        containListEntity.setGradeList(gradeList);
+        containListEntity.setSemesterList(semesterList);
+        containListEntity.setSubjectList(subjectList);
+        containListEntity.setTextBookList(textBookList);
+        Intent intent = new Intent(getContext(), clazz);
+        intent.putExtra("gradeId", gradeId);
+        intent.putExtra("semesterId", semesterId);
+        intent.putExtra("subjectId", subjectId);
+        intent.putExtra("textbookId", textbookId);
+        intent.putExtra("titleName", titleName);
+        intent.putExtra("paperType", value);
+        intent.putExtra("typePos", typePos);
+        intent.putExtra("typePage", "1");//类型 微课进入1 测评进入2
+        intent.putExtra("containListEntityJson", new Gson().toJson(containListEntity));
+        getActivity().startActivity(intent);
     }
 
     @Override
@@ -188,7 +227,7 @@ public class MicroLessonFragment extends BaseFragment<MicroLessonPresenter> impl
                 tagChildSection.updateList(textBookList);
 
                 semesterList = textBookList.get(0).getSemester();
-                semesterUpdate(semesterSection);
+                emptyCheck(semesterSection);
 
             } else {
                 textbookId = null;
@@ -209,6 +248,7 @@ public class MicroLessonFragment extends BaseFragment<MicroLessonPresenter> impl
         }
 
         /**请求右侧页面数据*/
+        updateContent();
     }
 
     @Override
@@ -224,7 +264,7 @@ public class MicroLessonFragment extends BaseFragment<MicroLessonPresenter> impl
             tagChildSection.updateList(textBookList);
             semesterList = textBookList.get(0).getSemester();
 
-            semesterUpdate(semesterSection);
+            emptyCheck(semesterSection);
             leftAdapter.notifyDataSetChanged();
         } else {
             semesterId = null;
@@ -240,8 +280,18 @@ public class MicroLessonFragment extends BaseFragment<MicroLessonPresenter> impl
     public void loadSemesterSuc(SemesterEntity entry) {
         semesterList = entry.getData();
         DictionaryChildSection semesterSection = (DictionaryChildSection) leftAdapter.getSection("semester");
-        semesterUpdate(semesterSection);
+        emptyCheck(semesterSection);
         /**请求右侧页面数据*/
+    }
+
+    private void emptyCheck(DictionaryChildSection semesterSection){
+        int position = mViewPager.getCurrentItem();
+        semesterUpdate(semesterSection);
+        if (position == 1 || position == 2) {
+            semesterSection.updateSelect(-1);
+            semesterId = null;
+        }
+        leftAdapter.getAdapterForSection("semester").notifyAllItemsChanged("payloads");
     }
 
     private void semesterUpdate(DictionaryChildSection semesterSection) {
@@ -255,7 +305,10 @@ public class MicroLessonFragment extends BaseFragment<MicroLessonPresenter> impl
     }
 
     private void segmentTabLayout() {
-        adapter = new MyPagerAdapter(getChildFragmentManager());
+        for (int i = 0; i < mTitles.length; i++) {
+            fragments.add(new MicroLessonPageFragment(i));
+        }
+        adapter = new MyPagerAdapter(getChildFragmentManager(),fragments);
         mViewPager.setAdapter(adapter);
         mViewPager.setOffscreenPageLimit(3);
 
@@ -280,6 +333,10 @@ public class MicroLessonFragment extends BaseFragment<MicroLessonPresenter> impl
             @Override
             public void onPageSelected(int position) {
                 mTabLayout.setCurrentTab(position);
+                /**同步、专题页面请求不传semesterId，教材item默认不选中*/
+                DictionaryChildSection semesterSection = (DictionaryChildSection) leftAdapter.getSection("semester");
+                emptyCheck(semesterSection);
+                updateContent();
             }
 
             @Override
@@ -290,10 +347,20 @@ public class MicroLessonFragment extends BaseFragment<MicroLessonPresenter> impl
         mViewPager.setCurrentItem(0);
     }
 
-    private class MyPagerAdapter extends FragmentPagerAdapter {
+    private void updateContent() {
+        BaseFragment baseFragment = (BaseFragment) adapter.getItem(mViewPager.getCurrentItem());
+        if (baseFragment instanceof MicroLessonPageFragment) {
+            MicroLessonPageFragment fragment = (MicroLessonPageFragment) baseFragment;
+            fragment.queryIndexPagerData(gradeId, semesterId, subjectId, textbookId, MyApplication.getMyApplication().getUserId());
+            fragment.setLists(gradeList,subjectList,textBookList,semesterList);
+        }
+    }
 
-        public MyPagerAdapter(FragmentManager fm) {
+    private class MyPagerAdapter extends FragmentPagerAdapter {
+        List<Fragment> mFragments;
+        public MyPagerAdapter(FragmentManager fm,List<Fragment> fragments) {
             super(fm);
+            this.mFragments = fragments;
         }
 
         @Override
@@ -308,7 +375,7 @@ public class MicroLessonFragment extends BaseFragment<MicroLessonPresenter> impl
 
         @Override
         public Fragment getItem(int position) {
-            return new MicroLessonPageFragment();
+            return mFragments.get(position);
         }
     }
 

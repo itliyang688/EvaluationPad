@@ -73,6 +73,15 @@
         <activity
             android:name=".view.activity.SpecialVideoActivity"
             android:screenOrientation="landscape" />
+        <activity
+            android:name=".view.activity.MicroLessonMoreActivity"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".view.activity.MicroLessonTreeActivity"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".view.activity.VideoPlayListActivity"
+            android:screenOrientation="landscape" />
     </application>
 
 </manifest>

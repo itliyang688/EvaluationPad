@@ -369,6 +369,7 @@ public class EvaluationListFragment extends BaseFragment<EvaluationListPresenter
         intent.putExtra("paperType", value);
         intent.putExtra("ptype", ptypeId);
         intent.putExtra("userType", "1");//类型 测评1 自主测2
+        intent.putExtra("typePage", "2");//类型 微课进入1 测评进入2
         intent.putExtra("containListEntityJson", new Gson().toJson(containListEntity));
         getActivity().startActivity(intent);
     }

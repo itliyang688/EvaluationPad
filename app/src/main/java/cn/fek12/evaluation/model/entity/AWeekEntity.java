@@ -88,6 +88,7 @@ public class AWeekEntity implements Serializable {
             private String description;
             private int score;
             private int second;
+            private int studentScore;
             private String courseName;
             private int isanswered;
             private int grade;
@@ -95,6 +96,14 @@ public class AWeekEntity implements Serializable {
             private String imageUrl;
             private int paperResultId;
             private String paperResultDate;
+
+            public int getStudentScore() {
+                return studentScore;
+            }
+
+            public void setStudentScore(int studentScore) {
+                this.studentScore = studentScore;
+            }
 
             public int getId() {
                 return id;

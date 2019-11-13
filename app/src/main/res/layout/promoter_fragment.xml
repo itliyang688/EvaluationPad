@@ -21,16 +21,20 @@
             app:tr_head_height="50dp"
             app:tr_wave_height="150dp">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/dp_10"
-                android:layout_marginLeft="@dimen/dp_15"
-                android:layout_marginRight="@dimen/dp_13"
-                android:layout_weight="1"
-                android:scrollbars="none" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
 
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/dp_15"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_marginRight="@dimen/dp_13"
+                    android:layout_weight="1"
+                    android:scrollbars="none" />
+            </LinearLayout>
         </com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout>
     </cn.fek12.evaluation.view.widget.MultipleStatusView>
 </LinearLayout>
