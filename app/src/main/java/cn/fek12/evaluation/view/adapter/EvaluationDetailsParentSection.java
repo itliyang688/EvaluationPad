@@ -33,7 +33,7 @@ public class EvaluationDetailsParentSection extends Section {
     public EvaluationDetailsParentSection(List<ChildSectionEntity> list, String checkId,EvaluationDetailsParentSection.OnSelectItmeListener onSelectItmeListener) {
         super(SectionParameters.builder()
                 .itemResourceId(R.layout.evaluation_list_item_dictionary)
-                //.headerResourceId(R.layout.evaluation_list_header_dictionary)
+                //.headerResourceId(R.progress_bar_ct.evaluation_list_header_dictionary)
                 .build());
         mList.clear();
         mList = list;

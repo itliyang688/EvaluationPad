@@ -10,7 +10,7 @@
         android:id="@+id/llLeft"
         android:layout_width="@dimen/dp_273"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/dp_16"
+        android:layout_marginTop="@dimen/dp_10"
         android:background="@drawable/common_bg_list_one_third_of_screen"
         android:orientation="vertical"
         android:paddingBottom="@dimen/dp_40"

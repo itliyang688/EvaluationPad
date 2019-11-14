@@ -48,7 +48,9 @@
         <activity
             android:name=".view.activity.EvaluationDetailsActivity"
             android:screenOrientation="landscape" />
-
+        <activity
+            android:name=".view.activity.AutonomyEvaluationListActivity"
+            android:screenOrientation="landscape" />
         <activity
             android:name=".view.activity.EvaluationListActivity"
             android:screenOrientation="landscape" />
@@ -81,6 +83,9 @@
             android:screenOrientation="landscape" />
         <activity
             android:name=".view.activity.VideoPlayListActivity"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".view.activity.ConqueredActivity"
             android:screenOrientation="landscape" />
     </application>
 

@@ -1,5 +1,6 @@
 package cn.fek12.evaluation.view.fragment;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.InputFilter;
@@ -25,9 +26,12 @@ import java.util.Map;
 
 import butterknife.BindView;
 import cn.fek12.evaluation.R;
-import cn.fek12.evaluation.impl.IAutonomyEvaluation;
+import cn.fek12.evaluation.model.entity.ChildSectionEntity;
+import cn.fek12.evaluation.model.entity.ContainListEntity;
 import cn.fek12.evaluation.model.entity.QueryTopicEntity;
 import cn.fek12.evaluation.model.entity.RecordsEntitiy;
+import cn.fek12.evaluation.model.entity.SubjectEntity;
+import cn.fek12.evaluation.model.entity.TextbookChildEntity;
 import cn.fek12.evaluation.model.entity.TopicCountEntity;
 import cn.fek12.evaluation.model.entity.TreeDataEntity;
 import cn.fek12.evaluation.model.holder.AutoTreeChildItemHolder;
@@ -35,6 +39,7 @@ import cn.fek12.evaluation.model.holder.TreeParentItemHolder;
 import cn.fek12.evaluation.presenter.AutonomyEvaluationPresenter;
 import cn.fek12.evaluation.utils.AppUtils;
 import cn.fek12.evaluation.utils.InputFilterMinMax;
+import cn.fek12.evaluation.view.activity.AutonomyEvaluationListActivity;
 import cn.fek12.evaluation.view.adapter.RecordsListAdapter;
 
 /**
@@ -126,6 +131,18 @@ public class AutonomyEvaluationFragment extends BaseFragment<AutonomyEvaluationP
     private String multiple = "0";
     private String judge = "0";
     private String topicType = "0";
+
+    private List<ChildSectionEntity> gradeList;
+    private List<SubjectEntity.DataBean> subjectList;
+    private List<TextbookChildEntity> textBookList;
+    private List<ChildSectionEntity> semesterList;
+
+    public void setLists(List<ChildSectionEntity> grades,List<SubjectEntity.DataBean> subjects,List<TextbookChildEntity> textBooks,List<ChildSectionEntity> semesters){
+        gradeList = grades;
+        subjectList = subjects;
+        textBookList = textBooks;
+        semesterList = semesters;
+    }
 
     @Override
     protected int getLayoutResource() {
@@ -271,7 +288,7 @@ public class AutonomyEvaluationFragment extends BaseFragment<AutonomyEvaluationP
         List<RecordsEntitiy.DataBean> list = entity.getData();
         RecordsListAdapter marqueeFactory = new RecordsListAdapter(list, getContext());
         marqueeView.setAdapter(marqueeFactory);
-        if (list != null && list.size() <= 5) {
+        if (list != null && list.size() <= 4) {
             marqueeView.stopFlipping();
         }
     }
@@ -381,7 +398,7 @@ public class AutonomyEvaluationFragment extends BaseFragment<AutonomyEvaluationP
         tags.add(tag);
         tagGroup.addTags(new ArrayList<Tag>());
         tagGroup.addTags(tags);
-        tagGroup.setLineMargin(6f);
+        tagGroup.setLineMargin(5f);
         /**添加一个tag请求一次数据*/
         queryTopic();
     }
@@ -412,12 +429,27 @@ public class AutonomyEvaluationFragment extends BaseFragment<AutonomyEvaluationP
         tagGroup.addTags(tags);
     }
 
+    private void startActivityIntent() {
+        ContainListEntity containListEntity = new ContainListEntity();
+        containListEntity.setGradeList(gradeList);
+        containListEntity.setSemesterList(semesterList);
+        containListEntity.setSubjectList(subjectList);
+        containListEntity.setTextBookList(textBookList);
+        Intent intent = new Intent(getContext(), AutonomyEvaluationListActivity.class);
+        intent.putExtra("gradeId", gradeId);
+        intent.putExtra("semesterId", semesterId);
+        intent.putExtra("subjectId", subjectId);
+        intent.putExtra("textbookId", textbookId);
+        intent.putExtra("containListEntityJson", new Gson().toJson(containListEntity));
+        getActivity().startActivity(intent);
+    }
+
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.llContainMarquee://点击自主测
-
+                    startActivityIntent();
                     break;
                 case R.id.tvJudge://判断题
                     if (judge.equals("0")) {

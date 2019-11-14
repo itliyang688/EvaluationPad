@@ -163,8 +163,8 @@ public class BannerViewPager extends ViewPager implements View.OnTouchListener {
    * 设置监听
    *
    * @param bean     配置的数据
-   * @param layoutid 子控件的 layout
-   * @param listener 这里可以把 子控件的 layout 获得的view公布出去
+   * @param layoutid 子控件的 progress_bar_ct
+   * @param listener 这里可以把 子控件的 progress_bar_ct 获得的view公布出去
    */
   public void setPageListener(final PageBean bean, int layoutid, final PageHelperListener listener) {
     final PageBean.Builder params = bean.getParams();

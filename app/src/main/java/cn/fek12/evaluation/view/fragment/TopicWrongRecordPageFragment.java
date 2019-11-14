@@ -35,7 +35,7 @@ public class TopicWrongRecordPageFragment extends BaseFragment {
 
     /*public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View contentView = inflater.inflate(R.layout.topic_worng_page_fragment, container, false);
+        View contentView = inflater.inflate(R.progress_bar_ct.topic_worng_page_fragment, container, false);
         webView = (WebView) contentView.findViewById(R.id.webView);
         WebSettings webSettings = webView.getSettings();
         // 不使用缓存：

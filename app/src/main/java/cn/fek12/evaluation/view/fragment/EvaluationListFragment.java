@@ -411,6 +411,7 @@ public class EvaluationListFragment extends BaseFragment<EvaluationListPresenter
                 int currentItme = mViewPager.getCurrentItem();
                 AutonomyEvaluationFragment fragment = (AutonomyEvaluationFragment) baseFragment;
                 fragment.queryTreeData(gradeId,semesterId,subjectId,textbookId,mTitleData.get(currentItme).getValue(), MyApplication.getMyApplication().getUserId());
+                fragment.setLists(gradeList,subjectList,textBookList,semesterList);
             }
         }
 

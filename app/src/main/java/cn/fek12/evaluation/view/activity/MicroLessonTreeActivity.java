@@ -92,7 +92,7 @@ public class MicroLessonTreeActivity extends BaseActivity<MicroLessonTreePresent
     @Override
     protected void onInitView() {
         Intent intent = getIntent();
-        setDefaultTitle("").hideTitle();
+        setEmptyTitle();
         checkId = intent.getStringExtra("checkId");
         gradeId = intent.getStringExtra("gradeId");
         subjectId = intent.getStringExtra("subjectId");

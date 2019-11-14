@@ -4,23 +4,13 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:orientation="vertical">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:gravity="center_vertical"
-        android:layout_height="@dimen/dp_44">
-        <ImageView
-            android:id="@+id/iv_left_back"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/dp_34"
-            android:layout_marginStart="@dimen/dp_6"
-            android:background="@drawable/title_btn_color_selector"
-            android:src="@drawable/ic_toolbar_left_back"/>
-    </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="@dimen/dp_600"
         android:layout_height="@dimen/dp_353"
         android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/dp_10"
         android:gravity="center_horizontal"
         android:background="@mipmap/specia_video_bg">
         <LinearLayout

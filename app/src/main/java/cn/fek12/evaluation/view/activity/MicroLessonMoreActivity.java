@@ -81,7 +81,7 @@ public class MicroLessonMoreActivity extends BaseActivity<MicroLessonMorePresent
     @Override
     protected void onInitView() {
         Intent intent = getIntent();
-        setDefaultTitle("").hideTitle();
+        setEmptyTitle();
         checkId = intent.getStringExtra("checkId");
         gradeId = intent.getStringExtra("gradeId");
         subjectId = intent.getStringExtra("subjectId");

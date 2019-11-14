@@ -122,6 +122,21 @@ public abstract class BaseActivity<P extends BasePresenter> extends RxAppCompatA
     }
 
     /**
+     * 设置空title
+     * @param
+     */
+    protected BaseTitleView setEmptyTitle() {
+        BaseTitleView baseTitleView = setDefaultTitle("", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        baseTitleView.hideTitle();
+        return baseTitleView;
+    }
+
+    /**
      * 带返回按钮的title
      * @param title
      */

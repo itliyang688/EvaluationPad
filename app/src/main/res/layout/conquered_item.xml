@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rootView"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dp_85"
+    android:layout_marginBottom="@dimen/dp_20"
+    android:background="@mipmap/conquered_item_bg"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_41"
+        android:paddingTop="@dimen/dp_10"
+        android:orientation="vertical">
+        <cn.fek12.evaluation.view.widget.StrokeTextView
+            android:id="@+id/tvName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:text="物质的量物质的质量物质的量"
+            android:textSize="@dimen/sp_11"/>
+
+        <cn.fek12.evaluation.view.widget.StrokeTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/dp_15"
+            android:textStyle="bold"
+            android:text="掌握率"
+            android:textSize="@dimen/sp_12"/>
+        <RelativeLayout
+            android:layout_width="@dimen/dp_200"
+            android:layout_height="@dimen/dp_11"
+            android:layout_marginTop="@dimen/dp_7"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/dp_14">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@mipmap/speed_bg_normal"/>
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_9"
+                android:layout_marginLeft="1.2dp"
+                android:layout_marginRight="1.2dp"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_centerInParent="true"
+                android:progress="30"
+                android:max="100"
+                android:progressDrawable="@drawable/seek_mastery_progress" />
+
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_52"
+        android:layout_gravity="center_vertical"
+        android:gravity="center"
+        android:orientation="vertical">
+        <cn.fek12.evaluation.view.widget.StrokeTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/dp_15"
+            android:text="薄弱原因"
+            android:textStyle="bold"
+            android:textSize="@dimen/sp_12"/>
+
+        <cn.fek12.evaluation.view.widget.StrokeTextView
+            android:id="@+id/tvReason"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/dp_5"
+            android:text=""
+            android:textSize="@dimen/sp_12"/>
+        <!--<ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_5"
+            android:src="@mipmap/doubt_icon"/>-->
+    </LinearLayout>
+
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/dp_168"
+        android:layout_gravity="center_vertical"
+        android:gravity="center"
+        android:orientation="vertical">
+        <cn.fek12.evaluation.view.widget.StrokeTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/dp_15"
+            android:text="攻克可提分"
+            android:textStyle="bold"
+            android:textSize="@dimen/sp_12"/>
+
+        <cn.fek12.evaluation.view.widget.StrokeTextView
+            android:id="@+id/tvScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/dp_5"
+            android:text="10分"
+            android:textSize="@dimen/sp_12"/>
+
+    </LinearLayout>
+    <ImageView
+        android:id="@+id/btnConquered"
+        android:layout_width="@dimen/dp_94"
+        android:layout_height="@dimen/dp_44"
+        android:layout_marginRight="@dimen/dp_41"
+        android:layout_gravity="center_vertical"
+        android:src="@mipmap/btn_conquered"/>
+</LinearLayout>

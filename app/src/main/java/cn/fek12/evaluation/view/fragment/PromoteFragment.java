@@ -26,6 +26,7 @@ import cn.fek12.evaluation.model.entity.EarlierEntity;
 import cn.fek12.evaluation.presenter.PresentationPresenter;
 import cn.fek12.evaluation.utils.AppUtils;
 import cn.fek12.evaluation.view.PopupWindow.MenuPopupWindow;
+import cn.fek12.evaluation.view.activity.ConqueredActivity;
 import cn.fek12.evaluation.view.activity.VideoPlayListActivity;
 import cn.fek12.evaluation.view.adapter.PresentationAweekItemSection;
 import cn.fek12.evaluation.view.adapter.PresentationEarlierItemSection;
@@ -60,6 +61,7 @@ public class PromoteFragment extends BaseFragment<PresentationPresenter> impleme
     private String pageSize = "18";
     private List<AWeekEntity.DataBean.WeekAndDayBean> daylist;
     private List<AWeekEntity.DataBean.WeekAndDayBean> aweeklist;
+    private List<EarlierEntity.DataBean.PapersBean> earlierList;
 
     @Override
     protected int getLayoutResource() {
@@ -133,20 +135,29 @@ public class PromoteFragment extends BaseFragment<PresentationPresenter> impleme
         leftAdapter.addSection("threeDays", new PresentationAweekItemSection(2,null, getContext(), "近三天", new PresentationAweekItemSection.OnSelectItmeListener() {
             @Override
             public void onSelectItme(int pos) {
-
+                int paperResultId = daylist.get(pos).getPaperResultId();
+                Intent intent = new Intent(getContext(), ConqueredActivity.class);
+                intent.putExtra("paperResultId",paperResultId);
+                startActivity(intent);
             }
         }));
         leftAdapter.addSection("aweek", new PresentationAweekItemSection(2,null, getContext(), "一周内", new PresentationAweekItemSection.OnSelectItmeListener() {
             @Override
             public void onSelectItme(int pos) {
-
+                int paperResultId = aweeklist.get(pos).getPaperResultId();
+                Intent intent = new Intent(getContext(), ConqueredActivity.class);
+                intent.putExtra("paperResultId",paperResultId);
+                startActivity(intent);
             }
         }));
 
         leftAdapter.addSection("earlier", new PresentationEarlierItemSection(2,getContext(), null, "较早", new PresentationEarlierItemSection.OnSelectItmeListener() {
             @Override
             public void onSelectItme(int pos) {
-                startActivity(new Intent(getContext(), VideoPlayListActivity.class));
+                int paperResultId = earlierList.get(pos).getPaperResultId();
+                Intent intent = new Intent(getContext(), ConqueredActivity.class);
+                intent.putExtra("paperResultId",paperResultId);
+                startActivity(intent);
             }
         }));
     }
@@ -189,7 +200,7 @@ public class PromoteFragment extends BaseFragment<PresentationPresenter> impleme
     @Override
     public void loadEarlierSuc(EarlierEntity entry) {
         EarlierEntity.DataBean.PageInfoBean pageInfoBean = entry.getData().getPage_info();
-        List<EarlierEntity.DataBean.PapersBean> list = entry.getData().getPapers();
+        earlierList = entry.getData().getPapers();
         if(pageInfoBean.getTotalCount() == 0){
             isEmpty();
             return;
@@ -200,9 +211,9 @@ public class PromoteFragment extends BaseFragment<PresentationPresenter> impleme
         }else{
             refreshLayout.setEnableLoadmore(false);
         }
-        if(list != null && list.size() > 0){
+        if(earlierList != null && earlierList.size() > 0){
             PresentationEarlierItemSection itemSection = (PresentationEarlierItemSection) leftAdapter.getSection("earlier");
-            itemSection.updateAndAddList(list,isLoadMore);
+            itemSection.updateAndAddList(earlierList,isLoadMore);
             leftAdapter.getAdapterForSection("earlier").notifyAllItemsChanged("payloads");
         }
 

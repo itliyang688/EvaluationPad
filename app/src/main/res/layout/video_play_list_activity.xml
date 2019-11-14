@@ -10,13 +10,13 @@
         android:id="@+id/leftVideo"
         android:layout_width="@dimen/dp_642"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/dp_10"
         android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/dp_10"
         android:background="@mipmap/video_play_list_bg"
         android:gravity="center_horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         tools:ignore="MissingConstraints">
 
         <LinearLayout
@@ -37,10 +37,35 @@
         android:layout_width="@dimen/dp_317"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/dp_10"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:background="@mipmap/video_list_bg"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+        android:orientation="vertical"
         app:layout_constraintTop_toTopOf="parent">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_333"
+            android:layout_marginLeft="@dimen/dp_32"
+            android:layout_marginTop="@dimen/dp_31"
+            android:layout_marginBottom="@dimen/dp_10"
+            android:textSize="@dimen/sp_12"
+            android:text="相关视频"/>
+        <cn.fek12.evaluation.view.widget.MultipleStatusView
+            android:id="@+id/multipleStatusView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/dp_32"
+                android:layout_marginRight="@dimen/dp_32"
+                android:layout_marginBottom="@dimen/dp_52"
+                android:scrollbars="none" />
+
+        </cn.fek12.evaluation.view.widget.MultipleStatusView>
 
     </LinearLayout>
 

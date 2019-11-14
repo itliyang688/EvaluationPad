@@ -22,8 +22,6 @@ import cn.jzvd.Jzvd;
 public class SpecialVideoActivity extends BaseActivity {
     @BindView(R.id.jzVideo)
     MyJzvdStd myJzvdStd;
-    @BindView(R.id.iv_left_back)
-    ImageView ivLeftBack;
 
     @Override
     public int setLayoutResource() {
@@ -32,6 +30,7 @@ public class SpecialVideoActivity extends BaseActivity {
 
     @Override
     protected void onInitView() {
+        setEmptyTitle();
         String path = "http://192.168.0.46/group1/M00/00/00/wKgALl23kwyAMozOAOBSBYftCKo270.mp4?token=2cc8cea563f06bc61576893cb5d8e542";
         String path1 = "http://vfx.mtime.cn/Video/2019/03/19/mp4/190319222227698228.mp4";
         myJzvdStd.setUp(path, "数学课程");
@@ -44,7 +43,6 @@ public class SpecialVideoActivity extends BaseActivity {
         //myJzvdStd.thumbImageView.setScaleType(ImageView.ScaleType.FIT_XY);
         //myJzvdStd.textureView.setVideoSize(myJzvdStd.getWidth(),myJzvdStd.getHeight());
         myJzvdStd.backButton.setOnClickListener(onClickListener);
-        ivLeftBack.setOnClickListener(onClickListener);
         myJzvdStd.startVideo();
     }
 
@@ -52,9 +50,6 @@ public class SpecialVideoActivity extends BaseActivity {
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
-                case R.id.iv_left_back:
-                    finish();
-                    break;
                 case R.id.back:
                     finish();
                     break;

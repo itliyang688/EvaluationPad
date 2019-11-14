@@ -2,6 +2,7 @@ package cn.fek12.evaluation.ent;
 
 import cn.fek12.evaluation.model.entity.AWeekEntity;
 import cn.fek12.evaluation.model.entity.AssessmentIndexPaperResp;
+import cn.fek12.evaluation.model.entity.ConqueredEntity;
 import cn.fek12.evaluation.model.entity.EarlierEntity;
 import cn.fek12.evaluation.model.entity.EvaluationListEntity;
 import cn.fek12.evaluation.model.entity.GradeDictionaryListEntity;
@@ -9,6 +10,7 @@ import cn.fek12.evaluation.model.entity.HomeEvaluationDeta;
 import cn.fek12.evaluation.model.entity.PaperTypeListResp;
 import cn.fek12.evaluation.model.entity.QueryTopicEntity;
 import cn.fek12.evaluation.model.entity.RecordsEntitiy;
+import cn.fek12.evaluation.model.entity.RelevantVideoListEntity;
 import cn.fek12.evaluation.model.entity.SemesterEntity;
 import cn.fek12.evaluation.model.entity.SubjectEntity;
 import cn.fek12.evaluation.model.entity.TextbookEntity;
@@ -37,21 +39,36 @@ public interface ApiServer {
      * 查询学科
      */
     @FormUrlEncoded
-    @POST("/assessment/dictionaryList")
+    @POST("assessment/dictionaryList")
     Observable<SubjectEntity> querySubject(@Field("grade") String grade);
+
+    /**
+     * 去攻克
+     */
+    @FormUrlEncoded
+    @POST("promote/promoteDetail")
+    Observable<ConqueredEntity> promoteDetail(@Field("paperResultId") String paperResultId );
+
+    /**
+     * 相关视频列表页面
+     */
+    @FormUrlEncoded
+    @POST("promote/capture")
+    Observable<RelevantVideoListEntity> videoList(@Field("subjectCategoryId ") String subjectCategoryId, @Field("userId  ") String userId);
+
 
     /**
      * 查询版本
      */
     @FormUrlEncoded
-    @POST("/assessment/dictionaryList")
+    @POST("assessment/dictionaryList")
     Observable<TextbookEntity> queryTextbook(@Field("grade") String grade, @Field("subject") String subject);
 
     /**
      * 查询教材
      */
     @FormUrlEncoded
-    @POST("/assessment/dictionaryList")
+    @POST("assessment/dictionaryList")
     Observable<SemesterEntity> querySemester(@Field("grade") String grade, @Field("subject") String subject, @Field("textbook") String textbook);
 
     @GET("assessment/gradeDictionaryList")
@@ -124,6 +141,15 @@ public interface ApiServer {
                                                     @Field("userType") String userType,
                                                     @Field("knowledge") String knowledge,
                                                     @Field("paperListType") String paperListType,
+                                                    @Field("currentPage") String currentPage);
+
+    @FormUrlEncoded
+    @POST("assessment/paperList")
+    Observable<EvaluationListEntity> queryAutonomyPaperList(@Field("grade") String grade,
+                                                    @Field("semester") String semester,
+                                                    @Field("subject") String subject,
+                                                    @Field("textbook") String textbook,
+                                                    @Field("userId") String userId,
                                                     @Field("currentPage") String currentPage);
 }
 

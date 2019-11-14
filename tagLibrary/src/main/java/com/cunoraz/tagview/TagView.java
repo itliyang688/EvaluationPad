@@ -46,12 +46,12 @@ public class TagView extends RelativeLayout {
     private int mWidth;
 
     /**
-     * layout initialize flag
+     * progress_bar_ct initialize flag
      */
     private boolean mInitialized = false;
 
     /**
-     * custom layout param
+     * custom progress_bar_ct param
      */
     private int lineMargin;
     private int tagMargin;
@@ -166,7 +166,7 @@ public class TagView extends RelativeLayout {
         // clear all tag
         removeAllViews();
 
-        // layout padding left & layout padding right
+        // progress_bar_ct padding left & progress_bar_ct padding right
         float total = getPaddingLeft() + getPaddingRight();
 
         int listIndex = 1;// List Index
@@ -177,7 +177,7 @@ public class TagView extends RelativeLayout {
             final int position = listIndex - 1;
             final Tag tag = item;
 
-            // inflate tag layout
+            // inflate tag progress_bar_ct
             View tagLayout = mInflater.inflate(R.layout.tagview_item, null);
             tagLayout.setId(listIndex);
 
@@ -215,7 +215,7 @@ public class TagView extends RelativeLayout {
                 }
             });
 
-            // calculate　of tag layout width
+            // calculate　of tag progress_bar_ct width
             float tagWidth = tagView.getPaint().measureText(tag.getText()) + textPaddingLeft + textPaddingRight;
             // tagView padding (left & right)
 
@@ -251,7 +251,7 @@ public class TagView extends RelativeLayout {
             if (mWidth <= total + tagWidth + Utils.dipToPx(this.getContext(), Constants.LAYOUT_WIDTH_OFFSET)) {
                 //need to add in new line
                 if (tagPre != null) tagParams.addRule(RelativeLayout.BELOW, indexBottom);
-                // initialize total param (layout padding left & layout padding right)
+                // initialize total param (progress_bar_ct padding left & progress_bar_ct padding right)
                 total = getPaddingLeft() + getPaddingRight();
                 indexBottom = listIndex;
                 indexHeader = listIndex;

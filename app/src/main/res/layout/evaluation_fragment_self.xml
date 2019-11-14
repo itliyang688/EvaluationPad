@@ -7,8 +7,8 @@
 
     <LinearLayout
         android:id="@+id/layoutTree"
-        android:layout_width="@dimen/dp_220"
-        android:layout_height="@dimen/dp_220"
+        android:layout_width="@dimen/dp_219"
+        android:layout_height="@dimen/dp_212"
         android:layout_marginLeft="@dimen/dp_10"
         android:background="@drawable/bg_self_knowledge"
         android:orientation="vertical"
@@ -20,7 +20,7 @@
         android:layout_width="80dp"
         android:layout_height="22dp"
         android:layout_marginLeft="5dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="6dp"
         android:background="@drawable/bg_paper_header"
         android:gravity="center_vertical"
         android:paddingLeft="15dp"
@@ -33,8 +33,8 @@
 
     <LinearLayout
         android:id="@+id/llContainMarquee"
-        android:layout_width="220dp"
-        android:layout_height="134dp"
+        android:layout_width="@dimen/dp_219"
+        android:layout_height="@dimen/dp_116"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/bg_self_knowledge"
@@ -45,10 +45,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="@dimen/dp_37"
+            android:layout_marginTop="@dimen/dp_33"
             android:layout_marginRight="@dimen/dp_10"
             app:isSetAnimDuration="true"
-            app:marquee_count="5"
+            app:marquee_count="4"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layoutTree"/>
     </LinearLayout>
@@ -58,7 +58,7 @@
         android:layout_width="80dp"
         android:layout_height="22dp"
         android:layout_marginLeft="5dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="6dp"
         android:background="@drawable/bg_paper_header"
         android:gravity="center_vertical"
         android:paddingLeft="15dp"
@@ -71,12 +71,12 @@
     <ScrollView
         android:id="@+id/select_knowledge_background"
         android:layout_width="0dp"
-        android:layout_height="88dp"
+        android:layout_height="@dimen/dp_75"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="10dp"
         android:background="@drawable/bg_self_knowledge"
         android:paddingLeft="@dimen/dp_10"
-        android:paddingTop="@dimen/dp_40"
+        android:paddingTop="@dimen/dp_33"
         app:layout_constraintLeft_toRightOf="@id/layoutTree"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@id/layoutTree">
@@ -92,7 +92,7 @@
         android:layout_width="110dp"
         android:layout_height="22dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="6dp"
         android:background="@drawable/bg_paper_header"
         android:gravity="center_vertical"
         android:paddingLeft="15dp"
@@ -115,7 +115,7 @@
     <LinearLayout
         android:id="@+id/paper_settings_bg"
         android:layout_width="0dp"
-        android:layout_height="113dp"
+        android:layout_height="@dimen/dp_98"
         android:layout_marginTop="10dp"
         android:background="@drawable/bg_self_knowledge"
         android:orientation="vertical"
@@ -127,7 +127,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp_10"
-            android:layout_marginTop="@dimen/dp_40"
+            android:layout_marginTop="@dimen/dp_34"
             android:gravity="center_horizontal"
             android:orientation="horizontal">
 
@@ -164,7 +164,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_7"
+            android:layout_marginTop="@dimen/dp_4"
             android:gravity="center_horizontal"
             android:orientation="horizontal">
 
@@ -214,7 +214,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_7"
+            android:layout_marginTop="@dimen/dp_4"
             android:gravity="center_horizontal"
             android:orientation="horizontal">
 
@@ -247,7 +247,7 @@
         android:layout_width="110dp"
         android:layout_height="22dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="6dp"
         android:background="@drawable/bg_paper_header"
         android:gravity="center_vertical"
         android:paddingLeft="15dp"
@@ -668,7 +668,7 @@
         android:layout_width="110dp"
         android:layout_height="22dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="6dp"
         android:background="@drawable/bg_paper_header"
         android:gravity="center_vertical"
         android:paddingLeft="15dp"
