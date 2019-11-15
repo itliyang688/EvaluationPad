@@ -14,6 +14,7 @@ import java.util.List;
 
 import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.model.entity.ConqueredEntity;
+import cn.fek12.evaluation.view.widget.StrokeColorTextView;
 import cn.fek12.evaluation.view.widget.StrokeTextView;
 
 
@@ -71,8 +72,8 @@ public class ConqueredAdapter extends RecyclerView.Adapter<ConqueredAdapter.Eval
         private View itemView;
         private ProgressBar progressBar;
         private ImageView btnConquered;
-        private StrokeTextView tvScore;
-        private StrokeTextView tvReason;
+        private StrokeColorTextView tvScore;
+        private StrokeColorTextView tvReason;
         private StrokeTextView tvName;
 
         public EvaluationHolder(View itemView) {

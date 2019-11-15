@@ -68,8 +68,8 @@ public class TopicWrongRecordPageFragment extends BaseFragment {
         webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         webSettings.setTextZoom(100);
         webSettings.setLoadWithOverviewMode(true);
-        //webView.loadUrl("https://www.baidu.com/?tn=98012088_10_dg&ch=3");
-        webView.loadUrl("file:///android_asset/web/Record.html");
+        webView.loadUrl("http://192.168.0.83:11111/index.html");
+        //webView.loadUrl("file:///android_asset/web/Record.html");
         startActivity(new Intent(getContext(), WebViewActivity.class));
         //BaseActivity activity = (BaseActivity) getActivity();
         //activity.onResumeBuck();

@@ -19,6 +19,7 @@ import cn.fek12.evaluation.model.entity.ContainListEntity;
 import cn.fek12.evaluation.model.entity.SubjectEntity;
 import cn.fek12.evaluation.model.entity.TextbookChildEntity;
 import cn.fek12.evaluation.presenter.EvaluationIndexPagerPresenter;
+import cn.fek12.evaluation.view.activity.AnswerWebViewActivity;
 import cn.fek12.evaluation.view.activity.EvaluationListActivity;
 import cn.fek12.evaluation.view.adapter.EvaluationPaperSection;
 import cn.fek12.evaluation.view.widget.MultipleStatusView;
@@ -102,7 +103,8 @@ public class EvaluationIndexPaperFragment extends BaseFragment<EvaluationIndexPa
             adapter.addSection(new EvaluationPaperSection(entry.getData().getHot(), 1, new EvaluationPaperSection.OnSelectItmeListener() {
                 @Override
                 public void onSelectItme(int pos) {
-
+                    /**跳转页面答题*/
+                    startActivity(new Intent(getContext(), AnswerWebViewActivity.class));
                 }
 
                 @Override
@@ -113,7 +115,8 @@ public class EvaluationIndexPaperFragment extends BaseFragment<EvaluationIndexPa
             adapter.addSection(new EvaluationPaperSection(entry.getData().getUpdate(), 2, new EvaluationPaperSection.OnSelectItmeListener() {
                 @Override
                 public void onSelectItme(int pos) {
-
+                    /**跳转页面答题*/
+                    startActivity(new Intent(getContext(), AnswerWebViewActivity.class));
                 }
 
                 @Override

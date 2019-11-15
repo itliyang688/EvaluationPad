@@ -19,6 +19,20 @@
 
     </style>
 
+    <!-- 带动画的对话框样式 -->
+    <style name="dialog_anim" parent="monitor_dialog">
+        <item name="android:windowAnimationStyle">@style/AnimShareDialog</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
+    </style>
+
+    <style name="AnimShareDialog" parent="@android:style/Animation.Dialog">
+        <item name="android:windowEnterAnimation">@anim/modal_in</item>
+        <item name="android:windowExitAnimation">@anim/modal_out</item>
+    </style>
+
     <!-- 选择照片底部弹出层 -->
     <style name="PopupAnimation" parent="android:Animation">
         <item name="android:windowEnterAnimation">@anim/slide_right_in</item>

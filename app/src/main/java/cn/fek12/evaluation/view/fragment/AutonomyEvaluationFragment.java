@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.InputFilter;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import com.cunoraz.tagview.Tag;
 import com.cunoraz.tagview.TagView;
 import com.fek12.basic.base.BaseFragment;
+import com.fek12.basic.utils.toast.ToastUtils;
 import com.google.gson.Gson;
 import com.stx.xmarqueeview.XMarqueeView;
 import com.unnamed.b.atv.model.TreeNode;
@@ -26,8 +28,12 @@ import java.util.Map;
 
 import butterknife.BindView;
 import cn.fek12.evaluation.R;
+import cn.fek12.evaluation.application.MyApplication;
+import cn.fek12.evaluation.model.entity.CheckPaperNameEntity;
 import cn.fek12.evaluation.model.entity.ChildSectionEntity;
 import cn.fek12.evaluation.model.entity.ContainListEntity;
+import cn.fek12.evaluation.model.entity.GenerateTopicEntity;
+import cn.fek12.evaluation.model.entity.PaperIdEntity;
 import cn.fek12.evaluation.model.entity.QueryTopicEntity;
 import cn.fek12.evaluation.model.entity.RecordsEntitiy;
 import cn.fek12.evaluation.model.entity.SubjectEntity;
@@ -38,7 +44,9 @@ import cn.fek12.evaluation.model.holder.AutoTreeChildItemHolder;
 import cn.fek12.evaluation.model.holder.TreeParentItemHolder;
 import cn.fek12.evaluation.presenter.AutonomyEvaluationPresenter;
 import cn.fek12.evaluation.utils.AppUtils;
+import cn.fek12.evaluation.utils.DialogUtils;
 import cn.fek12.evaluation.utils.InputFilterMinMax;
+import cn.fek12.evaluation.view.activity.AnswerWebViewActivity;
 import cn.fek12.evaluation.view.activity.AutonomyEvaluationListActivity;
 import cn.fek12.evaluation.view.adapter.RecordsListAdapter;
 
@@ -120,6 +128,7 @@ public class AutonomyEvaluationFragment extends BaseFragment<AutonomyEvaluationP
     private String subjectId;
     private String semesterId;
     private String textbookId;
+    private String pType;
     private String typePage;
     private ArrayList<Tag> tags = new ArrayList<>();
     private Map<String, TreeNode> treeNodeMap = new HashMap<>();
@@ -131,17 +140,21 @@ public class AutonomyEvaluationFragment extends BaseFragment<AutonomyEvaluationP
     private String multiple = "0";
     private String judge = "0";
     private String topicType = "0";
+    private String subjectName;
 
     private List<ChildSectionEntity> gradeList;
     private List<SubjectEntity.DataBean> subjectList;
     private List<TextbookChildEntity> textBookList;
     private List<ChildSectionEntity> semesterList;
+    private String createPaperJson;
 
-    public void setLists(List<ChildSectionEntity> grades,List<SubjectEntity.DataBean> subjects,List<TextbookChildEntity> textBooks,List<ChildSectionEntity> semesters){
+    public void setLists(List<ChildSectionEntity> grades,List<SubjectEntity.DataBean> subjects,List<TextbookChildEntity> textBooks,List<ChildSectionEntity> semesters,String type,String name){
         gradeList = grades;
         subjectList = subjects;
         textBookList = textBooks;
         semesterList = semesters;
+        pType = type;
+        subjectName = name;
     }
 
     @Override
@@ -162,9 +175,8 @@ public class AutonomyEvaluationFragment extends BaseFragment<AutonomyEvaluationP
         tvSingle.setOnClickListener(onClickListener);
         tvMultiple.setOnClickListener(onClickListener);
         tvJudge.setOnClickListener(onClickListener);
+        tvGenerate.setOnClickListener(onClickListener);
         llContainMarquee.setOnClickListener(onClickListener);
-
-        etSingle1.setFilters(new InputFilter[]{new InputFilterMinMax("0", "200")});
 
         tagGroup.setOnTagClickListener(new TagView.OnTagClickListener() {
             @Override
@@ -194,54 +206,6 @@ public class AutonomyEvaluationFragment extends BaseFragment<AutonomyEvaluationP
         });
     }
 
-
-    public void queryTreeData(String grade, String semester, String subject, String textbook, String type, String userId) {
-        gradeId = grade;
-        semesterId = semester;
-        subjectId = subject;
-        textbookId = textbook;
-        typePage = type;
-        mPresenter.initTreeData(getContext(), gradeId, semesterId, subjectId, textbookId, userId, type);
-        mPresenter.queryRecordsList(getContext(), userId);
-        queryTopic();
-    }
-
-    private void queryTopic() {
-        List<String> knowledges = new ArrayList<>();
-        List<String> years = new ArrayList<>();
-        QueryTopicEntity topicEntity = new QueryTopicEntity();
-        if (tags.size() > 0) {
-            for (Tag tag : tags) {
-                knowledges.add(tag.getId());
-            }
-            topicEntity.setKnowledges(knowledges);
-        }
-
-        if (!thisYear.equals("0")) {
-            years.add(thisYear);
-        }
-
-        if (!lastYear.equals("0")) {
-            years.add(lastYear);
-        }
-
-        if (!earlierYear.equals("0")) {
-            topicEntity.setEarlyYear(tvLastYear.getText().toString());
-            years.add(tvLastYear.getText().toString());
-        }
-
-        if (years.size() > 0) {
-            topicEntity.setYears(years);
-        }
-        topicEntity.setWay(topicType);
-        topicEntity.setGrade(gradeId);
-        topicEntity.setSemester(semesterId);
-        topicEntity.setSubject(subjectId);
-        topicEntity.setTextbook(textbookId);
-        String json = new Gson().toJson(topicEntity);
-        mPresenter.queryTopicCount(getContext(), json);
-    }
-
     @Override
     protected AutonomyEvaluationPresenter onInitLogicImpl() {
         return new AutonomyEvaluationPresenter(this, getContext());
@@ -262,6 +226,9 @@ public class AutonomyEvaluationFragment extends BaseFragment<AutonomyEvaluationP
             tvCountSingle3.setText(difficult > 999 ? "999+道题可用" : difficult + "道题可用");
             tvCountSingle2.setText(common > 999 ? "999+道题可用" : common + "道题可用");
             tvCountSingle1.setText(easy > 999 ? "999+道题可用" : easy + "道题可用");
+            etSingle1.setFilters(new InputFilter[]{new InputFilterMinMax("0", String.valueOf(easy))});
+            etSingle2.setFilters(new InputFilter[]{new InputFilterMinMax("0", String.valueOf(common))});
+            etSingle3.setFilters(new InputFilter[]{new InputFilterMinMax("0", String.valueOf(difficult))});
         }
         TopicCountEntity.DataBean.TopicCountBean multipleBean = entity.getData().getMultiple();
         if (multipleBean != null) {
@@ -271,6 +238,9 @@ public class AutonomyEvaluationFragment extends BaseFragment<AutonomyEvaluationP
             tvCountMultiple3.setText(difficult > 999 ? "999+道题可用" : difficult + "道题可用");
             tvCountMultiple2.setText(common > 999 ? "999+道题可用" : common + "道题可用");
             tvCountMultiple1.setText(easy > 999 ? "999+道题可用" : easy + "道题可用");
+            etMultiple1.setFilters(new InputFilter[]{new InputFilterMinMax("0", String.valueOf(easy))});
+            etMultiple2.setFilters(new InputFilter[]{new InputFilterMinMax("0", String.valueOf(common))});
+            etMultiple3.setFilters(new InputFilter[]{new InputFilterMinMax("0", String.valueOf(difficult))});
         }
         TopicCountEntity.DataBean.TopicCountBean judgeBean = entity.getData().getJudge();
         if (judgeBean != null) {
@@ -280,6 +250,9 @@ public class AutonomyEvaluationFragment extends BaseFragment<AutonomyEvaluationP
             tvCountJudge3.setText(difficult > 999 ? "999+道题可用" : difficult + "道题可用");
             tvCountJudge2.setText(common > 999 ? "999+道题可用" : common + "道题可用");
             tvCountJudge1.setText(easy > 999 ? "999+道题可用" : easy + "道题可用");
+            etJudge1.setFilters(new InputFilter[]{new InputFilterMinMax("0", String.valueOf(easy))});
+            etJudge2.setFilters(new InputFilter[]{new InputFilterMinMax("0", String.valueOf(common))});
+            etJudge3.setFilters(new InputFilter[]{new InputFilterMinMax("0", String.valueOf(difficult))});
         }
     }
 
@@ -448,6 +421,9 @@ public class AutonomyEvaluationFragment extends BaseFragment<AutonomyEvaluationP
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
+                case R.id.tvGenerate://生成试卷
+                    generateTopic();
+                    break;
                 case R.id.llContainMarquee://点击自主测
                     startActivityIntent();
                     break;
@@ -533,9 +509,224 @@ public class AutonomyEvaluationFragment extends BaseFragment<AutonomyEvaluationP
         }
     };
 
+    public void queryTreeData(String grade, String semester, String subject, String textbook, String type, String userId) {
+        gradeId = grade;
+        semesterId = semester;
+        subjectId = subject;
+        textbookId = textbook;
+        typePage = type;
+        mPresenter.initTreeData(getContext(), gradeId, semesterId, subjectId, textbookId, userId, type);
+        mPresenter.queryRecordsList(getContext(), userId);
+        queryTopic();
+    }
+
+    private void generateTopic(){
+        showLoading();
+        if (tags.size() == 0) {
+            ToastUtils.popUpToast("请选择知识点");
+            return;
+        }
+
+        if(topicType.equals("0")){
+            ToastUtils.popUpToast("请选择出卷方式");
+            return;
+        }
+        if(thisYear.equals("0") && lastYear.equals("0") && earlierYear.equals("0")){
+            ToastUtils.popUpToast("请选择年份");
+            return;
+        }
+
+        String paperName = etName.getText().toString();
+        if(TextUtils.isEmpty(paperName)){
+            ToastUtils.popUpToast("请输入试卷名称");
+            return;
+        }
+        if(single.equals("0") && multiple.equals("0") && judge.equals("0")){
+            ToastUtils.popUpToast("请选择题型");
+            return;
+        }
+
+        GenerateTopicEntity topicEntity = new GenerateTopicEntity();
+        boolean isEmptyTopic = false;
+        if(!single.equals("0")){
+            GenerateTopicEntity.SubjectBean singleBean = new GenerateTopicEntity.SubjectBean();
+            String single1 = etSingle1.getText().toString();
+            if(!TextUtils.isEmpty(single1) && !single1.equals("0")){
+                singleBean.setEasy(single1);
+                isEmptyTopic = true;
+            }
+            String single2 = etSingle2.getText().toString();
+            if(!TextUtils.isEmpty(single2) && !single2.equals("0")){
+                singleBean.setCommon(single2);
+                isEmptyTopic = true;
+            }
+            String single3 = etSingle3.getText().toString();
+            if(!TextUtils.isEmpty(single3) && !single3.equals("0")){
+                singleBean.setDifficult(single3);
+                isEmptyTopic = true;
+            }
+            topicEntity.setSingleSubject(singleBean);
+        }
+
+        if(!multiple.equals("0")){
+            GenerateTopicEntity.SubjectBean multipleBean = new GenerateTopicEntity.SubjectBean();
+            String count1 = etMultiple1.getText().toString();
+            if(!TextUtils.isEmpty(count1) && !count1.equals("0")){
+                multipleBean.setEasy(count1);
+                isEmptyTopic = true;
+            }
+            String count2 = etMultiple2.getText().toString();
+            if(!TextUtils.isEmpty(count2) && !count2.equals("0")){
+                multipleBean.setCommon(count2);
+                isEmptyTopic = true;
+            }
+            String count3 = etMultiple3.getText().toString();
+            if(!TextUtils.isEmpty(count3) && !count3.equals("0")){
+                multipleBean.setDifficult(count3);
+                isEmptyTopic = true;
+            }
+            topicEntity.setSingleSubject(multipleBean);
+        }
+
+        if(!judge.equals("0")){
+            GenerateTopicEntity.SubjectBean judgeBean = new GenerateTopicEntity.SubjectBean();
+            String count1 = etJudge1.getText().toString();
+            if(!TextUtils.isEmpty(count1) && !count1.equals("0")){
+                judgeBean.setEasy(count1);
+                isEmptyTopic = true;
+            }
+            String count2 = etJudge2.getText().toString();
+            if(!TextUtils.isEmpty(count2) && !count2.equals("0")){
+                judgeBean.setCommon(count2);
+                isEmptyTopic = true;
+            }
+            String count3 = etJudge3.getText().toString();
+            if(!TextUtils.isEmpty(count3) && !count3.equals("0")){
+                judgeBean.setDifficult(count3);
+                isEmptyTopic = true;
+            }
+            topicEntity.setSingleSubject(judgeBean);
+        }
+        if(!isEmptyTopic){
+            ToastUtils.popUpToast("请输入题量");
+            return;
+        }
+
+        List<String> knowledges = new ArrayList<>();
+        List<String> years = new ArrayList<>();
+        if (tags.size() > 0) {
+            for (Tag tag : tags) {
+                knowledges.add(tag.getId());
+            }
+            topicEntity.setKnowledges(knowledges);
+        }
+
+        if (!thisYear.equals("0")) {
+            years.add(thisYear);
+        }
+
+        if (!lastYear.equals("0")) {
+            years.add(lastYear);
+        }
+
+        if (!earlierYear.equals("0")) {
+            topicEntity.setEarlyYear(tvLastYear.getText().toString());
+            years.add(tvLastYear.getText().toString());
+        }
+
+        if (years.size() > 0) {
+            topicEntity.setYears(years);
+        }
+
+        topicEntity.setPtype(pType);
+        topicEntity.setPaperName(paperName);
+        topicEntity.setSubjectName(subjectName);
+        topicEntity.setUserId(MyApplication.getMyApplication().getUserId());
+        topicEntity.setWay(topicType);
+        topicEntity.setGrade(gradeId);
+        topicEntity.setSemester(semesterId);
+        topicEntity.setSubject(subjectId);
+        topicEntity.setTextbook(textbookId);
+        createPaperJson = new Gson().toJson(topicEntity);
+
+        mPresenter.checkPaperName(getContext(),paperName,MyApplication.getMyApplication().getUserId());
+    }
+
+    private void queryTopic() {
+        List<String> knowledges = new ArrayList<>();
+        List<String> years = new ArrayList<>();
+        QueryTopicEntity topicEntity = new QueryTopicEntity();
+        if (tags.size() > 0) {
+            for (Tag tag : tags) {
+                knowledges.add(tag.getId());
+            }
+            topicEntity.setKnowledges(knowledges);
+        }
+
+        if (!thisYear.equals("0")) {
+            years.add(thisYear);
+        }
+
+        if (!lastYear.equals("0")) {
+            years.add(lastYear);
+        }
+
+        if (!earlierYear.equals("0")) {
+            topicEntity.setEarlyYear(tvLastYear.getText().toString());
+            years.add(tvLastYear.getText().toString());
+        }
+
+        if (years.size() > 0) {
+            topicEntity.setYears(years);
+        }
+        topicEntity.setWay(topicType);
+        topicEntity.setGrade(gradeId);
+        topicEntity.setSemester(semesterId);
+        topicEntity.setSubject(subjectId);
+        topicEntity.setTextbook(textbookId);
+        String json = new Gson().toJson(topicEntity);
+        mPresenter.queryTopicCount(getContext(), json);
+    }
+
+    @Override
+    public void loadPaperSuc(PaperIdEntity entity) {
+        hideLoading();
+        /**弹出提醒框*/
+        DialogUtils.showAnswerRemind(getContext(), new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                /**跳转页面答题*/
+                startActivity(new Intent(getContext(), AnswerWebViewActivity.class));
+            }
+        });
+    }
+
+    @Override
+    public void loadCheckPaperNameSuc(CheckPaperNameEntity entity) {
+        if(!entity.isData()){
+            /**生成试卷*/
+            mPresenter.saveStudentPaper(getContext(),createPaperJson);
+        }else{
+            hideLoading();
+            ToastUtils.popUpToast("试卷名称重复!");
+        }
+    }
+
     @Override
     public void loadRecordsListEmpty() {
 
+    }
+
+    @Override
+    public void loadPaperEmpty() {
+        hideLoading();
+        ToastUtils.popUpToast("试卷生成失败!");
+    }
+
+    @Override
+    public void loadCheckPaperNameEmpty() {
+        hideLoading();
+        ToastUtils.popUpToast("试卷名称异常!");
     }
 
     @Override

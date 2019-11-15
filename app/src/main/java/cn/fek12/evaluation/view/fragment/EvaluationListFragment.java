@@ -73,6 +73,7 @@ public class EvaluationListFragment extends BaseFragment<EvaluationListPresenter
     private SectionedRecyclerViewAdapter leftAdapter;
     private String gradeId;
     private String subjectId;
+    private String subjectName;
     private String semesterId = "";
     private String textbookId;
     private List<Fragment> fragments = new ArrayList<>();
@@ -199,6 +200,7 @@ public class EvaluationListFragment extends BaseFragment<EvaluationListPresenter
             @Override
             public void onSelectItme(int pos) {
                 subjectId = String.valueOf(subjectList.get(pos).getId());
+                subjectName = subjectList.get(pos).getName();
                 leftAdapter.getAdapterForSection("subject").notifyAllItemsChanged("payloads");
 
                 mPresenter.queryTextBookList(getContext(),gradeId,subjectId);
@@ -281,6 +283,7 @@ public class EvaluationListFragment extends BaseFragment<EvaluationListPresenter
             loadView.showContent();
             tagPos = gradeList.size() + subjectList.size();
             subjectId = String.valueOf(subjectList.get(0).getId());
+            subjectName = subjectList.get(0).getName();
 
             subjectSection.updateList(subjectList);
 
@@ -304,6 +307,7 @@ public class EvaluationListFragment extends BaseFragment<EvaluationListPresenter
             leftAdapter.notifyDataSetChanged();
         }else{
             subjectId = null;
+            subjectName = null;
             subjectSection.updateList(null);
             textbookId = null;
             tagChildSection.updateList(null);
@@ -411,7 +415,7 @@ public class EvaluationListFragment extends BaseFragment<EvaluationListPresenter
                 int currentItme = mViewPager.getCurrentItem();
                 AutonomyEvaluationFragment fragment = (AutonomyEvaluationFragment) baseFragment;
                 fragment.queryTreeData(gradeId,semesterId,subjectId,textbookId,mTitleData.get(currentItme).getValue(), MyApplication.getMyApplication().getUserId());
-                fragment.setLists(gradeList,subjectList,textBookList,semesterList);
+                fragment.setLists(gradeList,subjectList,textBookList,semesterList,mTitleData.get(currentItme).getId(),subjectName);
             }
         }
 

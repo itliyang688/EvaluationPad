@@ -2,7 +2,9 @@ package cn.fek12.evaluation.view.adapter;
 
 import android.graphics.Color;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -86,11 +88,25 @@ public class EvaluationPaperSection extends Section {
                 itemHolder.image.setImageResource(0);
             }
         }
+
+        itemHolder.rootView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(mOnSelectItmeListener != null){
+                    mOnSelectItmeListener.onSelectItme(position);
+                }
+            }
+        });
     }
 
     @Override
     public void onBindHeaderViewHolder(RecyclerView.ViewHolder holder) {
         MyHeaderViewHolder holderHolder = (MyHeaderViewHolder) holder;
+        if(mList.size() == 0){
+            holderHolder.rootView.setVisibility(View.GONE);
+            return;
+        }
+        holderHolder.rootView.setVisibility(View.VISIBLE);
         if (mTypePage == TYPE_HOT) {
             holderHolder.header.setText("热门测评");
             holderHolder.header.setCompoundDrawablesWithIntrinsicBounds(
@@ -129,21 +145,25 @@ public class EvaluationPaperSection extends Section {
         private TextView title;
         private TextView time;
         private ImageView image;
+        private LinearLayout rootView;
         public MyItemViewHolder(View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.title);
             time = itemView.findViewById(R.id.time);
             image = itemView.findViewById(R.id.image);
+            rootView = itemView.findViewById(R.id.rootView);
         }
     }
 
     class MyHeaderViewHolder extends RecyclerView.ViewHolder {
         private TextView header;
         private TextView tvMore;
+        private FrameLayout rootView;
         public MyHeaderViewHolder(View itemView) {
             super(itemView);
             header = itemView.findViewById(R.id.header);
             tvMore = itemView.findViewById(R.id.tvMore);
+            rootView = itemView.findViewById(R.id.rootView);
         }
     }
 }

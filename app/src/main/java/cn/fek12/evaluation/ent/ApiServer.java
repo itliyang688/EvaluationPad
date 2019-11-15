@@ -2,11 +2,13 @@ package cn.fek12.evaluation.ent;
 
 import cn.fek12.evaluation.model.entity.AWeekEntity;
 import cn.fek12.evaluation.model.entity.AssessmentIndexPaperResp;
+import cn.fek12.evaluation.model.entity.CheckPaperNameEntity;
 import cn.fek12.evaluation.model.entity.ConqueredEntity;
 import cn.fek12.evaluation.model.entity.EarlierEntity;
 import cn.fek12.evaluation.model.entity.EvaluationListEntity;
 import cn.fek12.evaluation.model.entity.GradeDictionaryListEntity;
 import cn.fek12.evaluation.model.entity.HomeEvaluationDeta;
+import cn.fek12.evaluation.model.entity.PaperIdEntity;
 import cn.fek12.evaluation.model.entity.PaperTypeListResp;
 import cn.fek12.evaluation.model.entity.QueryTopicEntity;
 import cn.fek12.evaluation.model.entity.RecordsEntitiy;
@@ -91,6 +93,14 @@ public interface ApiServer {
     @POST("independent/usableSubjectNum")
     Observable<TopicCountEntity> queryTopicCount(@Body RequestBody reqJson);
 
+    /**
+     * 生成试卷
+     */
+    //@FormUrlEncoded
+    //@Headers({"Content-Type: application/json","Accept: application/json"})
+    @POST("independent/saveStudentPaper")
+    Observable<PaperIdEntity> saveStudentPaper(@Body RequestBody reqJson);
+
 
     @FormUrlEncoded
     @POST("assessment/indexPaper")
@@ -129,6 +139,11 @@ public interface ApiServer {
                                              @Query("subject") String subject,
                                              @Query("textbook") String textbook,
                                              @Query("userId") String userId);
+
+    /**检查试卷名称是否重复*/
+    @GET("independent/checkPaperName")
+    Observable<CheckPaperNameEntity> checkPaperName(@Query("paperName") String paperName ,
+                                                    @Query("userId") String userId);
 
     @FormUrlEncoded
     @POST("assessment/paperList")

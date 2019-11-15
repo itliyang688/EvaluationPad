@@ -2,7 +2,9 @@ package cn.fek12.evaluation.utils;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 
 import cn.fek12.evaluation.R;
 
@@ -14,6 +16,32 @@ import cn.fek12.evaluation.R;
 public class DialogUtils {
     private static String mDialogTag = "dialog";
     private static Dialog loadingDialog;
+
+    /***
+     *答题提醒对话框
+     */
+    public static Dialog showAnswerRemind(Context mContext,final View.OnClickListener cl) {
+        final Dialog dialog = new Dialog(mContext, R.style.dialog_anim);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.answer_remind_dialog, null);
+        dialog.setContentView(view);
+        view.findViewById(R.id.tvAnswer).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cl.onClick(v);
+                dialog.dismiss();
+            }
+        });
+        view.findViewById(R.id.tvCancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                dialog.dismiss();
+            }
+        });
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        dialog.show();
+        return dialog;
+    }
 
     /**
      * 显示一个自定义的对话框(无背景层)

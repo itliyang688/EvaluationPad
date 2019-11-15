@@ -8,7 +8,9 @@ import cn.fek12.evaluation.base.BaseObserver;
 import cn.fek12.evaluation.ent.ApiRetrofit;
 import cn.fek12.evaluation.ent.RxHelper;
 import cn.fek12.evaluation.impl.IAutonomyEvaluation;
+import cn.fek12.evaluation.model.entity.CheckPaperNameEntity;
 import cn.fek12.evaluation.model.entity.HomeEvaluationDeta;
+import cn.fek12.evaluation.model.entity.PaperIdEntity;
 import cn.fek12.evaluation.model.entity.QueryTopicEntity;
 import cn.fek12.evaluation.model.entity.RecordsEntitiy;
 import cn.fek12.evaluation.model.entity.TopicCountEntity;
@@ -74,9 +76,9 @@ public class AutonomyEvaluationPresenter extends BasePresenter<IAutonomyEvaluati
     }
 
     @Override
-    public void queryTopicCount(Context context, String jsonBody) {
+    public void queryTopicCount(Context context, String json) {
         MediaType parse = MediaType.parse("application/json; charset=utf-8");
-        RequestBody body = RequestBody.create(parse,jsonBody);
+        RequestBody body = RequestBody.create(parse,json);
         ApiRetrofit.getInstance().getApiService().queryTopicCount(body)
                 .compose(RxHelper.observableIO2Main(context))
                 .subscribe(new BaseObserver<TopicCountEntity>() {
@@ -93,6 +95,52 @@ public class AutonomyEvaluationPresenter extends BasePresenter<IAutonomyEvaluati
                     @Override
                     public void onError(String msg) {
                         infoView.loadTopicCountEmpty();
+                    }
+                });
+    }
+
+    @Override
+    public void saveStudentPaper(Context context, String json) {
+        MediaType parse = MediaType.parse("application/json; charset=utf-8");
+        RequestBody body = RequestBody.create(parse,json);
+        ApiRetrofit.getInstance().getApiService().saveStudentPaper(body)
+                .compose(RxHelper.observableIO2Main(context))
+                .subscribe(new BaseObserver<PaperIdEntity>() {
+
+                    @Override
+                    public void onSuccess(PaperIdEntity entity) {
+                        if(entity.getState().equals("0")){
+                            infoView.loadPaperSuc(entity);
+                        }else{
+                            infoView.loadPaperEmpty();
+                        }
+                    }
+
+                    @Override
+                    public void onError(String msg) {
+                        infoView.loadPaperEmpty();
+                    }
+                });
+    }
+
+    @Override
+    public void checkPaperName(Context context, String paperName, String userId) {
+        ApiRetrofit.getInstance().getApiService().checkPaperName(paperName,userId)
+                .compose(RxHelper.observableIO2Main(context))
+                .subscribe(new BaseObserver<CheckPaperNameEntity>() {
+
+                    @Override
+                    public void onSuccess(CheckPaperNameEntity entity) {
+                        if(entity.getState().equals("0")){
+                            infoView.loadCheckPaperNameSuc(entity);
+                        }else{
+                            infoView.loadCheckPaperNameEmpty();
+                        }
+                    }
+
+                    @Override
+                    public void onError(String msg) {
+                        infoView.loadCheckPaperNameEmpty();
                     }
                 });
     }

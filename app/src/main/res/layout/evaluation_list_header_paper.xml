@@ -1,32 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="22dp"
-    android:layout_marginTop="6dp"
-    android:layout_marginBottom="2dp"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
+    <FrameLayout
+        android:id="@+id/rootView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_22"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="2dp">
+        <TextView
+            android:id="@+id/header"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_paper_header"
+            android:drawableLeft="@drawable/ic_paper_header_hot"
+            android:drawablePadding="6dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dp"
+            android:text="热门测评"
+            android:textColor="#188C6A"
+            android:textSize="10sp" />
 
-    <TextView
-        android:id="@+id/header"
-        android:layout_width="80dp"
-        android:layout_height="match_parent"
-        android:background="@drawable/bg_paper_header"
-        android:drawableLeft="@drawable/ic_paper_header_hot"
-        android:drawablePadding="6dp"
-        android:gravity="center_vertical"
-        android:paddingLeft="10dp"
-        android:text="热门测评"
-        android:textColor="#188C6A"
-        android:textSize="10sp" />
+        <TextView
+            android:id="@+id/tvMore"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="right|center_vertical"
+            android:gravity="center"
+            android:layout_marginRight="15dp"
+            android:text="查看更多"
+            android:textColor="#ff06bb86"
+            android:textSize="12sp" />
+    </FrameLayout>
 
-    <TextView
-        android:id="@+id/tvMore"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="right|center_vertical"
-        android:gravity="center"
-        android:layout_marginRight="15dp"
-        android:text="查看更多"
-        android:textColor="#ff06bb86"
-        android:textSize="12sp" />
 </FrameLayout>
