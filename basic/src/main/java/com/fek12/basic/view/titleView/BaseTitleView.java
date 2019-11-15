@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.fek12.basic.R;
+import com.fek12.basic.utils.baseUtils.BaseAppUtils;
 import com.fek12.basic.utils.resources.ResUtils;
 import com.fek12.basic.utils.window.WindowUtils;
 
@@ -49,7 +50,7 @@ public class BaseTitleView extends FrameLayout {
         mMiddleTitle = (TextView) findViewById(R.id.tv_middle_title);
         mRightTitleGroup = (LinearLayout) findViewById(R.id.ll_right_title_group);
 
-        ViewGroup.LayoutParams params = mRootView.getLayoutParams();
+        /*ViewGroup.LayoutParams params = mRootView.getLayoutParams();
         ViewGroup.MarginLayoutParams marginParams = null;
         //获取view的margin设置参数
         if (params instanceof ViewGroup.MarginLayoutParams) {
@@ -58,30 +59,11 @@ public class BaseTitleView extends FrameLayout {
             //不存在时创建一个新的参数
             marginParams = new ViewGroup.MarginLayoutParams(params);
         }
-        int top = getStatusBarHeight(getContext());//获取状态栏高度
+        int top = BaseAppUtils.getStatusBarHeight(getContext());//获取状态栏高度
         //设置margin
         marginParams.setMargins(0, top, 0, 0);
-        mRootView.setLayoutParams(marginParams);
+        mRootView.setLayoutParams(marginParams);*/
     }
-
-    //获取状态栏高度
-    public static int getStatusBarHeight(Context context) {
-        Class<?> c = null;
-        Object obj = null;
-        Field field = null;
-        int x = 0, statusBarHeight = 0;
-        try {
-            c = Class.forName("com.android.internal.R$dimen");
-            obj = c.newInstance();
-            field = c.getField("status_bar_height");
-            x = Integer.parseInt(field.get(obj).toString());
-            statusBarHeight = context.getResources().getDimensionPixelSize(x);
-        } catch (Exception e1) {
-            e1.printStackTrace();
-        }
-        return statusBarHeight;
-    }
-
     /**
      * 添加右侧文字按钮
      *
@@ -156,53 +138,6 @@ public class BaseTitleView extends FrameLayout {
         return imageView;
     }
 
-    /**
-     * 设置左侧标题,默认启用返回按钮
-     *
-     * @param title 中间标题名称
-     */
-    public TextView setLeftTitle(String title) {
-        return setLeftTitle(title, new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((Activity) getContext()).finish();
-            }
-        });
-    }
-
-    /**
-     * 设置左侧标题,默认启用返回按钮
-     *
-     * @param title 中间标题名称
-     */
-    public TextView setLeftTitleAndLeftIcon(String title, int leftImg) {
-        TextView textView = setLeftTitle(title, new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((Activity) getContext()).finish();
-            }
-        });
-        ImageView leftBack = (ImageView) findViewById(R.id.iv_left_back);
-        leftBack.setImageResource(leftImg);
-        return textView;
-    }
-
-    /**
-     * 设置左侧标题,默认启用返回按钮
-     *
-     * @param title 中间标题名称
-     */
-    public TextView setLeftTitle(String title, OnClickListener onClickListener) {
-        View leftBack = findViewById(R.id.iv_left_back);
-        View leftDivisionLine = findViewById(R.id.v_left_division_line);
-        TextView leftTitle = (TextView) findViewById(R.id.tv_left_title);
-        leftBack.setVisibility(VISIBLE);
-        leftTitle.setVisibility(VISIBLE);
-        leftDivisionLine.setVisibility(VISIBLE);
-        leftTitle.setText(title);
-        leftBack.setOnClickListener(onClickListener);
-        return leftTitle;
-    }
 
     /**
      * 设置中间标题

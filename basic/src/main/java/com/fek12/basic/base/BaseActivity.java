@@ -77,7 +77,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends RxAppCompatA
         mViewRoot.setOrientation(LinearLayout.VERTICAL);
         boolean fitsSystemWindows = getFitsSystemWindows();
         immersionInit(fitsSystemWindows ? R.color.transparent : R.color.transparent);
-        //mViewRoot.setFitsSystemWindows(fitsSystemWindows);
+        mViewRoot.setFitsSystemWindows(fitsSystemWindows);
         setContentView(mViewRoot);
         getLayoutInflater().inflate(setLayoutResource(), mViewRoot);
         BaseApplication.getApp().addActivity(this);

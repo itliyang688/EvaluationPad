@@ -2737,11 +2737,10 @@ int id uniform 0x7f0b00dd
 int id unlabeled 0x7f0b00de
 int id up 0x7f0b00df
 int id useLogo 0x7f0b00e0
-int id v_left_division_line 0x7f0b00e1
-int id view_offset_helper 0x7f0b00e2
-int id visible 0x7f0b00e3
-int id withText 0x7f0b00e4
-int id wrap_content 0x7f0b00e5
+int id view_offset_helper 0x7f0b00e1
+int id visible 0x7f0b00e2
+int id withText 0x7f0b00e3
+int id wrap_content 0x7f0b00e4
 int integer abc_config_activityDefaultDur 0x7f0c0001
 int integer abc_config_activityShortDur 0x7f0c0002
 int integer abc_max_action_buttons 0x7f0c0003

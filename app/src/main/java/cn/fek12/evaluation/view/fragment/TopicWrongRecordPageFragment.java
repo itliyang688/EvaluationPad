@@ -21,6 +21,7 @@ import butterknife.BindView;
 import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.view.activity.MainActivity;
 import cn.fek12.evaluation.view.activity.WebViewActivity;
+import cn.fek12.evaluation.view.widget.ImageWebView;
 
 /**
  * @ProjectName: EvaluationPad
@@ -31,7 +32,7 @@ import cn.fek12.evaluation.view.activity.WebViewActivity;
  */
 public class TopicWrongRecordPageFragment extends BaseFragment {
     @BindView(R.id.webView)
-    WebView webView;
+    ImageWebView webView;
 
     /*public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -68,7 +69,9 @@ public class TopicWrongRecordPageFragment extends BaseFragment {
         webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         webSettings.setTextZoom(100);
         webSettings.setLoadWithOverviewMode(true);
-        webView.loadUrl("http://192.168.0.83:11111/index.html");
+        // 使WebView不可滚动
+        //webView.setOnTouchListener((v, event) -> (event.getAction() == MotionEvent.ACTION_MOVE));
+        webView.loadUrl("http://192.168.0.46:11111/index.html");
         //webView.loadUrl("file:///android_asset/web/Record.html");
         startActivity(new Intent(getContext(), WebViewActivity.class));
         //BaseActivity activity = (BaseActivity) getActivity();

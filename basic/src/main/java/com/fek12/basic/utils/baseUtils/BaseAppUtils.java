@@ -1,8 +1,11 @@
 package com.fek12.basic.utils.baseUtils;
 
+import android.content.Context;
 import android.content.pm.ApplicationInfo;
 
 import com.fek12.basic.application.BaseApplication;
+
+import java.lang.reflect.Field;
 
 /**
  * @author liyang
@@ -24,4 +27,23 @@ public class BaseAppUtils {
         ApplicationInfo info = BaseApplication.getApp().getApplicationInfo();
         return (info.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
     }
+
+    //获取状态栏高度
+    public static int getStatusBarHeight(Context context) {
+        Class<?> c = null;
+        Object obj = null;
+        Field field = null;
+        int x = 0, statusBarHeight = 0;
+        try {
+            c = Class.forName("com.android.internal.R$dimen");
+            obj = c.newInstance();
+            field = c.getField("status_bar_height");
+            x = Integer.parseInt(field.get(obj).toString());
+            statusBarHeight = context.getResources().getDimensionPixelSize(x);
+        } catch (Exception e1) {
+            e1.printStackTrace();
+        }
+        return statusBarHeight;
+    }
+
 }
