@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:zhy="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rootView"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -10,10 +11,13 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-        <ImageView
+        <cn.fek12.evaluation.view.widget.RoundImageView
             android:id="@+id/ivCover"
             android:layout_width="@dimen/dp_100"
             android:layout_height="@dimen/dp_75"
+            zhy:borderRadius="10dp"
+            android:scaleType="centerCrop"
+            zhy:type="round"
             android:src="@mipmap/presentation_empty_bg"/>
         <ImageView
             android:layout_width="@dimen/dp_30"
@@ -36,7 +40,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/color_999"
         android:layout_marginTop="@dimen/dp_3"
-        android:text="数学"
+        android:text=""
         android:textSize="@dimen/sp_10"/>
     <LinearLayout
         android:layout_width="@dimen/dp_100"
@@ -51,7 +55,7 @@
             android:layout_weight="1"
             android:textColor="@color/color_999"
             android:layout_alignParentLeft="true"
-            android:text="2019-11-02"
+            android:text=""
             android:textSize="@dimen/sp_10"/>
 
         <ImageView
@@ -65,7 +69,7 @@
             android:textColor="@color/app_bg"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="@dimen/dp_2"
-            android:text="5003"
+            android:text=""
             android:textSize="@dimen/sp_10"/>
     </LinearLayout>
 

@@ -5,9 +5,7 @@ import android.content.Context;
 import com.fek12.basic.base.BaseView;
 
 import cn.fek12.evaluation.model.entity.CheckPaperNameEntity;
-import cn.fek12.evaluation.model.entity.HomeEvaluationDeta;
-import cn.fek12.evaluation.model.entity.PaperIdEntity;
-import cn.fek12.evaluation.model.entity.QueryTopicEntity;
+import cn.fek12.evaluation.model.entity.CommonEntity;
 import cn.fek12.evaluation.model.entity.RecordsEntitiy;
 import cn.fek12.evaluation.model.entity.TopicCountEntity;
 import cn.fek12.evaluation.model.entity.TreeDataEntity;
@@ -21,7 +19,7 @@ public interface IAutonomyEvaluation {
     interface View extends BaseView {
         void loadTopicCountSuc(TopicCountEntity entity);
         void loadRecordsListSuc(RecordsEntitiy entity);
-        void loadPaperSuc(PaperIdEntity entity);
+        void loadPaperSuc(CommonEntity entity);
         void loadCheckPaperNameSuc(CheckPaperNameEntity entity);
         void loadTreeSuc(TreeDataEntity entity);
         void loadTreeFail();

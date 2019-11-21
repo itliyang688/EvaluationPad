@@ -14,10 +14,13 @@ import java.util.List;
 
 import butterknife.BindView;
 import cn.fek12.evaluation.R;
+import cn.fek12.evaluation.impl.IMicroLessonPage;
 import cn.fek12.evaluation.model.entity.ChildSectionEntity;
 import cn.fek12.evaluation.model.entity.ContainListEntity;
+import cn.fek12.evaluation.model.entity.MicroLessonEnetity;
 import cn.fek12.evaluation.model.entity.SubjectEntity;
 import cn.fek12.evaluation.model.entity.TextbookChildEntity;
+import cn.fek12.evaluation.presenter.MicroLessonPagePresenter;
 import cn.fek12.evaluation.view.activity.FullScreenVideoPlayActivity;
 import cn.fek12.evaluation.view.activity.MicroLessonMoreActivity;
 import cn.fek12.evaluation.view.activity.SpecialVideoActivity;
@@ -32,7 +35,7 @@ import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapt
  * @Description:
  * @CreateDate: 2019/11/8 11:20
  */
-public class MicroLessonPageFragment extends BaseFragment {
+public class MicroLessonPageFragment extends BaseFragment<MicroLessonPagePresenter> implements IMicroLessonPage.View {
     @BindView(R.id.contentView)
     RecyclerView contentView;
     @BindView(R.id.load_view)
@@ -59,11 +62,18 @@ public class MicroLessonPageFragment extends BaseFragment {
     }
 
     public void queryIndexPagerData(String grade, String semester, String subject, String textbook, String userId) {
-        //loadView.showLoading();
         this.gradeId = grade;
         this.semesterId = semester;
         this.subjectId = subject;
         this.textbookId = textbook;
+        loadView.showLoading();
+        if(mTypePage == 0){
+            mPresenter.queryAllVideo(getContext(),grade,semester,subject,textbook,userId);
+        }else if(mTypePage == 2){
+            mPresenter.querySpecialVideo(getContext(),grade,semester,subject,textbook,userId);
+        }else if(mTypePage == 3){
+            mPresenter.querySpecialVideo(getContext(),grade,semester,subject,textbook,userId);
+        }
     }
 
     @Override
@@ -87,28 +97,41 @@ public class MicroLessonPageFragment extends BaseFragment {
         contentView.setLayoutManager(manager);
         adapter = new SectionedRecyclerViewAdapter();
         contentView.setAdapter(adapter);
+        initAdapter();
+    }
 
-        adapter.addSection(new VideoItemSection(null, 1, new VideoItemSection.OnSelectItmeListener() {
-            @Override
-            public void onSelectItme(int pos) {
-                if(mTypePage == 2){//专题视频
-                    Intent intent = new Intent(getContext(), SpecialVideoActivity.class);
-                    startActivity(intent);
-                }else{
-                    Intent intent = new Intent(getContext(), FullScreenVideoPlayActivity.class);
-                    startActivity(intent);
-                }
+    @Override
+    public void loadVideoSuc(MicroLessonEnetity entry) {
+        loadView.showContent();
+        if(entry.getData() != null){
+            List<MicroLessonEnetity.DataBean.VideoBean> hotList = entry.getData().getHot();
+            if(hotList != null && hotList.size() > 0){
+                VideoItemSection itemSection = (VideoItemSection) adapter.getSection("hot");
+                itemSection.updateList(hotList);
+                adapter.getAdapterForSection("hot").notifyAllItemsChanged("payloads");
             }
 
-            @Override
-            public void onMore() {/**热门视频查看更多*/
-                //Intent intent = new Intent(getContext(), FullScreenVideoPlayActivity.class);
-                startActivityIntent("热门视频");
-                if(mTypePage == 0){
-
-                }
+            List<MicroLessonEnetity.DataBean.VideoBean> nearList = entry.getData().getNear();
+            if(nearList != null && nearList.size() > 0){
+                VideoItemSection itemSection = (VideoItemSection) adapter.getSection("near");
+                itemSection.updateList(nearList);
+                adapter.getAdapterForSection("near").notifyAllItemsChanged("payloads");
             }
-        }));
+
+            List<MicroLessonEnetity.DataBean.VideoBean> recommonedList = entry.getData().getRecommoned();
+            if(recommonedList != null && recommonedList.size() > 0){
+                VideoItemSection itemSection = (VideoItemSection) adapter.getSection("recommoned");
+                itemSection.updateList(recommonedList);
+                adapter.getAdapterForSection("recommoned").notifyAllItemsChanged("payloads");
+            }
+        }else{
+            loadView.showEmpty();
+        }
+    }
+
+    @Override
+    public void loadVideoEmpty() {
+        loadView.showEmpty();
     }
 
     private void startActivityIntent(String titleName) {
@@ -134,12 +157,80 @@ public class MicroLessonPageFragment extends BaseFragment {
     }
 
     @Override
-    protected BasePresenter onInitLogicImpl() {
-        return null;
+    protected MicroLessonPagePresenter onInitLogicImpl() {
+        return new MicroLessonPagePresenter(this, getContext());
     }
 
     @Override
     public boolean onBackPressed() {
         return false;
+    }
+
+    private void initAdapter(){
+        adapter.addSection("hot",new VideoItemSection(1, new VideoItemSection.OnSelectItmeListener() {
+            @Override
+            public void onSelectItme(int pos) {
+                if(mTypePage == 2){//专题视频
+                    Intent intent = new Intent(getContext(), SpecialVideoActivity.class);
+                    startActivity(intent);
+                }else{
+                    Intent intent = new Intent(getContext(), FullScreenVideoPlayActivity.class);
+                    startActivity(intent);
+                }
+            }
+
+            @Override
+            public void onMore() {/**热门视频查看更多*/
+                //Intent intent = new Intent(getContext(), FullScreenVideoPlayActivity.class);
+                startActivityIntent("热门视频");
+                if(mTypePage == 0){
+
+                }
+            }
+        }));
+
+        adapter.addSection("near",new VideoItemSection(2, new VideoItemSection.OnSelectItmeListener() {
+            @Override
+            public void onSelectItme(int pos) {
+                if(mTypePage == 2){//专题视频
+                    Intent intent = new Intent(getContext(), SpecialVideoActivity.class);
+                    startActivity(intent);
+                }else{
+                    Intent intent = new Intent(getContext(), FullScreenVideoPlayActivity.class);
+                    startActivity(intent);
+                }
+            }
+
+            @Override
+            public void onMore() {/**热门视频查看更多*/
+                //Intent intent = new Intent(getContext(), FullScreenVideoPlayActivity.class);
+                startActivityIntent("热门视频");
+                if(mTypePage == 0){
+
+                }
+            }
+        }));
+
+        adapter.addSection("recommoned",new VideoItemSection(3, new VideoItemSection.OnSelectItmeListener() {
+            @Override
+            public void onSelectItme(int pos) {
+                if(mTypePage == 2){//专题视频
+                    Intent intent = new Intent(getContext(), SpecialVideoActivity.class);
+                    startActivity(intent);
+                }else{
+                    Intent intent = new Intent(getContext(), FullScreenVideoPlayActivity.class);
+                    startActivity(intent);
+                }
+            }
+
+            @Override
+            public void onMore() {/**热门视频查看更多*/
+                //Intent intent = new Intent(getContext(), FullScreenVideoPlayActivity.class);
+                startActivityIntent("热门视频");
+                if(mTypePage == 0){
+
+                }
+            }
+        }));
     }
 }

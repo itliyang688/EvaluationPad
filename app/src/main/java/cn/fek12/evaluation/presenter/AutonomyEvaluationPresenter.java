@@ -9,9 +9,7 @@ import cn.fek12.evaluation.ent.ApiRetrofit;
 import cn.fek12.evaluation.ent.RxHelper;
 import cn.fek12.evaluation.impl.IAutonomyEvaluation;
 import cn.fek12.evaluation.model.entity.CheckPaperNameEntity;
-import cn.fek12.evaluation.model.entity.HomeEvaluationDeta;
-import cn.fek12.evaluation.model.entity.PaperIdEntity;
-import cn.fek12.evaluation.model.entity.QueryTopicEntity;
+import cn.fek12.evaluation.model.entity.CommonEntity;
 import cn.fek12.evaluation.model.entity.RecordsEntitiy;
 import cn.fek12.evaluation.model.entity.TopicCountEntity;
 import cn.fek12.evaluation.model.entity.TreeDataEntity;
@@ -105,10 +103,10 @@ public class AutonomyEvaluationPresenter extends BasePresenter<IAutonomyEvaluati
         RequestBody body = RequestBody.create(parse,json);
         ApiRetrofit.getInstance().getApiService().saveStudentPaper(body)
                 .compose(RxHelper.observableIO2Main(context))
-                .subscribe(new BaseObserver<PaperIdEntity>() {
+                .subscribe(new BaseObserver<CommonEntity>() {
 
                     @Override
-                    public void onSuccess(PaperIdEntity entity) {
+                    public void onSuccess(CommonEntity entity) {
                         if(entity.getState().equals("0")){
                             infoView.loadPaperSuc(entity);
                         }else{

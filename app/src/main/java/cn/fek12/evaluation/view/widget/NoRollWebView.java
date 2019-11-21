@@ -12,16 +12,16 @@ import android.webkit.WebView;
  * @CreateDate: 2019/11/15 19:16
  */
 
-public class ImageWebView extends WebView {
-    public ImageWebView(Context context) {
+public class NoRollWebView extends WebView {
+    public NoRollWebView(Context context) {
         super(context);
     }
 
-    public ImageWebView(Context context, AttributeSet attrs) {
+    public NoRollWebView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public ImageWebView(Context context, AttributeSet attrs, int defStyle) {
+    public NoRollWebView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
 

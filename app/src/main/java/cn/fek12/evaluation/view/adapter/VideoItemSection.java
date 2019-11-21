@@ -1,5 +1,6 @@
 package cn.fek12.evaluation.view.adapter;
 
+import android.graphics.Bitmap;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -11,6 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.fek12.evaluation.R;
+import cn.fek12.evaluation.model.entity.MicroLessonEnetity;
+import cn.fek12.evaluation.utils.VideoUtils;
+import cn.fek12.evaluation.view.widget.RoundImageView;
 import io.github.luizgrp.sectionedrecyclerviewadapter.Section;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionParameters;
 
@@ -22,6 +26,7 @@ import io.github.luizgrp.sectionedrecyclerviewadapter.SectionParameters;
  * @CreateDate: 2019/10/28 16:22
  */
 public class VideoItemSection extends Section {
+    private List<MicroLessonEnetity.DataBean.VideoBean> mList = new ArrayList<>();
     private int mTypePage;
     private int TYPE_HOT = 1;//热门
     private int TYPE_UPDATE = 2;//最近更新
@@ -31,20 +36,22 @@ public class VideoItemSection extends Section {
         void onSelectItme(int pos);
         void onMore();
     }
-    List mList = new ArrayList<>();
-    public VideoItemSection(List list, int typePage, OnSelectItmeListener onSelectItmeListener) {
+    public VideoItemSection(int typePage, OnSelectItmeListener onSelectItmeListener) {
         super(SectionParameters.builder()
                 .itemResourceId(R.layout.video_item)
                 .headerResourceId(R.layout.evaluation_list_header_paper)
                 .build());
-        mList = list;
         mTypePage = typePage;
         mOnSelectItmeListener = onSelectItmeListener;
     }
 
+    public void updateList( List<MicroLessonEnetity.DataBean.VideoBean> list){
+        mList = list;
+    }
+
     @Override
     public int getContentItemsTotal() {
-        return 20;
+        return mList.size();
     }
 
     @Override
@@ -63,6 +70,11 @@ public class VideoItemSection extends Section {
                 }
             }
         });
+        itemHolder.tvName.setText(mList.get(position).getVideoName());
+        //itemHolder.tvSubject.setText(mList.get(position).get);
+        itemHolder.tvTime.setText(mList.get(position).getVideoCreateTime());
+        Bitmap bitmap = VideoUtils.getInstance().getNetVideoBitmap(mList.get(position).getAddressUrl());
+        itemHolder.ivCover.setImageBitmap(bitmap);
     }
 
     @Override
@@ -113,7 +125,7 @@ public class VideoItemSection extends Section {
     class MyItemViewHolder extends RecyclerView.ViewHolder {
         private TextView tvName;
         private TextView tvSubject;
-        private ImageView ivCover;
+        private RoundImageView ivCover;
         private TextView tvTime;
         private TextView tvPlayNumber;
         private LinearLayout rootView;

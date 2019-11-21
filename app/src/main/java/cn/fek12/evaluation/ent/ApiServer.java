@@ -3,14 +3,14 @@ package cn.fek12.evaluation.ent;
 import cn.fek12.evaluation.model.entity.AWeekEntity;
 import cn.fek12.evaluation.model.entity.AssessmentIndexPaperResp;
 import cn.fek12.evaluation.model.entity.CheckPaperNameEntity;
+import cn.fek12.evaluation.model.entity.CommonEntity;
 import cn.fek12.evaluation.model.entity.ConqueredEntity;
 import cn.fek12.evaluation.model.entity.EarlierEntity;
 import cn.fek12.evaluation.model.entity.EvaluationListEntity;
 import cn.fek12.evaluation.model.entity.GradeDictionaryListEntity;
 import cn.fek12.evaluation.model.entity.HomeEvaluationDeta;
-import cn.fek12.evaluation.model.entity.PaperIdEntity;
+import cn.fek12.evaluation.model.entity.MicroLessonEnetity;
 import cn.fek12.evaluation.model.entity.PaperTypeListResp;
-import cn.fek12.evaluation.model.entity.QueryTopicEntity;
 import cn.fek12.evaluation.model.entity.RecordsEntitiy;
 import cn.fek12.evaluation.model.entity.RelevantVideoListEntity;
 import cn.fek12.evaluation.model.entity.SemesterEntity;
@@ -24,7 +24,6 @@ import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
-import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
@@ -56,7 +55,7 @@ public interface ApiServer {
      */
     @FormUrlEncoded
     @POST("promote/capture")
-    Observable<RelevantVideoListEntity> videoList(@Field("subjectCategoryId ") String subjectCategoryId, @Field("userId  ") String userId);
+    Observable<RelevantVideoListEntity> videoList(@Field("subjectCategoryId") String subjectCategoryId, @Field("userId") String userId);
 
 
     /**
@@ -99,8 +98,18 @@ public interface ApiServer {
     //@FormUrlEncoded
     //@Headers({"Content-Type: application/json","Accept: application/json"})
     @POST("independent/saveStudentPaper")
-    Observable<PaperIdEntity> saveStudentPaper(@Body RequestBody reqJson);
+    Observable<CommonEntity> saveStudentPaper(@Body RequestBody reqJson);
 
+    /**
+     * 记录播放时间
+     */
+    @FormUrlEncoded
+    @POST("video/schedule")
+    Observable<CommonEntity> schedule(@Field("cacheKey") String cacheKey,
+                                              @Field("playScheduleTime") String playScheduleTime,
+                                              @Field("type") String type,
+                                              @Field("videoId") String videoId,
+                                              @Field("userId") String userId);
 
     @FormUrlEncoded
     @POST("assessment/indexPaper")
@@ -166,5 +175,22 @@ public interface ApiServer {
                                                     @Field("textbook") String textbook,
                                                     @Field("userId") String userId,
                                                     @Field("currentPage") String currentPage);
+
+    /**首页微课全部模块*/
+    @FormUrlEncoded
+    @POST("video/all")
+    Observable<MicroLessonEnetity> queryVideoList(@Field("grade") String grade,
+                                                  @Field("semester") String semester,
+                                                  @Field("subject") String subject,
+                                                  @Field("textbook") String textbook,
+                                                  @Field("userId") String userId);
+    /**首页微课专题模块*/
+    @FormUrlEncoded
+    @POST("video/special/all")
+    Observable<MicroLessonEnetity> querySpecialVideo(@Field("grade") String grade,
+                                                  @Field("semester") String semester,
+                                                  @Field("subject") String subject,
+                                                  @Field("textbook") String textbook,
+                                                  @Field("userId") String userId);
 }
 

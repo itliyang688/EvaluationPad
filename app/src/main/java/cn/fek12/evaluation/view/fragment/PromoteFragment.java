@@ -131,35 +131,6 @@ public class PromoteFragment extends BaseFragment<PresentationPresenter> impleme
         });
         recycler.setLayoutManager(manager);
         recycler.setAdapter(leftAdapter);
-
-        leftAdapter.addSection("threeDays", new PresentationAweekItemSection(2,null, getContext(), "近三天", new PresentationAweekItemSection.OnSelectItmeListener() {
-            @Override
-            public void onSelectItme(int pos) {
-                int paperResultId = daylist.get(pos).getPaperResultId();
-                Intent intent = new Intent(getContext(), ConqueredActivity.class);
-                intent.putExtra("paperResultId",paperResultId);
-                startActivity(intent);
-            }
-        }));
-        leftAdapter.addSection("aweek", new PresentationAweekItemSection(2,null, getContext(), "一周内", new PresentationAweekItemSection.OnSelectItmeListener() {
-            @Override
-            public void onSelectItme(int pos) {
-                int paperResultId = aweeklist.get(pos).getPaperResultId();
-                Intent intent = new Intent(getContext(), ConqueredActivity.class);
-                intent.putExtra("paperResultId",paperResultId);
-                startActivity(intent);
-            }
-        }));
-
-        leftAdapter.addSection("earlier", new PresentationEarlierItemSection(2,getContext(), null, "较早", new PresentationEarlierItemSection.OnSelectItmeListener() {
-            @Override
-            public void onSelectItme(int pos) {
-                int paperResultId = earlierList.get(pos).getPaperResultId();
-                Intent intent = new Intent(getContext(), ConqueredActivity.class);
-                intent.putExtra("paperResultId",paperResultId);
-                startActivity(intent);
-            }
-        }));
     }
 
 
@@ -181,18 +152,30 @@ public class PromoteFragment extends BaseFragment<PresentationPresenter> impleme
 
     @Override
     public void loadAWeekSuc(AWeekEntity entry) {
+        leftAdapter.removeAllSections();
         daylist = entry.getData().getDay();
         if (daylist != null && daylist.size() > 0) {
-            PresentationAweekItemSection itemSection = (PresentationAweekItemSection) leftAdapter.getSection("threeDays");
-            itemSection.updateList(daylist);
-            leftAdapter.getAdapterForSection("threeDays").notifyAllItemsChanged("payloads");
+            leftAdapter.addSection("threeDays", new PresentationAweekItemSection(2,daylist, getContext(), "近三天", new PresentationAweekItemSection.OnSelectItmeListener() {
+                @Override
+                public void onSelectItme(int pos) {
+                    int paperResultId = daylist.get(pos).getPaperResultId();
+                    Intent intent = new Intent(getContext(), ConqueredActivity.class);
+                    intent.putExtra("paperResultId",paperResultId);
+                    startActivity(intent);
+                }
+            }));
         }
         aweeklist = entry.getData().getWeek();
         if (aweeklist != null && aweeklist.size() > 0) {
-            PresentationAweekItemSection itemSection = (PresentationAweekItemSection) leftAdapter.getSection("aweek");
-            itemSection.updateList(aweeklist);
-            leftAdapter.getAdapterForSection("aweek").notifyAllItemsChanged("payloads");
-
+            leftAdapter.addSection("aweek", new PresentationAweekItemSection(2,aweeklist, getContext(), "一周内", new PresentationAweekItemSection.OnSelectItmeListener() {
+                @Override
+                public void onSelectItme(int pos) {
+                    int paperResultId = aweeklist.get(pos).getPaperResultId();
+                    Intent intent = new Intent(getContext(), ConqueredActivity.class);
+                    intent.putExtra("paperResultId",paperResultId);
+                    startActivity(intent);
+                }
+            }));
         }
         mPresenter.queryEarlier(getContext(), grade, semester, subject, textbook,  MyApplication.getMyApplication().getUserId(), userType, String.valueOf(currentPage), pageSize);
     }
@@ -212,9 +195,21 @@ public class PromoteFragment extends BaseFragment<PresentationPresenter> impleme
             refreshLayout.setEnableLoadmore(false);
         }
         if(earlierList != null && earlierList.size() > 0){
-            PresentationEarlierItemSection itemSection = (PresentationEarlierItemSection) leftAdapter.getSection("earlier");
-            itemSection.updateAndAddList(earlierList,isLoadMore);
-            leftAdapter.getAdapterForSection("earlier").notifyAllItemsChanged("payloads");
+            if(isLoadMore){
+                PresentationEarlierItemSection itemSection = (PresentationEarlierItemSection) leftAdapter.getSection("earlier");
+                itemSection.updateAndAddList(earlierList,isLoadMore);
+                leftAdapter.getAdapterForSection("earlier").notifyAllItemsChanged("payloads");
+            }else{
+                leftAdapter.addSection("earlier", new PresentationEarlierItemSection( 1,getContext(),earlierList, "较早", new PresentationEarlierItemSection.OnSelectItmeListener() {
+                    @Override
+                    public void onSelectItme(int pos) {
+                        int paperResultId = earlierList.get(pos).getPaperResultId();
+                        Intent intent = new Intent(getContext(), ConqueredActivity.class);
+                        intent.putExtra("paperResultId",paperResultId);
+                        startActivity(intent);
+                    }
+                }));
+            }
         }
 
         refreshLayout.finishLoadmore();

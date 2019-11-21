@@ -183,7 +183,9 @@ public abstract class BaseActivity<P extends BasePresenter> extends RxAppCompatA
     }
 
     public void onResumeBuck(){
-
+        onPause();
+        onStop();
+        onRestart();
     }
 
     @Override

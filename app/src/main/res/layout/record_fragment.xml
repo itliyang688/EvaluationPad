@@ -28,50 +28,147 @@
 
             <RadioButton
                 android:id="@+id/tabRecord"
-                android:layout_width="@dimen/dp_200"
-                android:layout_height="@dimen/dp_24"
-                android:layout_gravity="center_vertical"
-                android:background="@drawable/record_selector"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@mipmap/error_book_bg"
+                android:button="@null" />
+
+            <RadioButton
+                android:id="@+id/tabMicroLesson"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/dp_10"
+                android:background="@mipmap/micro_lesson_menu_bg"
                 android:button="@null" />
 
             <RadioButton
                 android:id="@+id/tabFootprint"
-                android:layout_width="@dimen/dp_200"
-                android:layout_height="@dimen/dp_24"
-                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginTop="@dimen/dp_10"
-                android:background="@drawable/footprint_selector"
+                android:background="@mipmap/footprint_menu_bg"
                 android:button="@null" />
 
             <RadioButton
                 android:id="@+id/tabCollection"
-                android:layout_width="@dimen/dp_200"
-                android:layout_height="@dimen/dp_24"
-                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginTop="@dimen/dp_10"
-                android:background="@drawable/collection_selector"
+                android:background="@mipmap/collection_menu_bg"
                 android:button="@null" />
 
         </RadioGroup>
     </LinearLayout>
 
-
-    <cn.fek12.evaluation.view.widget.MultipleStatusView
-        android:id="@+id/load_view"
+    <RelativeLayout
+        android:id="@+id/right_content"
         android:layout_width="@dimen/dp_681"
         android:layout_height="match_parent"
         android:layout_alignTop="@+id/llLeft"
         android:layout_alignParentRight="true"
-        android:orientation="vertical"
+        android:background="@drawable/common_bg_list_two_thirds_of_screen"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
+        app:layout_constraintRight_toRightOf="parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/rlContainTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:id="@+id/llTopTitle"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_20"
+                android:layout_marginTop="@dimen/dp_12"
+                android:layout_marginLeft="@dimen/dp_30"
+                android:layout_marginRight="@dimen/dp_30"
+                android:visibility="gone"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/dp_20"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/btnCourseRecord"
+                        android:layout_width="@dimen/dp_80"
+                        android:layout_height="@dimen/dp_20"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/bg_present_item"
+                        android:checked="true"
+                        android:gravity="center"
+                        android:text="课程记录"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/sp_12" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/dp_20"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/btnTestRecord"
+                        android:layout_width="@dimen/dp_80"
+                        android:layout_height="@dimen/dp_20"
+                        android:layout_centerInParent="true"
+                        android:background="@color/white"
+                        android:checked="true"
+                        android:gravity="center"
+                        android:text="练习记录"
+                        android:textColor="@color/color_333"
+                        android:textSize="@dimen/sp_12" />
+                </RelativeLayout>
+            </LinearLayout>
+            <RelativeLayout
+
+                android:id="@+id/rlTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_16">
+                <TextView
+                    android:id="@+id/titleName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="微课学习"
+                    android:textSize="@dimen/sp_12"
+                    android:textColor="@color/color_333"/>
+                <LinearLayout
+                    android:id="@+id/llSubject"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/dp_36"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="学科"
+                        android:textSize="@dimen/sp_12"
+                        android:layout_marginRight="@dimen/dp_11"
+                        android:textColor="@color/color_FEAC2C"/>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/lower_icon"/>
+                </LinearLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+
         <cn.fek12.evaluation.view.widget.CustomViewPager
             android:id="@+id/view_pager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="visible"
-            android:layout_weight="1" />
-
-    </cn.fek12.evaluation.view.widget.MultipleStatusView>
-
+            android:layout_below="@+id/rlContainTitle"
+            android:layout_height="@dimen/dp_681"
+            android:layout_weight="1"
+            android:visibility="visible" />
+    </RelativeLayout>
 </RelativeLayout>

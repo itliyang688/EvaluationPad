@@ -1,7 +1,5 @@
 package cn.fek12.evaluation.view.activity;
 
-import android.content.Intent;
-import android.os.Bundle;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -12,9 +10,9 @@ import android.widget.LinearLayout;
 import com.fek12.basic.base.BaseActivity;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.fek12.evaluation.R;
-import cn.fek12.evaluation.utils.AppUtils;
+import cn.fek12.evaluation.view.widget.NoRollWebView;
 
 /**
  * @ProjectName: EvaluationPad
@@ -25,7 +23,7 @@ import cn.fek12.evaluation.utils.AppUtils;
  */
 public class AnswerWebViewActivity extends BaseActivity {
     @BindView(R.id.webView)
-    WebView webView;
+    NoRollWebView webView;
     @BindView(R.id.iv_left_back)
     ImageView ivLeftBack;
     @BindView(R.id.titleView)
@@ -46,13 +44,14 @@ public class AnswerWebViewActivity extends BaseActivity {
         webSettings.setJavaScriptEnabled(true);
         webSettings.setUseWideViewPort(true);
         //webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-        webSettings.setTextZoom(100);
-        webView.setInitialScale(50);
+        //webSettings.setTextZoom(100);
+        //webView.setInitialScale(50);
         webSettings.setLoadWithOverviewMode(true);
 
         webView.setWebChromeClient(new WebChromeClient());
         //webView.loadUrl("http://192.168.0.83:11111/index.html");
-        webView.loadUrl("http://192.168.0.46:11111/index.html");
+        webView.loadUrl("http://192.168.0.46/noc/html/index.html");
+        //webView.loadUrl("http://192.168.0.46:11111/accurateReport/report?userId=413&paperResultId=11425");
         //webView.loadUrl("https://baidu.com/?tn=98012088_10_dg&ch=3");
         //webView.loadUrl("file:///android_asset/web/Record.html");
 
@@ -71,10 +70,8 @@ public class AnswerWebViewActivity extends BaseActivity {
 
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
+    @OnClick(R.id.iv_left_back)
+    public void onViewClicked() {
+        finish();
     }
 }

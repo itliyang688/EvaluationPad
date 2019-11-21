@@ -24,6 +24,10 @@ public class MyApplication extends BaseApplication {
         return userId;
     }
 
+    public String getPJUserId() {
+        return "1";
+    }
+
     public void setUserId(String userId) {
         this.userId = userId;
     }

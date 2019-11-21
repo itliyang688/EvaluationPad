@@ -12,6 +12,6 @@
         android:layout_height="203dp"
         android:layout_gravity="center_horizontal"
         android:scaleType="centerCrop"
-        tools:src="@drawable/evaluation_btn_go_list" />
+        android:src="@mipmap/presentation_empty_bg" />
 
 </LinearLayout>

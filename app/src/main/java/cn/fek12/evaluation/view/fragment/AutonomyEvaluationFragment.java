@@ -33,7 +33,7 @@ import cn.fek12.evaluation.model.entity.CheckPaperNameEntity;
 import cn.fek12.evaluation.model.entity.ChildSectionEntity;
 import cn.fek12.evaluation.model.entity.ContainListEntity;
 import cn.fek12.evaluation.model.entity.GenerateTopicEntity;
-import cn.fek12.evaluation.model.entity.PaperIdEntity;
+import cn.fek12.evaluation.model.entity.CommonEntity;
 import cn.fek12.evaluation.model.entity.QueryTopicEntity;
 import cn.fek12.evaluation.model.entity.RecordsEntitiy;
 import cn.fek12.evaluation.model.entity.SubjectEntity;
@@ -689,7 +689,7 @@ public class AutonomyEvaluationFragment extends BaseFragment<AutonomyEvaluationP
     }
 
     @Override
-    public void loadPaperSuc(PaperIdEntity entity) {
+    public void loadPaperSuc(CommonEntity entity) {
         hideLoading();
         /**弹出提醒框*/
         DialogUtils.showAnswerRemind(getContext(), new View.OnClickListener() {

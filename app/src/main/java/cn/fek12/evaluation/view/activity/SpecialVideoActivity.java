@@ -1,6 +1,8 @@
 package cn.fek12.evaluation.view.activity;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -36,7 +38,7 @@ public class SpecialVideoActivity extends BaseActivity {
         myJzvdStd.setUp(path, "数学课程");
         //myJzvdStd.gotoScreenFullscreen();
         myJzvdStd.seekToInAdvance = 11000;
-        //myJzvdStd.setState(4,0,50000);
+        //myJzvdStd.getCurrentPositionWhenPlaying();
         Bitmap bitmap = VideoUtils.getInstance().getNetVideoBitmap(path);
         myJzvdStd.thumbImageView.setImageBitmap(bitmap);
         myJzvdStd.ivExtend.setImageResource(R.mipmap.collection_video_check);
@@ -51,7 +53,7 @@ public class SpecialVideoActivity extends BaseActivity {
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.back:
-                    finish();
+                    //finish();
                     break;
             }
         }

@@ -5,11 +5,11 @@ import java.io.Serializable;
 /**
  * @ProjectName: EvaluationPad
  * @Package: cn.fek12.evaluation.model.entity
- * @ClassName: PaperIdEntity
+ * @ClassName: CommonEntity
  * @Description:
  * @CreateDate: 2019/11/15 15:20
  */
-public class PaperIdEntity implements Serializable {
+public class CommonEntity implements Serializable {
 
     /**
      * data : 16012

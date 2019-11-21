@@ -1,2 +1,2 @@
-include ':app', ':viewpagerlib', ':basic', ':tagLibrary', ':jiaozivideoplayer'
+include ':app', ':viewpagerlib', ':basic', ':tagLibrary', ':jiaozivideoplayer', ':stickyheaders'
 rootProject.name='EvaluationPad'

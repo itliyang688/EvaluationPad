@@ -1,6 +1,7 @@
 package cn.fek12.evaluation.view.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,16 +11,21 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.fek12.evaluation.R;
+import cn.fek12.evaluation.model.entity.RelevantVideoListEntity;
+import cn.fek12.evaluation.utils.FastDFSUtil;
+import cn.fek12.evaluation.utils.VideoUtils;
+import cn.fek12.evaluation.view.widget.RoundImageView;
 
 
 public class RelevantVideoAdapter extends RecyclerView.Adapter<RelevantVideoAdapter.EvaluationHolder> {
     private OnItemClickListener mOnItemClickListener = null;
-
-    private List mList = new ArrayList();
+    private List<RelevantVideoListEntity.DataBean.VideoBean> mList = new ArrayList();
 
     public interface OnItemClickListener {
         void onItemClick(int position);
@@ -35,18 +41,14 @@ public class RelevantVideoAdapter extends RecyclerView.Adapter<RelevantVideoAdap
         this.context = context;
     }
 
-    public void notifyChanged(List list,boolean isAdd) {
-        if(isAdd){
-            mList.addAll(list);
-        }else{
-            mList = list;
-        }
+    public void notifyChanged(List list) {
+        mList = list;
         notifyDataSetChanged();
     }
 
     @Override
     public int getItemCount() {
-        return 30;
+        return mList.size();
     }
 
     @Override
@@ -73,8 +75,8 @@ public class RelevantVideoAdapter extends RecyclerView.Adapter<RelevantVideoAdap
         private View itemView;
         private TextView tvName;
         private TextView tvSubject;
-        private ImageView ivCover;
-        private TextView tvTime;
+        private RoundImageView ivCover;
+        private TextView tvTextbook;
         private TextView tvPlayNumber;
 
 
@@ -84,12 +86,27 @@ public class RelevantVideoAdapter extends RecyclerView.Adapter<RelevantVideoAdap
             tvName = this.itemView.findViewById(R.id.tvName);
             ivCover = this.itemView.findViewById(R.id.ivCover);
             tvSubject = this.itemView.findViewById(R.id.tvSubject);
-            tvTime = this.itemView.findViewById(R.id.tvTime);
+            tvTextbook = this.itemView.findViewById(R.id.tvTextbook);
             tvPlayNumber = this.itemView.findViewById(R.id.tvPlayNumber);
         }
 
         public void setData(final int position) {
-
+            tvName.setText(mList.get(position).getVideoName());
+            tvSubject.setText(mList.get(position).getSubject());
+            tvTextbook.setText(mList.get(position).getTextbook());
+            tvPlayNumber.setText(String.valueOf(mList.get(position).getCount()));
+            ivCover.post(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        String path = FastDFSUtil.generateSourceUrl(mList.get(position).getAddressUrl());
+                        Bitmap bitmap = VideoUtils.getInstance().getNetVideoBitmap(path);
+                        ivCover.setImageBitmap(bitmap);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            });
         }
     }
 }

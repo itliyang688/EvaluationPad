@@ -11,6 +11,7 @@ import cn.fek12.evaluation.ent.ApiRetrofit;
 import cn.fek12.evaluation.ent.RxHelper;
 import cn.fek12.evaluation.impl.IConquered;
 import cn.fek12.evaluation.impl.IVideoPlayList;
+import cn.fek12.evaluation.model.entity.CommonEntity;
 import cn.fek12.evaluation.model.entity.ConqueredEntity;
 import cn.fek12.evaluation.model.entity.RelevantVideoListEntity;
 
@@ -45,6 +46,28 @@ public class VideoPlayListPresenter extends BasePresenter<IVideoPlayList.View> i
                     @Override
                     public void onError(String msg) {
                         infoView.loadEmpty();
+                    }
+                });
+    }
+
+    @Override
+    public void schedule(Context context, String cacheKey, String playScheduleTime, String type, String videoId, String userId) {
+        ApiRetrofit.getInstance().getApiService().schedule(cacheKey,playScheduleTime,type,videoId,userId)
+                .compose(RxHelper.observableIO2Main(context))
+                .subscribe(new BaseObserver<CommonEntity>() {
+
+                    @Override
+                    public void onSuccess(CommonEntity entry) {
+                        if(entry.getState().equals("0")){
+                            infoView.loadScheduleSuc(entry);
+                        }else{
+                            infoView.loadScheduleEmpty();
+                        }
+                    }
+
+                    @Override
+                    public void onError(String msg) {
+                        infoView.loadScheduleEmpty();
                     }
                 });
     }

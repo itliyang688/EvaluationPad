@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.fek12.basic.base.BaseFragment;
 import com.fek12.basic.utils.toast.ToastUtils;
+import com.google.gson.Gson;
 import com.zhengsr.viewpagerlib.bean.PageBean;
 import com.zhengsr.viewpagerlib.callback.PageHelperListener;
 import com.zhengsr.viewpagerlib.indicator.NormalIndicator;
@@ -25,6 +26,7 @@ import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.application.MyApplication;
 import cn.fek12.evaluation.impl.IEvaluation;
 import cn.fek12.evaluation.model.entity.HomeEvaluationDeta;
+import cn.fek12.evaluation.model.sharedPreferences.PrefUtilsData;
 import cn.fek12.evaluation.presenter.EvaluationPresenter;
 import cn.fek12.evaluation.view.adapter.RecommendEvaluationSection;
 import cn.fek12.evaluation.view.widget.MultipleStatusView;
@@ -79,6 +81,7 @@ public class EvaluationFragment extends BaseFragment<EvaluationPresenter> implem
             }
         });*/
         setDefaultTitle("测评", false);
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext()){
             @Override
             public boolean canScrollVertically() {
@@ -122,8 +125,8 @@ public class EvaluationFragment extends BaseFragment<EvaluationPresenter> implem
             @Override
             public void getItemView(View view, HomeEvaluationDeta.DataBean.BannerBean data) {
                 ImageView image = view.findViewById(R.id.image);
-                //image.setImageResource(R.drawable.evaluation_btn_go_list);
                 Glide.with(getContext()).load(data.getImageUrl()).into(image);
+                //Glide.with(getContext()).load(data.getImageUrl()).placeholder(R.mipmap.presentation_empty_bg).error(R.mipmap.presentation_empty_bg).into(image);
             }
         });
     }

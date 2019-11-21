@@ -80,4 +80,5 @@ dependencies {
     //各式tab
     implementation 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar'
     implementation project(path: ':jiaozivideoplayer')
+    implementation project(path: ':stickyheaders')
 }

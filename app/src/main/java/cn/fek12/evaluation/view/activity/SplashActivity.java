@@ -33,13 +33,8 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void onInitView() {
         //animationView(rlRoot);
-        try {
-            Thread.sleep(1000);
-            startActivity(MainActivity.class);
-            SplashActivity.this.finish();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        startActivity(MainActivity.class);
+        finish();
     }
 
     @Override

@@ -12,9 +12,8 @@ import java.util.List;
  */
 public class RelevantVideoListEntity implements Serializable {
 
-
     /**
-     * data : {"video":{"id":20,"createDate":null,"modifyDate":null,"name":"样本平均数的价值","addressUrl":"http://192.168.0.46/group1/M00/00/00/wKgALl23kwyAMozOAOBSBYftCKo270.mp4","userId":null,"length":null},"relatedVideo":[]}
+     * data : {"video":{"videoId":21,"type":0,"addressUrl":"http://192.168.0.46/group1/M00/00/00/wKgALl2yqzuAD3DaATnuuNJ5UHk845.mp4","videoName":"输错数据的平均数","videoCreateTime":1574049034260,"playScheduleTime":60,"count":0,"collect":0,"subject":"数学","textbook":"人教版"},"key":"*grade:4*:subject:14*:textbook:18*:semester:16*:subjectCategory:28049*","relatedVideo":[{"videoId":20,"type":0,"addressUrl":"http://192.168.0.46/group1/M00/00/00/wKgALl23kwyAMozOAOBSBYftCKo270.mp4","videoName":"样本平均数的价值","videoCreateTime":1574049004953,"playScheduleTime":60,"count":0,"collect":0,"subject":"数学","textbook":"人教版"}]}
      * state : 0
      * message : 成功
      */
@@ -49,8 +48,9 @@ public class RelevantVideoListEntity implements Serializable {
 
     public static class DataBean {
         /**
-         * video : {"id":20,"createDate":null,"modifyDate":null,"name":"样本平均数的价值","addressUrl":"http://192.168.0.46/group1/M00/00/00/wKgALl23kwyAMozOAOBSBYftCKo270.mp4","userId":null,"length":null}
-         * relatedVideo : []
+         * video : {"videoId":21,"type":0,"addressUrl":"http://192.168.0.46/group1/M00/00/00/wKgALl2yqzuAD3DaATnuuNJ5UHk845.mp4","videoName":"输错数据的平均数","videoCreateTime":1574049034260,"playScheduleTime":60,"count":0,"collect":0,"subject":"数学","textbook":"人教版"}
+         * key : *grade:4*:subject:14*:textbook:18*:semester:16*:subjectCategory:28049*
+         * relatedVideo : [{"videoId":20,"type":0,"addressUrl":"http://192.168.0.46/group1/M00/00/00/wKgALl23kwyAMozOAOBSBYftCKo270.mp4","videoName":"样本平均数的价值","videoCreateTime":1574049004953,"playScheduleTime":60,"count":0,"collect":0,"subject":"数学","textbook":"人教版"}]
          */
 
         private VideoBean video;
@@ -74,53 +74,52 @@ public class RelevantVideoListEntity implements Serializable {
 
         public static class VideoBean {
             /**
-             * id : 20
-             * createDate : null
-             * modifyDate : null
-             * name : 样本平均数的价值
-             * addressUrl : http://192.168.0.46/group1/M00/00/00/wKgALl23kwyAMozOAOBSBYftCKo270.mp4
-             * userId : null
-             * length : null
+             * videoId : 21
+             * type : 0
+             * addressUrl : http://192.168.0.46/group1/M00/00/00/wKgALl2yqzuAD3DaATnuuNJ5UHk845.mp4
+             * videoName : 输错数据的平均数
+             * videoCreateTime : 1574049034260
+             * playScheduleTime : 60
+             * count : 0
+             * collect : 0
+             * subject : 数学
+             * textbook : 人教版
              */
 
-            private int id;
-            private Object createDate;
-            private Object modifyDate;
-            private String name;
+            private int videoId;
+            private int type;
             private String addressUrl;
-            private Object userId;
-            private Object length;
+            private String videoName;
+            private String cacheKey;
+            private long videoCreateTime;
+            private int playScheduleTime;
+            private int count;
+            private int collect;
+            private String subject;
+            private String textbook;
 
-            public int getId() {
-                return id;
+            public String getCacheKey() {
+                return cacheKey;
             }
 
-            public void setId(int id) {
-                this.id = id;
+            public void setCacheKey(String cacheKey) {
+                this.cacheKey = cacheKey;
             }
 
-            public Object getCreateDate() {
-                return createDate;
+            public int getVideoId() {
+                return videoId;
             }
 
-            public void setCreateDate(Object createDate) {
-                this.createDate = createDate;
+            public void setVideoId(int videoId) {
+                this.videoId = videoId;
             }
 
-            public Object getModifyDate() {
-                return modifyDate;
+            public int getType() {
+                return type;
             }
 
-            public void setModifyDate(Object modifyDate) {
-                this.modifyDate = modifyDate;
-            }
-
-            public String getName() {
-                return name;
-            }
-
-            public void setName(String name) {
-                this.name = name;
+            public void setType(int type) {
+                this.type = type;
             }
 
             public String getAddressUrl() {
@@ -131,20 +130,60 @@ public class RelevantVideoListEntity implements Serializable {
                 this.addressUrl = addressUrl;
             }
 
-            public Object getUserId() {
-                return userId;
+            public String getVideoName() {
+                return videoName;
             }
 
-            public void setUserId(Object userId) {
-                this.userId = userId;
+            public void setVideoName(String videoName) {
+                this.videoName = videoName;
             }
 
-            public Object getLength() {
-                return length;
+            public long getVideoCreateTime() {
+                return videoCreateTime;
             }
 
-            public void setLength(Object length) {
-                this.length = length;
+            public void setVideoCreateTime(long videoCreateTime) {
+                this.videoCreateTime = videoCreateTime;
+            }
+
+            public int getPlayScheduleTime() {
+                return playScheduleTime;
+            }
+
+            public void setPlayScheduleTime(int playScheduleTime) {
+                this.playScheduleTime = playScheduleTime;
+            }
+
+            public int getCount() {
+                return count;
+            }
+
+            public void setCount(int count) {
+                this.count = count;
+            }
+
+            public int getCollect() {
+                return collect;
+            }
+
+            public void setCollect(int collect) {
+                this.collect = collect;
+            }
+
+            public String getSubject() {
+                return subject;
+            }
+
+            public void setSubject(String subject) {
+                this.subject = subject;
+            }
+
+            public String getTextbook() {
+                return textbook;
+            }
+
+            public void setTextbook(String textbook) {
+                this.textbook = textbook;
             }
         }
     }

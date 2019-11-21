@@ -124,26 +124,6 @@ public class PresentationFragment extends BaseFragment<PresentationPresenter> im
         });
         recycler.setLayoutManager(manager);
         recycler.setAdapter(leftAdapter);
-
-        leftAdapter.addSection("threeDays", new PresentationAweekItemSection(1,null, getContext(), "近三天", new PresentationAweekItemSection.OnSelectItmeListener() {
-            @Override
-            public void onSelectItme(int pos) {
-
-            }
-        }));
-        leftAdapter.addSection("aweek", new PresentationAweekItemSection(1,null, getContext(), "一周内", new PresentationAweekItemSection.OnSelectItmeListener() {
-            @Override
-            public void onSelectItme(int pos) {
-
-            }
-        }));
-
-        leftAdapter.addSection("earlier", new PresentationEarlierItemSection( 1,getContext(),null, "较早", new PresentationEarlierItemSection.OnSelectItmeListener() {
-            @Override
-            public void onSelectItme(int pos) {
-
-            }
-        }));
     }
 
 
@@ -165,17 +145,24 @@ public class PresentationFragment extends BaseFragment<PresentationPresenter> im
 
     @Override
     public void loadAWeekSuc(AWeekEntity entry) {
+        leftAdapter.removeAllSections();
         daylist = entry.getData().getDay();
         if (daylist != null && daylist.size() > 0) {
-            PresentationAweekItemSection itemSection = (PresentationAweekItemSection) leftAdapter.getSection("threeDays");
-            itemSection.updateList(daylist);
-            leftAdapter.getAdapterForSection("threeDays").notifyAllItemsChanged("payloads");
+            leftAdapter.addSection("threeDays", new PresentationAweekItemSection(1,daylist, getContext(), "近三天", new PresentationAweekItemSection.OnSelectItmeListener() {
+                @Override
+                public void onSelectItme(int pos) {
+
+                }
+            }));
         }
         aweeklist = entry.getData().getWeek();
         if (aweeklist != null && aweeklist.size() > 0) {
-            PresentationAweekItemSection itemSection = (PresentationAweekItemSection) leftAdapter.getSection("aweek");
-            itemSection.updateList(aweeklist);
-            leftAdapter.getAdapterForSection("aweek").notifyAllItemsChanged("payloads");
+            leftAdapter.addSection("aweek", new PresentationAweekItemSection(1,aweeklist, getContext(), "一周内", new PresentationAweekItemSection.OnSelectItmeListener() {
+                @Override
+                public void onSelectItme(int pos) {
+
+                }
+            }));
 
         }
         mPresenter.queryEarlier(getContext(),grade, semester, subject, textbook,  MyApplication.getMyApplication().getUserId(), userType,String.valueOf(currentPage),pageSize);
@@ -196,9 +183,18 @@ public class PresentationFragment extends BaseFragment<PresentationPresenter> im
             refreshLayout.setEnableLoadmore(false);
         }
         if(list != null && list.size() > 0){
-            PresentationEarlierItemSection itemSection = (PresentationEarlierItemSection) leftAdapter.getSection("earlier");
-            itemSection.updateAndAddList(list,isLoadMore);
-            leftAdapter.getAdapterForSection("earlier").notifyAllItemsChanged("payloads");
+            if(isLoadMore){
+                PresentationEarlierItemSection itemSection = (PresentationEarlierItemSection) leftAdapter.getSection("earlier");
+                itemSection.updateAndAddList(list,isLoadMore);
+                leftAdapter.getAdapterForSection("earlier").notifyAllItemsChanged("payloads");
+            }else{
+                leftAdapter.addSection("earlier", new PresentationEarlierItemSection( 1,getContext(),list, "较早", new PresentationEarlierItemSection.OnSelectItmeListener() {
+                    @Override
+                    public void onSelectItme(int pos) {
+
+                    }
+                }));
+            }
         }
 
         leftAdapter.notifyDataSetChanged();

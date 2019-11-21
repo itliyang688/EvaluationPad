@@ -38,6 +38,7 @@ import cn.fek12.evaluation.view.adapter.DictionarySubjectSection;
 import cn.fek12.evaluation.view.adapter.DictionaryTagChildSection;
 import cn.fek12.evaluation.view.widget.CustomViewPager;
 import cn.fek12.evaluation.view.widget.MultipleStatusView;
+import cn.fek12.evaluation.view.widget.NoScrollViewPager;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 
 /**
@@ -51,7 +52,7 @@ public class MicroLessonFragment extends BaseFragment<MicroLessonPresenter> impl
     @BindView(R.id.left_recycler)
     RecyclerView leftRecycler;
     @BindView(R.id.view_pager)
-    CustomViewPager mViewPager;
+    NoScrollViewPager mViewPager;
     @BindView(R.id.load_view)
     MultipleStatusView loadView;
     @BindView(R.id.mTabLayout)
@@ -351,7 +352,7 @@ public class MicroLessonFragment extends BaseFragment<MicroLessonPresenter> impl
         BaseFragment baseFragment = (BaseFragment) adapter.getItem(mViewPager.getCurrentItem());
         if (baseFragment instanceof MicroLessonPageFragment) {
             MicroLessonPageFragment fragment = (MicroLessonPageFragment) baseFragment;
-            fragment.queryIndexPagerData(gradeId, semesterId, subjectId, textbookId, MyApplication.getMyApplication().getUserId());
+            fragment.queryIndexPagerData(gradeId, semesterId, subjectId, textbookId, MyApplication.getMyApplication().getPJUserId());
             fragment.setLists(gradeList,subjectList,textBookList,semesterList);
         }
     }
