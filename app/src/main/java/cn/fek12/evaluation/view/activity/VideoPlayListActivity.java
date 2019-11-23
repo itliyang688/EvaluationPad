@@ -1,16 +1,12 @@
 package cn.fek12.evaluation.view.activity;
 
-import android.graphics.Bitmap;
+import android.view.View;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.fek12.basic.base.BaseActivity;
 import com.fek12.basic.utils.toast.ToastUtils;
-
-import org.csource.common.MyException;
-
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
 
 import butterknife.BindView;
 import cn.fek12.evaluation.R;
@@ -20,7 +16,6 @@ import cn.fek12.evaluation.model.entity.CommonEntity;
 import cn.fek12.evaluation.model.entity.RelevantVideoListEntity;
 import cn.fek12.evaluation.presenter.VideoPlayListPresenter;
 import cn.fek12.evaluation.utils.FastDFSUtil;
-import cn.fek12.evaluation.utils.VideoUtils;
 import cn.fek12.evaluation.view.adapter.RelevantVideoAdapter;
 import cn.fek12.evaluation.view.widget.MultipleStatusView;
 import cn.fek12.evaluation.view.widget.MyJzvdStd;
@@ -43,6 +38,7 @@ public class VideoPlayListActivity extends BaseActivity<VideoPlayListPresenter> 
     private String subjectCategoryId;
     private RelevantVideoAdapter adapter;
     private RelevantVideoListEntity.DataBean.VideoBean videoBean;
+    private int isCollection;
 
     @Override
     public int setLayoutResource() {
@@ -68,11 +64,6 @@ public class VideoPlayListActivity extends BaseActivity<VideoPlayListPresenter> 
     @Override
     public void loadSuc(RelevantVideoListEntity entry) {
         multipleStatusView.showContent();
-        if(entry.getData() != null && entry.getData().getRelatedVideo() != null && entry.getData().getRelatedVideo().size() > 0){
-            adapter.notifyChanged(entry.getData().getRelatedVideo());
-        }else{
-            multipleStatusView.showEmpty();
-        }
         if(entry != null){
             if(entry.getData() != null && entry.getData().getVideo() != null){
                 videoBean = entry.getData().getVideo();
@@ -82,34 +73,61 @@ public class VideoPlayListActivity extends BaseActivity<VideoPlayListPresenter> 
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+
                 jzVideo.seekToInAdvance = videoBean.getPlayScheduleTime();
                 jzVideo.setUp(path, videoBean.getVideoName());
-
-                String finalPath = path;
-                jzVideo.thumbImageView.post(new Runnable() {
+                isCollection = videoBean.getCollect();
+                jzVideo.ivExtend.setImageResource(isCollection == 0 ? R.mipmap.collection_video_normal : R.mipmap.collection_video_check);
+                jzVideo.ivExtend.setOnClickListener(onClickListener);
+                //jzVideo.thumbImageView.setImageResource(R.mipmap.presentation_empty_bg);
+                /*String finalPath = path;
+                new Handler().post(new Runnable() {
                     @Override
                     public void run() {
-                        Bitmap bitmap = VideoUtils.getInstance().getNetVideoBitmap(finalPath);
-                        jzVideo.thumbImageView.setImageBitmap(bitmap);
+                        try {
+                            Bitmap bitmap = VideoUtils.getInstance().getNetVideoBitmap(finalPath);
+                            if(bitmap != null){
+                                jzVideo.thumbImageView.setImageBitmap(bitmap);
+                            }
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
                     }
-                });
+                });*/
             }
+        }
+        if(entry.getData() != null && entry.getData().getRelatedVideo() != null && entry.getData().getRelatedVideo().size() > 0){
+            adapter.notifyChanged(entry.getData().getRelatedVideo());
+        }else{
+            multipleStatusView.showEmpty();
         }
     }
 
-    @Override
-    public void loadScheduleSuc(CommonEntity entry) {
-
-    }
+    private String tag;
+    private View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()) {
+                case R.id.ivExtend:
+                    if(isCollection == 0){
+                        tag = "1";
+                    }else{
+                        tag = "0";
+                    }
+                    mPresenter.collection(VideoPlayListActivity.this,videoBean.getCacheKey(),String.valueOf(videoBean.getType()),String.valueOf(videoBean.getVideoId()),tag,MyApplication.getMyApplication().getUserId());
+                    break;
+            }
+        }
+    };
 
     @Override
     protected void onPause() {
-        super.onPause();
         long currentPos = jzVideo.getCurrentPositionWhenPlaying();
         if(currentPos > 0){
-            mPresenter.schedule(VideoPlayListActivity.this,videoBean.getCacheKey(),String.valueOf(currentPos),
+            mPresenter.schedule(VideoPlayListActivity.this,videoBean.getCacheKey(),"",String.valueOf(currentPos),
                     String.valueOf(videoBean.getType()),String.valueOf(videoBean.getVideoId()),MyApplication.getMyApplication().getUserId());
         }
+        super.onPause();
     }
 
     @Override
@@ -124,8 +142,24 @@ public class VideoPlayListActivity extends BaseActivity<VideoPlayListPresenter> 
     }
 
     @Override
-    public void loadScheduleEmpty() {
+    public void loadCollectionSuc(CommonEntity entry) {
+        if(tag.equals("0")){
+            isCollection = 0;
+            ToastUtils.popUpToast("已取消");
+        }else{
+            isCollection = 1;
+            ToastUtils.popUpToast("已收藏");
+        }
+        jzVideo.ivExtend.setImageResource(isCollection == 0 ? R.mipmap.collection_video_normal : R.mipmap.collection_video_check);
+    }
 
+    @Override
+    public void loadCollectionFail() {
+        if(tag.equals("0")){
+            ToastUtils.popUpToast("取消失败");
+        }else{
+            ToastUtils.popUpToast("收藏失败");
+        }
     }
 
     @Override

@@ -33,6 +33,34 @@
         android:layout_marginTop="@dimen/dp_5"
         android:layout_gravity="center_horizontal"
         android:orientation="vertical">
+        <TextView
+            android:id="@+id/tvChapter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/sp_12"
+            android:text="五年级第一学期"
+            android:layout_marginTop="@dimen/dp_18"
+            android:layout_marginLeft="@dimen/dp_76"
+            android:textColor="@color/color_333"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/sp_10"
+            android:text="课程简介"
+            android:layout_marginTop="@dimen/dp_5"
+            android:layout_marginLeft="@dimen/dp_76"
+            android:layout_marginRight="@dimen/dp_76"
+            android:textColor="@color/color_333"/>
 
+        <TextView
+            android:id="@+id/tvDescribe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/sp_9"
+            android:text=""
+            android:layout_marginTop="@dimen/dp_6"
+            android:layout_marginLeft="@dimen/dp_98"
+            android:layout_marginRight="@dimen/dp_98"
+            android:textColor="@color/color_333"/>
     </LinearLayout>
 </LinearLayout>

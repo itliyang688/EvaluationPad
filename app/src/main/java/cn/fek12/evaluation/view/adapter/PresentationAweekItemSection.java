@@ -81,6 +81,14 @@ public class PresentationAweekItemSection extends Section {
                 .placeholder(R.mipmap.presentation_empty_bg)
                 .error(R.mipmap.presentation_empty_bg)
                 .into(itemHolder.ivSubject);
+        itemHolder.rootView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(mOnSelectItmeListener != null){
+                    mOnSelectItmeListener.onSelectItme(position);
+                }
+            }
+        });
     }
 
     @Override
@@ -113,8 +121,10 @@ public class PresentationAweekItemSection extends Section {
         private TextView tvTime;
         private TextView tvScore;
         private ImageView ivSubject;
+        private LinearLayout rootView;
         public MyItemViewHolder(View itemView) {
             super(itemView);
+            rootView = itemView.findViewById(R.id.rootView);
             tvScore = itemView.findViewById(R.id.tvScore);
             tvName = itemView.findViewById(R.id.tvName);
             tvSubject = itemView.findViewById(R.id.tvSubject);

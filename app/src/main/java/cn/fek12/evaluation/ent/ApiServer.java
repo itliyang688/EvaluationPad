@@ -3,6 +3,7 @@ package cn.fek12.evaluation.ent;
 import cn.fek12.evaluation.model.entity.AWeekEntity;
 import cn.fek12.evaluation.model.entity.AssessmentIndexPaperResp;
 import cn.fek12.evaluation.model.entity.CheckPaperNameEntity;
+import cn.fek12.evaluation.model.entity.CollectionListEntity;
 import cn.fek12.evaluation.model.entity.CommonEntity;
 import cn.fek12.evaluation.model.entity.ConqueredEntity;
 import cn.fek12.evaluation.model.entity.EarlierEntity;
@@ -106,10 +107,22 @@ public interface ApiServer {
     @FormUrlEncoded
     @POST("video/schedule")
     Observable<CommonEntity> schedule(@Field("cacheKey") String cacheKey,
+                                      @Field("structLayKey") String structLayKey,
                                               @Field("playScheduleTime") String playScheduleTime,
                                               @Field("type") String type,
                                               @Field("videoId") String videoId,
                                               @Field("userId") String userId);
+
+    /**
+     * 收藏、取消收藏
+     */
+    @FormUrlEncoded
+    @POST("video/collection")
+    Observable<CommonEntity> collection(@Field("cacheKey") String cacheKey,
+                                      @Field("type") String type,
+                                      @Field("videoId") String videoId,
+                                      @Field("isCollection") String isCollection,
+                                      @Field("userId") String userId);
 
     @FormUrlEncoded
     @POST("assessment/indexPaper")
@@ -184,6 +197,16 @@ public interface ApiServer {
                                                   @Field("subject") String subject,
                                                   @Field("textbook") String textbook,
                                                   @Field("userId") String userId);
+
+    /**首页微课专题模块*/
+    @FormUrlEncoded
+    @POST("video/synchro/all")
+    Observable<MicroLessonEnetity> querySynchroVideo(@Field("grade") String grade,
+                                                     @Field("semester") String semester,
+                                                     @Field("subject") String subject,
+                                                     @Field("textbook") String textbook,
+                                                     @Field("userId") String userId);
+
     /**首页微课专题模块*/
     @FormUrlEncoded
     @POST("video/special/all")
@@ -192,5 +215,16 @@ public interface ApiServer {
                                                   @Field("subject") String subject,
                                                   @Field("textbook") String textbook,
                                                   @Field("userId") String userId);
+
+    /**收藏列表*/
+    @FormUrlEncoded
+    @POST("video/collection/list")
+    Observable<CollectionListEntity> collectionList(@Field("userId") String userId,
+                                                    @Field("subject") String subject);
+    /**收藏列表*/
+    @FormUrlEncoded
+    @POST("video/hisPlay")
+    Observable<CollectionListEntity> hisPlayList(@Field("userId") String userId,
+                                                    @Field("subject") String subject);
 }
 

@@ -8,7 +8,9 @@ import android.widget.PopupWindow;
 import com.fek12.basic.utils.baseUtils.BaseAppUtils;
 
 import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * @ProjectName: EvaluationPad
@@ -65,6 +67,21 @@ public class AppUtils {
             e1.printStackTrace();
         }
         return statusBarHeight;
+    }
+
+
+    /*
+     * 将时间转换为时间戳
+     */
+    public static long dateToTime(String time) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date date = simpleDateFormat.parse(time);
+            long ts = date.getTime()/1000;
+            return ts;
+        } catch (Exception e) {
+            return 0;
+        }
     }
 
 

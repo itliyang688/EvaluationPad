@@ -47,13 +47,10 @@ public class AnswerWebViewActivity extends BaseActivity {
         //webSettings.setTextZoom(100);
         //webView.setInitialScale(50);
         webSettings.setLoadWithOverviewMode(true);
-
+        webView.setBackgroundColor(0);
+        webView.getBackground().setAlpha(0);
         webView.setWebChromeClient(new WebChromeClient());
-        //webView.loadUrl("http://192.168.0.83:11111/index.html");
         webView.loadUrl("http://192.168.0.46/noc/html/index.html");
-        //webView.loadUrl("http://192.168.0.46:11111/accurateReport/report?userId=413&paperResultId=11425");
-        //webView.loadUrl("https://baidu.com/?tn=98012088_10_dg&ch=3");
-        //webView.loadUrl("file:///android_asset/web/Record.html");
 
         webView.setWebViewClient(new WebViewClient() {
             // 重写此方法表明点击网页里面的链接还是在当前的webview里跳转，不跳到浏览器那边

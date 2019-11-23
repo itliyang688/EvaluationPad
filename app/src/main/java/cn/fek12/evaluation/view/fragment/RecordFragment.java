@@ -183,7 +183,7 @@ public class RecordFragment extends BaseFragment {
                             list.add(sectionEntity);
                         }
                     }
-                    DialogUtils.subjectSelectDialog(getContext(),list, new DialogUtils.OnSelectItmeListener() {
+                    DialogUtils.subjectSelectDialog(getContext(),list, new DialogUtils.OnSelectSubjectItmeListener() {
                         @Override
                         public void onSelectItme(int pos) {
                             ToastUtils.popUpToast(list.get(pos).getName());

@@ -91,12 +91,57 @@ public class MicroLessonEnetity implements Serializable {
             private int videoId;
             private String cacheKey;
             private String structLayKey;
+            private String playNum;
             private int type;
+            private int isCollection;
+            private long playScheduleTime = 0;
             private String addressUrl;
             private String videoName;
             private String videoCreateTime;
             private String specialName;
             private String introduction;
+            private String textbookName;
+            private String subjectName;
+
+            public String getTextbookName() {
+                return textbookName;
+            }
+
+            public void setTextbookName(String textbookName) {
+                this.textbookName = textbookName;
+            }
+
+            public String getSubjectName() {
+                return subjectName;
+            }
+
+            public void setSubjectName(String subjectName) {
+                this.subjectName = subjectName;
+            }
+
+            public long getPlayScheduleTime() {
+                return playScheduleTime;
+            }
+
+            public void setPlayScheduleTime(long playScheduleTime) {
+                this.playScheduleTime = playScheduleTime;
+            }
+
+            public int getIsCollection() {
+                return isCollection;
+            }
+
+            public void setIsCollection(int isCollection) {
+                this.isCollection = isCollection;
+            }
+
+            public String getPlayNum() {
+                return playNum;
+            }
+
+            public void setPlayNum(String playNum) {
+                this.playNum = playNum;
+            }
 
             public int getVideoId() {
                 return videoId;

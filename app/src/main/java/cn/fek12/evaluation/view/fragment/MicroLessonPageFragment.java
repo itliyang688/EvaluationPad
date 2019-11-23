@@ -10,6 +10,10 @@ import com.fek12.basic.base.BaseFragment;
 import com.fek12.basic.base.BasePresenter;
 import com.google.gson.Gson;
 
+import org.csource.common.MyException;
+
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import butterknife.BindView;
@@ -21,6 +25,7 @@ import cn.fek12.evaluation.model.entity.MicroLessonEnetity;
 import cn.fek12.evaluation.model.entity.SubjectEntity;
 import cn.fek12.evaluation.model.entity.TextbookChildEntity;
 import cn.fek12.evaluation.presenter.MicroLessonPagePresenter;
+import cn.fek12.evaluation.utils.FastDFSUtil;
 import cn.fek12.evaluation.view.activity.FullScreenVideoPlayActivity;
 import cn.fek12.evaluation.view.activity.MicroLessonMoreActivity;
 import cn.fek12.evaluation.view.activity.SpecialVideoActivity;
@@ -49,6 +54,7 @@ public class MicroLessonPageFragment extends BaseFragment<MicroLessonPagePresent
     private String subjectId;
     private String semesterId = "";
     private String textbookId;
+    private String userId;
     private int mTypePage;//0全部1同步2专题
     public MicroLessonPageFragment(int typePage){
         mTypePage = typePage;
@@ -66,13 +72,24 @@ public class MicroLessonPageFragment extends BaseFragment<MicroLessonPagePresent
         this.semesterId = semester;
         this.subjectId = subject;
         this.textbookId = textbook;
+        this.userId = userId;
         loadView.showLoading();
+        initNetData();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        initNetData();
+    }
+
+    private void initNetData(){
         if(mTypePage == 0){
-            mPresenter.queryAllVideo(getContext(),grade,semester,subject,textbook,userId);
+            mPresenter.queryAllVideo(getContext(),gradeId,semesterId,subjectId,textbookId,userId);
+        }else if(mTypePage == 1){
+            mPresenter.querySynchroVideo(getContext(),gradeId,semesterId,subjectId,textbookId,userId);
         }else if(mTypePage == 2){
-            mPresenter.querySpecialVideo(getContext(),grade,semester,subject,textbook,userId);
-        }else if(mTypePage == 3){
-            mPresenter.querySpecialVideo(getContext(),grade,semester,subject,textbook,userId);
+            mPresenter.querySpecialVideo(getContext(),gradeId,semesterId,subjectId,textbookId,userId);
         }
     }
 
@@ -97,36 +114,112 @@ public class MicroLessonPageFragment extends BaseFragment<MicroLessonPagePresent
         contentView.setLayoutManager(manager);
         adapter = new SectionedRecyclerViewAdapter();
         contentView.setAdapter(adapter);
-        initAdapter();
     }
 
     @Override
     public void loadVideoSuc(MicroLessonEnetity entry) {
+        boolean isEmpty = false;
         loadView.showContent();
+        adapter.removeAllSections();
         if(entry.getData() != null){
             List<MicroLessonEnetity.DataBean.VideoBean> hotList = entry.getData().getHot();
             if(hotList != null && hotList.size() > 0){
-                VideoItemSection itemSection = (VideoItemSection) adapter.getSection("hot");
-                itemSection.updateList(hotList);
-                adapter.getAdapterForSection("hot").notifyAllItemsChanged("payloads");
+                isEmpty =true;
+                adapter.addSection("hot",new VideoItemSection(1,hotList, new VideoItemSection.OnSelectItmeListener() {
+                    @Override
+                    public void onSelectItme(int pos) {
+                        if(mTypePage == 2){//专题视频
+                            startSpecialVideo(hotList,pos,SpecialVideoActivity.class);
+                        }else{
+                            startSpecialVideo(hotList,pos,FullScreenVideoPlayActivity.class);
+                        }
+                    }
+
+                    @Override
+                    public void onMore() {/**热门视频查看更多*/
+                        //Intent intent = new Intent(getContext(), FullScreenVideoPlayActivity.class);
+                        startActivityIntent("热门视频");
+                        if(mTypePage == 0){
+
+                        }
+                    }
+                }));
             }
 
             List<MicroLessonEnetity.DataBean.VideoBean> nearList = entry.getData().getNear();
             if(nearList != null && nearList.size() > 0){
-                VideoItemSection itemSection = (VideoItemSection) adapter.getSection("near");
-                itemSection.updateList(nearList);
-                adapter.getAdapterForSection("near").notifyAllItemsChanged("payloads");
+                isEmpty =true;
+                adapter.addSection("near",new VideoItemSection(2, nearList,new VideoItemSection.OnSelectItmeListener() {
+                    @Override
+                    public void onSelectItme(int pos) {
+                        if(mTypePage == 2){//专题视频
+                            startSpecialVideo(nearList,pos,SpecialVideoActivity.class);
+                        }else{
+                            startSpecialVideo(nearList,pos,FullScreenVideoPlayActivity.class);
+                        }
+                    }
+
+                    @Override
+                    public void onMore() {/**热门视频查看更多*/
+                        //Intent intent = new Intent(getContext(), FullScreenVideoPlayActivity.class);
+                        startActivityIntent("热门视频");
+                        if(mTypePage == 0){
+
+                        }
+                    }
+                }));
             }
 
             List<MicroLessonEnetity.DataBean.VideoBean> recommonedList = entry.getData().getRecommoned();
             if(recommonedList != null && recommonedList.size() > 0){
-                VideoItemSection itemSection = (VideoItemSection) adapter.getSection("recommoned");
-                itemSection.updateList(recommonedList);
-                adapter.getAdapterForSection("recommoned").notifyAllItemsChanged("payloads");
+                isEmpty =true;
+                adapter.addSection("recommoned",new VideoItemSection(3, recommonedList,new VideoItemSection.OnSelectItmeListener() {
+                    @Override
+                    public void onSelectItme(int pos) {
+                        if(mTypePage == 2){//专题视频
+                            startSpecialVideo(recommonedList,pos,SpecialVideoActivity.class);
+                        }else{
+                            startSpecialVideo(recommonedList,pos,FullScreenVideoPlayActivity.class);
+                        }
+                    }
+
+                    @Override
+                    public void onMore() {/**热门视频查看更多*/
+                        startActivityIntent("热门视频");
+                        if(mTypePage == 0){
+
+                        }
+                    }
+                }));
             }
+            if(!isEmpty){
+                loadView.showEmpty();
+            }
+            adapter.notifyDataSetChanged();
         }else{
             loadView.showEmpty();
         }
+    }
+
+    private void startSpecialVideo(List<MicroLessonEnetity.DataBean.VideoBean> list, int pos,Class cla){
+        String path = "";
+        try {
+            path = FastDFSUtil.generateSourceUrl(list.get(pos).getAddressUrl());
+        }  catch (Exception e) {
+            e.printStackTrace();
+        }
+        Intent intent = new Intent(getContext(), cla);
+        intent.putExtra("pathUrl",path);
+        intent.putExtra("videoName",list.get(pos).getVideoName());
+        intent.putExtra("chapter",list.get(pos).getSpecialName());
+        intent.putExtra("cacheKey",list.get(pos).getCacheKey());
+        intent.putExtra("structLayKey",list.get(pos).getStructLayKey());
+        intent.putExtra("videoType",list.get(pos).getType());
+        intent.putExtra("videoId",list.get(pos).getVideoId());
+        intent.putExtra("describe",list.get(pos).getIntroduction());
+        intent.putExtra("isCollection",list.get(pos).getIsCollection());
+        intent.putExtra("playScheduleTime",list.get(pos).getPlayScheduleTime());
+        startActivity(intent);
     }
 
     @Override
@@ -166,71 +259,4 @@ public class MicroLessonPageFragment extends BaseFragment<MicroLessonPagePresent
         return false;
     }
 
-    private void initAdapter(){
-        adapter.addSection("hot",new VideoItemSection(1, new VideoItemSection.OnSelectItmeListener() {
-            @Override
-            public void onSelectItme(int pos) {
-                if(mTypePage == 2){//专题视频
-                    Intent intent = new Intent(getContext(), SpecialVideoActivity.class);
-                    startActivity(intent);
-                }else{
-                    Intent intent = new Intent(getContext(), FullScreenVideoPlayActivity.class);
-                    startActivity(intent);
-                }
-            }
-
-            @Override
-            public void onMore() {/**热门视频查看更多*/
-                //Intent intent = new Intent(getContext(), FullScreenVideoPlayActivity.class);
-                startActivityIntent("热门视频");
-                if(mTypePage == 0){
-
-                }
-            }
-        }));
-
-        adapter.addSection("near",new VideoItemSection(2, new VideoItemSection.OnSelectItmeListener() {
-            @Override
-            public void onSelectItme(int pos) {
-                if(mTypePage == 2){//专题视频
-                    Intent intent = new Intent(getContext(), SpecialVideoActivity.class);
-                    startActivity(intent);
-                }else{
-                    Intent intent = new Intent(getContext(), FullScreenVideoPlayActivity.class);
-                    startActivity(intent);
-                }
-            }
-
-            @Override
-            public void onMore() {/**热门视频查看更多*/
-                //Intent intent = new Intent(getContext(), FullScreenVideoPlayActivity.class);
-                startActivityIntent("热门视频");
-                if(mTypePage == 0){
-
-                }
-            }
-        }));
-
-        adapter.addSection("recommoned",new VideoItemSection(3, new VideoItemSection.OnSelectItmeListener() {
-            @Override
-            public void onSelectItme(int pos) {
-                if(mTypePage == 2){//专题视频
-                    Intent intent = new Intent(getContext(), SpecialVideoActivity.class);
-                    startActivity(intent);
-                }else{
-                    Intent intent = new Intent(getContext(), FullScreenVideoPlayActivity.class);
-                    startActivity(intent);
-                }
-            }
-
-            @Override
-            public void onMore() {/**热门视频查看更多*/
-                //Intent intent = new Intent(getContext(), FullScreenVideoPlayActivity.class);
-                startActivityIntent("热门视频");
-                if(mTypePage == 0){
-
-                }
-            }
-        }));
-    }
 }

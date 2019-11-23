@@ -41,7 +41,7 @@ public class RelevantVideoAdapter extends RecyclerView.Adapter<RelevantVideoAdap
         this.context = context;
     }
 
-    public void notifyChanged(List list) {
+    public void notifyChanged(List<RelevantVideoListEntity.DataBean.VideoBean> list) {
         mList = list;
         notifyDataSetChanged();
     }
@@ -95,18 +95,20 @@ public class RelevantVideoAdapter extends RecyclerView.Adapter<RelevantVideoAdap
             tvSubject.setText(mList.get(position).getSubject());
             tvTextbook.setText(mList.get(position).getTextbook());
             tvPlayNumber.setText(String.valueOf(mList.get(position).getCount()));
-            ivCover.post(new Runnable() {
+            /*ivCover.post(new Runnable() {
                 @Override
                 public void run() {
                     try {
                         String path = FastDFSUtil.generateSourceUrl(mList.get(position).getAddressUrl());
                         Bitmap bitmap = VideoUtils.getInstance().getNetVideoBitmap(path);
-                        ivCover.setImageBitmap(bitmap);
+                        if(bitmap != null){
+                            ivCover.setImageBitmap(bitmap);
+                        }
                     }catch (Exception e){
                         e.printStackTrace();
                     }
                 }
-            });
+            });*/
         }
     }
 }

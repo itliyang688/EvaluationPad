@@ -156,6 +156,7 @@ public class MicroLessonFragment extends BaseFragment<MicroLessonPresenter> impl
                     startActivityIntent(titleName, value, currentItme, TreeViewDialogActivity.class);
                 }else{
                     /**请求右侧页面数据*/
+                    updateContent();
                 }
             }
         }));
@@ -275,6 +276,7 @@ public class MicroLessonFragment extends BaseFragment<MicroLessonPresenter> impl
             tagChildSection.updateList(null);
         }
         /**请求右侧页面数据*/
+        updateContent();
     }
 
     @Override
@@ -283,6 +285,7 @@ public class MicroLessonFragment extends BaseFragment<MicroLessonPresenter> impl
         DictionaryChildSection semesterSection = (DictionaryChildSection) leftAdapter.getSection("semester");
         emptyCheck(semesterSection);
         /**请求右侧页面数据*/
+        updateContent();
     }
 
     private void emptyCheck(DictionaryChildSection semesterSection){

@@ -8,6 +8,10 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.ldf.calendar.component.CalendarAttr;
+import com.ldf.calendar.component.CalendarViewAdapter;
+import com.ldf.calendar.view.MonthPager;
+
 import java.util.List;
 
 import cn.fek12.evaluation.R;
@@ -48,13 +52,13 @@ public class DialogUtils {
         return dialog;
     }
 
-    public interface OnSelectItmeListener {
+    public interface OnSelectSubjectItmeListener {
         void onSelectItme(int pos);
     }
     /***
      *选择学科提示框
      */
-    public static Dialog subjectSelectDialog(Context mContext, List<ChildSectionEntity> mList, final OnSelectItmeListener selectItmeListener) {
+    public static Dialog subjectSelectDialog(Context mContext, List<ChildSectionEntity> mList, final OnSelectSubjectItmeListener selectItmeListener) {
 
         final Dialog dialog = new Dialog(mContext, R.style.dialog_anim);
         View view = LayoutInflater.from(mContext).inflate(R.layout.subject_select_dialog, null);

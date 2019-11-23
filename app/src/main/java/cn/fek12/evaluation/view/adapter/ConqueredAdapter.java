@@ -74,7 +74,7 @@ public class ConqueredAdapter extends RecyclerView.Adapter<ConqueredAdapter.Eval
         private ImageView btnConquered;
         private StrokeColorTextView tvScore;
         private StrokeColorTextView tvReason;
-        private StrokeTextView tvName;
+        private StrokeColorTextView tvName;
 
         public EvaluationHolder(View itemView) {
             super(itemView);

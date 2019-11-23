@@ -9,7 +9,8 @@ public class ApiRetrofit {
     private static ApiRetrofit mApiRetrofit;
     private Retrofit retrofit;
     private ApiServer apiServer;
-    public static String mBaseUrl = "http://192.168.0.46:11111/";
+    //public static String mBaseUrl = "http://192.168.0.46:11111/";
+    public static String mBaseUrl = "http://218.245.6.132:11111/";
 
     public ApiRetrofit() {
         retrofit = new Retrofit.Builder()

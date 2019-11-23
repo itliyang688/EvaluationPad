@@ -2,6 +2,7 @@ package cn.fek12.evaluation.view.adapter;
 
 import android.graphics.Bitmap;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -13,6 +14,7 @@ import java.util.List;
 
 import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.model.entity.MicroLessonEnetity;
+import cn.fek12.evaluation.utils.FastDFSUtil;
 import cn.fek12.evaluation.utils.VideoUtils;
 import cn.fek12.evaluation.view.widget.RoundImageView;
 import io.github.luizgrp.sectionedrecyclerviewadapter.Section;
@@ -36,17 +38,14 @@ public class VideoItemSection extends Section {
         void onSelectItme(int pos);
         void onMore();
     }
-    public VideoItemSection(int typePage, OnSelectItmeListener onSelectItmeListener) {
+    public VideoItemSection(int typePage,List<MicroLessonEnetity.DataBean.VideoBean> list, OnSelectItmeListener onSelectItmeListener) {
         super(SectionParameters.builder()
                 .itemResourceId(R.layout.video_item)
                 .headerResourceId(R.layout.evaluation_list_header_paper)
                 .build());
         mTypePage = typePage;
-        mOnSelectItmeListener = onSelectItmeListener;
-    }
-
-    public void updateList( List<MicroLessonEnetity.DataBean.VideoBean> list){
         mList = list;
+        mOnSelectItmeListener = onSelectItmeListener;
     }
 
     @Override
@@ -71,15 +70,33 @@ public class VideoItemSection extends Section {
             }
         });
         itemHolder.tvName.setText(mList.get(position).getVideoName());
-        //itemHolder.tvSubject.setText(mList.get(position).get);
+        itemHolder.tvPlayNumber.setText(mList.get(position).getPlayNum());
+        itemHolder.tvSubject.setText(mList.get(position).getTextbookName()+ " "+ mList.get(position).getSubjectName());
         itemHolder.tvTime.setText(mList.get(position).getVideoCreateTime());
-        Bitmap bitmap = VideoUtils.getInstance().getNetVideoBitmap(mList.get(position).getAddressUrl());
-        itemHolder.ivCover.setImageBitmap(bitmap);
+        /*itemHolder.ivCover.post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    String path = FastDFSUtil.generateSourceUrl(mList.get(position).getAddressUrl());
+                    Bitmap bitmap = VideoUtils.getInstance().getNetVideoBitmap(path);
+                    if(bitmap != null){
+                        itemHolder.ivCover.setImageBitmap(bitmap);
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });*/
     }
 
     @Override
     public void onBindHeaderViewHolder(RecyclerView.ViewHolder holder) {
         MyHeaderViewHolder holderHolder = (MyHeaderViewHolder) holder;
+        if(mList == null || mList.size() == 0){
+            holderHolder.rootView.setVisibility(View.GONE);
+            return;
+        }
+        //holderHolder.rootView.setVisibility(View.VISIBLE);
         if (mTypePage == TYPE_HOT) {
             holderHolder.header.setText("热门视频");
             holderHolder.header.setCompoundDrawablesWithIntrinsicBounds(
@@ -143,9 +160,13 @@ public class VideoItemSection extends Section {
     class MyHeaderViewHolder extends RecyclerView.ViewHolder {
         private TextView header;
         private TextView tvMore;
+        private View view;
+        private FrameLayout rootView;
         public MyHeaderViewHolder(View itemView) {
             super(itemView);
+            view = itemView;
             header = itemView.findViewById(R.id.header);
+            rootView = itemView.findViewById(R.id.rootView);
             tvMore = itemView.findViewById(R.id.tvMore);
         }
     }

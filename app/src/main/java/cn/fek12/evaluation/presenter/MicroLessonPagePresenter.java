@@ -70,4 +70,26 @@ public class MicroLessonPagePresenter extends BasePresenter<IMicroLessonPage.Vie
                     }
                 });
     }
+
+    @Override
+    public void querySynchroVideo(Context context, String grade, String semester, String subject, String textbook, String userId) {
+        ApiRetrofit.getInstance().getApiService().querySynchroVideo(grade,semester,subject,textbook,userId)
+                .compose(RxHelper.observableIO2Main(context))
+                .subscribe(new BaseObserver<MicroLessonEnetity>() {
+
+                    @Override
+                    public void onSuccess(MicroLessonEnetity entry) {
+                        if(entry.getState().equals("0")){
+                            infoView.loadVideoSuc(entry);
+                        }else{
+                            infoView.loadVideoEmpty();
+                        }
+                    }
+
+                    @Override
+                    public void onError(String msg) {
+                        infoView.loadVideoEmpty();
+                    }
+                });
+    }
 }

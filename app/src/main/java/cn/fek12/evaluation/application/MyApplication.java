@@ -25,7 +25,7 @@ public class MyApplication extends BaseApplication {
     }
 
     public String getPJUserId() {
-        return "1";
+        return userId;
     }
 
     public void setUserId(String userId) {

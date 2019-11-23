@@ -16,9 +16,7 @@ public class VideoUtils {
     public static VideoUtils getInstance() {
         if (instance == null) {
             synchronized (VideoUtils.class) {
-                if (instance == null) {
-                    instance = new VideoUtils();
-                }
+
             }
         }
         return instance;
