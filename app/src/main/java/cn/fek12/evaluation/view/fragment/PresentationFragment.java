@@ -1,5 +1,6 @@
 package cn.fek12.evaluation.view.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -17,13 +18,12 @@ import java.util.List;
 import butterknife.BindView;
 import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.application.MyApplication;
-import cn.fek12.evaluation.impl.IPresentation;
 import cn.fek12.evaluation.model.entity.AWeekEntity;
-import cn.fek12.evaluation.model.entity.DictionaryListResp;
 import cn.fek12.evaluation.model.entity.EarlierEntity;
 import cn.fek12.evaluation.presenter.PresentationPresenter;
 import cn.fek12.evaluation.utils.AppUtils;
 import cn.fek12.evaluation.view.PopupWindow.MenuPopupWindow;
+import cn.fek12.evaluation.view.activity.AnswerWebViewActivity;
 import cn.fek12.evaluation.view.adapter.PresentationAweekItemSection;
 import cn.fek12.evaluation.view.adapter.PresentationEarlierItemSection;
 import cn.fek12.evaluation.view.widget.MultipleStatusView;
@@ -151,7 +151,12 @@ public class PresentationFragment extends BaseFragment<PresentationPresenter> im
             leftAdapter.addSection("threeDays", new PresentationAweekItemSection(1,daylist, getContext(), "近三天", new PresentationAweekItemSection.OnSelectItmeListener() {
                 @Override
                 public void onSelectItme(int pos) {
-
+                    /**跳转页面答题*/
+                    Intent intent = new Intent(getContext(), AnswerWebViewActivity.class);
+                    intent.putExtra("isanswered",1);
+                    intent.putExtra("paperId",daylist.get(pos).getId());
+                    intent.putExtra("paperResult",daylist.get(pos).getPaperResultId());
+                    startActivity(intent);
                 }
             }));
         }
@@ -160,7 +165,12 @@ public class PresentationFragment extends BaseFragment<PresentationPresenter> im
             leftAdapter.addSection("aweek", new PresentationAweekItemSection(1,aweeklist, getContext(), "一周内", new PresentationAweekItemSection.OnSelectItmeListener() {
                 @Override
                 public void onSelectItme(int pos) {
-
+                    /**跳转页面答题*/
+                    Intent intent = new Intent(getContext(), AnswerWebViewActivity.class);
+                    intent.putExtra("isanswered",1);
+                    intent.putExtra("paperId",aweeklist.get(pos).getId());
+                    intent.putExtra("paperResult",aweeklist.get(pos).getPaperResultId());
+                    startActivity(intent);
                 }
             }));
 
@@ -191,7 +201,12 @@ public class PresentationFragment extends BaseFragment<PresentationPresenter> im
                 leftAdapter.addSection("earlier", new PresentationEarlierItemSection( 1,getContext(),list, "较早", new PresentationEarlierItemSection.OnSelectItmeListener() {
                     @Override
                     public void onSelectItme(int pos) {
-
+                        /**跳转页面答题*/
+                        Intent intent = new Intent(getContext(), AnswerWebViewActivity.class);
+                        intent.putExtra("isanswered",1);
+                        intent.putExtra("paperId",list.get(pos).getId());
+                        intent.putExtra("paperResult",list.get(pos).getPaperResultId());
+                        startActivity(intent);
                     }
                 }));
             }

@@ -12,10 +12,12 @@ import cn.fek12.evaluation.ent.RxHelper;
 import cn.fek12.evaluation.impl.IEvaluationDetails;
 import cn.fek12.evaluation.impl.IMicroLessonTree;
 import cn.fek12.evaluation.model.entity.EvaluationListEntity;
+import cn.fek12.evaluation.model.entity.MicroLessonTreeEntity;
 import cn.fek12.evaluation.model.entity.SemesterEntity;
 import cn.fek12.evaluation.model.entity.SubjectEntity;
 import cn.fek12.evaluation.model.entity.TextbookEntity;
 import cn.fek12.evaluation.model.entity.TreeDataEntity;
+import cn.fek12.evaluation.model.entity.VideoMoreListEntity;
 
 /**
  * @ProjectName: EvaluationPad
@@ -121,7 +123,24 @@ public class MicroLessonTreePresenter extends BasePresenter<IMicroLessonTree.Vie
     }
 
     @Override
-    public void queryPaperList(Context context, String grade, String subject, String textbook, String semester, String userId, String currentPage, String knowledge) {
+    public void queryPaperList(Context context, String grade, String subject, String textbook, String semester, String userId, String currentPage, String knowledge,String type) {
+        ApiRetrofit.getInstance().getApiService().videoTreeList(grade,semester,subject,textbook,type,knowledge,userId)
+                .compose(RxHelper.observableIO2Main(context))
+                .subscribe(new BaseObserver<VideoMoreListEntity>() {
 
+                    @Override
+                    public void onSuccess(VideoMoreListEntity entry) {
+                        if(entry.getState().equals("0")){
+                            infoView.loadVideoTreeListSuc(entry);
+                        }else{
+                            infoView.loadVideoTreeListEmpty();
+                        }
+                    }
+
+                    @Override
+                    public void onError(String msg) {
+                        infoView.loadVideoTreeListEmpty();
+                    }
+                });
     }
 }

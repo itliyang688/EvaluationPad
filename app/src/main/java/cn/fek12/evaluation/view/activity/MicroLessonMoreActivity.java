@@ -19,16 +19,19 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.fek12.evaluation.R;
+import cn.fek12.evaluation.application.MyApplication;
 import cn.fek12.evaluation.impl.IMicroLessonMore;
 import cn.fek12.evaluation.model.entity.ChildSectionEntity;
 import cn.fek12.evaluation.model.entity.ContainListEntity;
-import cn.fek12.evaluation.model.entity.EvaluationListEntity;
+import cn.fek12.evaluation.model.entity.MicroLessonEnetity;
 import cn.fek12.evaluation.model.entity.SemesterEntity;
 import cn.fek12.evaluation.model.entity.SubjectEntity;
 import cn.fek12.evaluation.model.entity.TextbookChildEntity;
 import cn.fek12.evaluation.model.entity.TextbookEntity;
 import cn.fek12.evaluation.model.entity.TreeDataEntity;
+import cn.fek12.evaluation.model.entity.VideoMoreListEntity;
 import cn.fek12.evaluation.presenter.MicroLessonMorePresenter;
+import cn.fek12.evaluation.utils.FastDFSUtil;
 import cn.fek12.evaluation.view.adapter.EvaluationDetailsChildSection;
 import cn.fek12.evaluation.view.adapter.EvaluationDetailsParentSection;
 import cn.fek12.evaluation.view.adapter.EvaluationDetailsSubjectSection;
@@ -64,11 +67,13 @@ public class MicroLessonMoreActivity extends BaseActivity<MicroLessonMorePresent
     private String semesterId;
     private String textbookId;
     private int typePos;
+    private int clickPos;
 
     private List<ChildSectionEntity> gradeList;
     private List<SubjectEntity.DataBean> subjectList;
     private List<TextbookChildEntity> textBookList;
     private List<ChildSectionEntity> semesterList;
+    private List<VideoMoreListEntity.DataBean> mList;
 
     private int currentPage = 1;
     private boolean isLoadMore = false;
@@ -88,6 +93,7 @@ public class MicroLessonMoreActivity extends BaseActivity<MicroLessonMorePresent
         semesterId = intent.getStringExtra("semesterId");
         textbookId = intent.getStringExtra("textbookId");
         typePos = intent.getIntExtra("typePos",0);
+        clickPos = intent.getIntExtra("clickPos",0);
         tvTitleName.setText(intent.getStringExtra("titleName"));
         ContainListEntity containListEntity = new Gson().fromJson(intent.getStringExtra("containListEntityJson"), ContainListEntity.class);
         gradeList = containListEntity.getGradeList();
@@ -113,8 +119,21 @@ public class MicroLessonMoreActivity extends BaseActivity<MicroLessonMorePresent
         bottomProgressView.setAnimatingColor(this.getResources().getColor(R.color.app_bg));
         refreshLayout.setBottomView(bottomProgressView);
 
-        //loadView.showLoading();
-        //mPresenter.queryPaperList(this,gradeId,subjectId,textbookId,semesterId,MyApplication.getMyApplication().getUserId(),String.valueOf(currentPage));
+        refreshLayout.setEnableLoadmore(false);
+        refreshLayout.setEnableRefresh(false);
+
+        initData();
+    }
+
+    private void initData(){
+        loadView.showLoading();
+        if(clickPos == 0){//热门
+            mPresenter.hotList(this,gradeId,subjectId,textbookId,semesterId, MyApplication.getMyApplication().getUserId(),typePos == 0? null:String.valueOf(typePos),String.valueOf(currentPage));
+        }else if(clickPos == 1){//最近更新
+            mPresenter.nearList(this,gradeId,subjectId,textbookId,semesterId, MyApplication.getMyApplication().getUserId(),typePos == 0? null:String.valueOf(typePos),String.valueOf(currentPage));
+        }else if(clickPos == 2){//为你推荐
+            mPresenter.recommendList(this,gradeId,subjectId,textbookId,semesterId, MyApplication.getMyApplication().getUserId(),typePos == 0? null:String.valueOf(typePos),String.valueOf(currentPage));
+        }
     }
 
     private RefreshListenerAdapter refreshListenerAdapter = new RefreshListenerAdapter() {
@@ -191,7 +210,7 @@ public class MicroLessonMoreActivity extends BaseActivity<MicroLessonMorePresent
                 /**请求页面数据*/
                 isLoadMore = false;
                 currentPage = 1;
-                loadView.showLoading();
+                initData();
             }
         }));
         leftAdapter.notifyDataSetChanged();
@@ -200,6 +219,17 @@ public class MicroLessonMoreActivity extends BaseActivity<MicroLessonMorePresent
     @Override
     protected void onLoadData() {
 
+    }
+
+    @Override
+    public void loadListSuc(VideoMoreListEntity entry) {
+        mList = entry.getData();
+        if(mList == null || mList.size() == 0){
+            loadView.showEmpty();
+            return;
+        }
+        loadView.showContent();
+        videoAdapter.notifyChanged(mList,false);
     }
 
     @Override
@@ -215,11 +245,6 @@ public class MicroLessonMoreActivity extends BaseActivity<MicroLessonMorePresent
 
     @Override
     public void loadTreeSuc(TreeDataEntity entry) {
-
-    }
-
-    @Override
-    public void loadPaperListSuc(EvaluationListEntity entry) {
 
     }
 
@@ -259,8 +284,7 @@ public class MicroLessonMoreActivity extends BaseActivity<MicroLessonMorePresent
             /**请求页面数据*/
             isLoadMore = false;
             currentPage = 1;
-            loadView.showLoading();
-
+            initData();
         }
     }
 
@@ -289,8 +313,7 @@ public class MicroLessonMoreActivity extends BaseActivity<MicroLessonMorePresent
         /**请求页面数据*/
         isLoadMore = false;
         currentPage = 1;
-        loadView.showLoading();
-
+        initData();
     }
 
     @Override
@@ -306,8 +329,7 @@ public class MicroLessonMoreActivity extends BaseActivity<MicroLessonMorePresent
         /**请求页面数据*/
         isLoadMore = false;
         currentPage = 1;
-        loadView.showLoading();
-
+        initData();
     }
 
     @Override
@@ -326,7 +348,7 @@ public class MicroLessonMoreActivity extends BaseActivity<MicroLessonMorePresent
     }
 
     @Override
-    public void loadPaperTypeEmpty() {
+    public void loadListEmpty() {
         loadView.showEmpty();
         refreshLayout.finishLoadmore();
         refreshLayout.finishRefreshing();
@@ -335,11 +357,30 @@ public class MicroLessonMoreActivity extends BaseActivity<MicroLessonMorePresent
     @Override
     public void onItemClick(int position) {
         if(typePos == 2){//专题视频
-            Intent intent = new Intent(getContext(), SpecialVideoActivity.class);
-            startActivity(intent);
+            startSpecialVideo(position,SpecialVideoActivity.class);
         }else{
-            Intent intent = new Intent(getContext(), FullScreenVideoPlayActivity.class);
-            startActivity(intent);
+            startSpecialVideo(position,FullScreenVideoPlayActivity.class);
         }
+    }
+
+    private void startSpecialVideo(int pos, Class cla){
+        String path = "";
+        try {
+            path = FastDFSUtil.generateSourceUrl(mList.get(pos).getAddressUrl());
+        }  catch (Exception e) {
+            e.printStackTrace();
+        }
+        Intent intent = new Intent(getContext(), cla);
+        intent.putExtra("pathUrl",path);
+        intent.putExtra("videoName",mList.get(pos).getVideoName());
+        intent.putExtra("chapter",mList.get(pos).getSpecialName());
+        intent.putExtra("cacheKey",mList.get(pos).getCacheKey());
+        intent.putExtra("structLayKey",mList.get(pos).getStructLayKey());
+        intent.putExtra("videoType",mList.get(pos).getType());
+        intent.putExtra("videoId",mList.get(pos).getVideoId());
+        intent.putExtra("describe",mList.get(pos).getIntroduction());
+        intent.putExtra("isCollection",mList.get(pos).getIsCollection());
+        intent.putExtra("playScheduleTime",mList.get(pos).getPlayScheduleTime());
+        startActivity(intent);
     }
 }

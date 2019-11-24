@@ -171,7 +171,7 @@ public class RecordFragment extends BaseFragment {
             ConquerFootprintsFragment fragment;
             switch (view.getId()) {
                 case R.id.llSubject:
-                    List<ChildSectionEntity> list = new ArrayList<>();
+                    /*List<ChildSectionEntity> list = new ArrayList<>();
                     for(int i = 0; i < 10; i ++){
                         if(i == 0){
                             ChildSectionEntity sectionEntity = new ChildSectionEntity();
@@ -188,7 +188,7 @@ public class RecordFragment extends BaseFragment {
                         public void onSelectItme(int pos) {
                             ToastUtils.popUpToast(list.get(pos).getName());
                         }
-                    });
+                    });*/
 
                     break;
                 case R.id.btnCourseRecord:

@@ -51,8 +51,8 @@ public class VideoPlayListPresenter extends BasePresenter<IVideoPlayList.View> i
     }
 
     @Override
-    public void schedule(Context context, String cacheKey, String structLayKey, String playScheduleTime, String type, String videoId, String userId) {
-        ApiRetrofit.getInstance().getApiService().schedule(cacheKey,structLayKey,playScheduleTime,type,videoId,userId)
+    public void schedule(Context context, String playScheduleTime, String videoId, String userId) {
+        ApiRetrofit.getInstance().getApiService().addCourseRecord(playScheduleTime,videoId,userId)
                 .compose(RxHelper.observableIO2Main(context))
                 .subscribe(new BaseObserver<CommonEntity>() {
 

@@ -36,10 +36,8 @@ public class ConquerFootprintsFragment extends BaseFragment {
 
     @Override
     protected void onInitView(Bundle savedInstanceState) {
-
         fragmentList.add(new CurriculumRecordFragment(1));
-        fragmentList.add(new CurriculumRecordFragment(2));
-
+        fragmentList.add(new TestChartRecordFragment());
     }
 
     public void selectTab(int pos){

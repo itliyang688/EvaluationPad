@@ -1,6 +1,9 @@
 package cn.fek12.evaluation.view.activity;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -9,6 +12,8 @@ import com.fek12.basic.base.BaseActivity;
 import com.fek12.basic.utils.toast.ToastUtils;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.application.MyApplication;
 import cn.fek12.evaluation.impl.IVideoPlayList;
@@ -35,6 +40,8 @@ public class VideoPlayListActivity extends BaseActivity<VideoPlayListPresenter> 
     RecyclerView recycler;
     @BindView(R.id.multipleStatusView)
     MultipleStatusView multipleStatusView;
+    @BindView(R.id.llClick)
+    LinearLayout llClick;
     private String subjectCategoryId;
     private RelevantVideoAdapter adapter;
     private RelevantVideoListEntity.DataBean.VideoBean videoBean;
@@ -58,14 +65,14 @@ public class VideoPlayListActivity extends BaseActivity<VideoPlayListPresenter> 
     @Override
     protected void onLoadData() {
         multipleStatusView.showLoading();
-        mPresenter.videoList(getContext(),subjectCategoryId, MyApplication.getMyApplication().getUserId());
+        mPresenter.videoList(getContext(), subjectCategoryId, MyApplication.getMyApplication().getUserId());
     }
 
     @Override
     public void loadSuc(RelevantVideoListEntity entry) {
         multipleStatusView.showContent();
-        if(entry != null){
-            if(entry.getData() != null && entry.getData().getVideo() != null){
+        if (entry != null) {
+            if (entry.getData() != null && entry.getData().getVideo() != null) {
                 videoBean = entry.getData().getVideo();
                 String path = null;
                 try {
@@ -76,7 +83,7 @@ public class VideoPlayListActivity extends BaseActivity<VideoPlayListPresenter> 
 
                 jzVideo.seekToInAdvance = videoBean.getPlayScheduleTime();
                 jzVideo.setUp(path, videoBean.getVideoName());
-                isCollection = videoBean.getCollect();
+                isCollection = videoBean.getIsCollection();
                 jzVideo.ivExtend.setImageResource(isCollection == 0 ? R.mipmap.collection_video_normal : R.mipmap.collection_video_check);
                 jzVideo.ivExtend.setOnClickListener(onClickListener);
                 //jzVideo.thumbImageView.setImageResource(R.mipmap.presentation_empty_bg);
@@ -96,9 +103,9 @@ public class VideoPlayListActivity extends BaseActivity<VideoPlayListPresenter> 
                 });*/
             }
         }
-        if(entry.getData() != null && entry.getData().getRelatedVideo() != null && entry.getData().getRelatedVideo().size() > 0){
+        if (entry.getData() != null && entry.getData().getRelatedVideo() != null && entry.getData().getRelatedVideo().size() > 0) {
             adapter.notifyChanged(entry.getData().getRelatedVideo());
-        }else{
+        } else {
             multipleStatusView.showEmpty();
         }
     }
@@ -109,12 +116,12 @@ public class VideoPlayListActivity extends BaseActivity<VideoPlayListPresenter> 
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.ivExtend:
-                    if(isCollection == 0){
+                    if (isCollection == 0) {
                         tag = "1";
-                    }else{
+                    } else {
                         tag = "0";
                     }
-                    mPresenter.collection(VideoPlayListActivity.this,videoBean.getCacheKey(),String.valueOf(videoBean.getType()),String.valueOf(videoBean.getVideoId()),tag,MyApplication.getMyApplication().getUserId());
+                    mPresenter.collection(VideoPlayListActivity.this, videoBean.getCacheKey(), String.valueOf(videoBean.getType()), String.valueOf(videoBean.getVideoId()), tag, MyApplication.getMyApplication().getUserId());
                     break;
             }
         }
@@ -123,9 +130,8 @@ public class VideoPlayListActivity extends BaseActivity<VideoPlayListPresenter> 
     @Override
     protected void onPause() {
         long currentPos = jzVideo.getCurrentPositionWhenPlaying();
-        if(currentPos > 0){
-            mPresenter.schedule(VideoPlayListActivity.this,videoBean.getCacheKey(),"",String.valueOf(currentPos),
-                    String.valueOf(videoBean.getType()),String.valueOf(videoBean.getVideoId()),MyApplication.getMyApplication().getUserId());
+        if (currentPos > 0) {
+            mPresenter.schedule(VideoPlayListActivity.this, String.valueOf(currentPos), String.valueOf(videoBean.getVideoId()), MyApplication.getMyApplication().getUserId());
         }
         super.onPause();
     }
@@ -143,10 +149,10 @@ public class VideoPlayListActivity extends BaseActivity<VideoPlayListPresenter> 
 
     @Override
     public void loadCollectionSuc(CommonEntity entry) {
-        if(tag.equals("0")){
+        if (tag.equals("0")) {
             isCollection = 0;
             ToastUtils.popUpToast("已取消");
-        }else{
+        } else {
             isCollection = 1;
             ToastUtils.popUpToast("已收藏");
         }
@@ -155,9 +161,9 @@ public class VideoPlayListActivity extends BaseActivity<VideoPlayListPresenter> 
 
     @Override
     public void loadCollectionFail() {
-        if(tag.equals("0")){
+        if (tag.equals("0")) {
             ToastUtils.popUpToast("取消失败");
-        }else{
+        } else {
             ToastUtils.popUpToast("收藏失败");
         }
     }
@@ -170,5 +176,10 @@ public class VideoPlayListActivity extends BaseActivity<VideoPlayListPresenter> 
     @Override
     public void onItemClick(int position) {
 
+    }
+
+    @OnClick(R.id.llClick)
+    public void onViewClicked() {
+        startActivity(new Intent(VideoPlayListActivity.this,SmallWebViewActivity.class));
     }
 }

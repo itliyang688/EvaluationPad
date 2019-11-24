@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fek12.basic.base.BaseFragment;
+import com.fek12.basic.utils.toast.ToastUtils;
 import com.google.gson.Gson;
 
 import java.util.List;
@@ -104,7 +105,10 @@ public class EvaluationIndexPaperFragment extends BaseFragment<EvaluationIndexPa
                 @Override
                 public void onSelectItme(int pos) {
                     /**跳转页面答题*/
-                    startActivity(new Intent(getContext(), AnswerWebViewActivity.class));
+                    Intent intent = new Intent(getContext(), AnswerWebViewActivity.class);
+                    intent.putExtra("isanswered",entry.getData().getHot().get(pos).getIsanswered());
+                    intent.putExtra("paperId",entry.getData().getHot().get(pos).getId());
+                    startActivity(intent);
                 }
 
                 @Override
@@ -116,7 +120,10 @@ public class EvaluationIndexPaperFragment extends BaseFragment<EvaluationIndexPa
                 @Override
                 public void onSelectItme(int pos) {
                     /**跳转页面答题*/
-                    startActivity(new Intent(getContext(), AnswerWebViewActivity.class));
+                    Intent intent = new Intent(getContext(), AnswerWebViewActivity.class);
+                    intent.putExtra("isanswered",entry.getData().getUpdate().get(pos).getIsanswered());
+                    intent.putExtra("paperId",entry.getData().getUpdate().get(pos).getId());
+                    startActivity(intent);
                 }
 
                 @Override
@@ -127,6 +134,7 @@ public class EvaluationIndexPaperFragment extends BaseFragment<EvaluationIndexPa
             adapter.notifyDataSetChanged();
         }
     }
+
 
     @Override
     public void loginEmpty() {

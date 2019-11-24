@@ -64,6 +64,14 @@ public class RecommendEvaluationSection extends Section {
                 .placeholder(R.mipmap.presentation_empty_bg)
                 .error(R.mipmap.presentation_empty_bg)
                 .into(itemHolder.ivSubject);
+        itemHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(mOnSelectItmeListener != null){
+                    mOnSelectItmeListener.onSelectItme(position);
+                }
+            }
+        });
     }
 
     @Override

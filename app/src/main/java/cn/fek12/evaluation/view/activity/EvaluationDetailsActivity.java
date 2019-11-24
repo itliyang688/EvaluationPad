@@ -54,7 +54,7 @@ import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapt
  * @Description:
  * @CreateDate: 2019/10/30 13:14
  */
-public class EvaluationDetailsActivity extends BaseActivity<EvaluationDetailsPresenter> implements EvaluationDetailsPresenter.View {
+public class EvaluationDetailsActivity extends BaseActivity<EvaluationDetailsPresenter> implements EvaluationDetailsPresenter.View, EvaluationAdapter.OnItemClickListener {
     @BindView(R.id.recycler)
     RecyclerView leftRecycler;
     @BindView(R.id.label)
@@ -88,6 +88,7 @@ public class EvaluationDetailsActivity extends BaseActivity<EvaluationDetailsPre
     private String ptype;
     private String userType;
     private String paperType;
+    private List<EvaluationListEntity.DataBean.PapersBean> mList;
 
     @Override
     public int setLayoutResource() {
@@ -122,6 +123,7 @@ public class EvaluationDetailsActivity extends BaseActivity<EvaluationDetailsPre
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         evaluationAdapter = new EvaluationAdapter(EvaluationDetailsActivity.this);
+        evaluationAdapter.setOnItemClickListener(this);
         recyclerView.setAdapter(evaluationAdapter);
 
         refreshLayout.setEnableLoadmore(false);
@@ -368,7 +370,7 @@ public class EvaluationDetailsActivity extends BaseActivity<EvaluationDetailsPre
     @Override
     public void loadPaperListSuc(EvaluationListEntity entry) {
         EvaluationListEntity.DataBean.PageInfoBean pageInfoBean = entry.getData().getPage_info();
-        List<EvaluationListEntity.DataBean.PapersBean> list = entry.getData().getPapers();
+        mList = entry.getData().getPapers();
         if(pageInfoBean.getTotalCount() == 0){
             loadView.showEmpty();
             return;
@@ -379,8 +381,8 @@ public class EvaluationDetailsActivity extends BaseActivity<EvaluationDetailsPre
         }else{
             refreshLayout.setEnableLoadmore(false);
         }
-        if(list != null && list.size() > 0){
-            evaluationAdapter.notifyChanged(entry.getData().getPapers(),isLoadMore);
+        if(mList != null && mList.size() > 0){
+            evaluationAdapter.notifyChanged(mList,isLoadMore);
             if(!isLoadMore){
                 recyclerView.smoothScrollToPosition(0);
             }
@@ -508,5 +510,14 @@ public class EvaluationDetailsActivity extends BaseActivity<EvaluationDetailsPre
         loadView.showEmpty();
         refreshLayout.finishLoadmore();
         refreshLayout.finishRefreshing();
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        /**跳转页面答题*/
+        Intent intent = new Intent(getContext(), AnswerWebViewActivity.class);
+        intent.putExtra("isanswered",mList.get(position).getIsanswered());
+        intent.putExtra("paperId",mList.get(position).getId());
+        startActivity(intent);
     }
 }

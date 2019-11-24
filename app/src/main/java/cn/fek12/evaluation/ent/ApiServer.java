@@ -6,11 +6,13 @@ import cn.fek12.evaluation.model.entity.CheckPaperNameEntity;
 import cn.fek12.evaluation.model.entity.CollectionListEntity;
 import cn.fek12.evaluation.model.entity.CommonEntity;
 import cn.fek12.evaluation.model.entity.ConqueredEntity;
+import cn.fek12.evaluation.model.entity.CurriculumEntity;
 import cn.fek12.evaluation.model.entity.EarlierEntity;
 import cn.fek12.evaluation.model.entity.EvaluationListEntity;
 import cn.fek12.evaluation.model.entity.GradeDictionaryListEntity;
 import cn.fek12.evaluation.model.entity.HomeEvaluationDeta;
 import cn.fek12.evaluation.model.entity.MicroLessonEnetity;
+import cn.fek12.evaluation.model.entity.MicroLessonTreeEntity;
 import cn.fek12.evaluation.model.entity.PaperTypeListResp;
 import cn.fek12.evaluation.model.entity.RecordsEntitiy;
 import cn.fek12.evaluation.model.entity.RelevantVideoListEntity;
@@ -19,6 +21,7 @@ import cn.fek12.evaluation.model.entity.SubjectEntity;
 import cn.fek12.evaluation.model.entity.TextbookEntity;
 import cn.fek12.evaluation.model.entity.TopicCountEntity;
 import cn.fek12.evaluation.model.entity.TreeDataEntity;
+import cn.fek12.evaluation.model.entity.VideoMoreListEntity;
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
@@ -112,6 +115,14 @@ public interface ApiServer {
                                               @Field("type") String type,
                                               @Field("videoId") String videoId,
                                               @Field("userId") String userId);
+    /**
+     * 播放记录
+     */
+    @FormUrlEncoded
+    @POST("promote/addCourseRecord")
+    Observable<CommonEntity> addCourseRecord(@Field("playScheduleTime") String playScheduleTime,
+                                      @Field("videoId") String videoId,
+                                      @Field("userId") String userId);
 
     /**
      * 收藏、取消收藏
@@ -196,6 +207,7 @@ public interface ApiServer {
                                                   @Field("semester") String semester,
                                                   @Field("subject") String subject,
                                                   @Field("textbook") String textbook,
+                                                  @Field("type") String type,
                                                   @Field("userId") String userId);
 
     /**首页微课专题模块*/
@@ -226,5 +238,54 @@ public interface ApiServer {
     @POST("video/hisPlay")
     Observable<CollectionListEntity> hisPlayList(@Field("userId") String userId,
                                                     @Field("subject") String subject);
+
+    /**推荐查看更多*/
+    @FormUrlEncoded
+    @POST("video/recommoned/more")
+    Observable<VideoMoreListEntity> recommendMoreList(@Field("grade") String grade,
+                                                       @Field("semester") String semester,
+                                                       @Field("subject") String subject,
+                                                       @Field("textbook") String textbook,
+                                                       @Field("type") String type,
+                                                       @Field("userId") String userId);
+    /**热门查看更多*/
+    @FormUrlEncoded
+    @POST("video/top/more")
+    Observable<VideoMoreListEntity> hotMoreList(@Field("grade") String grade,
+                                                       @Field("semester") String semester,
+                                                       @Field("subject") String subject,
+                                                       @Field("textbook") String textbook,
+                                                       @Field("type") String type,
+                                                       @Field("userId") String userId);
+    /**最近更新查看更多*/
+    @FormUrlEncoded
+    @POST("video/top/more")
+    Observable<VideoMoreListEntity> nearMoreList(@Field("grade") String grade,
+                                                 @Field("semester") String semester,
+                                                 @Field("subject") String subject,
+                                                 @Field("textbook") String textbook,
+                                                 @Field("type") String type,
+                                                 @Field("userId") String userId);
+
+    /**攻克足迹课程记录*/
+    @FormUrlEncoded
+    @POST("conquerFootprint/courseRecord")
+    Observable<CurriculumEntity> courseRecord(@Field("beginDate") String beginDate,
+                                              @Field("endDate") String endDate,
+                                              @Field("subject") String subject,
+                                              @Field("userId") String userId,
+                                              @Field("currentPage") String currentPage);
+
+    /**查看更多*/
+    @FormUrlEncoded
+    @POST("video/list")
+    Observable<VideoMoreListEntity> videoTreeList(@Field("grade") String grade,
+                                                    @Field("semester") String semester,
+                                                    @Field("subject") String subject,
+                                                    @Field("textbook") String textbook,
+                                                    @Field("type") String type,
+                                                    @Field("knowledgePoint") String knowledgePoint,
+                                                    @Field("userId") String userId);
+
 }
 

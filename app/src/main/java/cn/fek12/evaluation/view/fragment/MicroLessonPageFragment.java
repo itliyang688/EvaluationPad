@@ -85,12 +85,17 @@ public class MicroLessonPageFragment extends BaseFragment<MicroLessonPagePresent
 
     private void initNetData(){
         if(mTypePage == 0){
-            mPresenter.queryAllVideo(getContext(),gradeId,semesterId,subjectId,textbookId,userId);
+            mPresenter.queryAllVideo(getContext(),gradeId,semesterId,subjectId,textbookId,null,userId);
+        }else{
+            mPresenter.queryAllVideo(getContext(),gradeId,semesterId,subjectId,textbookId,String.valueOf(mTypePage),userId);
+        }
+        /*if(mTypePage == 0){
+            mPresenter.queryAllVideo(getContext(),gradeId,semesterId,subjectId,textbookId,null,userId);
         }else if(mTypePage == 1){
             mPresenter.querySynchroVideo(getContext(),gradeId,semesterId,subjectId,textbookId,userId);
         }else if(mTypePage == 2){
             mPresenter.querySpecialVideo(getContext(),gradeId,semesterId,subjectId,textbookId,userId);
-        }
+        }*/
     }
 
     @Override
@@ -138,10 +143,7 @@ public class MicroLessonPageFragment extends BaseFragment<MicroLessonPagePresent
                     @Override
                     public void onMore() {/**热门视频查看更多*/
                         //Intent intent = new Intent(getContext(), FullScreenVideoPlayActivity.class);
-                        startActivityIntent("热门视频");
-                        if(mTypePage == 0){
-
-                        }
+                        startActivityIntent("热门视频",1);
                     }
                 }));
             }
@@ -160,12 +162,9 @@ public class MicroLessonPageFragment extends BaseFragment<MicroLessonPagePresent
                     }
 
                     @Override
-                    public void onMore() {/**热门视频查看更多*/
+                    public void onMore() {/**最近视频查看更多*/
                         //Intent intent = new Intent(getContext(), FullScreenVideoPlayActivity.class);
-                        startActivityIntent("热门视频");
-                        if(mTypePage == 0){
-
-                        }
+                        startActivityIntent("最近更新",2);
                     }
                 }));
             }
@@ -185,10 +184,7 @@ public class MicroLessonPageFragment extends BaseFragment<MicroLessonPagePresent
 
                     @Override
                     public void onMore() {/**热门视频查看更多*/
-                        startActivityIntent("热门视频");
-                        if(mTypePage == 0){
-
-                        }
+                        startActivityIntent("热门视频",3);
                     }
                 }));
             }
@@ -227,7 +223,7 @@ public class MicroLessonPageFragment extends BaseFragment<MicroLessonPagePresent
         loadView.showEmpty();
     }
 
-    private void startActivityIntent(String titleName) {
+    private void startActivityIntent(String titleName,int clickPos) {
         ContainListEntity containListEntity = new ContainListEntity();
         containListEntity.setGradeList(gradeList);
         containListEntity.setSemesterList(semesterList);
@@ -240,6 +236,7 @@ public class MicroLessonPageFragment extends BaseFragment<MicroLessonPagePresent
         intent.putExtra("textbookId", textbookId);
         intent.putExtra("titleName", titleName);
         intent.putExtra("typePos", mTypePage);
+        intent.putExtra("clickPos", clickPos);
         intent.putExtra("containListEntityJson", new Gson().toJson(containListEntity));
         getActivity().startActivity(intent);
     }

@@ -27,15 +27,18 @@ import cn.fek12.evaluation.impl.IMicroLessonTree;
 import cn.fek12.evaluation.model.entity.ChildSectionEntity;
 import cn.fek12.evaluation.model.entity.ContainListEntity;
 import cn.fek12.evaluation.model.entity.EvaluationListEntity;
+import cn.fek12.evaluation.model.entity.MicroLessonTreeEntity;
 import cn.fek12.evaluation.model.entity.SemesterEntity;
 import cn.fek12.evaluation.model.entity.SubjectEntity;
 import cn.fek12.evaluation.model.entity.TextbookChildEntity;
 import cn.fek12.evaluation.model.entity.TextbookEntity;
 import cn.fek12.evaluation.model.entity.TreeDataEntity;
+import cn.fek12.evaluation.model.entity.VideoMoreListEntity;
 import cn.fek12.evaluation.model.holder.AutoTreeChildItemHolder;
 import cn.fek12.evaluation.model.holder.TreeParentItemHolder;
 import cn.fek12.evaluation.presenter.EvaluationDetailsPresenter;
 import cn.fek12.evaluation.presenter.MicroLessonTreePresenter;
+import cn.fek12.evaluation.utils.FastDFSUtil;
 import cn.fek12.evaluation.view.adapter.EvaluationAdapter;
 import cn.fek12.evaluation.view.adapter.EvaluationDetailsChildSection;
 import cn.fek12.evaluation.view.adapter.EvaluationDetailsParentSection;
@@ -65,7 +68,7 @@ public class MicroLessonTreeActivity extends BaseActivity<MicroLessonTreePresent
     MultipleStatusView loadView;
     private SectionedRecyclerViewAdapter leftAdapter;
     private TreeDataEntity treeDataEntity;
-    private String checkId;
+    private String checkId = null;
     private TreeNode selectNode;
     private VideoAdapter videoAdapter;
     private int tagPos;
@@ -78,6 +81,7 @@ public class MicroLessonTreeActivity extends BaseActivity<MicroLessonTreePresent
     private List<SubjectEntity.DataBean> subjectList;
     private List<TextbookChildEntity> textBookList;
     private List<ChildSectionEntity> semesterList;
+    private List<VideoMoreListEntity.DataBean> mList;
 
     private int currentPage = 1;
     private boolean isLoadMore = false;
@@ -126,10 +130,15 @@ public class MicroLessonTreeActivity extends BaseActivity<MicroLessonTreePresent
         bottomProgressView.setAnimatingColor(this.getResources().getColor(R.color.app_bg));
         refreshLayout.setBottomView(bottomProgressView);
 
-        //loadView.showLoading();
-        mPresenter.queryPaperList(this,gradeId,subjectId,textbookId,semesterId,String.valueOf(currentPage),checkId,null);
+        refreshLayout.setEnableLoadmore(false);
+        refreshLayout.setEnableRefresh(false);
+        initData();
     }
 
+    private void initData(){
+        loadView.showLoading();
+        mPresenter.queryPaperList(this,gradeId,subjectId,textbookId,semesterId,String.valueOf(currentPage),checkId,checkId,String.valueOf(typePos));
+    }
     private RefreshListenerAdapter refreshListenerAdapter = new RefreshListenerAdapter() {
         @Override
         public void onLoadMore(final TwinklingRefreshLayout refreshLayout) {
@@ -264,8 +273,7 @@ public class MicroLessonTreeActivity extends BaseActivity<MicroLessonTreePresent
                     /**请求数据*/
                     isLoadMore = false;
                     currentPage = 1;
-                    loadView.showLoading();
-
+                    initData();
                 }
             }
         });
@@ -327,7 +335,7 @@ public class MicroLessonTreeActivity extends BaseActivity<MicroLessonTreePresent
                 /**请求页面数据*/
                 isLoadMore = false;
                 currentPage = 1;
-                loadView.showLoading();
+                initData();
             }
         }));
         leftAdapter.notifyDataSetChanged();
@@ -357,10 +365,15 @@ public class MicroLessonTreeActivity extends BaseActivity<MicroLessonTreePresent
             initTreeView();
         }
     }
-
     @Override
-    public void loadPaperListSuc(EvaluationListEntity entry) {
-
+    public void loadVideoTreeListSuc(VideoMoreListEntity entry) {
+        mList = entry.getData();
+        if(mList != null && mList.size() > 0){
+            loadView.showContent();
+            videoAdapter.notifyChanged(mList,false);
+        }else{
+            loadView.showEmpty();
+        }
     }
 
     @Override
@@ -402,7 +415,7 @@ public class MicroLessonTreeActivity extends BaseActivity<MicroLessonTreePresent
             /**请求页面数据*/
             isLoadMore = false;
             currentPage = 1;
-            loadView.showLoading();
+            initData();
 
         }
     }
@@ -435,7 +448,7 @@ public class MicroLessonTreeActivity extends BaseActivity<MicroLessonTreePresent
         /**请求页面数据*/
         isLoadMore = false;
         currentPage = 1;
-        loadView.showLoading();
+        initData();
 
     }
 
@@ -455,7 +468,7 @@ public class MicroLessonTreeActivity extends BaseActivity<MicroLessonTreePresent
         /**请求页面数据*/
         isLoadMore = false;
         currentPage = 1;
-        loadView.showLoading();
+        initData();
 
     }
 
@@ -475,7 +488,7 @@ public class MicroLessonTreeActivity extends BaseActivity<MicroLessonTreePresent
     }
 
     @Override
-    public void loadPaperTypeEmpty() {
+    public void loadVideoTreeListEmpty() {
         loadView.showEmpty();
         refreshLayout.finishLoadmore();
         refreshLayout.finishRefreshing();
@@ -484,11 +497,31 @@ public class MicroLessonTreeActivity extends BaseActivity<MicroLessonTreePresent
     @Override
     public void onItemClick(int position) {
         if(typePos == 2){//专题视频
-            Intent intent = new Intent(getContext(), SpecialVideoActivity.class);
-            startActivity(intent);
+            startSpecialVideo(position,SpecialVideoActivity.class);
         }else{
-            Intent intent = new Intent(getContext(), FullScreenVideoPlayActivity.class);
-            startActivity(intent);
+            startSpecialVideo(position,FullScreenVideoPlayActivity.class);
         }
     }
+
+    private void startSpecialVideo(int pos, Class cla){
+        String path = "";
+        try {
+            path = FastDFSUtil.generateSourceUrl(mList.get(pos).getAddressUrl());
+        }  catch (Exception e) {
+            e.printStackTrace();
+        }
+        Intent intent = new Intent(getContext(), cla);
+        intent.putExtra("pathUrl",path);
+        intent.putExtra("videoName",mList.get(pos).getVideoName());
+        intent.putExtra("chapter",mList.get(pos).getSpecialName());
+        intent.putExtra("cacheKey",mList.get(pos).getCacheKey());
+        intent.putExtra("structLayKey",mList.get(pos).getStructLayKey());
+        intent.putExtra("videoType",mList.get(pos).getType());
+        intent.putExtra("videoId",mList.get(pos).getVideoId());
+        intent.putExtra("describe",mList.get(pos).getIntroduction());
+        intent.putExtra("isCollection",mList.get(pos).getIsCollection());
+        intent.putExtra("playScheduleTime",mList.get(pos).getPlayScheduleTime());
+        startActivity(intent);
+    }
+
 }

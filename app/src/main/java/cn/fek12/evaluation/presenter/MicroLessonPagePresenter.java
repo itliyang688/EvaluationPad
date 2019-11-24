@@ -28,8 +28,8 @@ public class MicroLessonPagePresenter extends BasePresenter<IMicroLessonPage.Vie
     }
 
     @Override
-    public void queryAllVideo(Context context, String grade, String semester, String subject, String textbook, String userId) {
-        ApiRetrofit.getInstance().getApiService().queryVideoList(grade,semester,subject,textbook,userId)
+    public void queryAllVideo(Context context, String grade, String semester, String subject, String textbook, String type,String userId) {
+        ApiRetrofit.getInstance().getApiService().queryVideoList(grade,semester,subject,textbook,type,userId)
                 .compose(RxHelper.observableIO2Main(context))
                 .subscribe(new BaseObserver<MicroLessonEnetity>() {
 

@@ -6,15 +6,13 @@ import android.os.Bundle;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
-import com.fek12.basic.base.BaseActivity;
 import com.fek12.basic.base.BaseFragment;
 import com.fek12.basic.base.BasePresenter;
 
 import butterknife.BindView;
 import cn.fek12.evaluation.R;
-import cn.fek12.evaluation.view.activity.MainActivity;
 import cn.fek12.evaluation.view.activity.WebViewActivity;
-import cn.fek12.evaluation.view.widget.NoRollWebView;
+import cn.fek12.evaluation.view.widget.MultipleStatusView;
 
 /**
  * @ProjectName: EvaluationPad
@@ -26,6 +24,8 @@ import cn.fek12.evaluation.view.widget.NoRollWebView;
 public class TopicWrongRecordPageFragment extends BaseFragment {
     @BindView(R.id.webView)
     WebView webView;
+    @BindView(R.id.loadView)
+    MultipleStatusView loadView;
 
     @Override
     protected int getLayoutResource() {
@@ -35,6 +35,7 @@ public class TopicWrongRecordPageFragment extends BaseFragment {
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onInitView(Bundle savedInstanceState) {
+        loadView.showEmpty();
         WebSettings webSettings = webView.getSettings();
         // 不使用缓存：
         webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
@@ -47,7 +48,7 @@ public class TopicWrongRecordPageFragment extends BaseFragment {
         // 使WebView不可滚动
         //webView.setOnTouchListener((v, event) -> (event.getAction() == MotionEvent.ACTION_MOVE));
         //webView.loadUrl("http://192.168.0.46:11111/index.html");
-        webView.loadUrl("http://192.168.0.46:11111/accurateReport/report?userId=413&paperResultId=11425");
+        //webView.loadUrl("http://192.168.0.46:11111/accurateReport/report?userId=413&paperResultId=11425");
         //webView.loadUrl("file:///android_asset/web/Record.html");
         startActivity(new Intent(getContext(), WebViewActivity.class));
         //MainActivity activity = (MainActivity) getActivity();

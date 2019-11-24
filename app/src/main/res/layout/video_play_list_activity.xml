@@ -17,6 +17,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:orientation="vertical"
         tools:ignore="MissingConstraints">
 
         <LinearLayout
@@ -30,7 +31,28 @@
                 android:layout_height="match_parent"
                 android:scaleType="fitXY" />
         </LinearLayout>
+        <LinearLayout
+            android:id="@+id/llClick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_marginTop="@dimen/dp_32">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="业精于勤，看完视频"
+                android:textSize="@dimen/sp_16"
+                android:textColor="@color/color_333"/>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="去练练"
+                android:textStyle="bold"
+                android:layout_marginLeft="@dimen/dp_15"
+                android:textSize="@dimen/sp_24"
+                android:textColor="@color/color_FEAC2C"/>
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout

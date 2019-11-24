@@ -1,5 +1,6 @@
 package cn.fek12.evaluation.view.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -28,6 +29,7 @@ import cn.fek12.evaluation.impl.IEvaluation;
 import cn.fek12.evaluation.model.entity.HomeEvaluationDeta;
 import cn.fek12.evaluation.model.sharedPreferences.PrefUtilsData;
 import cn.fek12.evaluation.presenter.EvaluationPresenter;
+import cn.fek12.evaluation.view.activity.AnswerWebViewActivity;
 import cn.fek12.evaluation.view.adapter.RecommendEvaluationSection;
 import cn.fek12.evaluation.view.widget.MultipleStatusView;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
@@ -147,7 +149,11 @@ public class EvaluationFragment extends BaseFragment<EvaluationPresenter> implem
             adapter.addSection(new RecommendEvaluationSection(getContext(),recommendList, new RecommendEvaluationSection.OnSelectItmeListener() {
                 @Override
                 public void onSelectItme(int pos) {
-
+                    /**跳转页面答题*/
+                    Intent intent = new Intent(getContext(), AnswerWebViewActivity.class);
+                    intent.putExtra("isanswered",recommendList.get(pos).getIsanswered());
+                    intent.putExtra("paperId",recommendList.get(pos).getId());
+                    startActivity(intent);
                 }
             }));
             adapter.notifyDataSetChanged();

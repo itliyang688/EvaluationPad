@@ -14,13 +14,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.fek12.evaluation.R;
-import cn.fek12.evaluation.model.entity.EvaluationListEntity;
+import cn.fek12.evaluation.model.entity.VideoMoreListEntity;
 
 
 public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.EvaluationHolder> {
     private OnItemClickListener mOnItemClickListener = null;
 
-    private List mList = new ArrayList();
+    private List<VideoMoreListEntity.DataBean> mList = new ArrayList();
 
     public interface OnItemClickListener {
         void onItemClick(int position);
@@ -37,7 +37,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.EvaluationHo
         this.context = context;
     }
 
-    public void notifyChanged(List list,boolean isAdd) {
+    public void notifyChanged(List<VideoMoreListEntity.DataBean> list, boolean isAdd) {
         if(isAdd){
             mList.addAll(list);
         }else{
@@ -48,7 +48,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.EvaluationHo
 
     @Override
     public int getItemCount() {
-        return 30;
+        return mList.size();
     }
 
     @Override
@@ -93,7 +93,10 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.EvaluationHo
         }
 
         public void setData(final int position) {
-
+            tvName.setText(mList.get(position).getVideoName());
+            tvSubject.setText(mList.get(position).getTextbookName()+" "+mList.get(position).getSubjectName());
+            tvTime.setText(mList.get(position).getVideoCreateTime());
+            tvPlayNumber.setText(String.valueOf(mList.get(position).getPlayNum()));
         }
     }
 }

@@ -91,10 +91,10 @@ public class RelevantVideoListEntity implements Serializable {
             private String addressUrl;
             private String videoName;
             private String cacheKey;
-            private long videoCreateTime;
+            private String videoCreateTime;
             private int playScheduleTime;
             private int count;
-            private int collect;
+            private int isCollection;
             private String subject;
             private String textbook;
 
@@ -138,11 +138,11 @@ public class RelevantVideoListEntity implements Serializable {
                 this.videoName = videoName;
             }
 
-            public long getVideoCreateTime() {
+            public String getVideoCreateTime() {
                 return videoCreateTime;
             }
 
-            public void setVideoCreateTime(long videoCreateTime) {
+            public void setVideoCreateTime(String videoCreateTime) {
                 this.videoCreateTime = videoCreateTime;
             }
 
@@ -162,12 +162,12 @@ public class RelevantVideoListEntity implements Serializable {
                 this.count = count;
             }
 
-            public int getCollect() {
-                return collect;
+            public int getIsCollection() {
+                return isCollection;
             }
 
-            public void setCollect(int collect) {
-                this.collect = collect;
+            public void setIsCollection(int isCollection) {
+                this.isCollection = isCollection;
             }
 
             public String getSubject() {

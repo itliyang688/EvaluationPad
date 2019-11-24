@@ -136,6 +136,7 @@ public class EvaluationListFragment extends BaseFragment<EvaluationListPresenter
     public void onResume() {
         super.onResume();
         emptyCheck();
+        updateContent(mViewPager.getCurrentItem());
     }
 
     private void emptyCheck(){
