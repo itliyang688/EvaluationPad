@@ -259,7 +259,7 @@ public interface ApiServer {
                                                        @Field("userId") String userId);
     /**最近更新查看更多*/
     @FormUrlEncoded
-    @POST("video/top/more")
+    @POST("video/near/more")
     Observable<VideoMoreListEntity> nearMoreList(@Field("grade") String grade,
                                                  @Field("semester") String semester,
                                                  @Field("subject") String subject,

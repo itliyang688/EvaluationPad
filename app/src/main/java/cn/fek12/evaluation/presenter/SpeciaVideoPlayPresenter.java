@@ -25,22 +25,40 @@ public class SpeciaVideoPlayPresenter extends BasePresenter<ISpeciaVideoPlay.Vie
         this.infoView = view;
     }
     @Override
-    public void schedule(Context context, String cacheKey,String structLayKey, String playScheduleTime, String type, String videoId, String userId) {
-        ApiRetrofit.getInstance().getApiService().schedule(cacheKey,structLayKey,playScheduleTime,type,videoId,userId)
-                .compose(RxHelper.observableIO2Main(context))
-                .subscribe(new BaseObserver<CommonEntity>() {
+    public void schedule(Context context, String cacheKey,String structLayKey, String playScheduleTime, String type, String videoId, String userId,int typePage) {
+        if(typePage == 0){
+            ApiRetrofit.getInstance().getApiService().schedule(cacheKey,structLayKey,playScheduleTime,type,videoId,userId)
+                    .compose(RxHelper.observableIO2Main(context))
+                    .subscribe(new BaseObserver<CommonEntity>() {
 
-                    @Override
-                    public void onSuccess(CommonEntity entry) {
-                        if(entry.getState().equals("0")){
-                        }else{
+                        @Override
+                        public void onSuccess(CommonEntity entry) {
+                            if(entry.getState().equals("0")){
+                            }else{
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onError(String msg) {
-                    }
-                });
+                        @Override
+                        public void onError(String msg) {
+                        }
+                    });
+        }else{
+            ApiRetrofit.getInstance().getApiService().addCourseRecord(playScheduleTime,videoId,userId)
+                    .compose(RxHelper.observableIO2Main(context))
+                    .subscribe(new BaseObserver<CommonEntity>() {
+
+                        @Override
+                        public void onSuccess(CommonEntity entry) {
+                            if(entry.getState().equals("0")){
+                            }else{
+                            }
+                        }
+
+                        @Override
+                        public void onError(String msg) {
+                        }
+                    });
+        }
     }
 
     @Override

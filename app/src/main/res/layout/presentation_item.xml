@@ -11,6 +11,7 @@
         android:id="@+id/ivSubject"
         android:layout_width="@dimen/dp_129"
         android:layout_height="@dimen/dp_92"
+        android:scaleType="fitXY"
         android:src="@mipmap/mathematics_icon"/>
 
     <TextView

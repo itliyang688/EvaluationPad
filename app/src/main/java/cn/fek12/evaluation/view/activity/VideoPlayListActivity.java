@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.fek12.basic.base.BaseActivity;
 import com.fek12.basic.utils.toast.ToastUtils;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -18,6 +20,7 @@ import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.application.MyApplication;
 import cn.fek12.evaluation.impl.IVideoPlayList;
 import cn.fek12.evaluation.model.entity.CommonEntity;
+import cn.fek12.evaluation.model.entity.MicroLessonEnetity;
 import cn.fek12.evaluation.model.entity.RelevantVideoListEntity;
 import cn.fek12.evaluation.presenter.VideoPlayListPresenter;
 import cn.fek12.evaluation.utils.FastDFSUtil;
@@ -46,6 +49,7 @@ public class VideoPlayListActivity extends BaseActivity<VideoPlayListPresenter> 
     private RelevantVideoAdapter adapter;
     private RelevantVideoListEntity.DataBean.VideoBean videoBean;
     private int isCollection;
+    private List<RelevantVideoListEntity.DataBean.VideoBean> mList;
 
     @Override
     public int setLayoutResource() {
@@ -86,7 +90,7 @@ public class VideoPlayListActivity extends BaseActivity<VideoPlayListPresenter> 
                 isCollection = videoBean.getIsCollection();
                 jzVideo.ivExtend.setImageResource(isCollection == 0 ? R.mipmap.collection_video_normal : R.mipmap.collection_video_check);
                 jzVideo.ivExtend.setOnClickListener(onClickListener);
-                //jzVideo.thumbImageView.setImageResource(R.mipmap.presentation_empty_bg);
+                //jzVideo.thumbImageView.setImageResource(R.mipmap.empty_bg);
                 /*String finalPath = path;
                 new Handler().post(new Runnable() {
                     @Override
@@ -103,8 +107,14 @@ public class VideoPlayListActivity extends BaseActivity<VideoPlayListPresenter> 
                 });*/
             }
         }
-        if (entry.getData() != null && entry.getData().getRelatedVideo() != null && entry.getData().getRelatedVideo().size() > 0) {
-            adapter.notifyChanged(entry.getData().getRelatedVideo());
+
+        mList = entry.getData().getRelatedVideo();
+        if (entry.getData() != null) {
+            if(mList != null && mList.size() > 0){
+                adapter.notifyChanged(entry.getData().getRelatedVideo());
+            }else{
+                multipleStatusView.showEmpty();
+            }
         } else {
             multipleStatusView.showEmpty();
         }
@@ -175,11 +185,32 @@ public class VideoPlayListActivity extends BaseActivity<VideoPlayListPresenter> 
 
     @Override
     public void onItemClick(int position) {
+        startSpecialVideo(position,FullScreenVideoPlayActivity.class);
+    }
 
+    private void startSpecialVideo(int pos, Class cla){
+        String path = "";
+        try {
+            path = FastDFSUtil.generateSourceUrl(mList.get(pos).getAddressUrl());
+        }  catch (Exception e) {
+            e.printStackTrace();
+        }
+        Intent intent = new Intent(getContext(), cla);
+        intent.putExtra("pathUrl",path);
+        intent.putExtra("videoName",mList.get(pos).getVideoName());
+        intent.putExtra("cacheKey",mList.get(pos).getCacheKey());
+        intent.putExtra("videoType",mList.get(pos).getType());
+        intent.putExtra("typePage",1);
+        intent.putExtra("videoId",mList.get(pos).getVideoId());
+        intent.putExtra("isCollection",mList.get(pos).getIsCollection());
+        intent.putExtra("playScheduleTime",mList.get(pos).getPlayScheduleTime());
+        startActivity(intent);
     }
 
     @OnClick(R.id.llClick)
     public void onViewClicked() {
-        startActivity(new Intent(VideoPlayListActivity.this,SmallWebViewActivity.class));
+        Intent intent = new Intent(VideoPlayListActivity.this,SmallWebViewActivity.class);
+        intent.putExtra("subjectCategoryId",subjectCategoryId);
+        startActivity(intent);
     }
 }

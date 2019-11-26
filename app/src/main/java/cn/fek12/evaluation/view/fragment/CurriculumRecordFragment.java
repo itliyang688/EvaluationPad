@@ -2,15 +2,17 @@ package cn.fek12.evaluation.view.fragment;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fek12.basic.base.BaseFragment;
-import com.fek12.basic.base.BasePresenter;
 import com.fek12.basic.utils.toast.ToastUtils;
 import com.lcodecore.tkrefreshlayout.Footer.BottomProgressView;
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
@@ -27,7 +29,6 @@ import cn.fek12.evaluation.model.entity.ChildSectionEntity;
 import cn.fek12.evaluation.model.entity.CurriculumEntity;
 import cn.fek12.evaluation.presenter.CurriculumRecordPresenter;
 import cn.fek12.evaluation.utils.DialogUtils;
-import cn.fek12.evaluation.view.activity.EvaluationDetailsActivity;
 import cn.fek12.evaluation.view.adapter.CurriculumRecordAdapter;
 import cn.fek12.evaluation.view.dialog.SelectDateDialog;
 import cn.fek12.evaluation.view.widget.MultipleStatusView;
@@ -58,6 +59,12 @@ public class CurriculumRecordFragment extends BaseFragment<CurriculumRecordPrese
     MultipleStatusView loadView;
     @BindView(R.id.refreshLayout)
     TwinklingRefreshLayout refreshLayout;
+    @BindView(R.id.llContain)
+    LinearLayout llContain;
+    @BindView(R.id.selectSubject)
+    RelativeLayout selectSubject;
+    @BindView(R.id.rootView)
+    RelativeLayout rootView;
     private CurriculumRecordAdapter adapter;
     private int mPageType;
     private int currentPage = 1;
@@ -81,6 +88,7 @@ public class CurriculumRecordFragment extends BaseFragment<CurriculumRecordPrese
         llSubject.setOnClickListener(this);
         llStartDate.setOnClickListener(this);
         llEndDate.setOnClickListener(this);
+        selectSubject.setOnClickListener(this);
 
         refreshLayout.setEnableLoadmore(false);
         refreshLayout.setOnRefreshListener(refreshListenerAdapter);
@@ -98,14 +106,14 @@ public class CurriculumRecordFragment extends BaseFragment<CurriculumRecordPrese
         public void onLoadMore(final TwinklingRefreshLayout refreshLayout) {
             isLoadMore = true;
             currentPage += 1;
-            mPresenter.courseRecord(getContext(),startDate,endDate,subject,MyApplication.getMyApplication().getUserId(),String.valueOf(currentPage));
+            mPresenter.courseRecord(getContext(), startDate, endDate, subject, MyApplication.getMyApplication().getUserId(), String.valueOf(currentPage));
         }
 
         @Override
         public void onRefresh(final TwinklingRefreshLayout refreshLayout) {
             isLoadMore = false;
             currentPage = 1;
-            mPresenter.courseRecord(getContext(),startDate,endDate,subject,MyApplication.getMyApplication().getUserId(),String.valueOf(currentPage));
+            mPresenter.courseRecord(getContext(), startDate, endDate, subject, MyApplication.getMyApplication().getUserId(), String.valueOf(currentPage));
         }
     };
 
@@ -113,19 +121,19 @@ public class CurriculumRecordFragment extends BaseFragment<CurriculumRecordPrese
     public void loginSuc(CurriculumEntity entry) {
         CurriculumEntity.DataBean.PageInfoBean pageInfoBean = entry.getData().getPage_info();
         List<CurriculumEntity.DataBean.VideosBean> list = entry.getData().getVideos();
-        if(pageInfoBean.getTotalCount() == 0){
+        if (pageInfoBean.getTotalCount() == 0) {
             loadView.showEmpty();
             return;
         }
         loadView.showContent();
-        if(pageInfoBean.getTotalPage() > currentPage){
+        if (pageInfoBean.getTotalPage() > currentPage) {
             refreshLayout.setEnableLoadmore(true);
-        }else{
+        } else {
             refreshLayout.setEnableLoadmore(false);
         }
-        if(list != null && list.size() > 0){
-            adapter.notifyChanged(list,isLoadMore);
-            if(!isLoadMore){
+        if (list != null && list.size() > 0) {
+            adapter.notifyChanged(list, isLoadMore);
+            if (!isLoadMore) {
                 recyclerView.smoothScrollToPosition(0);
             }
         }
@@ -143,6 +151,9 @@ public class CurriculumRecordFragment extends BaseFragment<CurriculumRecordPrese
     @Override
     public void onClick(View v, int id) {
         switch (id) {
+            case R.id.selectSubject:
+                selectSubject.setVisibility(View.GONE);
+                break;
             case R.id.llStartDate:
                 SelectDateDialog startDateDialog = new SelectDateDialog(getContext(), "选择起始日期", new SelectDateDialog.OnSelectItemDateListener() {
                     @Override
@@ -155,7 +166,7 @@ public class CurriculumRecordFragment extends BaseFragment<CurriculumRecordPrese
 
                 break;
             case R.id.llEndDate:
-                if(TextUtils.isEmpty(startDate)){
+                if (TextUtils.isEmpty(startDate)) {
                     ToastUtils.popUpToast("请选择起始日期");
                     return;
                 }
@@ -168,30 +179,47 @@ public class CurriculumRecordFragment extends BaseFragment<CurriculumRecordPrese
                         loadView.showLoading();
                         isLoadMore = false;
                         currentPage = 1;
-                        mPresenter.courseRecord(getContext(),startDate,endDate,subject,MyApplication.getMyApplication().getUserId(),String.valueOf(currentPage));
+                        mPresenter.courseRecord(getContext(), startDate, endDate, subject, MyApplication.getMyApplication().getUserId(), String.valueOf(currentPage));
                     }
                 });
                 endDateDialog.show();
                 break;
             case R.id.llSubject:
-                List<ChildSectionEntity> list = new ArrayList<>();
+                llContain.removeAllViews();
+                selectSubject.setVisibility(View.VISIBLE);
+                List<ChildSectionEntity> mList = new ArrayList<>();
                 for (int i = 0; i < 10; i++) {
                     if (i == 0) {
                         ChildSectionEntity sectionEntity = new ChildSectionEntity();
                         sectionEntity.setName("全部");
-                        list.add(sectionEntity);
+                        mList.add(sectionEntity);
                     } else {
                         ChildSectionEntity sectionEntity = new ChildSectionEntity();
                         sectionEntity.setName("数学" + i);
-                        list.add(sectionEntity);
+                        mList.add(sectionEntity);
                     }
                 }
-                DialogUtils.subjectSelectDialog(getContext(), list, new DialogUtils.OnSelectSubjectItmeListener() {
+                for(int i = 0; i < mList.size(); i++){
+                    View viewItem = LayoutInflater.from(mContext).inflate(R.layout.subject_itme, null);
+                    TextView tvName = viewItem.findViewById(R.id.tvName);
+                    tvName.setText(mList.get(i).getName());
+                    int finalI = i;
+                    viewItem.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            tvName.setTextColor(mContext.getResources().getColor(R.color.white));
+                            selectSubject.setVisibility(View.GONE);
+                        }
+                    });
+                    llContain.addView(viewItem);
+                }
+
+                /*DialogUtils.subjectSelectDialog(getContext(), list, new DialogUtils.OnSelectSubjectItmeListener() {
                     @Override
                     public void onSelectItme(int pos) {
                         tvSubject.setText(list.get(pos).getName());
                     }
-                });
+                });*/
 
                 break;
         }
@@ -200,12 +228,12 @@ public class CurriculumRecordFragment extends BaseFragment<CurriculumRecordPrese
     @Override
     protected void onLoadDataRemote() {
         loadView.showLoading();
-        mPresenter.courseRecord(getContext(),startDate,endDate,subject,MyApplication.getMyApplication().getUserId(),String.valueOf(currentPage));
+        mPresenter.courseRecord(getContext(), startDate, endDate, subject, MyApplication.getMyApplication().getUserId(), String.valueOf(currentPage));
     }
 
     @Override
     protected CurriculumRecordPresenter onInitLogicImpl() {
-        return new CurriculumRecordPresenter(this,getContext());
+        return new CurriculumRecordPresenter(this, getContext());
     }
 
     @Override

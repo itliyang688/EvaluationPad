@@ -521,7 +521,6 @@ public class AutonomyEvaluationFragment extends BaseFragment<AutonomyEvaluationP
     }
 
     private void generateTopic(){
-        showLoading();
         if (tags.size() == 0) {
             ToastUtils.popUpToast("请选择知识点");
             return;
@@ -637,7 +636,7 @@ public class AutonomyEvaluationFragment extends BaseFragment<AutonomyEvaluationP
         if (years.size() > 0) {
             topicEntity.setYears(years);
         }
-
+        showLoading();
         topicEntity.setPtype(pType);
         topicEntity.setPaperName(paperName);
         topicEntity.setSubjectName(subjectName);
@@ -696,7 +695,9 @@ public class AutonomyEvaluationFragment extends BaseFragment<AutonomyEvaluationP
             @Override
             public void onClick(View view) {
                 /**跳转页面答题*/
-                startActivity(new Intent(getContext(), AnswerWebViewActivity.class));
+                Intent intent = new Intent(getContext(), AnswerWebViewActivity.class);
+                intent.putExtra("paperId",entity.getData());
+                startActivity(intent);
             }
         });
     }

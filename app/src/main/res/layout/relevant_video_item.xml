@@ -17,7 +17,7 @@
             zhy:borderRadius="10dp"
             android:scaleType="centerCrop"
             zhy:type="round"
-            android:src="@mipmap/presentation_empty_bg"/>
+            android:src="@mipmap/empty_bg"/>
         <ImageView
             android:layout_width="@dimen/dp_30"
             android:layout_height="@dimen/dp_30"

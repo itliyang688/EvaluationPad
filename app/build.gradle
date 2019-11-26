@@ -82,4 +82,5 @@ dependencies {
     implementation project(path: ':jiaozivideoplayer')
     implementation project(path: ':stickyheaders')
     implementation project(path: ':calendar')
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.2'
 }

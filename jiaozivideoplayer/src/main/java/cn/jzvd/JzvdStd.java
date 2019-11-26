@@ -485,7 +485,7 @@ public class JzvdStd extends Jzvd {
         switch (screen) {
             case SCREEN_NORMAL:
             case SCREEN_FULLSCREEN:
-                setAllControlsVisiblity(View.INVISIBLE, View.INVISIBLE, View.INVISIBLE,
+                setAllControlsVisiblity(View.VISIBLE, View.INVISIBLE, View.INVISIBLE,
                         View.VISIBLE, View.VISIBLE, View.INVISIBLE, View.INVISIBLE);
                 updateStartImage();
                 break;

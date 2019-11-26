@@ -13,6 +13,7 @@ import butterknife.BindView;
 import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.view.activity.WebViewActivity;
 import cn.fek12.evaluation.view.widget.MultipleStatusView;
+import cn.fek12.evaluation.view.widget.NoRollWebView;
 
 /**
  * @ProjectName: EvaluationPad
@@ -23,7 +24,7 @@ import cn.fek12.evaluation.view.widget.MultipleStatusView;
  */
 public class TopicWrongRecordPageFragment extends BaseFragment {
     @BindView(R.id.webView)
-    WebView webView;
+    NoRollWebView webView;
     @BindView(R.id.loadView)
     MultipleStatusView loadView;
 
@@ -47,7 +48,8 @@ public class TopicWrongRecordPageFragment extends BaseFragment {
         webSettings.setLoadWithOverviewMode(true);
         // 使WebView不可滚动
         //webView.setOnTouchListener((v, event) -> (event.getAction() == MotionEvent.ACTION_MOVE));
-        //webView.loadUrl("http://192.168.0.46:11111/index.html");
+        //webView.loadUrl("http://218.245.6.132:11111/html/Record.html");
+        //webView.loadUrl("http://192.168.0.46/noc/html/Record.html");
         //webView.loadUrl("http://192.168.0.46:11111/accurateReport/report?userId=413&paperResultId=11425");
         //webView.loadUrl("file:///android_asset/web/Record.html");
         startActivity(new Intent(getContext(), WebViewActivity.class));

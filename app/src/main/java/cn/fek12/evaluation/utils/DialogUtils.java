@@ -86,7 +86,6 @@ public class DialogUtils {
                 }
             });
             llContain.addView(viewItem);
-
         }
         dialog.setContentView(view);
         dialog.setCanceledOnTouchOutside(true);

@@ -116,7 +116,7 @@ public class SpecialVideoActivity extends BaseActivity<SpeciaVideoPlayPresenter>
         long currentPos = myJzvdStd.getCurrentPositionWhenPlaying();
         if(currentPos > 0){
             mPresenter.schedule(SpecialVideoActivity.this,cacheKey,structLayKey,String.valueOf(currentPos),
-                    String.valueOf(videoType),String.valueOf(videoId), MyApplication.getMyApplication().getUserId());
+                    String.valueOf(videoType),String.valueOf(videoId), MyApplication.getMyApplication().getUserId(),0);
         }
         super.onPause();
     }

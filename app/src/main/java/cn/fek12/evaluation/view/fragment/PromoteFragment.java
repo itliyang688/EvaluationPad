@@ -19,17 +19,14 @@ import java.util.List;
 import butterknife.BindView;
 import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.application.MyApplication;
-import cn.fek12.evaluation.impl.IPresentation;
 import cn.fek12.evaluation.model.entity.AWeekEntity;
-import cn.fek12.evaluation.model.entity.DictionaryListResp;
 import cn.fek12.evaluation.model.entity.EarlierEntity;
+import cn.fek12.evaluation.model.entity.PresentationEntity;
 import cn.fek12.evaluation.presenter.PresentationPresenter;
 import cn.fek12.evaluation.utils.AppUtils;
 import cn.fek12.evaluation.view.PopupWindow.MenuPopupWindow;
 import cn.fek12.evaluation.view.activity.ConqueredActivity;
-import cn.fek12.evaluation.view.activity.VideoPlayListActivity;
 import cn.fek12.evaluation.view.adapter.PresentationAweekItemSection;
-import cn.fek12.evaluation.view.adapter.PresentationEarlierItemSection;
 import cn.fek12.evaluation.view.widget.MultipleStatusView;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 
@@ -59,9 +56,9 @@ public class PromoteFragment extends BaseFragment<PresentationPresenter> impleme
     private String userType = null;
     private int currentPage = 1;
     private String pageSize = "18";
-    private List<AWeekEntity.DataBean.WeekAndDayBean> daylist;
-    private List<AWeekEntity.DataBean.WeekAndDayBean> aweeklist;
-    private List<EarlierEntity.DataBean.PapersBean> earlierList;
+    private List<PresentationEntity> daylist;
+    private List<PresentationEntity> aweeklist;
+    private List<PresentationEntity> earlierList;
 
     @Override
     protected int getLayoutResource() {
@@ -76,11 +73,14 @@ public class PromoteFragment extends BaseFragment<PresentationPresenter> impleme
                 popupWindow = new MenuPopupWindow(getActivity(), new MenuPopupWindow.OnSelectItmeListener() {
                     @Override
                     public void onSelectItme(String gradeId, String semesterId, String subjectId, String textbookId,String type) {
+                        isLoadMore = false;
+                        currentPage = 1;
                         grade = gradeId;
                         semester = semesterId;
                         subject = subjectId;
                         textbook = textbookId;
                         userType = type;
+                        multipleStatusView.showLoading();
                         mPresenter.queryAWeek(getContext(), grade, semester, subject, textbook,  MyApplication.getMyApplication().getUserId(), userType);
                     }
                 });
@@ -196,28 +196,31 @@ public class PromoteFragment extends BaseFragment<PresentationPresenter> impleme
         }
         if(earlierList != null && earlierList.size() > 0){
             if(isLoadMore){
-                PresentationEarlierItemSection itemSection = (PresentationEarlierItemSection) leftAdapter.getSection("earlier");
+                PresentationAweekItemSection itemSection = (PresentationAweekItemSection) leftAdapter.getSection("earlier");
                 itemSection.updateAndAddList(earlierList,isLoadMore);
-                leftAdapter.getAdapterForSection("earlier").notifyAllItemsChanged("payloads");
+                //leftAdapter.getAdapterForSection("earlier").notifyAllItemsChanged("payloads");
             }else{
-                leftAdapter.addSection("earlier", new PresentationEarlierItemSection( 1,getContext(),earlierList, "较早", new PresentationEarlierItemSection.OnSelectItmeListener() {
-                    @Override
-                    public void onSelectItme(int pos) {
-                        int paperResultId = earlierList.get(pos).getPaperResultId();
-                        Intent intent = new Intent(getContext(), ConqueredActivity.class);
-                        intent.putExtra("paperResultId",paperResultId);
-                        startActivity(intent);
-                    }
-                }));
+                leftAdapter.addSection("earlier", new PresentationAweekItemSection( 2, earlierList, getContext(), "较早", new PresentationAweekItemSection.OnSelectItmeListener() {
+                            @Override
+                            public void onSelectItme(int pos) {
+                                int paperResultId = earlierList.get(pos).getPaperResultId();
+                                Intent intent = new Intent(getContext(), ConqueredActivity.class);
+                                intent.putExtra("paperResultId",paperResultId);
+                                startActivity(intent);
+                            }
+                        }));
             }
         }
-
+        leftAdapter.notifyDataSetChanged();
         refreshLayout.finishLoadmore();
         refreshLayout.finishRefreshing();
     }
 
     @Override
     public void loadAWeekFail(String msg) {
+        isLoadMore = false;
+        currentPage = 1;
+        leftAdapter.removeAllSections();
         /**一周或三天报告请求失败还要去请求较早的报告*/
         mPresenter.queryEarlier(getContext(), grade, semester, subject, textbook,  MyApplication.getMyApplication().getUserId(), userType, String.valueOf(currentPage), pageSize);
     }
@@ -236,6 +239,10 @@ public class PromoteFragment extends BaseFragment<PresentationPresenter> impleme
             aweeklist.clear();
         }
 
+        isLoadMore = false;
+        currentPage = 1;
+        leftAdapter.removeAllSections();
+        leftAdapter.notifyDataSetChanged();
         /**一周或三天报告请求失败还要去请求较早的报告*/
         mPresenter.queryEarlier(getContext(), grade, semester, subject, textbook,  MyApplication.getMyApplication().getUserId(), userType, String.valueOf(currentPage), pageSize);
     }

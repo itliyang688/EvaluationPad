@@ -12,6 +12,6 @@
         android:layout_height="203dp"
         android:layout_gravity="center_horizontal"
         android:scaleType="centerCrop"
-        android:src="@mipmap/presentation_empty_bg" />
+        android:src="@mipmap/empty_bg" />
 
 </LinearLayout>

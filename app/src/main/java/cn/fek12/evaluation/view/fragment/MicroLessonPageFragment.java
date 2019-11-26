@@ -143,7 +143,7 @@ public class MicroLessonPageFragment extends BaseFragment<MicroLessonPagePresent
                     @Override
                     public void onMore() {/**热门视频查看更多*/
                         //Intent intent = new Intent(getContext(), FullScreenVideoPlayActivity.class);
-                        startActivityIntent("热门视频",1);
+                        startActivityIntent("热门视频",0);
                     }
                 }));
             }
@@ -164,7 +164,7 @@ public class MicroLessonPageFragment extends BaseFragment<MicroLessonPagePresent
                     @Override
                     public void onMore() {/**最近视频查看更多*/
                         //Intent intent = new Intent(getContext(), FullScreenVideoPlayActivity.class);
-                        startActivityIntent("最近更新",2);
+                        startActivityIntent("最近更新",1);
                     }
                 }));
             }
@@ -184,7 +184,7 @@ public class MicroLessonPageFragment extends BaseFragment<MicroLessonPagePresent
 
                     @Override
                     public void onMore() {/**热门视频查看更多*/
-                        startActivityIntent("热门视频",3);
+                        startActivityIntent("热门视频",2);
                     }
                 }));
             }

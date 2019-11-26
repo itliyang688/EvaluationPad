@@ -48,158 +48,23 @@ public class AWeekEntity implements Serializable {
     }
 
     public static class DataBean {
-        private List<WeekAndDayBean> Week;
-        private List<WeekAndDayBean> Day;
+        private List<PresentationEntity> Week;
+        private List<PresentationEntity> Day;
 
-        public List<WeekAndDayBean> getWeek() {
+        public List<PresentationEntity> getWeek() {
             return Week;
         }
 
-        public void setWeek(List<WeekAndDayBean> week) {
+        public void setWeek(List<PresentationEntity> week) {
             Week = week;
         }
 
-        public List<WeekAndDayBean> getDay() {
+        public List<PresentationEntity> getDay() {
             return Day;
         }
 
-        public void setDay(List<WeekAndDayBean> day) {
+        public void setDay(List<PresentationEntity> day) {
             Day = day;
-        }
-
-        public static class WeekAndDayBean {
-            /**
-             * id : 15983
-             * name : test20191029
-             * description : 测试
-             * score : 0
-             * second : 12000
-             * courseName :
-             * isanswered : 0
-             * grade : 3
-             * subject : 14
-             * imageUrl : http://192.168.0.60:8084/noc_basicedu/upload/image/201909/98f5fec0-1276-41b7-a646-79dd41b73a9a.jpg
-             * paperResultId : 11435
-             * paperResultDate : 2019-10-29 16:08:37.0
-             */
-
-            private int id;
-            private String name;
-            private String description;
-            private int score;
-            private int second;
-            private int studentScore;
-            private String courseName;
-            private int isanswered;
-            private int grade;
-            private int subject;
-            private String imageUrl;
-            private int paperResultId;
-            private String paperResultDate;
-
-            public int getStudentScore() {
-                return studentScore;
-            }
-
-            public void setStudentScore(int studentScore) {
-                this.studentScore = studentScore;
-            }
-
-            public int getId() {
-                return id;
-            }
-
-            public void setId(int id) {
-                this.id = id;
-            }
-
-            public String getName() {
-                return name;
-            }
-
-            public void setName(String name) {
-                this.name = name;
-            }
-
-            public String getDescription() {
-                return description;
-            }
-
-            public void setDescription(String description) {
-                this.description = description;
-            }
-
-            public int getScore() {
-                return score;
-            }
-
-            public void setScore(int score) {
-                this.score = score;
-            }
-
-            public int getSecond() {
-                return second;
-            }
-
-            public void setSecond(int second) {
-                this.second = second;
-            }
-
-            public String getCourseName() {
-                return courseName;
-            }
-
-            public void setCourseName(String courseName) {
-                this.courseName = courseName;
-            }
-
-            public int getIsanswered() {
-                return isanswered;
-            }
-
-            public void setIsanswered(int isanswered) {
-                this.isanswered = isanswered;
-            }
-
-            public int getGrade() {
-                return grade;
-            }
-
-            public void setGrade(int grade) {
-                this.grade = grade;
-            }
-
-            public int getSubject() {
-                return subject;
-            }
-
-            public void setSubject(int subject) {
-                this.subject = subject;
-            }
-
-            public String getImageUrl() {
-                return imageUrl;
-            }
-
-            public void setImageUrl(String imageUrl) {
-                this.imageUrl = imageUrl;
-            }
-
-            public int getPaperResultId() {
-                return paperResultId;
-            }
-
-            public void setPaperResultId(int paperResultId) {
-                this.paperResultId = paperResultId;
-            }
-
-            public String getPaperResultDate() {
-                return paperResultDate;
-            }
-
-            public void setPaperResultDate(String paperResultDate) {
-                this.paperResultDate = paperResultDate;
-            }
         }
     }
 }

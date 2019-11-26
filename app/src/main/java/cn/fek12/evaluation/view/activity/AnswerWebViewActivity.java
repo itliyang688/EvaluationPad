@@ -62,10 +62,13 @@ public class AnswerWebViewActivity extends BaseActivity {
         webView.setWebChromeClient(new WebChromeClient());
         String url;
         if (isanswered == 0) {
-            url = "http://192.168.0.46/noc/html/index.html?userId=" + MyApplication.getMyApplication().getUserId() + "&paperId=" + paperId;
+            //url = "http://192.168.0.46/noc/html/index.html?userId=" + MyApplication.getMyApplication().getUserId() + "&paperId=" + paperId;
+            url = "http://218.245.6.132:11111/html/index.html?userId=" + MyApplication.getMyApplication().getUserId() + "&paperId=" + paperId;
         } else {
-            url = "http://192.168.0.46/noc/html/analyze.html?userId=" + MyApplication.getMyApplication().getUserId() + "&paperId=" + paperId + "&paperResult=" + paperResult;
+            //url = "http://192.168.0.46/noc/html/analyze.html?userId=" + MyApplication.getMyApplication().getUserId() + "&paperId=" + paperId + "&paperResult=" + paperResult;
+            url = "http://218.245.6.132:11111/html/analyze.html?userId=" + MyApplication.getMyApplication().getUserId() + "&paperId=" + paperId + "&paperResult=" + paperResult;
         }
+        showLoading();
         webView.loadUrl(url);
 
         webView.setWebViewClient(new WebViewClient() {
@@ -74,6 +77,10 @@ public class AnswerWebViewActivity extends BaseActivity {
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 view.loadUrl(url);
                 return true;
+            }
+            @Override
+            public void onPageFinished(WebView view,String url){
+                hideLoading();
             }
         });
     }

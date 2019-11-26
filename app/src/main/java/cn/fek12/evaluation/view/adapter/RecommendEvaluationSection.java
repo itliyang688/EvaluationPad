@@ -1,7 +1,6 @@
 package cn.fek12.evaluation.view.adapter;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.fek12.evaluation.R;
-import cn.fek12.evaluation.model.entity.AssessmentIndexPaperResp;
 import cn.fek12.evaluation.model.entity.HomeEvaluationDeta;
 import io.github.luizgrp.sectionedrecyclerviewadapter.Section;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionParameters;
@@ -61,8 +59,8 @@ public class RecommendEvaluationSection extends Section {
         itemHolder.tvSubject.setText(mList.get(position).getCourseName());
         Glide.with(mContext)
                 .load(mList.get(position).getImageUrl())
-                .placeholder(R.mipmap.presentation_empty_bg)
-                .error(R.mipmap.presentation_empty_bg)
+                .placeholder(R.mipmap.empty_bg)
+                .error(R.mipmap.empty_bg)
                 .into(itemHolder.ivSubject);
         itemHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

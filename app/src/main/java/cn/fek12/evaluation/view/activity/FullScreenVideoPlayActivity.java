@@ -31,6 +31,7 @@ public class FullScreenVideoPlayActivity extends BaseActivity<SpeciaVideoPlayPre
     private String cacheKey;
     private String structLayKey;
     private int videoType;
+    private int typePage;
     private int videoId;
     private long playScheduleTime;
     private int isCollection;
@@ -48,12 +49,13 @@ public class FullScreenVideoPlayActivity extends BaseActivity<SpeciaVideoPlayPre
         cacheKey = intent.getStringExtra("cacheKey");
         structLayKey = intent.getStringExtra("structLayKey");
         videoType = intent.getIntExtra("videoType",0);
+        typePage = intent.getIntExtra("typePage",0);
         videoId = intent.getIntExtra("videoId",0);
         playScheduleTime = intent.getLongExtra("playScheduleTime",0);
         isCollection = intent.getIntExtra("isCollection",0);
 
         //String path = "http://192.168.0.46/group1/M00/00/00/wKgALl23kwyAMozOAOBSBYftCKo270.mp4?token=2cc8cea563f06bc61576893cb5d8e542";
-        //String path1 = "http://vfx.mtime.cn/Video/2019/03/19/mp4/190319222227698228.mp4";
+        String path1 = "http://vfx.mtime.cn/Video/2019/03/19/mp4/190319222227698228.mp4";
         myJzvdStd.setUp(pathUrl,videoName);
         myJzvdStd.seekToInAdvance = playScheduleTime;
         myJzvdStd.gotoScreenFullscreen();
@@ -130,7 +132,7 @@ public class FullScreenVideoPlayActivity extends BaseActivity<SpeciaVideoPlayPre
         long currentPos = myJzvdStd.getCurrentPositionWhenPlaying();
         if(currentPos > 0){
             mPresenter.schedule(FullScreenVideoPlayActivity.this,cacheKey,structLayKey,String.valueOf(currentPos),
-                    String.valueOf(videoType),String.valueOf(videoId), MyApplication.getMyApplication().getUserId());
+                    String.valueOf(videoType),String.valueOf(videoId), MyApplication.getMyApplication().getUserId(),typePage);
         }
         super.onPause();
     }

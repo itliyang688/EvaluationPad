@@ -30,7 +30,7 @@ public class SmallWebViewActivity extends BaseActivity {
     ImageView ivLeftBack;
     @BindView(R.id.titleView)
     LinearLayout titleView;
-    private int paperId;
+    private String subjectCategoryId;
 
     @Override
     public int setLayoutResource() {
@@ -40,7 +40,7 @@ public class SmallWebViewActivity extends BaseActivity {
     @Override
     protected void onInitView() {
         Intent intent = getIntent();
-        paperId = intent.getIntExtra("paperId", 0);
+        subjectCategoryId = intent.getStringExtra("subjectCategoryId");
         WebSettings webSettings = webView.getSettings();
         // 不使用缓存：
         webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
@@ -54,8 +54,10 @@ public class SmallWebViewActivity extends BaseActivity {
         webView.setBackgroundColor(0);
         webView.getBackground().setAlpha(0);
         webView.setWebChromeClient(new WebChromeClient());
-        String url = "http://192.168.0.46/noc/html/SmallWork.html";
-        //String url = "http://192.168.0.46/noc/html/SmallWork.html?userId=" + MyApplication.getMyApplication().getUserId() + "&paperId=" + paperId;
+        //String url = "http://192.168.0.46/noc/html/SmallWork.html";
+        //String url = "http://192.168.0.46/noc/html/SmallWork.html?userId=" + MyApplication.getMyApplication().getUserId() + "&subjectCategoryId=" + subjectCategoryId;
+        String url = "http://218.245.6.132:11111/html/SmallWork.html?userId=" + MyApplication.getMyApplication().getUserId() + "&subjectCategoryId=" + subjectCategoryId;
+        showLoading();
         webView.loadUrl(url);
 
         webView.setWebViewClient(new WebViewClient() {
@@ -64,6 +66,10 @@ public class SmallWebViewActivity extends BaseActivity {
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 view.loadUrl(url);
                 return true;
+            }
+            @Override
+            public void onPageFinished(WebView view,String url){
+                hideLoading();
             }
         });
     }

@@ -60,6 +60,8 @@ public class EvaluationFragment extends BaseFragment<EvaluationPresenter> implem
     MultipleStatusView multipleStatusView;
     private OnExaminationClickListener mOnExaminationClickListener = null;
     private SectionedRecyclerViewAdapter adapter;
+    private List<HomeEvaluationDeta.DataBean.RecommendPaperBean> recommendList;
+    private boolean isRefreshtBanner =true;
 
     public interface OnExaminationClickListener {
         void onExaminationClick();
@@ -103,6 +105,16 @@ public class EvaluationFragment extends BaseFragment<EvaluationPresenter> implem
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if(adapter != null && recommendList != null){
+            isRefreshtBanner = false;
+            multipleStatusView.showLoading();
+            mPresenter.initEvaluation(getContext(), MyApplication.getMyApplication().getUserId());
+        }
+    }
+
+    @Override
     protected void onLoadDataRemote() {
         multipleStatusView.showLoading();
         mPresenter.initEvaluation(getContext(), MyApplication.getMyApplication().getUserId());
@@ -128,31 +140,33 @@ public class EvaluationFragment extends BaseFragment<EvaluationPresenter> implem
             public void getItemView(View view, HomeEvaluationDeta.DataBean.BannerBean data) {
                 ImageView image = view.findViewById(R.id.image);
                 Glide.with(getContext()).load(data.getImageUrl()).into(image);
-                //Glide.with(getContext()).load(data.getImageUrl()).placeholder(R.mipmap.presentation_empty_bg).error(R.mipmap.presentation_empty_bg).into(image);
+                //Glide.with(getContext()).load(data.getImageUrl()).placeholder(R.mipmap.empty_bg).error(R.mipmap.empty_bg).into(image);
             }
         });
     }
 
     @Override
     public void loginSuc(HomeEvaluationDeta entry) {
-        initBanner(entry.getData().getBanner());
+        if(isRefreshtBanner){
+            initBanner(entry.getData().getBanner());
+        }
         HomeEvaluationDeta.DataBean.MyPaperBean paperBean = entry.getData().getMyPaper();
         if (paperBean != null) {
             String count = String.valueOf(paperBean.getCount());
             String data = paperBean.getDate();
             tvEvaluationCount.setText("已测评次数  " + count + "  次" + "\n" + "最近测试时间" + data);
         }
-        List<HomeEvaluationDeta.DataBean.RecommendPaperBean> recommendList = entry.getData().getRecommendPaper();
+        recommendList = entry.getData().getRecommendPaper();
         if (recommendList != null && recommendList.size() > 0) {
             multipleStatusView.showContent();
             adapter.removeAllSections();
-            adapter.addSection(new RecommendEvaluationSection(getContext(),recommendList, new RecommendEvaluationSection.OnSelectItmeListener() {
+            adapter.addSection(new RecommendEvaluationSection(getContext(), recommendList, new RecommendEvaluationSection.OnSelectItmeListener() {
                 @Override
                 public void onSelectItme(int pos) {
                     /**跳转页面答题*/
                     Intent intent = new Intent(getContext(), AnswerWebViewActivity.class);
-                    intent.putExtra("isanswered",recommendList.get(pos).getIsanswered());
-                    intent.putExtra("paperId",recommendList.get(pos).getId());
+                    intent.putExtra("isanswered", recommendList.get(pos).getIsanswered());
+                    intent.putExtra("paperId", recommendList.get(pos).getId());
                     startActivity(intent);
                 }
             }));
