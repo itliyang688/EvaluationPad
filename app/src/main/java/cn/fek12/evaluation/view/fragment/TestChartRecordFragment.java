@@ -5,7 +5,11 @@ import android.os.Bundle;
 import com.fek12.basic.base.BaseFragment;
 import com.fek12.basic.base.BasePresenter;
 
+import butterknife.BindView;
 import cn.fek12.evaluation.R;
+import cn.fek12.evaluation.view.widget.AreaChartView;
+import cn.fek12.evaluation.view.widget.BarChartView;
+import cn.fek12.evaluation.view.widget.PieChartView;
 
 /**
  * @ProjectName: EvaluationPad
@@ -15,6 +19,13 @@ import cn.fek12.evaluation.R;
  * @CreateDate: 2019/11/24 17:52
  */
 public class TestChartRecordFragment extends BaseFragment {
+    @BindView(R.id.pieChartView)
+    PieChartView pieChartView;
+    @BindView(R.id.barChartView)
+    BarChartView barChartView;
+    @BindView(R.id.areaChartView)
+    AreaChartView areaChartView;
+
     @Override
     protected int getLayoutResource() {
         return R.layout.test_chart_record_fragment;
@@ -22,7 +33,9 @@ public class TestChartRecordFragment extends BaseFragment {
 
     @Override
     protected void onInitView(Bundle savedInstanceState) {
-
+        barChartView.chartDataSet();
+        pieChartView.chartDataSet();
+        areaChartView.chartDataSet();
     }
 
     @Override

@@ -2,6 +2,14 @@ apply plugin: 'com.android.application'
 
 android {
 
+    signingConfigs {
+        release {
+            storeFile file('../fek12.jks')
+            keyAlias = 'evaluate'
+            storePassword 'fek12'
+            keyPassword '9Y7ZlbNnT7Pky3S'
+        }
+    }
     compileSdkVersion rootProject.ext.android.compileSdkVersion
     buildToolsVersion rootProject.ext.android.buildToolsVersion
     defaultConfig {
@@ -83,4 +91,5 @@ dependencies {
     implementation project(path: ':stickyheaders')
     implementation project(path: ':calendar')
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.2'
+    implementation project(path: ':xclChartsLib')
 }
