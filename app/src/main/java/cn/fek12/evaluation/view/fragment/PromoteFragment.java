@@ -84,6 +84,7 @@ public class PromoteFragment extends BaseFragment<PresentationPresenter> impleme
                         mPresenter.queryAWeek(getContext(), grade, semester, subject, textbook,  MyApplication.getMyApplication().getUserId(), userType);
                     }
                 });
+                //popupWindow.setClippingEnabled(false);
                 AppUtils.fitPopupWindowOverStatusBar(popupWindow, true);
                 popupWindow.showAtLocation(rootView,
                         Gravity.RIGHT | Gravity.CENTER_HORIZONTAL, 0, 0);

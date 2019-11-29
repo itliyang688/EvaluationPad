@@ -80,6 +80,7 @@ public class PresentationFragment extends BaseFragment<PresentationPresenter> im
                         mPresenter.queryAWeek(getContext(), grade, semester, subject, textbook,  MyApplication.getMyApplication().getUserId(), userType);
                     }
                 });
+                popupWindow.setClippingEnabled(false);
                 AppUtils.fitPopupWindowOverStatusBar(popupWindow, true);
                 popupWindow.showAtLocation(rootView,
                         Gravity.RIGHT | Gravity.CENTER_HORIZONTAL, 0, 0);

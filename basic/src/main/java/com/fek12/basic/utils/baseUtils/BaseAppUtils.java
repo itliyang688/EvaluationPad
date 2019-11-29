@@ -1,7 +1,10 @@
 package com.fek12.basic.utils.baseUtils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
+import android.content.res.Resources;
+import android.util.DisplayMetrics;
 
 import com.fek12.basic.application.BaseApplication;
 
@@ -44,6 +47,20 @@ public class BaseAppUtils {
             e1.printStackTrace();
         }
         return statusBarHeight;
+    }
+
+    /**
+     * 获取底部虚拟键盘的高度
+     */
+    //获取虚拟按键的高度
+    public static int getNavigationBarHeight(Context context) {
+        int result = 0;
+        Resources res = context.getResources();
+        int resourceId = res.getIdentifier("navigation_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = res.getDimensionPixelSize(resourceId);
+        }
+        return result;
     }
 
 }
