@@ -72,7 +72,8 @@ public abstract class BaseActivity<P extends BasePresenter> extends RxAppCompatA
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        overridePendingTransition(R.anim.enter_in_up, R.anim.enter_in_down);
+        //overridePendingTransition(R.anim.enter_in_up, R.anim.enter_in_down);
+        overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
         mViewRoot = new LinearLayout(this);
         mViewRoot.setOrientation(LinearLayout.VERTICAL);
         boolean fitsSystemWindows = getFitsSystemWindows();
@@ -85,9 +86,6 @@ public abstract class BaseActivity<P extends BasePresenter> extends RxAppCompatA
         unbinder = ButterKnife.bind(this);
 
         mPresenter = onInitLogicImpl();
-        //获取顶层视图
-        //decorView = getWindow().getDecorView();
-        //init();
         onInitView();
         onCreateSuccess(savedInstanceState);
         onLoadData();
@@ -219,34 +217,14 @@ public abstract class BaseActivity<P extends BasePresenter> extends RxAppCompatA
     @Override
     public void finish() {
         super.finish();
-        overridePendingTransition(R.anim.exit_out_down, R.anim.exit_out_up);
+        //overridePendingTransition(R.anim.exit_out_down, R.anim.exit_out_up);
+        overridePendingTransition(R.anim.slide_left_in, R.anim.slide_right_out);
     }
 
     protected void startActivity(Class clazz) {
         startActivity(new Intent(this, clazz));
     }
 
-    private View decorView;
-
-
-    private void init() {
-        if (Build.VERSION.SDK_INT < 19) {
-            View v = getWindow().getDecorView();
-            v.setSystemUiVisibility(View.GONE);
-        } else if (Build.VERSION.SDK_INT >= 19) {
-            View decorView = getWindow().getDecorView();
-            int uiOptions = View.SYSTEM_UI_FLAG_IMMERSIVE
-                    // Set the content to appear under the system bars so that the
-                    // content doesn't resize when the system bars hide and show.
-                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    // Hide the nav bar and status bar
-                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
-                    //| View.SYSTEM_UI_FLAG_FULLSCREEN;
-            decorView.setSystemUiVisibility(uiOptions);
-        }
-    }
     /**
      * 自动生成 presenter , 需要无参构造方法(测试)
      */

@@ -71,7 +71,12 @@ public abstract class BaseFragment<P extends BasePresenter> extends RxFragment i
     private void onBackPressedListener(){
         if(!this.getClass().getSimpleName().equals("EvaluationIndexPaperFragment") &&
                 !this.getClass().getSimpleName().equals("AutonomyEvaluationFragment") &&
-                !this.getClass().getSimpleName().equals("MicroLessonPageFragment")){
+                !this.getClass().getSimpleName().equals("MicroLessonPageFragment") &&
+                !this.getClass().getSimpleName().equals("RecordFragment") &&
+                !this.getClass().getSimpleName().equals("EvaluationFragment") &&
+                !this.getClass().getSimpleName().equals("PromoteFragment") &&
+                !this.getClass().getSimpleName().equals("PresentationFragment")&&
+                !this.getClass().getSimpleName().equals("MicroLessonFragment")){
             backFragmentInterface.onSelectedFragment(this);
         }
     }
