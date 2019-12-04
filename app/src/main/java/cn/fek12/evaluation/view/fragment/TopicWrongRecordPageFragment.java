@@ -52,7 +52,7 @@ public class TopicWrongRecordPageFragment extends BaseFragment {
         //webView.loadUrl("http://192.168.0.46/noc/html/Record.html");
         //webView.loadUrl("http://192.168.0.46:11111/accurateReport/report?userId=413&paperResultId=11425");
         //webView.loadUrl("file:///android_asset/web/Record.html");
-        startActivity(new Intent(getContext(), WebViewActivity.class));
+        //startActivity(new Intent(getContext(), WebViewActivity.class));
         //MainActivity activity = (MainActivity) getActivity();
     }
 

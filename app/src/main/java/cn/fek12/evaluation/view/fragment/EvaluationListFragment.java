@@ -240,7 +240,14 @@ public class EvaluationListFragment extends BaseFragment<EvaluationListPresenter
 
     @Override
     protected void onLoadDataRemote() {
-        mPresenter.queryGradeDictionaryList(getContext());
+        loadView.showLoading();
+        /**执行完转场动画后请求，减少卡顿*/
+        loadView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mPresenter.queryGradeDictionaryList(getContext());
+            }
+        },300);
     }
 
     @Override
@@ -260,7 +267,7 @@ public class EvaluationListFragment extends BaseFragment<EvaluationListPresenter
     public void loadGradeDictionarySuc(GradeDictionaryListEntity entry) {
         gradeList = entry.getData();
         if(gradeList != null && gradeList.size() > 0){
-            loadView.showContent();
+            //loadView.showContent();
             gradeId = String.valueOf(gradeList.get(0).getId());
             DictionaryParentSection parentSection = (DictionaryParentSection) leftAdapter.getSection("parent");
             parentSection.updateList(gradeList);
@@ -281,7 +288,6 @@ public class EvaluationListFragment extends BaseFragment<EvaluationListPresenter
         DictionaryChildSection semesterSection = (DictionaryChildSection) leftAdapter.getSection("semester");
         subjectList = entry.getData();
         if(subjectList != null && subjectList.size() > 0){
-            loadView.showContent();
             tagPos = gradeList.size() + subjectList.size();
             subjectId = String.valueOf(subjectList.get(0).getId());
             subjectName = subjectList.get(0).getName();
@@ -316,6 +322,7 @@ public class EvaluationListFragment extends BaseFragment<EvaluationListPresenter
             semesterSection.updateList(null);
         }
 
+        loadView.showContent();
         if(isLoadPaerType){
             /**请求右侧页面数据*/
             updateContent(mViewPager.getCurrentItem());
@@ -381,6 +388,7 @@ public class EvaluationListFragment extends BaseFragment<EvaluationListPresenter
 
     @Override
     public void loadPaperTypeSuc(PaperTypeListResp entry) {
+        //loadView.showContent();
         if (entry != null && entry.getData() != null && entry.getData().size() > 0) {
             mTitleData = entry.getData();
             PaperTypeListResp.DataBean dataBean = new PaperTypeListResp.DataBean();
@@ -400,7 +408,6 @@ public class EvaluationListFragment extends BaseFragment<EvaluationListPresenter
             adapter = new MyPagerAdapter(getChildFragmentManager(), fragments);
             mViewPager.setAdapter(adapter);
 
-            loadView.showContent();
             updateContent(mViewPager.getCurrentItem());
         }
     }

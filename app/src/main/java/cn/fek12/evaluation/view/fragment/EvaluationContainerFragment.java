@@ -49,6 +49,7 @@ public class EvaluationContainerFragment extends BaseFragment implements Evaluat
                 fragmentTransaction.setCustomAnimations(R.anim.slide_left_in,0);
                 fragmentTransaction.show(evaluationFragment);
             }
+
             backFragmentInterface.onSelectedFragment(evaluationFragment);
             fragmentTransaction.commit();
         }

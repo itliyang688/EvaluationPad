@@ -1,12 +1,17 @@
 package cn.fek12.evaluation.view.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.fek12.basic.base.BaseFragment;
 import com.fek12.basic.base.BasePresenter;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import cn.fek12.evaluation.R;
+import cn.fek12.evaluation.view.activity.RankingListActivity;
 import cn.fek12.evaluation.view.widget.AreaChartView;
 import cn.fek12.evaluation.view.widget.BarChartView;
 import cn.fek12.evaluation.view.widget.PieChartView;
@@ -25,6 +30,10 @@ public class TestChartRecordFragment extends BaseFragment {
     BarChartView barChartView;
     @BindView(R.id.areaChartView)
     AreaChartView areaChartView;
+    @BindView(R.id.tvTitle)
+    TextView tvTitle;
+    @BindView(R.id.llRanking)
+    LinearLayout llRanking;
 
     @Override
     protected int getLayoutResource() {
@@ -51,5 +60,10 @@ public class TestChartRecordFragment extends BaseFragment {
     @Override
     public boolean onBackPressed() {
         return false;
+    }
+
+    @OnClick(R.id.llRanking)
+    public void onViewClicked() {
+        startActivity(new Intent(getContext(), RankingListActivity.class));
     }
 }
