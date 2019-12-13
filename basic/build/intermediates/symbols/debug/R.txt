@@ -32,6 +32,10 @@ int anim exit_out_down 0x7f01001f
 int anim exit_out_up 0x7f010020
 int anim push_in 0x7f010021
 int anim push_out 0x7f010022
+int anim slide_left_in 0x7f010023
+int anim slide_left_out 0x7f010024
+int anim slide_right_in 0x7f010025
+int anim slide_right_out 0x7f010026
 int animator design_appbar_state_list_animator 0x7f020001
 int animator design_fab_hide_motion_spec 0x7f020002
 int animator design_fab_show_motion_spec 0x7f020003

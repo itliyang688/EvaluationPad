@@ -117,22 +117,23 @@ public class PieChartView extends ChartView{
 		return ltrb;
 	}
 
-	public void chartDataSet(){
+	public void chartDataSet(double rate){
 
-		chartData.add(new PieData("65%",65,Color.parseColor("#24C768"),false));//错误率
+		chartData.add(new PieData(100 - rate+"%",100 - rate,Color.parseColor("#24C768"),false));//错误率
 
-		chartData.add(new PieData("35%",35, Color.parseColor("#FDE151"),true));//正确率
+		chartData.add(new PieData(rate+"%",rate, Color.parseColor("#FDE151"),true));//正确率
 
 		//设置数据源
 		chart.setDataSource(chartData);
+
 	}
 	
 	@Override
     public void render(Canvas canvas) {
         try{
-           chart.render(canvas);       
+            chart.render(canvas);
         } catch (Exception e){
-        	Log.e(TAG, e.toString());
+            Log.e(TAG, e.toString());
         }
     }
 }

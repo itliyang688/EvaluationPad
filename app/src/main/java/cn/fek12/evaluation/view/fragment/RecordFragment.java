@@ -50,18 +50,6 @@ public class RecordFragment extends BaseFragment {
     LinearLayout llLeft;
     @BindView(R.id.view_pager)
     CustomViewPager mViewPager;
-    @BindView(R.id.titleName)
-    TextView titleName;
-    @BindView(R.id.llSubject)
-    LinearLayout llSubject;
-    @BindView(R.id.rlTitle)
-    RelativeLayout rlTitle;
-    @BindView(R.id.btnCourseRecord)
-    TextView btnCourseRecord;
-    @BindView(R.id.btnTestRecord)
-    TextView btnTestRecord;
-    @BindView(R.id.llTopTitle)
-    LinearLayout llTopTitle;
     private MyPagerAdapter adapter;
     private boolean mIsVisibleToUser;
     private int previousPos = 0;
@@ -98,7 +86,6 @@ public class RecordFragment extends BaseFragment {
         mViewPager.setAdapter(adapter);
         mViewPager.setOffscreenPageLimit(4);
         rgGroup.check(R.id.tabRecord);// 默认勾选首页
-        titleName.setText("错题本");
         // 监听RadioGroup的选择事件
         rgGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
 
@@ -106,35 +93,24 @@ public class RecordFragment extends BaseFragment {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
                     case R.id.tabRecord:
-                        rlTitle.setVisibility(View.VISIBLE);
-                        llTopTitle.setVisibility(View.GONE);
-                        titleName.setText("错题本");
                         enlargeAndreduction(tabRecord, true);
                         enlargeAndreduction(radioButtonList.get(previousPos), false);
                         previousPos = 0;
                         mViewPager.setCurrentItem(0, false);
                         break;
                     case R.id.tabMicroLesson:
-                        rlTitle.setVisibility(View.VISIBLE);
-                        llTopTitle.setVisibility(View.GONE);
-                        titleName.setText("微课学习");
                         enlargeAndreduction(tabMicroLesson, true);
                         enlargeAndreduction(radioButtonList.get(previousPos), false);
                         previousPos = 1;
                         mViewPager.setCurrentItem(1, false);
                         break;
                     case R.id.tabFootprint:
-                        llTopTitle.setVisibility(View.VISIBLE);
-                        rlTitle.setVisibility(View.GONE);
                         enlargeAndreduction(tabFootprint, true);
                         enlargeAndreduction(radioButtonList.get(previousPos), false);
                         previousPos = 2;
                         mViewPager.setCurrentItem(2, false);
                         break;
                     case R.id.tabCollection:
-                        rlTitle.setVisibility(View.VISIBLE);
-                        llTopTitle.setVisibility(View.GONE);
-                        titleName.setText("我的收藏");
                         enlargeAndreduction(tabCollection, true);
                         enlargeAndreduction(radioButtonList.get(previousPos), false);
                         previousPos = 3;
@@ -159,58 +135,7 @@ public class RecordFragment extends BaseFragment {
         fragmentList.add(new MicroLessonRecordFragment(1));
         fragmentList.add(new ConquerFootprintsFragment());
         fragmentList.add(new MicroLessonRecordFragment(2));
-
-        btnCourseRecord.setOnClickListener(onClickListener);
-        btnTestRecord.setOnClickListener(onClickListener);
-        llSubject.setOnClickListener(onClickListener);
     }
-
-    private View.OnClickListener onClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            ConquerFootprintsFragment fragment;
-            switch (view.getId()) {
-                case R.id.llSubject:
-                    /*List<ChildSectionEntity> list = new ArrayList<>();
-                    for(int i = 0; i < 10; i ++){
-                        if(i == 0){
-                            ChildSectionEntity sectionEntity = new ChildSectionEntity();
-                            sectionEntity.setName("全部");
-                            list.add(sectionEntity);
-                        }else{
-                            ChildSectionEntity sectionEntity = new ChildSectionEntity();
-                            sectionEntity.setName("数学"+i);
-                            list.add(sectionEntity);
-                        }
-                    }
-                    DialogUtils.subjectSelectDialog(getContext(),list, new DialogUtils.OnSelectSubjectItmeListener() {
-                        @Override
-                        public void onSelectItme(int pos) {
-                            ToastUtils.popUpToast(list.get(pos).getName());
-                        }
-                    });*/
-
-                    break;
-                case R.id.btnCourseRecord:
-                    fragment = (ConquerFootprintsFragment) adapter.getItem(mViewPager.getCurrentItem());
-                    btnCourseRecord.setBackgroundResource(R.drawable.bg_present_item);
-                    btnCourseRecord.setTextColor(getContext().getResources().getColor(R.color.white));
-                    btnTestRecord.setTextColor(getContext().getResources().getColor(R.color.color_333));
-                    btnTestRecord.setBackgroundResource(R.color.white);
-                    fragment.selectTab(0);
-                    break;
-                case R.id.btnTestRecord:
-                    fragment = (ConquerFootprintsFragment) adapter.getItem(mViewPager.getCurrentItem());
-                    btnTestRecord.setBackgroundResource(R.drawable.bg_present_item);
-                    btnTestRecord.setTextColor(getContext().getResources().getColor(R.color.white));
-                    btnCourseRecord.setTextColor(getContext().getResources().getColor(R.color.color_333));
-                    btnCourseRecord.setBackgroundResource(R.color.white);
-                    fragment.selectTab(1);
-                    break;
-            }
-        }
-    };
-
 
     private void enlargeAndreduction(RadioButton radioButton, boolean isEnlarge) {
         Animation animation = null;

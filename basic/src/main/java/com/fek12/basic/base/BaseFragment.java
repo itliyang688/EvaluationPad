@@ -69,14 +69,8 @@ public abstract class BaseFragment<P extends BasePresenter> extends RxFragment i
     }
 
     private void onBackPressedListener(){
-        if(!this.getClass().getSimpleName().equals("EvaluationIndexPaperFragment") &&
-                !this.getClass().getSimpleName().equals("AutonomyEvaluationFragment") &&
-                !this.getClass().getSimpleName().equals("MicroLessonPageFragment") &&
-                !this.getClass().getSimpleName().equals("RecordFragment") &&
-                !this.getClass().getSimpleName().equals("EvaluationFragment") &&
-                !this.getClass().getSimpleName().equals("PromoteFragment") &&
-                !this.getClass().getSimpleName().equals("PresentationFragment")&&
-                !this.getClass().getSimpleName().equals("MicroLessonFragment")){
+        if(this.getClass().getSimpleName().equals("EvaluationContainerFragment") ||
+                this.getClass().getSimpleName().equals("EvaluationListFragment")){
             backFragmentInterface.onSelectedFragment(this);
         }
     }
@@ -84,10 +78,8 @@ public abstract class BaseFragment<P extends BasePresenter> extends RxFragment i
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(getActivity() instanceof BackFragmentInterface){
+        if(getActivity().getClass().getSimpleName().equals("MainActivity") && getActivity() instanceof BackFragmentInterface){
             this.backFragmentInterface = (BackFragmentInterface)getActivity();
-        }else{
-            throw new ClassCastException("Hosting Activity must implement BackFragmentInterface");
         }
         this.activity = getActivity();
         this.mContext = getActivity();

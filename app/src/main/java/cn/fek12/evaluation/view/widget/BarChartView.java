@@ -37,6 +37,7 @@ import org.xclcharts.renderer.XEnum;
 import org.xclcharts.view.ChartView;
 
 import java.text.DecimalFormat;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -47,10 +48,10 @@ import java.util.List;
  * MODIFIED    YYYY-MM-DD   REASON
  */
 public class BarChartView extends ChartView{
-
+	private Canvas canvas;
 	private BarChart chart = new BarChart();
 	//轴数据源
-	private List<String> chartLabels = new LinkedList<String>();
+
 	private List<BarData> chartData = new LinkedList<BarData>();
 	private List<CustomLineData> mCustomLineDataset = new LinkedList<CustomLineData>();
 
@@ -83,16 +84,14 @@ public class BarChartView extends ChartView{
     }  
 	
 	
-	private void chartRender()
-	{
+	private void chartRender(){
 		try {
 			
 			//设置绘图区默认缩进px值,留置空间显示Axis,Axistitle....		
 			int [] ltrb = getBarLnDefaultSpadding();
 			chart.setPadding(ltrb[0], ltrb[1], ltrb[2], ltrb[3]);
 
-			//数据轴
-			chart.getDataAxis().setAxisMax(100);
+			//chart.getDataAxis().setAxisMax(155);
 			chart.getDataAxis().setAxisMin(0);
 			chart.getDataAxis().setAxisSteps(5);
 
@@ -163,13 +162,8 @@ public class BarChartView extends ChartView{
 		return ltrb;
 	}
 
-	public void chartDataSet(){
+	public void chartDataSet(List<Double> dataSeriesA,List<String> chartLabels){
 		//标签对应的柱形数据集
-		List<Double> dataSeriesA= new LinkedList<Double>();
-		dataSeriesA.add(88d);
-		dataSeriesA.add(100d);
-		dataSeriesA.add(50d);
-		dataSeriesA.add(60d);
 
 
 		//依数据值确定对应的柱形颜色.
@@ -181,12 +175,15 @@ public class BarChartView extends ChartView{
 		chartData.clear();
 		chartData.add(new BarData("",dataSeriesA,dataColorA, Color.rgb(53, 169, 239)));
 
-
-        chartLabels.add("2019-11-01");
-        chartLabels.add("2019-11-07");
-        chartLabels.add("2019-11-15");
-        chartLabels.add("本周");
-
+		Double max = Collections.max(dataSeriesA);
+		if(max < 100){
+			max = 100d;
+		}else{
+			max += max + 10;
+		}
+		max = 143d;
+		//数据轴
+		chart.getDataAxis().setAxisMax(max);
         //数据源
         chart.setDataSource(chartData);
         chart.setCategories(chartLabels);

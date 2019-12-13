@@ -22,6 +22,7 @@
         android:layout_height="40dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
+        android:visibility="gone"
         android:indeterminateDrawable="@drawable/loading_circle" />
 
 
@@ -32,6 +33,17 @@
         android:max="100"
         android:progress="100"
         android:visibility="gone" />
+
+    <ProgressBar
+        android:layout_width="@dimen/dp_50"
+        android:layout_height="@dimen/dp_50"
+        android:indeterminateTint="@color/app_bg"
+        android:indeterminateTintMode="src_atop"
+        android:layout_centerHorizontal="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </RelativeLayout>

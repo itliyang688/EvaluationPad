@@ -27,7 +27,7 @@ import cn.fek12.evaluation.view.widget.CustomViewPager;
  * @Description:
  * @CreateDate: 2019/11/29 13:59
  */
-public class RankingListActivity extends BaseActivity  implements BackFragmentInterface {
+public class RankingListActivity extends BaseActivity {
     @BindView(R.id.ivClickDoubt)
     ImageView ivClickDoubt;
     @BindView(R.id.rlDoubtAnswer)
@@ -100,19 +100,6 @@ public class RankingListActivity extends BaseActivity  implements BackFragmentIn
 
     private BaseFragment baseFragment;
 
-    @Override
-    public void onBackPressed() {
-        //if判断里面就调用了来自Fragment的onBackPressed()
-        //一样！！，如果onBackPressed是返回false，就会进入条件内进行默认的操作
-        if (baseFragment == null || !baseFragment.onBackPressed()) {
-            super.onBackPressed();
-        }
-    }
-
-    @Override
-    public void onSelectedFragment(BaseFragment baseFragment) {
-        this.baseFragment = baseFragment;
-    }
 
     private class MyPagerAdapter extends FragmentPagerAdapter {
         public MyPagerAdapter(FragmentManager fm) {

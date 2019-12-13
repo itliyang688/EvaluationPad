@@ -6,6 +6,10 @@ anim exit_out_down
 anim exit_out_up
 anim push_in
 anim push_out
+anim slide_left_in
+anim slide_left_out
+anim slide_right_in
+anim slide_right_out
 attr? cpv_animAutostart
 attr? cpv_animDuration
 attr? cpv_animSteps

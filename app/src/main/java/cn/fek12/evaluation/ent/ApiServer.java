@@ -18,6 +18,8 @@ import cn.fek12.evaluation.model.entity.RecordsEntitiy;
 import cn.fek12.evaluation.model.entity.RelevantVideoListEntity;
 import cn.fek12.evaluation.model.entity.SemesterEntity;
 import cn.fek12.evaluation.model.entity.SubjectEntity;
+import cn.fek12.evaluation.model.entity.SubjectsEntity;
+import cn.fek12.evaluation.model.entity.TestRecordEntity;
 import cn.fek12.evaluation.model.entity.TextbookEntity;
 import cn.fek12.evaluation.model.entity.TopicCountEntity;
 import cn.fek12.evaluation.model.entity.TreeDataEntity;
@@ -29,6 +31,7 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface ApiServer {
@@ -287,5 +290,16 @@ public interface ApiServer {
                                                     @Field("knowledgePoint") String knowledgePoint,
                                                     @Field("userId") String userId);
 
+    /**
+     * 练习记录
+     */
+    @GET("/practice/statistics/{userId}/{structId}")
+    Observable<TestRecordEntity> testRecordsList(@Path("structId") String structId, @Path("userId") String userId);
+
+    /**
+     * 学科
+     */
+    @GET("/dictionary/subjects")
+    Observable<SubjectsEntity> subjects();
 }
 

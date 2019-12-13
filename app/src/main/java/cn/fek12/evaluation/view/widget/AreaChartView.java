@@ -57,7 +57,6 @@ public class AreaChartView extends ChartView {
 
 	private AreaChart chart = new AreaChart();
 	//标签集合
-	private LinkedList<String> mLabels = new LinkedList<String>();
 	//数据集合
 	private LinkedList<AreaData> mDataset = new LinkedList<AreaData>();
 
@@ -158,23 +157,12 @@ public class AreaChartView extends ChartView {
 		int [] ltrb = new int[4];
 		ltrb[0] = DensityUtil.dip2px(getContext(), 35); //left
 		ltrb[1] = DensityUtil.dip2px(getContext(), 15); //top
-		ltrb[2] = DensityUtil.dip2px(getContext(), 20); //right
+		ltrb[2] = DensityUtil.dip2px(getContext(), 30); //right
 		ltrb[3] = DensityUtil.dip2px(getContext(), 20); //bottom
 		return ltrb;
 	}
 	
-	public void chartDataSet(){
-		mLabels.add("2019-11-01");
-		mLabels.add("2019-11-07");
-		mLabels.add("2019-11-15");
-		mLabels.add("本周");
-
-		List<Double> dataSeries3 = new LinkedList<Double>();
-		dataSeries3.add((double)35);
-		dataSeries3.add((double)45);
-		dataSeries3.add((double)65);
-		dataSeries3.add((double)75);
-
+	public void chartDataSet(List<Double> dataSeries3,LinkedList<String> mLabels){
 
 		AreaData line3 = new AreaData("",dataSeries3,
 				Color.rgb(246, 134, 31),Color.rgb(213, 198, 126));
@@ -187,6 +175,7 @@ public class AreaChartView extends ChartView {
 		//line3.getDotLabelPaint().setColor(Color.YELLOW);
 		line3.setLineStyle(XEnum.LineStyle.DOT);
 
+		mDataset.clear();
 		mDataset.add(line3);
 
 		//轴数据源

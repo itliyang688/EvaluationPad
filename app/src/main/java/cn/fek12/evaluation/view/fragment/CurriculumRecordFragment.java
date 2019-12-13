@@ -28,7 +28,9 @@ import cn.fek12.evaluation.impl.ICurriculemRecord;
 import cn.fek12.evaluation.model.entity.ChildSectionEntity;
 import cn.fek12.evaluation.model.entity.CurriculumEntity;
 import cn.fek12.evaluation.presenter.CurriculumRecordPresenter;
+import cn.fek12.evaluation.utils.AppUtils;
 import cn.fek12.evaluation.utils.DialogUtils;
+import cn.fek12.evaluation.view.PopupWindow.SubjectPopupWindow;
 import cn.fek12.evaluation.view.adapter.CurriculumRecordAdapter;
 import cn.fek12.evaluation.view.dialog.SelectDateDialog;
 import cn.fek12.evaluation.view.widget.MultipleStatusView;
@@ -59,13 +61,10 @@ public class CurriculumRecordFragment extends BaseFragment<CurriculumRecordPrese
     MultipleStatusView loadView;
     @BindView(R.id.refreshLayout)
     TwinklingRefreshLayout refreshLayout;
-    @BindView(R.id.llContain)
-    LinearLayout llContain;
-    @BindView(R.id.selectSubject)
-    RelativeLayout selectSubject;
     @BindView(R.id.rootView)
     RelativeLayout rootView;
     private CurriculumRecordAdapter adapter;
+    private SubjectPopupWindow subjectPopupWindow;
     private int mPageType;
     private int currentPage = 1;
     private boolean isLoadMore = false;
@@ -88,7 +87,6 @@ public class CurriculumRecordFragment extends BaseFragment<CurriculumRecordPrese
         llSubject.setOnClickListener(this);
         llStartDate.setOnClickListener(this);
         llEndDate.setOnClickListener(this);
-        selectSubject.setOnClickListener(this);
 
         refreshLayout.setEnableLoadmore(false);
         refreshLayout.setOnRefreshListener(refreshListenerAdapter);
@@ -151,9 +149,6 @@ public class CurriculumRecordFragment extends BaseFragment<CurriculumRecordPrese
     @Override
     public void onClick(View v, int id) {
         switch (id) {
-            case R.id.selectSubject:
-                selectSubject.setVisibility(View.GONE);
-                break;
             case R.id.llStartDate:
                 SelectDateDialog startDateDialog = new SelectDateDialog(getContext(), "选择起始日期", new SelectDateDialog.OnSelectItemDateListener() {
                     @Override
@@ -185,41 +180,14 @@ public class CurriculumRecordFragment extends BaseFragment<CurriculumRecordPrese
                 endDateDialog.show();
                 break;
             case R.id.llSubject:
-                llContain.removeAllViews();
-                selectSubject.setVisibility(View.VISIBLE);
-                List<ChildSectionEntity> mList = new ArrayList<>();
-                for (int i = 0; i < 10; i++) {
-                    if (i == 0) {
-                        ChildSectionEntity sectionEntity = new ChildSectionEntity();
-                        sectionEntity.setName("全部");
-                        mList.add(sectionEntity);
-                    } else {
-                        ChildSectionEntity sectionEntity = new ChildSectionEntity();
-                        sectionEntity.setName("数学" + i);
-                        mList.add(sectionEntity);
-                    }
-                }
-                for(int i = 0; i < mList.size(); i++){
-                    View viewItem = LayoutInflater.from(mContext).inflate(R.layout.subject_itme, null);
-                    TextView tvName = viewItem.findViewById(R.id.tvName);
-                    tvName.setText(mList.get(i).getName());
-                    int finalI = i;
-                    viewItem.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            tvName.setTextColor(mContext.getResources().getColor(R.color.white));
-                            selectSubject.setVisibility(View.GONE);
-                        }
-                    });
-                    llContain.addView(viewItem);
-                }
-
-                /*DialogUtils.subjectSelectDialog(getContext(), list, new DialogUtils.OnSelectSubjectItmeListener() {
+                subjectPopupWindow = new SubjectPopupWindow(getContext(), new SubjectPopupWindow.OnSelectItmeListener() {
                     @Override
-                    public void onSelectItme(int pos) {
-                        tvSubject.setText(list.get(pos).getName());
+                    public void onSelectItme(String subjectId,String subjectName) {
+
                     }
-                });*/
+                });
+                AppUtils.fitPopupWindowOverStatusBar(subjectPopupWindow, true);
+                subjectPopupWindow.showAsDropDown(llSubject, -155, 0);
 
                 break;
         }

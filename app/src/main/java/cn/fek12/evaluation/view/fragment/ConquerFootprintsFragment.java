@@ -1,6 +1,9 @@
 package cn.fek12.evaluation.view.fragment;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -13,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.view.widget.NoScrollViewPager;
 
@@ -26,6 +30,12 @@ import cn.fek12.evaluation.view.widget.NoScrollViewPager;
 public class ConquerFootprintsFragment extends BaseFragment {
     @BindView(R.id.view_pager)
     NoScrollViewPager viewPager;
+    @BindView(R.id.btnCourseRecord)
+    TextView btnCourseRecord;
+    @BindView(R.id.btnTestRecord)
+    TextView btnTestRecord;
+    @BindView(R.id.llTopTitle)
+    LinearLayout llTopTitle;
     private List<Fragment> fragmentList = new ArrayList<>();
     private MyPagerAdapter adapter;
 
@@ -40,7 +50,7 @@ public class ConquerFootprintsFragment extends BaseFragment {
         fragmentList.add(new TestChartRecordFragment());
     }
 
-    public void selectTab(int pos){
+    public void selectTab(int pos) {
         viewPager.setCurrentItem(pos, false);
     }
 
@@ -56,6 +66,26 @@ public class ConquerFootprintsFragment extends BaseFragment {
         adapter = new MyPagerAdapter(getChildFragmentManager());
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(2);
+    }
+
+    @OnClick({R.id.btnCourseRecord, R.id.btnTestRecord})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.btnCourseRecord:
+                btnCourseRecord.setBackgroundResource(R.drawable.bg_present_item);
+                btnCourseRecord.setTextColor(getContext().getResources().getColor(R.color.white));
+                btnTestRecord.setTextColor(getContext().getResources().getColor(R.color.color_333));
+                btnTestRecord.setBackgroundResource(R.color.white);
+                selectTab(0);
+                break;
+            case R.id.btnTestRecord:
+                btnTestRecord.setBackgroundResource(R.drawable.bg_present_item);
+                btnTestRecord.setTextColor(getContext().getResources().getColor(R.color.white));
+                btnCourseRecord.setTextColor(getContext().getResources().getColor(R.color.color_333));
+                btnCourseRecord.setBackgroundResource(R.color.white);
+                selectTab(1);
+                break;
+        }
     }
 
     private class MyPagerAdapter extends FragmentPagerAdapter {

@@ -97,6 +97,9 @@
         <activity
             android:name=".view.activity.RankingListActivity"
             android:screenOrientation="landscape" />
+        <activity
+            android:name=".view.activity.ExerciseNotesActivity"
+            android:screenOrientation="landscape" />
     </application>
 
 </manifest>

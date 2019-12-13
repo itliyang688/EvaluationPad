@@ -1,6 +1,7 @@
 package cn.fek12.evaluation.view.fragment;
 
 import android.os.Bundle;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,9 +16,7 @@ import cn.fek12.evaluation.application.MyApplication;
 import cn.fek12.evaluation.impl.IMicroLessonRecord;
 import cn.fek12.evaluation.model.entity.CollectionListEntity;
 import cn.fek12.evaluation.model.entity.CommonEntity;
-import cn.fek12.evaluation.model.entity.RelevantVideoListEntity;
 import cn.fek12.evaluation.presenter.MicroLessonRecordPresenter;
-import cn.fek12.evaluation.view.activity.FullScreenVideoPlayActivity;
 import cn.fek12.evaluation.view.adapter.MicroLessonRecordAdapter;
 import cn.fek12.evaluation.view.widget.MultipleStatusView;
 
@@ -33,6 +32,8 @@ public class MicroLessonRecordFragment extends BaseFragment<MicroLessonRecordPre
     RecyclerView recyclerView;
     @BindView(R.id.multipleStatusView)
     MultipleStatusView multipleStatusView;
+    @BindView(R.id.titleName)
+    TextView titleName;
     private MicroLessonRecordAdapter adapter;
     private int mPageType;//1微课学习2我的收藏
     private boolean isVisibleToUser;
@@ -66,13 +67,15 @@ public class MicroLessonRecordFragment extends BaseFragment<MicroLessonRecordPre
         collectionList();
     }
 
-    private void collectionList(){
-        if(isVisibleToUser){
+    private void collectionList() {
+        if (isVisibleToUser) {
             multipleStatusView.showLoading();
-            if(mPageType == 1){//微课学习
-                mPresenter.microLessonList(getContext(), MyApplication.getMyApplication().getUserId(),null);
-            }else {//我的收藏
-                mPresenter.collectionList(getContext(), MyApplication.getMyApplication().getUserId(),null);
+            if (mPageType == 1) {//微课学习
+                titleName.setText("微课学习");
+                mPresenter.microLessonList(getContext(), MyApplication.getMyApplication().getUserId(), null);
+            } else {//我的收藏
+                titleName.setText("我的收藏");
+                mPresenter.collectionList(getContext(), MyApplication.getMyApplication().getUserId(), null);
             }
         }
     }
@@ -91,23 +94,23 @@ public class MicroLessonRecordFragment extends BaseFragment<MicroLessonRecordPre
     public void loadCollectionSuc(CollectionListEntity entry) {
         multipleStatusView.showContent();
         boolean isEmpty = false;
-        if(entry.getData() != null){
-            if(entry.getData().getWeek() != null && entry.getData().getWeek().size() > 0){
+        if (entry.getData() != null) {
+            if (entry.getData().getWeek() != null && entry.getData().getWeek().size() > 0) {
                 isEmpty = true;
             }
-            if(entry.getData().getMonth() != null && entry.getData().getMonth().size() > 0){
+            if (entry.getData().getMonth() != null && entry.getData().getMonth().size() > 0) {
                 isEmpty = true;
             }
-            if(entry.getData().getNear() != null && entry.getData().getNear().size() > 0){
+            if (entry.getData().getNear() != null && entry.getData().getNear().size() > 0) {
                 isEmpty = true;
             }
 
-            if(isEmpty){
+            if (isEmpty) {
                 adapter.notifyChanged(entry.getData());
-            }else{
+            } else {
                 multipleStatusView.showEmpty();
             }
-        }else{
+        } else {
             multipleStatusView.showEmpty();
         }
     }
@@ -126,7 +129,7 @@ public class MicroLessonRecordFragment extends BaseFragment<MicroLessonRecordPre
     public void loadCollectionSuc(CommonEntity entry) {
         ToastUtils.popUpToast("已取消收藏");
         multipleStatusView.showLoading();
-        mPresenter.collectionList(getContext(), MyApplication.getMyApplication().getUserId(),null);
+        mPresenter.collectionList(getContext(), MyApplication.getMyApplication().getUserId(), null);
     }
 
     @Override
@@ -152,7 +155,7 @@ public class MicroLessonRecordFragment extends BaseFragment<MicroLessonRecordPre
     }
 
     @Override
-    public void onItemClick(String cacheKey,String videoId,String videoType) {
-        mPresenter.collection(getContext(),cacheKey,videoType,videoId,"0", MyApplication.getMyApplication().getUserId());
+    public void onItemClick(String cacheKey, String videoId, String videoType) {
+        mPresenter.collection(getContext(), cacheKey, videoType, videoId, "0", MyApplication.getMyApplication().getUserId());
     }
 }

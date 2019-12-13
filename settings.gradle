@@ -1,2 +1,2 @@
-include ':app', ':viewpagerlib', ':basic', ':tagLibrary', ':jiaozivideoplayer', ':stickyheaders', ':calendar', ':xclChartsLib'
+include ':app', ':viewpagerlib', ':basic', ':tagLibrary', ':jiaozivideoplayer', ':stickyheaders', ':calendar', ':xclChartsLib', ':expandablerecyclerview'
 rootProject.name='EvaluationPad'

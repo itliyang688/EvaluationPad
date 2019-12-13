@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tl="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/dp_5"
+    android:background="@mipmap/presentation_bg"
+    android:orientation="horizontal">
+
+    <cn.fek12.evaluation.view.widget.MultipleStatusView
+        android:id="@+id/load_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.flyco.tablayout.SlidingTabLayout
+            android:id="@+id/slidingTabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_30"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginRight="@dimen/dp_50"
+            android:layout_marginLeft="@dimen/dp_50"
+            tl:tl_indicator_color="@color/app_bg"
+            tl:tl_indicator_margin_bottom="5dp"
+            tl:tl_indicator_margin_top="5dp"
+            tl:tl_indicator_style="BLOCK"
+            tl:tl_textSelectColor="@color/white"
+            tl:tl_textUnselectColor="@color/color_000"
+            tl:tl_tab_padding="0dp"
+            tl:tl_indicator_margin_left="3dp"
+            tl:tl_indicator_margin_right="3dp"
+            tl:tl_tab_width="@dimen/dp_80"
+            tl:tl_textsize="@dimen/sp_13" />
+
+        <cn.fek12.evaluation.view.widget.CustomViewPager
+            android:id="@+id/view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/slidingTabLayout"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_marginRight="@dimen/dp_10"
+            android:layout_marginBottom="@dimen/dp_40" />
+
+    </cn.fek12.evaluation.view.widget.MultipleStatusView>
+</LinearLayout>
