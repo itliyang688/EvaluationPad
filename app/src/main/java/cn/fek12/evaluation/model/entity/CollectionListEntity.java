@@ -113,9 +113,27 @@ public class CollectionListEntity implements Serializable {
             private long playScheduleTime;
             private long beforeActionTime;
             private String specialName;
+            private String imgUrl;
             private String introduction;
+            private String schedule;
             private String textbookName;
             private String subjectName;
+
+            public String getImgUrl() {
+                return imgUrl;
+            }
+
+            public void setImgUrl(String imgUrl) {
+                this.imgUrl = imgUrl;
+            }
+
+            public String getSchedule() {
+                return schedule;
+            }
+
+            public void setSchedule(String schedule) {
+                this.schedule = schedule;
+            }
 
             public int getVideoId() {
                 return videoId;

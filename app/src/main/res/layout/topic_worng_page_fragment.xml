@@ -138,6 +138,10 @@
             android:id="@+id/webView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/dp_13"
+            android:layout_marginLeft="@dimen/dp_37"
+            android:layout_marginRight="@dimen/dp_37"
+            android:layout_marginBottom="@dimen/dp_40"
             tools:ignore="WebViewLayout" />
     </cn.fek12.evaluation.view.widget.MultipleStatusView>
 

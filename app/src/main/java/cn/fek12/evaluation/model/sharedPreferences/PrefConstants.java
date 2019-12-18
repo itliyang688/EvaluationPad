@@ -7,5 +7,6 @@ package cn.fek12.evaluation.model.sharedPreferences;
 public interface PrefConstants {
     public static final String PREF_NAME = "config";
     String BANNERCACHE = "bannerCache";
+    String ANALYSIS = "analysis";
 
 }

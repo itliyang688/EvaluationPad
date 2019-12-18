@@ -21,6 +21,14 @@ public abstract class PrefUtilsData {
         SP.putString(PrefConstants.BANNERCACHE, bannerCache);
     }
 
+    public static void setAnalysisCache(String analysis) {
+        SP.putString(PrefConstants.ANALYSIS, analysis);
+    }
+
+    public static String getAnalysisCache() {
+        return SP.getString(PrefConstants.ANALYSIS, "");
+    }
+
 
     /**
      * 适用于退出登录清除用户数据

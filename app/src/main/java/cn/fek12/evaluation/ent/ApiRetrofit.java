@@ -10,6 +10,7 @@ public class ApiRetrofit {
     private Retrofit retrofit;
     private ApiServer apiServer;
     //public static String mBaseUrl = "http://192.168.0.46:11111/";
+    //public static String mBaseUrl = "http://192.168.0.220:11111/";
     public static String mBaseUrl = "http://218.245.6.132:11111/";
 
     public ApiRetrofit() {

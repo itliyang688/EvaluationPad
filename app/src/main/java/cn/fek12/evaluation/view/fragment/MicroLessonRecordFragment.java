@@ -1,6 +1,7 @@
 package cn.fek12.evaluation.view.fragment;
 
 import android.os.Bundle;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,12 +12,15 @@ import com.fek12.basic.utils.toast.ToastUtils;
 import org.zakariya.stickyheaders.StickyHeaderLayoutManager;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.application.MyApplication;
 import cn.fek12.evaluation.impl.IMicroLessonRecord;
 import cn.fek12.evaluation.model.entity.CollectionListEntity;
 import cn.fek12.evaluation.model.entity.CommonEntity;
 import cn.fek12.evaluation.presenter.MicroLessonRecordPresenter;
+import cn.fek12.evaluation.utils.AppUtils;
+import cn.fek12.evaluation.view.PopupWindow.SubjectPopupWindow;
 import cn.fek12.evaluation.view.adapter.MicroLessonRecordAdapter;
 import cn.fek12.evaluation.view.widget.MultipleStatusView;
 
@@ -34,9 +38,15 @@ public class MicroLessonRecordFragment extends BaseFragment<MicroLessonRecordPre
     MultipleStatusView multipleStatusView;
     @BindView(R.id.titleName)
     TextView titleName;
+    @BindView(R.id.llSubject)
+    LinearLayout llSubject;
+    @BindView(R.id.tvSubject)
+    TextView tvSubject;
     private MicroLessonRecordAdapter adapter;
     private int mPageType;//1微课学习2我的收藏
     private boolean isVisibleToUser;
+    private String subject = null;
+    private SubjectPopupWindow subjectPopupWindow;
 
     public MicroLessonRecordFragment(int pageType) {
         mPageType = pageType;
@@ -72,10 +82,10 @@ public class MicroLessonRecordFragment extends BaseFragment<MicroLessonRecordPre
             multipleStatusView.showLoading();
             if (mPageType == 1) {//微课学习
                 titleName.setText("微课学习");
-                mPresenter.microLessonList(getContext(), MyApplication.getMyApplication().getUserId(), null);
+                mPresenter.microLessonList(getContext(), MyApplication.getMyApplication().getUserId(), subject);
             } else {//我的收藏
                 titleName.setText("我的收藏");
-                mPresenter.collectionList(getContext(), MyApplication.getMyApplication().getUserId(), null);
+                mPresenter.collectionList(getContext(), MyApplication.getMyApplication().getUserId(), subject);
             }
         }
     }
@@ -129,7 +139,7 @@ public class MicroLessonRecordFragment extends BaseFragment<MicroLessonRecordPre
     public void loadCollectionSuc(CommonEntity entry) {
         ToastUtils.popUpToast("已取消收藏");
         multipleStatusView.showLoading();
-        mPresenter.collectionList(getContext(), MyApplication.getMyApplication().getUserId(), null);
+        mPresenter.collectionList(getContext(), MyApplication.getMyApplication().getUserId(), subject);
     }
 
     @Override
@@ -157,5 +167,19 @@ public class MicroLessonRecordFragment extends BaseFragment<MicroLessonRecordPre
     @Override
     public void onItemClick(String cacheKey, String videoId, String videoType) {
         mPresenter.collection(getContext(), cacheKey, videoType, videoId, "0", MyApplication.getMyApplication().getUserId());
+    }
+
+    @OnClick(R.id.llSubject)
+    public void onViewClicked() {
+        subjectPopupWindow = new SubjectPopupWindow(getContext(), new SubjectPopupWindow.OnSelectItmeListener() {
+            @Override
+            public void onSelectItme(String subjectId, String subjectName) {
+                tvSubject.setText(subjectName);
+                subject = subjectId;
+                collectionList();
+            }
+        });
+        AppUtils.fitPopupWindowOverStatusBar(subjectPopupWindow, true);
+        subjectPopupWindow.showAsDropDown(llSubject, -200, 0);
     }
 }

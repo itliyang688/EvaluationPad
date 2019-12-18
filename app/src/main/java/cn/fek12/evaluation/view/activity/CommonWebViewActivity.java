@@ -14,6 +14,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.application.MyApplication;
+import cn.fek12.evaluation.view.jsinterface.JavaScriptinterface;
 import cn.fek12.evaluation.view.widget.NoRollWebView;
 
 /**
@@ -23,14 +24,14 @@ import cn.fek12.evaluation.view.widget.NoRollWebView;
  * @Description:
  * @CreateDate: 2019/11/15 17:17
  */
-public class SmallWebViewActivity extends BaseActivity {
+public class CommonWebViewActivity extends BaseActivity {
     @BindView(R.id.webView)
     NoRollWebView webView;
     @BindView(R.id.iv_left_back)
     ImageView ivLeftBack;
     @BindView(R.id.titleView)
     LinearLayout titleView;
-    private String subjectCategoryId;
+    private String webUrl;
 
     @Override
     public int setLayoutResource() {
@@ -40,7 +41,7 @@ public class SmallWebViewActivity extends BaseActivity {
     @Override
     protected void onInitView() {
         Intent intent = getIntent();
-        subjectCategoryId = intent.getStringExtra("subjectCategoryId");
+        webUrl = intent.getStringExtra("webUrl");
         WebSettings webSettings = webView.getSettings();
         // 不使用缓存：
         webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
@@ -54,11 +55,12 @@ public class SmallWebViewActivity extends BaseActivity {
         webView.setBackgroundColor(0);
         webView.getBackground().setAlpha(0);
         webView.setWebChromeClient(new WebChromeClient());
+        webView.addJavascriptInterface(new JavaScriptinterface(getContext()), "android");
         //String url = "http://192.168.0.46/noc/html/SmallWork.html";
         //String url = "http://192.168.0.46/noc/html/SmallWork.html?userId=" + MyApplication.getMyApplication().getUserId() + "&subjectCategoryId=" + subjectCategoryId;
-        String url = "http://218.245.6.132:11111/html/SmallWork.html?userId=" + MyApplication.getMyApplication().getUserId() + "&subjectCategoryId=" + subjectCategoryId;
+        //String url = "http://218.245.6.132:11111/html/SmallWork.html?userId=" + MyApplication.getMyApplication().getUserId() + "&subjectCategoryId=" + subjectCategoryId;
         showLoading();
-        webView.loadUrl(url);
+        webView.loadUrl(webUrl);
 
         webView.setWebViewClient(new WebViewClient() {
             // 重写此方法表明点击网页里面的链接还是在当前的webview里跳转，不跳到浏览器那边

@@ -1,17 +1,28 @@
 package cn.fek12.evaluation.view.fragment;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.fek12.basic.base.BaseFragment;
 import com.fek12.basic.base.BasePresenter;
+import com.fek12.basic.utils.toast.ToastUtils;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import cn.fek12.evaluation.R;
-import cn.fek12.evaluation.view.activity.WebViewActivity;
+import cn.fek12.evaluation.application.MyApplication;
+import cn.fek12.evaluation.model.config.Configs;
+import cn.fek12.evaluation.utils.AppUtils;
+import cn.fek12.evaluation.view.PopupWindow.SubjectPopupWindow;
+import cn.fek12.evaluation.view.dialog.SelectDateDialog;
+import cn.fek12.evaluation.view.jsinterface.JavaScriptinterface;
 import cn.fek12.evaluation.view.widget.MultipleStatusView;
 import cn.fek12.evaluation.view.widget.NoRollWebView;
 
@@ -27,6 +38,22 @@ public class TopicWrongRecordPageFragment extends BaseFragment {
     NoRollWebView webView;
     @BindView(R.id.loadView)
     MultipleStatusView loadView;
+    @BindView(R.id.tvStartDate)
+    TextView tvStartDate;
+    @BindView(R.id.llStartDate)
+    LinearLayout llStartDate;
+    @BindView(R.id.tvSubject)
+    TextView tvSubject;
+    @BindView(R.id.llSubject)
+    LinearLayout llSubject;
+    @BindView(R.id.tvEndDate)
+    TextView tvEndDate;
+    @BindView(R.id.llEndDate)
+    LinearLayout llEndDate;
+    private String startDate = null;
+    private String endDate = null;
+    private String subject = null;
+    private SubjectPopupWindow subjectPopupWindow;
 
     @Override
     protected int getLayoutResource() {
@@ -36,7 +63,7 @@ public class TopicWrongRecordPageFragment extends BaseFragment {
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onInitView(Bundle savedInstanceState) {
-        loadView.showEmpty();
+        //loadView.showEmpty();
         WebSettings webSettings = webView.getSettings();
         // 不使用缓存：
         webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
@@ -46,6 +73,7 @@ public class TopicWrongRecordPageFragment extends BaseFragment {
         webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         webSettings.setTextZoom(100);
         webSettings.setLoadWithOverviewMode(true);
+        webView.addJavascriptInterface(new JavaScriptinterface(getContext()), "android");
         // 使WebView不可滚动
         //webView.setOnTouchListener((v, event) -> (event.getAction() == MotionEvent.ACTION_MOVE));
         //webView.loadUrl("http://218.245.6.132:11111/html/Record.html");
@@ -54,6 +82,24 @@ public class TopicWrongRecordPageFragment extends BaseFragment {
         //webView.loadUrl("file:///android_asset/web/Record.html");
         //startActivity(new Intent(getContext(), WebViewActivity.class));
         //MainActivity activity = (MainActivity) getActivity();
+
+        //String webUrl = Configs.RECORD + "userId="+MyApplication.getMyApplication().getUserId() + "&beginDate="+startDate + "&endDate="+endDate + "&subject="+subject;
+        String webUrl = Configs.RECORD + "userId="+MyApplication.getMyApplication().getUserId();
+        loadView.showLoading();
+        webView.loadUrl(webUrl);
+
+        webView.setWebViewClient(new WebViewClient() {
+            // 重写此方法表明点击网页里面的链接还是在当前的webview里跳转，不跳到浏览器那边
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                view.loadUrl(url);
+                return true;
+            }
+            @Override
+            public void onPageFinished(WebView view,String url){
+                loadView.showContent();
+            }
+        });
     }
 
     @Override
@@ -74,5 +120,51 @@ public class TopicWrongRecordPageFragment extends BaseFragment {
     @Override
     public boolean onBackPressed() {
         return false;
+    }
+
+    @OnClick({R.id.llStartDate, R.id.llSubject, R.id.llEndDate})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.llStartDate:
+                SelectDateDialog startDateDialog = new SelectDateDialog(getContext(), "选择起始日期", new SelectDateDialog.OnSelectItemDateListener() {
+                    @Override
+                    public void onDateItme(String date) {
+                        startDate = date;
+                        tvStartDate.setText(date);
+                    }
+                });
+                startDateDialog.show();
+                break;
+            case R.id.llSubject:
+                subjectPopupWindow = new SubjectPopupWindow(getContext(), new SubjectPopupWindow.OnSelectItmeListener() {
+                    @Override
+                    public void onSelectItme(String subjectId,String subjectName) {
+                        //loadView.showLoading();
+                        tvSubject.setText(subjectName);
+                        subject = subjectId;
+
+                        webView.loadUrl("http://192.168.0.46/noc/html/ErrorRework.html");
+                        //webView.reload(); //刷新
+                    }
+                });
+                AppUtils.fitPopupWindowOverStatusBar(subjectPopupWindow, true);
+                subjectPopupWindow.showAsDropDown(llSubject, -155, 0);
+
+                break;
+            case R.id.llEndDate:
+                if (TextUtils.isEmpty(startDate)) {
+                    ToastUtils.popUpToast("请选择起始日期");
+                    return;
+                }
+                SelectDateDialog endDateDialog = new SelectDateDialog(getContext(), "选择结束日期", new SelectDateDialog.OnSelectItemDateListener() {
+                    @Override
+                    public void onDateItme(String date) {
+                        endDate = date;
+                        tvEndDate.setText(date);
+                    }
+                });
+                endDateDialog.show();
+                break;
+        }
     }
 }

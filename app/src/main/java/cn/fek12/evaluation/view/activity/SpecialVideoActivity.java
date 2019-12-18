@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.fek12.basic.base.BaseActivity;
 import com.fek12.basic.utils.toast.ToastUtils;
 
@@ -35,6 +36,7 @@ public class SpecialVideoActivity extends BaseActivity<SpeciaVideoPlayPresenter>
     private String chapter;
     private String describe;
     private String cacheKey;
+    private String imgUrl;
     private String structLayKey;
     private int videoType;
     private int videoId;
@@ -55,6 +57,7 @@ public class SpecialVideoActivity extends BaseActivity<SpeciaVideoPlayPresenter>
         chapter = intent.getStringExtra("chapter");
         describe = intent.getStringExtra("describe");
         cacheKey = intent.getStringExtra("cacheKey");
+        imgUrl = intent.getStringExtra("imgUrl");
         structLayKey = intent.getStringExtra("structLayKey");
         videoType = intent.getIntExtra("videoType",0);
         videoId = intent.getIntExtra("videoId",0);
@@ -70,6 +73,7 @@ public class SpecialVideoActivity extends BaseActivity<SpeciaVideoPlayPresenter>
         //myJzvdStd.getCurrentPositionWhenPlaying();
         //Bitmap bitmap = VideoUtils.getInstance().getNetVideoBitmap(path);
         //myJzvdStd.thumbImageView.setImageBitmap(bitmap);
+        Glide.with(MyApplication.getApp()).load(imgUrl).into(myJzvdStd.thumbImageView);
         myJzvdStd.ivExtend.setImageResource(isCollection == 0 ? R.mipmap.collection_video_normal : R.mipmap.collection_video_check);
         //myJzvdStd.thumbImageView.setScaleType(ImageView.ScaleType.FIT_XY);
         myJzvdStd.ivExtend.setOnClickListener(onClickListener);

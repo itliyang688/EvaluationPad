@@ -215,6 +215,7 @@ public class MicroLessonPageFragment extends BaseFragment<MicroLessonPagePresent
         intent.putExtra("describe",list.get(pos).getIntroduction());
         intent.putExtra("isCollection",list.get(pos).getIsCollection());
         intent.putExtra("playScheduleTime",list.get(pos).getPlayScheduleTime());
+        intent.putExtra("imgUrl",list.get(pos).getImgUrl());
         startActivity(intent);
     }
 

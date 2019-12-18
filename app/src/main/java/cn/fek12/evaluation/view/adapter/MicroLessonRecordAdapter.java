@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.fek12.basic.utils.toast.ToastUtils;
 
 import org.zakariya.stickyheaders.SectioningAdapter;
@@ -17,6 +18,7 @@ import org.zakariya.stickyheaders.SectioningAdapter;
 import java.util.List;
 
 import cn.fek12.evaluation.R;
+import cn.fek12.evaluation.application.MyApplication;
 import cn.fek12.evaluation.model.entity.CollectionListEntity;
 import cn.fek12.evaluation.model.entity.MicroLessonEnetity;
 import cn.fek12.evaluation.utils.FastDFSUtil;
@@ -113,9 +115,16 @@ public class MicroLessonRecordAdapter extends SectioningAdapter {
         }
         if(videoList != null){
             ivh.tvName.setText(videoList.get(itemIndex).getVideoName());
-            ivh.tvDescribe.setText("视频简介："+videoList.get(itemIndex).getIntroduction());
+            if(videoList.get(itemIndex).getType() == 2){
+                ivh.tvDescribe.setVisibility(View.VISIBLE);
+                ivh.tvDescribe.setText("视频简介："+videoList.get(itemIndex).getIntroduction());
+            }else{
+                ivh.tvDescribe.setVisibility(View.INVISIBLE);
+            }
             ivh.tvSemester.setText(videoList.get(itemIndex).getTextbookName());
             ivh.tvSubject.setText(videoList.get(itemIndex).getSubjectName());
+            ivh.tvPlayCount.setText("已观看"+videoList.get(itemIndex).getSchedule()+"%");
+            Glide.with(MyApplication.getApp()).load(videoList.get(itemIndex).getImgUrl()).placeholder(R.mipmap.empty_bg).error(R.mipmap.empty_bg).into(ivh.ivCover);
         }
         if(mPageType == STUDY){
             ivh.ivCollection.setVisibility(View.GONE);
@@ -205,6 +214,7 @@ public class MicroLessonRecordAdapter extends SectioningAdapter {
         intent.putExtra("videoType",list.get(pos).getType());
         intent.putExtra("videoId",list.get(pos).getVideoId());
         intent.putExtra("describe",list.get(pos).getIntroduction());
+        intent.putExtra("imgUrl",list.get(pos).getImgUrl());
         intent.putExtra("isCollection",list.get(pos).getIsCollection());
         intent.putExtra("playScheduleTime",list.get(pos).getPlayScheduleTime());
         mContext.startActivity(intent);

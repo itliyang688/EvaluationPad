@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <LinearLayout
+        android:id="@+id/llContain"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_29"
+        android:layout_marginLeft="@dimen/dp_50"
+        android:layout_marginRight="@dimen/dp_50"
+        android:visibility="visible"
+        android:gravity="center_vertical|bottom"
+        android:orientation="horizontal">
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_20">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_20"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="@dimen/dp_4"
+                    android:layout_height="@dimen/dp_4"
+                    android:background="@drawable/spot_bg_shape"/>
+
+                <TextView
+                    android:id="@+id/tvSubject"
+                    android:layout_width="@dimen/dp_130"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/sp_12"
+                    android:paddingRight="@dimen/dp_15"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:layout_marginLeft="@dimen/dp_5"
+                    android:textColor="@color/color_333"
+                    android:text="数学  七年级  人教版 "/>
+
+                <TextView
+                    android:id="@+id/tvChapter"
+                    android:layout_width="@dimen/dp_85"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="@dimen/dp_13"
+                    android:textSize="@dimen/sp_12"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:textColor="@color/color_333"
+                    android:text="一元二次函数"/>
+
+                <TextView
+                    android:id="@+id/tvTime"
+                    android:layout_width="@dimen/dp_85"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/sp_12"
+                    android:layout_marginLeft="@dimen/dp_8"
+                    android:textColor="@color/color_333"
+                    android:text="用时：3分43秒"/>
+
+                <TextView
+                    android:id="@+id/tvCorrectCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="@dimen/dp_10"
+                    android:textSize="@dimen/sp_12"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:textColor="@color/color_333"
+                    android:text="答对数：3/5"/>
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/tbPractice"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:paddingLeft="@dimen/dp_13">
+                <TextView
+                    android:layout_width="@dimen/dp_62"
+                    android:layout_height="@dimen/dp_20"
+                    android:textSize="@dimen/sp_12"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:background="@drawable/click_answer_item"
+                    android:layout_alignParentBottom="true"
+                    android:text="继续练习"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/tbAnalysis"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_toLeftOf="@+id/tbPractice"
+                android:layout_gravity="right"
+                android:paddingLeft="@dimen/dp_13">
+                <TextView
+                    android:layout_width="@dimen/dp_62"
+                    android:layout_height="@dimen/dp_20"
+                    android:textSize="@dimen/sp_12"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:background="@drawable/click_answer_item2"
+                    android:layout_alignParentBottom="true"
+                    android:text="查看解析"/>
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llEmpty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_64"
+        android:layout_marginRight="@dimen/dp_64"
+        android:layout_marginTop="@dimen/dp_12"
+        android:gravity="center_vertical"
+        android:visibility="gone"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/study_icon"/>
+        <TextView
+            android:id="@+id/tvEncourage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/sp_12"
+            android:layout_marginLeft="@dimen/dp_12"
+            android:textColor="@color/color_999"
+            android:text="业精于勤，荒于嬉。"/>
+    </LinearLayout>
+</RelativeLayout>

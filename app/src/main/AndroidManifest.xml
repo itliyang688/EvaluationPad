@@ -92,13 +92,16 @@
             android:name=".view.activity.AnswerWebViewActivity"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".view.activity.SmallWebViewActivity"
+            android:name=".view.activity.CommonWebViewActivity"
             android:screenOrientation="landscape" />
         <activity
             android:name=".view.activity.RankingListActivity"
             android:screenOrientation="landscape" />
         <activity
             android:name=".view.activity.ExerciseNotesActivity"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".view.activity.CommonWebViewBackActivity"
             android:screenOrientation="landscape" />
     </application>
 

@@ -3,6 +3,7 @@ package cn.fek12.evaluation.view.activity;
 import android.content.Intent;
 import android.view.View;
 
+import com.bumptech.glide.Glide;
 import com.fek12.basic.base.BaseActivity;
 import com.fek12.basic.utils.toast.ToastUtils;
 
@@ -29,6 +30,7 @@ public class FullScreenVideoPlayActivity extends BaseActivity<SpeciaVideoPlayPre
     private String pathUrl;
     private String videoName;
     private String cacheKey;
+    private String imgUrl;
     private String structLayKey;
     private int videoType;
     private int typePage;
@@ -47,6 +49,7 @@ public class FullScreenVideoPlayActivity extends BaseActivity<SpeciaVideoPlayPre
         pathUrl = intent.getStringExtra("pathUrl");
         videoName = intent.getStringExtra("videoName");
         cacheKey = intent.getStringExtra("cacheKey");
+        imgUrl = intent.getStringExtra("imgUrl");
         structLayKey = intent.getStringExtra("structLayKey");
         videoType = intent.getIntExtra("videoType",0);
         typePage = intent.getIntExtra("typePage",0);
@@ -55,12 +58,14 @@ public class FullScreenVideoPlayActivity extends BaseActivity<SpeciaVideoPlayPre
         isCollection = intent.getIntExtra("isCollection",0);
 
         //String path = "http://192.168.0.46/group1/M00/00/00/wKgALl23kwyAMozOAOBSBYftCKo270.mp4?token=2cc8cea563f06bc61576893cb5d8e542";
-        String path1 = "http://vfx.mtime.cn/Video/2019/03/19/mp4/190319222227698228.mp4";
+        //String path1 = "http://vfx.mtime.cn/Video/2019/03/19/mp4/190319222227698228.mp4";
         myJzvdStd.setUp(pathUrl,videoName);
         myJzvdStd.seekToInAdvance = playScheduleTime;
         myJzvdStd.gotoScreenFullscreen();
         //Bitmap bitmap = VideoUtils.getInstance().getNetVideoBitmap(pathUrl);
         //myJzvdStd.thumbImageView.setImageBitmap(bitmap);
+        //String imgUrl = "http://192.168.0.46/group1/M00/00/02/wKgALl324MmAa3AuAAAnk16E_l4634.jpg?token=bbb9e3960a6d1882a11ee26815e0dd17&ts=1576460493";
+        Glide.with(MyApplication.getApp()).load(imgUrl).into(myJzvdStd.thumbImageView);
         myJzvdStd.ivExtend.setImageResource(isCollection == 0 ? R.mipmap.collection_video_normal : R.mipmap.collection_video_check);
         myJzvdStd.backButton.setOnClickListener(onClickListener);
         myJzvdStd.fullscreenButton.setOnClickListener(onClickListener);

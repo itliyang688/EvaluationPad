@@ -1,7 +1,6 @@
 package cn.fek12.evaluation.view.activity;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -14,13 +13,12 @@ import com.fek12.basic.utils.toast.ToastUtils;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.application.MyApplication;
 import cn.fek12.evaluation.impl.IVideoPlayList;
+import cn.fek12.evaluation.model.config.Configs;
 import cn.fek12.evaluation.model.entity.CommonEntity;
-import cn.fek12.evaluation.model.entity.MicroLessonEnetity;
 import cn.fek12.evaluation.model.entity.RelevantVideoListEntity;
 import cn.fek12.evaluation.presenter.VideoPlayListPresenter;
 import cn.fek12.evaluation.utils.FastDFSUtil;
@@ -209,8 +207,9 @@ public class VideoPlayListActivity extends BaseActivity<VideoPlayListPresenter> 
 
     @OnClick(R.id.llClick)
     public void onViewClicked() {
-        Intent intent = new Intent(VideoPlayListActivity.this,SmallWebViewActivity.class);
-        intent.putExtra("subjectCategoryId",subjectCategoryId);
+        String url = Configs.SMALLWORK + "userId=" + MyApplication.getMyApplication().getUserId() + "&subjectCategoryId=" + subjectCategoryId;
+        Intent intent = new Intent(VideoPlayListActivity.this, CommonWebViewActivity.class);
+        intent.putExtra("webUrl",url);
         startActivity(intent);
     }
 }

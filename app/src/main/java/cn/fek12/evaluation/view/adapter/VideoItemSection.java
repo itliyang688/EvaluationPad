@@ -9,10 +9,13 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.fek12.evaluation.R;
+import cn.fek12.evaluation.application.MyApplication;
 import cn.fek12.evaluation.model.entity.MicroLessonEnetity;
 import cn.fek12.evaluation.utils.FastDFSUtil;
 import cn.fek12.evaluation.utils.VideoUtils;
@@ -73,20 +76,9 @@ public class VideoItemSection extends Section {
         itemHolder.tvPlayNumber.setText(mList.get(position).getPlayNum());
         itemHolder.tvSubject.setText(mList.get(position).getTextbookName()+ " "+ mList.get(position).getSubjectName());
         itemHolder.tvTime.setText(mList.get(position).getVideoCreateTime());
-        /*itemHolder.ivCover.post(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    String path = FastDFSUtil.generateSourceUrl(mList.get(position).getAddressUrl());
-                    Bitmap bitmap = VideoUtils.getInstance().getNetVideoBitmap(path);
-                    if(bitmap != null){
-                        itemHolder.ivCover.setImageBitmap(bitmap);
-                    }
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-            }
-        });*/
+        //String imgUrl = "http://192.168.0.46/group1/M00/00/02/wKgALl324MmAa3AuAAAnk16E_l4634.jpg?token=bbb9e3960a6d1882a11ee26815e0dd17&ts=1576460493";
+        String imgUrl = mList.get(position).getImgUrl();
+        Glide.with(MyApplication.getApp()).load(imgUrl).placeholder(R.mipmap.empty_bg).error(R.mipmap.empty_bg).into(itemHolder.ivCover);
     }
 
     @Override

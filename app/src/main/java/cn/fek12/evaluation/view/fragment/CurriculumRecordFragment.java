@@ -183,7 +183,12 @@ public class CurriculumRecordFragment extends BaseFragment<CurriculumRecordPrese
                 subjectPopupWindow = new SubjectPopupWindow(getContext(), new SubjectPopupWindow.OnSelectItmeListener() {
                     @Override
                     public void onSelectItme(String subjectId,String subjectName) {
-
+                        loadView.showLoading();
+                        isLoadMore = false;
+                        currentPage = 1;
+                        tvSubject.setText(subjectName);
+                        subject = subjectId;
+                        mPresenter.courseRecord(getContext(), startDate, endDate, subject, MyApplication.getMyApplication().getUserId(), String.valueOf(currentPage));
                     }
                 });
                 AppUtils.fitPopupWindowOverStatusBar(subjectPopupWindow, true);

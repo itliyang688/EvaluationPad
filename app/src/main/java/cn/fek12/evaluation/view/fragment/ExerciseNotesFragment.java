@@ -7,12 +7,18 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.fek12.basic.base.BaseFragment;
 import com.fek12.basic.base.BasePresenter;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import ayalma.ir.expandablerecyclerview.ExpandableRecyclerView;
 import butterknife.BindView;
 import cn.fek12.evaluation.R;
+import cn.fek12.evaluation.application.MyApplication;
+import cn.fek12.evaluation.model.entity.ExrGroupListEntity;
+import cn.fek12.evaluation.model.entity.PracticeListEntity;
+import cn.fek12.evaluation.presenter.ExercisePagePresenter;
 import cn.fek12.evaluation.view.adapter.ExerciseExpandableAdapter;
 import cn.fek12.evaluation.view.widget.MultipleStatusView;
 
@@ -23,16 +29,17 @@ import cn.fek12.evaluation.view.widget.MultipleStatusView;
  * @Description:
  * @CreateDate: 2019/12/10 15:27
  */
-public class ExerciseNotesFragment extends BaseFragment implements ExpandableRecyclerView.OnExpandableListener {
-    @BindView(R.id.load_view)
-    MultipleStatusView loadView;
+public class ExerciseNotesFragment extends BaseFragment<ExercisePagePresenter> implements ExpandableRecyclerView.OnExpandableListener,ExercisePagePresenter.View {
     @BindView(R.id.recyclerView)
     ExpandableRecyclerView recyclerView;
-    private int mTypePage = 0;
+    private String mTagTime;
     private ExerciseExpandableAdapter expandableAdapter;
+    private List<ExrGroupListEntity> mList;
+    private String structId;
 
-    public ExerciseNotesFragment(int typePage) {
-        mTypePage = typePage;
+    public ExerciseNotesFragment(String tagTime,String structId) {
+        mTagTime = tagTime;
+        this.structId = structId;
     }
 
     @Override
@@ -42,14 +49,15 @@ public class ExerciseNotesFragment extends BaseFragment implements ExpandableRec
 
     @Override
     protected void onInitView(Bundle savedInstanceState) {
-        Map<Integer,Integer> mapData = new HashMap<>();
-        mapData.put(0,0);
-        mapData.put(1,0);
-        mapData.put(2,0);
-        mapData.put(3,0);
-        mapData.put(4,0);
-        mapData.put(5,0);
-        expandableAdapter = new ExerciseExpandableAdapter(mapData);
+        String times[] = mTagTime.split(",");
+        mList = new ArrayList<>();
+        for(int i = 0; i < times.length; i ++){
+            ExrGroupListEntity exrGroupListEntity = new ExrGroupListEntity();
+            exrGroupListEntity.setGroup(times[i]);
+            exrGroupListEntity.setData(null);
+            mList.add(exrGroupListEntity);
+        }
+        expandableAdapter = new ExerciseExpandableAdapter(mList,getContext());
         expandableAdapter.setOnExpandableListener(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(expandableAdapter);
@@ -61,8 +69,8 @@ public class ExerciseNotesFragment extends BaseFragment implements ExpandableRec
     }
 
     @Override
-    protected BasePresenter onInitLogicImpl() {
-        return null;
+    protected ExercisePagePresenter onInitLogicImpl() {
+        return new ExercisePagePresenter(this);
     }
 
     @Override
@@ -78,8 +86,24 @@ public class ExerciseNotesFragment extends BaseFragment implements ExpandableRec
 
     @Override
     public void expand(int group, ExpandableRecyclerView.GroupViewHolder viewHolder) {
-        expandableAdapter.notifyChanged(group,5);
+        showLoading();
+        mPresenter.getPracticeList(getContext(), MyApplication.getMyApplication().getUserId(),structId,mList.get(group).getGroup());
+        this.group = group;
+        this.viewHolder = viewHolder;
+    }
+
+    private int group;
+    private ExpandableRecyclerView.GroupViewHolder viewHolder;
+    @Override
+    public void loadSuc(PracticeListEntity entity) {
+        hideLoading();
+        expandableAdapter.notifyChanged(group,entity.getData(),entity.getMessage());
         expandableAdapter.expand(group);
         viewHolder.expand();
+    }
+
+    @Override
+    public void loadEmpty() {
+        hideLoading();
     }
 }

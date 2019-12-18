@@ -14,6 +14,7 @@ import cn.fek12.evaluation.model.entity.HomeEvaluationDeta;
 import cn.fek12.evaluation.model.entity.MicroLessonEnetity;
 import cn.fek12.evaluation.model.entity.MicroLessonTreeEntity;
 import cn.fek12.evaluation.model.entity.PaperTypeListResp;
+import cn.fek12.evaluation.model.entity.PracticeListEntity;
 import cn.fek12.evaluation.model.entity.RecordsEntitiy;
 import cn.fek12.evaluation.model.entity.RelevantVideoListEntity;
 import cn.fek12.evaluation.model.entity.SemesterEntity;
@@ -24,6 +25,7 @@ import cn.fek12.evaluation.model.entity.TextbookEntity;
 import cn.fek12.evaluation.model.entity.TopicCountEntity;
 import cn.fek12.evaluation.model.entity.TreeDataEntity;
 import cn.fek12.evaluation.model.entity.VideoMoreListEntity;
+import cn.fek12.evaluation.model.entity.YearMonthEntity;
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
@@ -301,5 +303,16 @@ public interface ApiServer {
      */
     @GET("/dictionary/subjects")
     Observable<SubjectsEntity> subjects();
+
+    /**
+     * 获取月份
+     */
+    @GET("/practice/months/{userId}")
+    Observable<YearMonthEntity> getYears(@Path("userId") String userId);
+    /**
+     * 获取每日记录
+     */
+    @GET("/practice/list/{userId}/{structId}/{date}")
+    Observable<PracticeListEntity> getPracticeList(@Path("userId") String userId, @Path("structId") String structId, @Path("date") String date);
 }
 
