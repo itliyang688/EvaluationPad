@@ -7,7 +7,9 @@ import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.fek12.basic.base.BaseFragment;
@@ -50,9 +52,13 @@ public class TopicWrongRecordPageFragment extends BaseFragment {
     TextView tvEndDate;
     @BindView(R.id.llEndDate)
     LinearLayout llEndDate;
-    private String startDate = null;
-    private String endDate = null;
-    private String subject = null;
+    @BindView(R.id.ivArrow)
+    ImageView ivArrow;
+    @BindView(R.id.llContainSubject)
+    LinearLayout llContainSubject;
+    private String startDate = "";
+    private String endDate = "";
+    private String subject = "";
     private SubjectPopupWindow subjectPopupWindow;
 
     @Override
@@ -83,9 +89,9 @@ public class TopicWrongRecordPageFragment extends BaseFragment {
         //startActivity(new Intent(getContext(), WebViewActivity.class));
         //MainActivity activity = (MainActivity) getActivity();
 
-        //String webUrl = Configs.RECORD + "userId="+MyApplication.getMyApplication().getUserId() + "&beginDate="+startDate + "&endDate="+endDate + "&subject="+subject;
-        String webUrl = Configs.RECORD + "userId="+MyApplication.getMyApplication().getUserId();
+        //String webUrl = Configs.RECORD + "userId="+MyApplication.getMyApplication().getUserId();
         loadView.showLoading();
+        String webUrl = Configs.RECORD + "userId=" + MyApplication.getMyApplication().getUserId() + "&beginDate=" + startDate + "&endDate=" + endDate + "&subject=" + subject;
         webView.loadUrl(webUrl);
 
         webView.setWebViewClient(new WebViewClient() {
@@ -95,8 +101,9 @@ public class TopicWrongRecordPageFragment extends BaseFragment {
                 view.loadUrl(url);
                 return true;
             }
+
             @Override
-            public void onPageFinished(WebView view,String url){
+            public void onPageFinished(WebView view, String url) {
                 loadView.showContent();
             }
         });
@@ -131,6 +138,10 @@ public class TopicWrongRecordPageFragment extends BaseFragment {
                     public void onDateItme(String date) {
                         startDate = date;
                         tvStartDate.setText(date);
+                        if (!TextUtils.isEmpty(endDate)) {
+                            String webUrl = Configs.RECORD + "userId=" + MyApplication.getMyApplication().getUserId() + "&beginDate=" + startDate + "&endDate=" + endDate + "&subject=" + subject;
+                            webView.loadUrl(webUrl);
+                        }
                     }
                 });
                 startDateDialog.show();
@@ -138,17 +149,25 @@ public class TopicWrongRecordPageFragment extends BaseFragment {
             case R.id.llSubject:
                 subjectPopupWindow = new SubjectPopupWindow(getContext(), new SubjectPopupWindow.OnSelectItmeListener() {
                     @Override
-                    public void onSelectItme(String subjectId,String subjectName) {
+                    public void onSelectItme(String subjectId, String subjectName) {
                         //loadView.showLoading();
                         tvSubject.setText(subjectName);
-                        subject = subjectId;
-
-                        webView.loadUrl("http://192.168.0.46/noc/html/ErrorRework.html");
+                        subject = subjectId.equals("0") ? "" : subjectId;
+                        String webUrl = Configs.RECORD + "userId=" + MyApplication.getMyApplication().getUserId() + "&beginDate=" + startDate + "&endDate=" + endDate + "&subject=" + subject;
+                        webView.loadUrl(webUrl);
+                        //webView.loadUrl("http://192.168.0.46/noc/html/ErrorRework.html");
                         //webView.reload(); //刷新
                     }
                 });
                 AppUtils.fitPopupWindowOverStatusBar(subjectPopupWindow, true);
-                subjectPopupWindow.showAsDropDown(llSubject, -155, 0);
+                ivArrow.setImageResource(R.mipmap.rise_icon);
+                subjectPopupWindow.showAsDropDown(llContainSubject, -155, 0);
+                subjectPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                    @Override
+                    public void onDismiss() {
+                        ivArrow.setImageResource(R.mipmap.lower_icon);
+                    }
+                });
 
                 break;
             case R.id.llEndDate:
@@ -161,6 +180,8 @@ public class TopicWrongRecordPageFragment extends BaseFragment {
                     public void onDateItme(String date) {
                         endDate = date;
                         tvEndDate.setText(date);
+                        String webUrl = Configs.RECORD + "userId=" + MyApplication.getMyApplication().getUserId() + "&beginDate=" + startDate + "&endDate=" + endDate + "&subject=" + subject;
+                        webView.loadUrl(webUrl);
                     }
                 });
                 endDateDialog.show();

@@ -71,12 +71,21 @@ public class VideoMoreListEntity implements Serializable {
         private String videoName;
         private int playNum;
         private String videoCreateTime;
+        private String imgUrl;
         private int isCollection;
         private long playScheduleTime;
         private String specialName;
         private String introduction;
         private String textbookName;
         private String subjectName;
+
+        public String getImgUrl() {
+            return imgUrl;
+        }
+
+        public void setImgUrl(String imgUrl) {
+            this.imgUrl = imgUrl;
+        }
 
         public long getPlayScheduleTime() {
             return playScheduleTime;

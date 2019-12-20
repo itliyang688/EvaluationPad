@@ -10,10 +10,13 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.fek12.evaluation.R;
+import cn.fek12.evaluation.application.MyApplication;
 import cn.fek12.evaluation.model.entity.VideoMoreListEntity;
 
 
@@ -97,6 +100,8 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.EvaluationHo
             tvSubject.setText(mList.get(position).getTextbookName()+" "+mList.get(position).getSubjectName());
             tvTime.setText(mList.get(position).getVideoCreateTime());
             tvPlayNumber.setText(String.valueOf(mList.get(position).getPlayNum()));
+            String imgUrl = mList.get(position).getImgUrl();
+            Glide.with(MyApplication.getApp()).load(imgUrl).placeholder(R.mipmap.empty_bg).error(R.mipmap.empty_bg).into(ivCover);
         }
     }
 }

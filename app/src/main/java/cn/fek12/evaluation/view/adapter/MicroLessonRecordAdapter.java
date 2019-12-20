@@ -3,6 +3,7 @@ package cn.fek12.evaluation.view.adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,7 +56,7 @@ public class MicroLessonRecordAdapter extends SectioningAdapter {
     public void notifyChanged(CollectionListEntity.DataBean dataBean) {
         count = 3;
         mDataBean = dataBean;
-        notifyDataSetChanged();
+        notifyAllSectionsDataSetChanged();
     }
 
     @Override
@@ -123,7 +124,11 @@ public class MicroLessonRecordAdapter extends SectioningAdapter {
             }
             ivh.tvSemester.setText(videoList.get(itemIndex).getTextbookName());
             ivh.tvSubject.setText(videoList.get(itemIndex).getSubjectName());
-            ivh.tvPlayCount.setText("已观看"+videoList.get(itemIndex).getSchedule()+"%");
+            String percentage = videoList.get(itemIndex).getSchedule();
+            if(TextUtils.isEmpty(percentage)){
+                percentage = "0";
+            }
+            ivh.tvPlayCount.setText("已观看"+percentage+"%");
             Glide.with(MyApplication.getApp()).load(videoList.get(itemIndex).getImgUrl()).placeholder(R.mipmap.empty_bg).error(R.mipmap.empty_bg).into(ivh.ivCover);
         }
         if(mPageType == STUDY){

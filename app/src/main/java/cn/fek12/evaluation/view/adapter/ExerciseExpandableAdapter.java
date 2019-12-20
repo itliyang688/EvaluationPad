@@ -102,7 +102,10 @@ public class ExerciseExpandableAdapter extends ExpandableRecyclerView.Adapter<Ex
             holder.tbAnalysis.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    String url = Configs.SMALL + "userId=" + MyApplication.getMyApplication().getUserId() + "&subjectCategoryId=" + list.get(position).getSubjectCategoryId() + "&practiceId=" + list.get(position).getPracticeId();
+                    Intent intent = new Intent(mContext, CommonWebViewActivity.class);
+                    intent.putExtra("webUrl",url);
+                    mContext.startActivity(intent);
                 }
             });
             /**继续练习*/

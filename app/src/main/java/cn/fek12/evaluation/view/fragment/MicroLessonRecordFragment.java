@@ -1,7 +1,9 @@
 package cn.fek12.evaluation.view.fragment;
 
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -42,6 +44,8 @@ public class MicroLessonRecordFragment extends BaseFragment<MicroLessonRecordPre
     LinearLayout llSubject;
     @BindView(R.id.tvSubject)
     TextView tvSubject;
+    @BindView(R.id.ivArrow)
+    ImageView ivArrow;
     private MicroLessonRecordAdapter adapter;
     private int mPageType;//1微课学习2我的收藏
     private boolean isVisibleToUser;
@@ -68,9 +72,9 @@ public class MicroLessonRecordFragment extends BaseFragment<MicroLessonRecordPre
         super.setUserVisibleHint(isVisibleToUser);
         this.isVisibleToUser = isVisibleToUser;
         if (isVisibleToUser && adapter == null) {
+            recyclerView.setLayoutManager(new StickyHeaderLayoutManager());
             adapter = new MicroLessonRecordAdapter(mPageType, getContext());
             adapter.setOnItemClickListener(this);
-            recyclerView.setLayoutManager(new StickyHeaderLayoutManager());
             recyclerView.setAdapter(adapter);
         }
 
@@ -175,11 +179,18 @@ public class MicroLessonRecordFragment extends BaseFragment<MicroLessonRecordPre
             @Override
             public void onSelectItme(String subjectId, String subjectName) {
                 tvSubject.setText(subjectName);
-                subject = subjectId;
+                subject = subjectId.equals("0") ? null : subjectId;
                 collectionList();
             }
         });
         AppUtils.fitPopupWindowOverStatusBar(subjectPopupWindow, true);
-        subjectPopupWindow.showAsDropDown(llSubject, -200, 0);
+        ivArrow.setImageResource(R.mipmap.rise_icon);
+        subjectPopupWindow.showAsDropDown(llSubject, -166, 0);
+        subjectPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                ivArrow.setImageResource(R.mipmap.lower_icon);
+            }
+        });
     }
 }

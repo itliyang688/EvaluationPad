@@ -2,11 +2,11 @@ package cn.fek12.evaluation.view.fragment;
 
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,18 +18,15 @@ import com.lcodecore.tkrefreshlayout.Footer.BottomProgressView;
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.application.MyApplication;
 import cn.fek12.evaluation.impl.ICurriculemRecord;
-import cn.fek12.evaluation.model.entity.ChildSectionEntity;
 import cn.fek12.evaluation.model.entity.CurriculumEntity;
 import cn.fek12.evaluation.presenter.CurriculumRecordPresenter;
 import cn.fek12.evaluation.utils.AppUtils;
-import cn.fek12.evaluation.utils.DialogUtils;
 import cn.fek12.evaluation.view.PopupWindow.SubjectPopupWindow;
 import cn.fek12.evaluation.view.adapter.CurriculumRecordAdapter;
 import cn.fek12.evaluation.view.dialog.SelectDateDialog;
@@ -63,6 +60,10 @@ public class CurriculumRecordFragment extends BaseFragment<CurriculumRecordPrese
     TwinklingRefreshLayout refreshLayout;
     @BindView(R.id.rootView)
     RelativeLayout rootView;
+    @BindView(R.id.ivArrow)
+    ImageView ivArrow;
+    @BindView(R.id.llContainSubject)
+    LinearLayout llContainSubject;
     private CurriculumRecordAdapter adapter;
     private SubjectPopupWindow subjectPopupWindow;
     private int mPageType;
@@ -155,6 +156,12 @@ public class CurriculumRecordFragment extends BaseFragment<CurriculumRecordPrese
                     public void onDateItme(String date) {
                         startDate = date;
                         tvStartDate.setText(date);
+                        if (!TextUtils.isEmpty(endDate)) {
+                            loadView.showLoading();
+                            isLoadMore = false;
+                            currentPage = 1;
+                            mPresenter.courseRecord(getContext(), startDate, endDate, subject, MyApplication.getMyApplication().getUserId(), String.valueOf(currentPage));
+                        }
                     }
                 });
                 startDateDialog.show();
@@ -182,7 +189,7 @@ public class CurriculumRecordFragment extends BaseFragment<CurriculumRecordPrese
             case R.id.llSubject:
                 subjectPopupWindow = new SubjectPopupWindow(getContext(), new SubjectPopupWindow.OnSelectItmeListener() {
                     @Override
-                    public void onSelectItme(String subjectId,String subjectName) {
+                    public void onSelectItme(String subjectId, String subjectName) {
                         loadView.showLoading();
                         isLoadMore = false;
                         currentPage = 1;
@@ -192,8 +199,14 @@ public class CurriculumRecordFragment extends BaseFragment<CurriculumRecordPrese
                     }
                 });
                 AppUtils.fitPopupWindowOverStatusBar(subjectPopupWindow, true);
-                subjectPopupWindow.showAsDropDown(llSubject, -155, 0);
-
+                ivArrow.setImageResource(R.mipmap.rise_icon);
+                subjectPopupWindow.showAsDropDown(llContainSubject, -155, 0);
+                subjectPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                    @Override
+                    public void onDismiss() {
+                        ivArrow.setImageResource(R.mipmap.lower_icon);
+                    }
+                });
                 break;
         }
     }

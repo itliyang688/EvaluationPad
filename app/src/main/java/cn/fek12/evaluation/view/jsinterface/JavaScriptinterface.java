@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.webkit.JavascriptInterface;
 
+import cn.fek12.evaluation.application.MyApplication;
 import cn.fek12.evaluation.model.config.Configs;
 import cn.fek12.evaluation.model.sharedPreferences.PrefUtilsData;
 import cn.fek12.evaluation.view.activity.CommonWebViewBackActivity;
@@ -34,10 +35,29 @@ public class JavaScriptinterface {
     }
 
     /**
-     * 与js交互时用到的方法，在js里直接调用的
+     * JS调用返回解析数据
      */
     @JavascriptInterface
     public String returnData() {
         return PrefUtilsData.getAnalysisCache();
+    }
+
+    /**
+     * 错题重做
+     */
+    @JavascriptInterface
+    public void errorRework() {
+        String url = Configs.ERRORREWORK;
+        Intent intent = new Intent(mContext, CommonWebViewBackActivity.class);
+        intent.putExtra("webUrl",url);
+        mContext.startActivity(intent);
+    }
+
+    /**
+     * JS调用获取用户ID
+     */
+    @JavascriptInterface
+    public String getUserId() {
+        return MyApplication.getMyApplication().getUserId();
     }
 }

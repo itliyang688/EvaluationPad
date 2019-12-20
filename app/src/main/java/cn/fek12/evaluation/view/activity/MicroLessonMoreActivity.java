@@ -381,6 +381,7 @@ public class MicroLessonMoreActivity extends BaseActivity<MicroLessonMorePresent
         intent.putExtra("describe",mList.get(pos).getIntroduction());
         intent.putExtra("isCollection",mList.get(pos).getIsCollection());
         intent.putExtra("playScheduleTime",mList.get(pos).getPlayScheduleTime());
+        intent.putExtra("imgUrl",mList.get(pos).getImgUrl());
         startActivity(intent);
     }
 }

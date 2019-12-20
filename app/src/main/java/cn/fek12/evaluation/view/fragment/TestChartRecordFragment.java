@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -18,6 +20,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.application.MyApplication;
+import cn.fek12.evaluation.impl.ITestCharRecord;
 import cn.fek12.evaluation.model.config.Configs;
 import cn.fek12.evaluation.model.entity.RecordInfoEntity;
 import cn.fek12.evaluation.model.entity.TestRecordEntity;
@@ -63,6 +66,12 @@ public class TestChartRecordFragment extends BaseFragment<TestCharRecordPresente
     TextView tvSubject;
     @BindView(R.id.llTestRecord)
     LinearLayout llTestRecord;
+    @BindView(R.id.ivArrow)
+    ImageView ivArrow;
+    @BindView(R.id.llContainSubject)
+    LinearLayout llContainSubject;
+    @BindView(R.id.tvEmptyList)
+    TextView tvEmptyList;
     private SubjectPopupWindow subjectPopupWindow;
     private String mSubjectId = "0";
 
@@ -104,7 +113,7 @@ public class TestChartRecordFragment extends BaseFragment<TestCharRecordPresente
         switch (view.getId()) {
             case R.id.llRecord:
                 Intent intent = new Intent(getContext(), ExerciseNotesActivity.class);
-                intent.putExtra("structId",mSubjectId);
+                intent.putExtra("structId", mSubjectId);
                 startActivity(intent);
                 break;
             case R.id.llRanking:
@@ -120,65 +129,73 @@ public class TestChartRecordFragment extends BaseFragment<TestCharRecordPresente
                     }
                 });
                 AppUtils.fitPopupWindowOverStatusBar(subjectPopupWindow, true);
-                subjectPopupWindow.showAsDropDown(llSubject, -155, 0);
+                ivArrow.setImageResource(R.mipmap.rise_icon);
+                subjectPopupWindow.showAsDropDown(llContainSubject, -155, 0);
+                subjectPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                    @Override
+                    public void onDismiss() {
+                        ivArrow.setImageResource(R.mipmap.lower_icon);
+                    }
+                });
                 break;
         }
     }
 
     @Override
     public void loadSuc(TestRecordEntity entity) {
-            TestRecordEntity.DataBean.CorrectRateVoBean correctRateVoBean = entity.getData().getCorrectRateVo();
-            if (entity.getData() != null && correctRateVoBean != null && !TextUtils.isEmpty(String.valueOf(correctRateVoBean.getRate()))
-                    && !TextUtils.isEmpty(String.valueOf(correctRateVoBean.getTotalCount())) && correctRateVoBean.getTotalCount() > 0) {
-                tvEmpty.setVisibility(View.INVISIBLE);
-                pieChartView.chartDataSet(correctRateVoBean.getRate());
-                pieChartView.invalidate();
-                tvCorrectCount.setText("答对题数：" + correctRateVoBean.getRightTotalCount() + " 道题");
-                tvTotal.setText("总答题数：" + correctRateVoBean.getTotalCount() + " 道题");
-                tvTimeDuration.setText("总练习时长：" + correctRateVoBean.getTotalTime());
-            } else {
-                tvEmpty.setVisibility(View.VISIBLE);
-                tvCorrectCount.setText("答对题数：0 道题");
-                tvTotal.setText("总答题数：0 道题");
-                tvTimeDuration.setText("总练习时长：0 分");
-            }
+        TestRecordEntity.DataBean.CorrectRateVoBean correctRateVoBean = entity.getData().getCorrectRateVo();
+        if (entity.getData() != null && correctRateVoBean != null && !TextUtils.isEmpty(String.valueOf(correctRateVoBean.getRate()))
+                && !TextUtils.isEmpty(String.valueOf(correctRateVoBean.getTotalCount())) && correctRateVoBean.getTotalCount() > 0) {
+            tvEmpty.setVisibility(View.INVISIBLE);
+            pieChartView.chartDataSet(correctRateVoBean.getRate());
+            pieChartView.invalidate();
+            tvCorrectCount.setText("答对题数：" + correctRateVoBean.getRightTotalCount() + " 道题");
+            tvTotal.setText("总答题数：" + correctRateVoBean.getTotalCount() + " 道题");
+            tvTimeDuration.setText("总练习时长：" + correctRateVoBean.getTotalTime() + "分钟");
+        } else {
+            tvEmpty.setVisibility(View.VISIBLE);
+            tvCorrectCount.setText("答对题数：0 道题");
+            tvTotal.setText("总答题数：0 道题");
+            tvTimeDuration.setText("总练习时长：0 分");
+        }
 
-            /**近四周答题数*/
-            List<Double> dataSeriesA = new LinkedList<Double>();
-            List<String> chartLabels = new LinkedList<String>();
-            String answerStr = entity.getData().getAnswers();
-            String answers[] = answerStr.split(";");
-            for (String answer : answers) {
-                String data[] = answer.split(":");
-                chartLabels.add(data[0]);
-                dataSeriesA.add(Double.parseDouble(data[1]));
-            }
-            chartLabels.set(0, "本周");
-            barChartView.chartDataSet(dataSeriesA, chartLabels);
-            barChartView.invalidate();
+        /**近四周答题数*/
+        List<Double> dataSeriesA = new LinkedList<Double>();
+        List<String> chartLabels = new LinkedList<String>();
+        String answerStr = entity.getData().getAnswers();
+        String answers[] = answerStr.split(";");
+        for (String answer : answers) {
+            String data[] = answer.split(":");
+            chartLabels.add(data[0]);
+            dataSeriesA.add(Double.parseDouble(data[1]));
+        }
+        chartLabels.set(0, "本周");
+        barChartView.chartDataSet(dataSeriesA, chartLabels);
+        barChartView.invalidate();
 
-            /**近四周正确率*/
-            List<Double> dataSeries3 = new LinkedList<Double>();
-            LinkedList<String> mLabels = new LinkedList<String>();
-            String scopeCorrectStr = entity.getData().getScopeCorrectRate();
-            String scopeCorrects[] = scopeCorrectStr.split(";");
-            for (String scopeCorrect : scopeCorrects) {
-                String data[] = scopeCorrect.split(":");
-                mLabels.add(data[0]);
-                dataSeries3.add(Double.parseDouble(data[1]));
-            }
-            mLabels.set(0, "本周");
-            areaChartView.chartDataSet(dataSeries3, mLabels);
-            areaChartView.invalidate();
+        /**近四周正确率*/
+        List<Double> dataSeries3 = new LinkedList<Double>();
+        LinkedList<String> mLabels = new LinkedList<String>();
+        String scopeCorrectStr = entity.getData().getScopeCorrectRate();
+        String scopeCorrects[] = scopeCorrectStr.split(";");
+        for (String scopeCorrect : scopeCorrects) {
+            String data[] = scopeCorrect.split(":");
+            mLabels.add(data[0]);
+            dataSeries3.add(Double.parseDouble(data[1]));
+        }
+        mLabels.set(0, "本周");
+        areaChartView.chartDataSet(dataSeries3, mLabels);
+        areaChartView.invalidate();
 
-            /**li练习记录*/
-        if(entity.getData().getMore() != null && entity.getData().getMore().size() > 0){
+        /**li练习记录*/
+        if (entity.getData().getMore() != null && entity.getData().getMore().size() > 0) {
+            tvEmptyList.setVisibility(View.GONE);
             llTestRecord.removeAllViews();
 
             String timeTag = "";
-            for(int i = 0; i < entity.getData().getMore().size(); i ++){
+            for (int i = 0; i < entity.getData().getMore().size(); i++) {
                 RecordInfoEntity bean = entity.getData().getMore().get(i);
-                if(!bean.getModifyData().equals(timeTag)){
+                if (!bean.getModifyData().equals(timeTag)) {
                     timeTag = bean.getModifyData();
                     View viewGroup = LayoutInflater.from(mContext).inflate(R.layout.record_group_item, null);
                     TextView tvGroupName = viewGroup.findViewById(R.id.tvGroupName);
@@ -194,17 +211,17 @@ public class TestChartRecordFragment extends BaseFragment<TestCharRecordPresente
                 RelativeLayout tbAnalysis = viewItem.findViewById(R.id.tbAnalysis);
                 RelativeLayout tbPractice = viewItem.findViewById(R.id.tbPractice);
 
-                tvSubject.setText(bean.getSubject()+"  "+bean.getGrade()+"  "+bean.getTextBook());
+                tvSubject.setText(bean.getSubject() + "  " + bean.getGrade() + "  " + bean.getTextBook());
                 tvChapter.setText(bean.getKnowledgePoint());
-                tvTime.setText("用时："+bean.getKnowledgePoint()+"分钟");
-                tvCorrectCount.setText("答对数："+bean.getRightAmount()+"/"+bean.getCount());
+                tvTime.setText("用时：" + bean.getKnowledgePoint() + "分钟");
+                tvCorrectCount.setText("答对数：" + bean.getRightAmount() + "/" + bean.getCount());
                 /**查看解析*/
                 tbAnalysis.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         String url = Configs.SMALL + "userId=" + MyApplication.getMyApplication().getUserId() + "&subjectCategoryId=" + bean.getSubjectCategoryId() + "&practiceId=" + bean.getPracticeId();
                         Intent intent = new Intent(getContext(), CommonWebViewActivity.class);
-                        intent.putExtra("webUrl",url);
+                        intent.putExtra("webUrl", url);
                         startActivity(intent);
                     }
                 });
@@ -214,12 +231,14 @@ public class TestChartRecordFragment extends BaseFragment<TestCharRecordPresente
                     public void onClick(View view) {
                         String url = Configs.SMALLWORK + "userId=" + MyApplication.getMyApplication().getUserId() + "&subjectCategoryId=" + bean.getSubjectCategoryId();
                         Intent intent = new Intent(getContext(), CommonWebViewActivity.class);
-                        intent.putExtra("webUrl",url);
+                        intent.putExtra("webUrl", url);
                         startActivity(intent);
                     }
                 });
                 llTestRecord.addView(viewItem);
             }
+        }else{
+            tvEmptyList.setVisibility(View.VISIBLE);
         }
     }
 

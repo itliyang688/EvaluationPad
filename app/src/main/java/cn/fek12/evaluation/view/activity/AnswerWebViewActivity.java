@@ -16,6 +16,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.application.MyApplication;
+import cn.fek12.evaluation.model.config.Configs;
 import cn.fek12.evaluation.view.widget.NoRollWebView;
 
 /**
@@ -63,10 +64,10 @@ public class AnswerWebViewActivity extends BaseActivity {
         String url;
         if (isanswered == 0) {
             //url = "http://192.168.0.46/noc/html/index.html?userId=" + MyApplication.getMyApplication().getUserId() + "&paperId=" + paperId;
-            url = "http://218.245.6.132:11111/html/index.html?userId=" + MyApplication.getMyApplication().getUserId() + "&paperId=" + paperId;
+            url = Configs.INDEX + "userId=" + MyApplication.getMyApplication().getUserId() + "&paperId=" + paperId;
         } else {
             //url = "http://192.168.0.46/noc/html/analyze.html?userId=" + MyApplication.getMyApplication().getUserId() + "&paperId=" + paperId + "&paperResult=" + paperResult;
-            url = "http://218.245.6.132:11111/html/analyze.html?userId=" + MyApplication.getMyApplication().getUserId() + "&paperId=" + paperId + "&paperResult=" + paperResult;
+            url = Configs.ANALYZE + "userId=" + MyApplication.getMyApplication().getUserId() + "&paperId=" + paperId + "&paperResult=" + paperResult;
         }
         showLoading();
         webView.loadUrl(url);
