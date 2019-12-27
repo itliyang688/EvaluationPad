@@ -5,12 +5,9 @@ import android.os.Bundle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.fek12.basic.base.BaseFragment;
-import com.fek12.basic.base.BasePresenter;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import ayalma.ir.expandablerecyclerview.ExpandableRecyclerView;
 import butterknife.BindView;
@@ -20,7 +17,6 @@ import cn.fek12.evaluation.model.entity.ExrGroupListEntity;
 import cn.fek12.evaluation.model.entity.PracticeListEntity;
 import cn.fek12.evaluation.presenter.ExercisePagePresenter;
 import cn.fek12.evaluation.view.adapter.ExerciseExpandableAdapter;
-import cn.fek12.evaluation.view.widget.MultipleStatusView;
 
 /**
  * @ProjectName: EvaluationPad

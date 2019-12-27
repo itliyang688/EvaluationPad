@@ -89,7 +89,7 @@ public class EvaluationFragment extends BaseFragment<EvaluationPresenter> implem
         LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext()){
             @Override
             public boolean canScrollVertically() {
-                return false;
+                return true;//是否可以滑动
             }
         };
         adapter = new SectionedRecyclerViewAdapter();

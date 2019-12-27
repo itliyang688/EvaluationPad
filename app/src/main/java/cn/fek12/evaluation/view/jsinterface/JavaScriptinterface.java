@@ -2,11 +2,16 @@ package cn.fek12.evaluation.view.jsinterface;
 
 import android.content.Context;
 import android.content.Intent;
+import android.view.View;
 import android.webkit.JavascriptInterface;
+
+import com.fek12.basic.application.BaseApplication;
 
 import cn.fek12.evaluation.application.MyApplication;
 import cn.fek12.evaluation.model.config.Configs;
 import cn.fek12.evaluation.model.sharedPreferences.PrefUtilsData;
+import cn.fek12.evaluation.utils.DialogUtils;
+import cn.fek12.evaluation.view.activity.AnswerWebViewActivity;
 import cn.fek12.evaluation.view.activity.CommonWebViewBackActivity;
 
 /**
@@ -59,5 +64,14 @@ public class JavaScriptinterface {
     @JavascriptInterface
     public String getUserId() {
         return MyApplication.getMyApplication().getUserId();
+    }
+
+    /**
+     * 提醒弹出框
+     */
+    @JavascriptInterface
+    public void dialogRemind() {
+        /**弹出提醒框*/
+        DialogUtils.showAnswerRemind2(mContext).show();
     }
 }

@@ -102,13 +102,13 @@
         android:background="@drawable/common_bg_list_half_of_screen"
         android:paddingLeft="@dimen/dp_10"
         android:paddingRight="@dimen/dp_10"
-        android:paddingBottom="@dimen/dp_40"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent">
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/contentView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"/>
+            android:layout_marginTop="@dimen/dp_23"
+            android:layout_marginBottom="@dimen/dp_40"/>
     </cn.fek12.evaluation.view.widget.MultipleStatusView>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -37,7 +37,7 @@ import cn.fek12.evaluation.view.widget.NoRollWebView;
  */
 public class TopicWrongRecordPageFragment extends BaseFragment {
     @BindView(R.id.webView)
-    NoRollWebView webView;
+    WebView webView;
     @BindView(R.id.loadView)
     MultipleStatusView loadView;
     @BindView(R.id.tvStartDate)
@@ -136,12 +136,16 @@ public class TopicWrongRecordPageFragment extends BaseFragment {
                 SelectDateDialog startDateDialog = new SelectDateDialog(getContext(), "选择起始日期", new SelectDateDialog.OnSelectItemDateListener() {
                     @Override
                     public void onDateItme(String date) {
-                        startDate = date;
-                        tvStartDate.setText(date);
                         if (!TextUtils.isEmpty(endDate)) {
+                            if(AppUtils.dateToTime(endDate) < AppUtils.dateToTime(date)){
+                                ToastUtils.popUpToast("不能大于结束时间");
+                                return;
+                            }
                             String webUrl = Configs.RECORD + "userId=" + MyApplication.getMyApplication().getUserId() + "&beginDate=" + startDate + "&endDate=" + endDate + "&subject=" + subject;
                             webView.loadUrl(webUrl);
                         }
+                        startDate = date;
+                        tvStartDate.setText(date);
                     }
                 });
                 startDateDialog.show();
@@ -178,6 +182,10 @@ public class TopicWrongRecordPageFragment extends BaseFragment {
                 SelectDateDialog endDateDialog = new SelectDateDialog(getContext(), "选择结束日期", new SelectDateDialog.OnSelectItemDateListener() {
                     @Override
                     public void onDateItme(String date) {
+                        if(AppUtils.dateToTime(date) < AppUtils.dateToTime(startDate)){
+                            ToastUtils.popUpToast("不能小于开始时间");
+                            return;
+                        }
                         endDate = date;
                         tvEndDate.setText(date);
                         String webUrl = Configs.RECORD + "userId=" + MyApplication.getMyApplication().getUserId() + "&beginDate=" + startDate + "&endDate=" + endDate + "&subject=" + subject;

@@ -34,7 +34,7 @@ import cn.jzvd.Jzvd;
  * @Description:
  * @CreateDate: 2019/11/13 17:32
  */
-public class VideoPlayListActivity extends BaseActivity<VideoPlayListPresenter> implements IVideoPlayList.View, RelevantVideoAdapter.OnItemClickListener {
+public class VideoPlayListActivity extends BaseActivity<VideoPlayListPresenter> implements IVideoPlayList.View, RelevantVideoAdapter.OnItemClickListener, MyJzvdStd.OnStateAutoComplete {
     @BindView(R.id.jzVideo)
     MyJzvdStd jzVideo;
     @BindView(R.id.recycler)
@@ -48,6 +48,7 @@ public class VideoPlayListActivity extends BaseActivity<VideoPlayListPresenter> 
     private RelevantVideoListEntity.DataBean.VideoBean videoBean;
     private int isCollection;
     private List<RelevantVideoListEntity.DataBean.VideoBean> mList;
+    private String isEnd = "0";
 
     @Override
     public int setLayoutResource() {
@@ -88,6 +89,7 @@ public class VideoPlayListActivity extends BaseActivity<VideoPlayListPresenter> 
                 isCollection = videoBean.getIsCollection();
                 jzVideo.ivExtend.setImageResource(isCollection == 0 ? R.mipmap.collection_video_normal : R.mipmap.collection_video_check);
                 jzVideo.ivExtend.setOnClickListener(onClickListener);
+                jzVideo.setOnStateAutoComplete(VideoPlayListActivity.this);
                 //jzVideo.thumbImageView.setImageResource(R.mipmap.empty_bg);
                 /*String finalPath = path;
                 new Handler().post(new Runnable() {
@@ -138,7 +140,7 @@ public class VideoPlayListActivity extends BaseActivity<VideoPlayListPresenter> 
     @Override
     protected void onPause() {
         long currentPos = jzVideo.getCurrentPositionWhenPlaying();
-        if (currentPos > 0) {
+        if(currentPos > 0 || isEnd.equals("1")){
             mPresenter.schedule(VideoPlayListActivity.this, String.valueOf(currentPos), String.valueOf(videoBean.getVideoId()), MyApplication.getMyApplication().getUserId());
         }
         super.onPause();
@@ -211,5 +213,15 @@ public class VideoPlayListActivity extends BaseActivity<VideoPlayListPresenter> 
         Intent intent = new Intent(VideoPlayListActivity.this, CommonWebViewActivity.class);
         intent.putExtra("webUrl",url);
         startActivity(intent);
+    }
+
+    @Override
+    public void stateAutoComplete() {
+        isEnd = "1";
+    }
+
+    @Override
+    public void statePlaying() {
+        isEnd = "0";
     }
 }

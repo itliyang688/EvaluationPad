@@ -52,6 +52,26 @@ public class DialogUtils {
         return dialog;
     }
 
+    /***
+     *答题提醒对话框
+     */
+    public static Dialog showAnswerRemind2(Context mContext) {
+        final Dialog dialog = new Dialog(mContext, R.style.dialog_anim);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.answer_remind_dialog2, null);
+        dialog.setContentView(view);
+        view.findViewById(R.id.tvConfirm).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.setCancelable(true);
+        dialog.show();
+        return dialog;
+    }
+
+
     public interface OnSelectSubjectItmeListener {
         void onSelectItme(int pos);
     }

@@ -158,7 +158,7 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/llStartDate">
 
-        <cn.fek12.evaluation.view.widget.NoRollWebView
+        <WebView
             android:id="@+id/webView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

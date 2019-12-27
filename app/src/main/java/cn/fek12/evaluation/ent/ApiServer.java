@@ -119,7 +119,8 @@ public interface ApiServer {
                                               @Field("playScheduleTime") String playScheduleTime,
                                               @Field("type") String type,
                                               @Field("videoId") String videoId,
-                                              @Field("userId") String userId);
+                                              @Field("userId") String userId,
+                                              @Field("isEnd") String isEnd);
     /**
      * 播放记录
      */

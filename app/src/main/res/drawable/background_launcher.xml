@@ -4,7 +4,7 @@
 
     <item android:drawable="@android:color/white" />
 
-    <item android:top="120dp">
+    <item >
         <bitmap
             android:layout_width="match_parent"
             android:layout_height="match_parent"

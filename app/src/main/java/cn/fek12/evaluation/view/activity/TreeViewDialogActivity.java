@@ -57,6 +57,7 @@ public class TreeViewDialogActivity extends BaseActivity<TreeViewPresenter> impl
 
     @Override
     protected void onInitView() {
+        overridePendingTransition(0, 0);
         Intent intent = getIntent();
         titleName = intent.getStringExtra("titleName");
         paperType = intent.getStringExtra("paperType");
@@ -194,5 +195,12 @@ public class TreeViewDialogActivity extends BaseActivity<TreeViewPresenter> impl
     @Override
     protected TreeViewPresenter onInitLogicImpl() {
         return new TreeViewPresenter(this, this);
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        //overridePendingTransition(R.anim.exit_out_down, R.anim.exit_out_up);
+        overridePendingTransition(0, 0);
     }
 }

@@ -154,14 +154,18 @@ public class CurriculumRecordFragment extends BaseFragment<CurriculumRecordPrese
                 SelectDateDialog startDateDialog = new SelectDateDialog(getContext(), "选择起始日期", new SelectDateDialog.OnSelectItemDateListener() {
                     @Override
                     public void onDateItme(String date) {
-                        startDate = date;
-                        tvStartDate.setText(date);
                         if (!TextUtils.isEmpty(endDate)) {
+                            if(AppUtils.dateToTime(endDate) < AppUtils.dateToTime(date)){
+                                ToastUtils.popUpToast("不能大于结束时间");
+                                return;
+                            }
                             loadView.showLoading();
                             isLoadMore = false;
                             currentPage = 1;
                             mPresenter.courseRecord(getContext(), startDate, endDate, subject, MyApplication.getMyApplication().getUserId(), String.valueOf(currentPage));
                         }
+                        startDate = date;
+                        tvStartDate.setText(date);
                     }
                 });
                 startDateDialog.show();
@@ -175,6 +179,10 @@ public class CurriculumRecordFragment extends BaseFragment<CurriculumRecordPrese
                 SelectDateDialog endDateDialog = new SelectDateDialog(getContext(), "选择结束日期", new SelectDateDialog.OnSelectItemDateListener() {
                     @Override
                     public void onDateItme(String date) {
+                        if(AppUtils.dateToTime(date) < AppUtils.dateToTime(startDate)){
+                            ToastUtils.popUpToast("不能小于开始时间");
+                            return;
+                        }
                         endDate = date;
                         tvEndDate.setText(date);
 

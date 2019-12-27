@@ -115,6 +115,9 @@ public class MyJzvdStd extends JzvdStd {
     @Override
     public void onStatePlaying() {
         super.onStatePlaying();
+        if(mOnStateAutoComplete != null){
+            mOnStateAutoComplete.statePlaying();
+        }
     }
 
     @Override
@@ -130,7 +133,18 @@ public class MyJzvdStd extends JzvdStd {
     @Override
     public void onStateAutoComplete() {
         super.onStateAutoComplete();
-        Log.i(TAG, "Auto complete");
+        if(mOnStateAutoComplete != null){
+            mOnStateAutoComplete.stateAutoComplete();
+        }
+    }
+
+    private OnStateAutoComplete mOnStateAutoComplete;
+    public interface OnStateAutoComplete {
+        void stateAutoComplete();
+        void statePlaying();
+    }
+    public void setOnStateAutoComplete(OnStateAutoComplete onStateAutoComplete){
+        mOnStateAutoComplete = onStateAutoComplete;
     }
 
     //changeUiTo 真能能修改ui的方法

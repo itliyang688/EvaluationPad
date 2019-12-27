@@ -1,6 +1,7 @@
 package cn.fek12.evaluation.presenter;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -25,9 +26,9 @@ public class SpeciaVideoPlayPresenter extends BasePresenter<ISpeciaVideoPlay.Vie
         this.infoView = view;
     }
     @Override
-    public void schedule(Context context, String cacheKey,String structLayKey, String playScheduleTime, String type, String videoId, String userId,int typePage) {
+    public void schedule(Context context, String cacheKey,String structLayKey, String playScheduleTime, String type, String videoId, String userId,int typePage,String isEnd) {
         if(typePage == 0){
-            ApiRetrofit.getInstance().getApiService().schedule(cacheKey,structLayKey,playScheduleTime,type,videoId,userId)
+            ApiRetrofit.getInstance().getApiService().schedule(cacheKey,structLayKey,playScheduleTime,type,videoId,userId,isEnd)
                     .compose(RxHelper.observableIO2Main(context))
                     .subscribe(new BaseObserver<CommonEntity>() {
 
@@ -40,6 +41,7 @@ public class SpeciaVideoPlayPresenter extends BasePresenter<ISpeciaVideoPlay.Vie
 
                         @Override
                         public void onError(String msg) {
+                            Log.e("",msg);
                         }
                     });
         }else{

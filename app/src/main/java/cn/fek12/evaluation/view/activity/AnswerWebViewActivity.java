@@ -17,6 +17,7 @@ import butterknife.OnClick;
 import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.application.MyApplication;
 import cn.fek12.evaluation.model.config.Configs;
+import cn.fek12.evaluation.view.jsinterface.JavaScriptinterface;
 import cn.fek12.evaluation.view.widget.NoRollWebView;
 
 /**
@@ -61,6 +62,7 @@ public class AnswerWebViewActivity extends BaseActivity {
         webView.setBackgroundColor(0);
         webView.getBackground().setAlpha(0);
         webView.setWebChromeClient(new WebChromeClient());
+        webView.addJavascriptInterface(new JavaScriptinterface(getContext()), "android");
         String url;
         if (isanswered == 0) {
             //url = "http://192.168.0.46/noc/html/index.html?userId=" + MyApplication.getMyApplication().getUserId() + "&paperId=" + paperId;

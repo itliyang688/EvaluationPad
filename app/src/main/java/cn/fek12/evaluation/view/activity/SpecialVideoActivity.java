@@ -24,7 +24,7 @@ import cn.jzvd.Jzvd;
  * @Description:
  * @CreateDate: 2019/11/12 15:23
  */
-public class SpecialVideoActivity extends BaseActivity<SpeciaVideoPlayPresenter> implements ISpeciaVideoPlay.View {
+public class SpecialVideoActivity extends BaseActivity<SpeciaVideoPlayPresenter> implements ISpeciaVideoPlay.View, MyJzvdStd.OnStateAutoComplete {
     @BindView(R.id.jzVideo)
     MyJzvdStd myJzvdStd;
     @BindView(R.id.tvChapter)
@@ -42,6 +42,7 @@ public class SpecialVideoActivity extends BaseActivity<SpeciaVideoPlayPresenter>
     private int videoId;
     private long playScheduleTime;
     private int isCollection;
+    private String isEnd = "0";
 
     @Override
     public int setLayoutResource() {
@@ -78,6 +79,7 @@ public class SpecialVideoActivity extends BaseActivity<SpeciaVideoPlayPresenter>
         //myJzvdStd.thumbImageView.setScaleType(ImageView.ScaleType.FIT_XY);
         myJzvdStd.ivExtend.setOnClickListener(onClickListener);
         myJzvdStd.startVideo();
+        myJzvdStd.setOnStateAutoComplete(this);
     }
 
     private String tag;
@@ -118,9 +120,9 @@ public class SpecialVideoActivity extends BaseActivity<SpeciaVideoPlayPresenter>
     @Override
     protected void onPause() {
         long currentPos = myJzvdStd.getCurrentPositionWhenPlaying();
-        if(currentPos > 0){
+        if(currentPos > 0 || isEnd.equals("1")){
             mPresenter.schedule(SpecialVideoActivity.this,cacheKey,structLayKey,String.valueOf(currentPos),
-                    String.valueOf(videoType),String.valueOf(videoId), MyApplication.getMyApplication().getUserId(),0);
+                    String.valueOf(videoType),String.valueOf(videoId), MyApplication.getMyApplication().getUserId(),0,isEnd);
         }
         super.onPause();
     }
@@ -144,4 +146,13 @@ public class SpecialVideoActivity extends BaseActivity<SpeciaVideoPlayPresenter>
         return new SpeciaVideoPlayPresenter(this);
     }
 
+    @Override
+    public void stateAutoComplete() {
+        isEnd = "1";
+    }
+
+    @Override
+    public void statePlaying() {
+        isEnd = "0";
+    }
 }
