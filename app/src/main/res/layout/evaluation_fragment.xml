@@ -85,7 +85,7 @@
         android:shadowDx="0"
         android:shadowDy="4"
         android:shadowRadius="3.0"
-        android:text="已测评次数  6  次\n最近测试时间2019-09-23"
+        android:text="已测评次数  0  次\n最近测试时间"
         android:textColor="#ffffffff"
         android:textSize="14sp"
         android:textStyle="bold"

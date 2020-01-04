@@ -13,6 +13,22 @@ import cn.fek12.evaluation.application.MyApplication;
 
 public abstract class PrefUtilsData {
 
+    public static String getUserId() {
+        return SP.getString(PrefConstants.USERID, "");
+    }
+
+    public static void setUserId(String userId) {
+        SP.putString(PrefConstants.USERID, userId);
+    }
+
+    public static String getPer_level() {
+        return SP.getString(PrefConstants.PER_LEVEL, "");
+    }
+
+    public static void setPer_level(String userId) {
+        SP.putString(PrefConstants.PER_LEVEL, userId);
+    }
+
     public static String getBannerCache() {
         return SP.getString(PrefConstants.BANNERCACHE, "");
     }

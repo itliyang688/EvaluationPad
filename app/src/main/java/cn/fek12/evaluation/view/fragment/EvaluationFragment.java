@@ -110,14 +110,14 @@ public class EvaluationFragment extends BaseFragment<EvaluationPresenter> implem
         if(adapter != null && recommendList != null){
             isRefreshtBanner = false;
             multipleStatusView.showLoading();
-            mPresenter.initEvaluation(getContext(), MyApplication.getMyApplication().getUserId());
+            mPresenter.initEvaluation(getContext(), MyApplication.getMyApplication().getUserId(),PrefUtilsData.getPer_level());
         }
     }
 
     @Override
     protected void onLoadDataRemote() {
         multipleStatusView.showLoading();
-        mPresenter.initEvaluation(getContext(), MyApplication.getMyApplication().getUserId());
+        mPresenter.initEvaluation(getContext(), MyApplication.getMyApplication().getUserId(),PrefUtilsData.getPer_level());
     }
 
     @Override

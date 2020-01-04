@@ -1,12 +1,19 @@
 package cn.fek12.evaluation.application;
 
+import android.text.TextUtils;
+
 import com.fek12.basic.application.BaseApplication;
+import com.google.gson.Gson;
 
 import java.util.concurrent.TimeUnit;
 
 import cn.fek12.evaluation.ent.CookieReadInterceptor;
 import cn.fek12.evaluation.ent.CookiesSaveInterceptor;
 import cn.fek12.evaluation.ent.InterceptorUtil;
+import cn.fek12.evaluation.ent.ParameterInterceptor;
+import cn.fek12.evaluation.model.entity.UserInfoEntity;
+import cn.fek12.evaluation.model.sharedPreferences.PrefUtilsData;
+import cn.fek12.evaluation.utils.AppUtils;
 import okhttp3.OkHttpClient;
 
 public class MyApplication extends BaseApplication {
@@ -18,14 +25,22 @@ public class MyApplication extends BaseApplication {
     public void onCreate() {
         super.onCreate();
         myApp = this;
+        loadUserInfo();
+    }
+
+    /**读取本地用户信息*/
+    private void loadUserInfo(){
+        String infoDete = AppUtils.loadUserInfo();
+        if(TextUtils.isEmpty(infoDete)){
+            return;
+        }
+        UserInfoEntity entity = new Gson().fromJson(infoDete, UserInfoEntity.class);
+        PrefUtilsData.setUserId(entity.getRoot().getAccount().getUserId());
+        PrefUtilsData.setPer_level(String.valueOf(entity.getRoot().getAccount().getPer_level()));
     }
 
     public String getUserId() {
-        return userId;
-    }
-
-    public String getPJUserId() {
-        return userId;
+        return PrefUtilsData.getUserId();
     }
 
     public void setUserId(String userId) {
@@ -38,7 +53,6 @@ public class MyApplication extends BaseApplication {
 
     /**
      * 全局httpclient
-     *
      * @return
      */
     public static OkHttpClient initOKHttp() {
@@ -51,6 +65,7 @@ public class MyApplication extends BaseApplication {
                     .retryOnConnectionFailure(true)//错误重联
                     .addInterceptor(InterceptorUtil.LogInterceptor())//添加日志拦截器
                     .addInterceptor(new CookieReadInterceptor())
+                    .addInterceptor(new ParameterInterceptor())
                     .addInterceptor(new CookiesSaveInterceptor())
                     .build();
         }

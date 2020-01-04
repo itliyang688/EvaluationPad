@@ -355,7 +355,7 @@ public class MicroLessonFragment extends BaseFragment<MicroLessonPresenter> impl
         BaseFragment baseFragment = (BaseFragment) adapter.getItem(mViewPager.getCurrentItem());
         if (baseFragment instanceof MicroLessonPageFragment) {
             MicroLessonPageFragment fragment = (MicroLessonPageFragment) baseFragment;
-            fragment.queryIndexPagerData(gradeId, semesterId, subjectId, textbookId, MyApplication.getMyApplication().getPJUserId());
+            fragment.queryIndexPagerData(gradeId, semesterId, subjectId, textbookId, MyApplication.getMyApplication().getUserId());
             fragment.setLists(gradeList,subjectList,textBookList,semesterList);
         }
     }

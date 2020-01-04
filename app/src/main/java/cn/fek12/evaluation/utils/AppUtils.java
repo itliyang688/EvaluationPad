@@ -2,11 +2,22 @@ package cn.fek12.evaluation.utils;
 
 import android.content.Context;
 import android.os.Build;
+import android.os.Environment;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.PopupWindow;
 
 import com.fek12.basic.utils.baseUtils.BaseAppUtils;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.XML;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -93,4 +104,41 @@ public class AppUtils {
         Calendar cd = Calendar.getInstance();
         return  cd.get(Calendar.YEAR);
     }
+
+    public static String loadUserInfo(){
+        StringBuffer stringBuffer = new StringBuffer();
+        String path = Environment.getExternalStorageDirectory().getPath() + File.separator + "/FEGData/account.xml";
+        File file = new File(path);
+
+        try {
+            InputStream instream = new FileInputStream(file);
+            if (instream != null) {
+                InputStreamReader inputreader
+                        = new InputStreamReader(instream, "UTF-8");
+                BufferedReader buffreader = new BufferedReader(inputreader);
+                String line = "";
+                //分行读取
+                while ((line = buffreader.readLine()) != null) {
+                    stringBuffer.append(line);
+                    //content += line + "\n";
+                }
+                instream.close();//关闭输入流
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return xml2json(stringBuffer.toString());
+    }
+
+    public static String xml2json(String response) {
+        JSONObject jsonObj = null;
+        try {
+            jsonObj = XML.toJSONObject(response);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonObj.toString();
+    }
+
 }

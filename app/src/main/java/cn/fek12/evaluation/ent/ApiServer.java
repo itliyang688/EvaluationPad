@@ -43,7 +43,7 @@ public interface ApiServer {
      */
     @FormUrlEncoded
     @POST("assessment/index")
-    Observable<HomeEvaluationDeta> queryEvaluation(@Field("userId") String userId);
+    Observable<HomeEvaluationDeta> queryEvaluation(@Field("userId") String userId,@Field("grade") String grade);
 
     /**
      * 查询学科

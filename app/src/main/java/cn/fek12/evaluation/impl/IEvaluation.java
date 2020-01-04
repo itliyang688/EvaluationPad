@@ -8,7 +8,7 @@ import cn.fek12.evaluation.base.BaseEntry;
 import cn.fek12.evaluation.model.entity.HomeEvaluationDeta;
 
 public interface IEvaluation {
-    void initEvaluation(Context context,String userId);
+    void initEvaluation(Context context,String userId,String grade);
     interface View extends BaseView {
         void loginSuc(HomeEvaluationDeta entry);
         void loginFail(String msg);

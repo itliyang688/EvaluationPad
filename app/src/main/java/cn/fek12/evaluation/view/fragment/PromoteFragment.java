@@ -156,6 +156,7 @@ public class PromoteFragment extends BaseFragment<PresentationPresenter> impleme
         leftAdapter.removeAllSections();
         daylist = entry.getData().getDay();
         if (daylist != null && daylist.size() > 0) {
+            multipleStatusView.showContent();
             leftAdapter.addSection("threeDays", new PresentationAweekItemSection(2,daylist, getContext(), "近三天", new PresentationAweekItemSection.OnSelectItmeListener() {
                 @Override
                 public void onSelectItme(int pos) {
@@ -168,6 +169,7 @@ public class PromoteFragment extends BaseFragment<PresentationPresenter> impleme
         }
         aweeklist = entry.getData().getWeek();
         if (aweeklist != null && aweeklist.size() > 0) {
+            multipleStatusView.showContent();
             leftAdapter.addSection("aweek", new PresentationAweekItemSection(2,aweeklist, getContext(), "一周内", new PresentationAweekItemSection.OnSelectItmeListener() {
                 @Override
                 public void onSelectItme(int pos) {
@@ -233,6 +235,7 @@ public class PromoteFragment extends BaseFragment<PresentationPresenter> impleme
 
     @Override
     public void loadAWeekEmpty() {
+        multipleStatusView.showEmpty();
         if(daylist != null){
             daylist.clear();
         }

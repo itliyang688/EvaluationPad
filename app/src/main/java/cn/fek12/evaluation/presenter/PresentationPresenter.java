@@ -43,7 +43,7 @@ public class PresentationPresenter extends BasePresenter<IPresentation.View> imp
 
                     @Override
                     public void onError(String msg) {
-                        infoView.loadEarlierEmpty();
+                        infoView.loadAWeekEmpty();
                     }
                 });
     }

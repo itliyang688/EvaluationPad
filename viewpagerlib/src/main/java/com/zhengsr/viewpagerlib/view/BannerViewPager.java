@@ -442,8 +442,8 @@ public class BannerViewPager extends ViewPager implements View.OnTouchListener {
       }
       Collections.sort(childCenterXAbs);//1,0,2  0,1,2
 
-      Log.d("LONGLONG", String.format("childCount%d,n%d", childCount, n) + childCenterXAbs.toString());
-      Log.d("LONGLONG", childIndex.toString());
+      //Log.d("LONGLONG", String.format("childCount%d,n%d", childCount, n) + childCenterXAbs.toString());
+      //Log.d("LONGLONG", childIndex.toString());
 
     }
     //那个item距离中心点远一些，就先draw它。（最近的就是中间放大的item,最后draw）

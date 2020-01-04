@@ -26,8 +26,8 @@ public class EvaluationPresenter extends BasePresenter<IEvaluation.View> impleme
         this.infoView = view;
     }
     @Override
-    public void initEvaluation(Context context,String userId) {
-        ApiRetrofit.getInstance().getApiService().queryEvaluation(userId)
+    public void initEvaluation(Context context,String userId,String grade) {
+        ApiRetrofit.getInstance().getApiService().queryEvaluation(userId,grade)
                 .compose(RxHelper.observableIO2Main(context))
                 .subscribe(new BaseObserver<HomeEvaluationDeta>() {
 
