@@ -370,7 +370,11 @@ public class EvaluationDetailsActivity extends BaseActivity<EvaluationDetailsPre
     @Override
     public void loadPaperListSuc(EvaluationListEntity entry) {
         EvaluationListEntity.DataBean.PageInfoBean pageInfoBean = entry.getData().getPage_info();
-        mList = entry.getData().getPapers();
+        if(isLoadMore){
+            mList.addAll(entry.getData().getPapers());
+        }else{
+            mList = entry.getData().getPapers();
+        }
         if(pageInfoBean.getTotalCount() == 0){
             loadView.showEmpty();
             return;
