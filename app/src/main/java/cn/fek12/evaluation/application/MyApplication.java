@@ -25,7 +25,7 @@ public class MyApplication extends BaseApplication {
     public void onCreate() {
         super.onCreate();
         myApp = this;
-        loadUserInfo();
+        //loadUserInfo();
     }
 
     /**读取本地用户信息*/
@@ -40,7 +40,8 @@ public class MyApplication extends BaseApplication {
     }
 
     public String getUserId() {
-        return PrefUtilsData.getUserId();
+        //return PrefUtilsData.getUserId();
+        return userId;
     }
 
     public void setUserId(String userId) {

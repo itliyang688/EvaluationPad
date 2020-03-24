@@ -1,5 +1,6 @@
 package cn.fek12.evaluation.view.activity;
 
+import android.view.KeyEvent;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -13,11 +14,14 @@ import androidx.viewpager.widget.ViewPager;
 import com.fek12.basic.base.BackFragmentInterface;
 import com.fek12.basic.base.BaseActivity;
 import com.fek12.basic.base.BaseFragment;
+import com.fek12.basic.utils.toast.ToastUtils;
 import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import cn.fek12.evaluation.R;
@@ -93,7 +97,7 @@ public class MainActivity extends BaseActivity implements BackFragmentInterface 
         //if判断里面就调用了来自Fragment的onBackPressed()
         //一样！！，如果onBackPressed是返回false，就会进入条件内进行默认的操作
         if (baseFragment == null || !baseFragment.onBackPressed()) {
-            super.onBackPressed();
+            exit();
         }
     }
 
@@ -176,4 +180,29 @@ public class MainActivity extends BaseActivity implements BackFragmentInterface 
             return mFragments.get(position);
         }
     }
+
+    private void exit() {
+        if(!isExit) {
+           isExit = true;
+            ToastUtils.popUpToast("在按一次退出程序");
+            new Timer().schedule(new TimerTask() {
+                 @Override
+                public void run() {
+                    isExit = false;
+                                     }
+             }, 2000);
+                     } else {
+                        finish();
+                     }
+             }
+
+    private static boolean isExit = false;
+
+    /*@Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK) {
+            exit();
+         }
+        return false;
+        }*/
 }

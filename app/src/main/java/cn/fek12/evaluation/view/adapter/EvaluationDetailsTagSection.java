@@ -88,8 +88,17 @@ public class EvaluationDetailsTagSection extends Section {
                 @Override
                 public void onClick(View view) {
                     if(mOnSelectItmeListener != null){
+
+                        String childId = String.valueOf(mList.get(finalI).getId());
+                        /*if (!childId.equals(mCheckId)) {
+                            mCheckId = childId;
+                            selectPosition = finalI;
+                            mOnSelectItmeListener.onSelectItme(finalI);
+                        }*/
+
                         if (finalI != selectPosition) {
                             selectPosition = finalI;
+                            mCheckId = childId;
                             mOnSelectItmeListener.onSelectItme(finalI);
                         }
                     }

@@ -23,7 +23,7 @@ import java.util.List;
 
 /**
  * TODO: document your custom view class.
- * 因姚总指示缩小大小及去掉背景图，颜色修改成灰色 --liyong
+ * 缩小大小及去掉背景图，颜色修改成灰色
  */
 public class CircularProgressView extends View {
 

@@ -74,8 +74,10 @@ public class EvaluationDetailsChildSection extends Section {
             @Override
             public void onClick(View view) {
                 if(mOnSelectItmeListener != null){
+                    String childId = String.valueOf(mList.get(position).getId());
                     if (position != selectPosition) {
                         selectPosition = position;
+                        mCheckId = childId;
                         mOnSelectItmeListener.onSelectItme(position);
                     }
                 }

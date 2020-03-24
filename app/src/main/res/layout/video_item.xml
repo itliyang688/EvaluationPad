@@ -17,8 +17,7 @@
             android:layout_height="@dimen/dp_75"
             zhy:borderRadius="10dp"
             android:scaleType="centerCrop"
-            zhy:type="round"
-            android:src="@mipmap/test_7"/>
+            zhy:type="round"/>
         <ImageView
             android:layout_width="@dimen/dp_30"
             android:layout_height="@dimen/dp_30"
