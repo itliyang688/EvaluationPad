@@ -233,7 +233,7 @@ public class MicroLessonPageFragment extends BaseFragment<MicroLessonPagePresent
         Intent intent = new Intent(getContext(), MicroLessonMoreActivity.class);
         intent.putExtra("gradeId", gradeId);
         intent.putExtra("semesterId", semesterId);
-        intent.putExtra("sub jectId", subjectId);
+        intent.putExtra("subjectId", subjectId);
         intent.putExtra("textbookId", textbookId);
         intent.putExtra("titleName", titleName);
         intent.putExtra("typePos", mTypePage);
