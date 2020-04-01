@@ -130,6 +130,7 @@
             </cn.fek12.evaluation.view.widget.MultipleStatusView>
 
             <TextView
+                android:id="@+id/titleName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"

@@ -267,7 +267,9 @@ public class MicroLessonTreeActivity extends BaseActivity<MicroLessonTreePresent
                 String name = treeItem.text;
                 isFocusTreeNode(node,true);
                 if (!id.equals(checkId)) {
-                    isFocusTreeNode(selectNode,false);
+                    if(selectNode != null){
+                        isFocusTreeNode(selectNode,false);
+                    }
                     checkId = id;
                     selectNode = node;
                     /**请求数据*/

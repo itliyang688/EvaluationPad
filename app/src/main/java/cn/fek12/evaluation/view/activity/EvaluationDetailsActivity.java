@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -67,6 +68,8 @@ public class EvaluationDetailsActivity extends BaseActivity<EvaluationDetailsPre
     TwinklingRefreshLayout refreshLayout;
     @BindView(R.id.loadView)
     MultipleStatusView loadView;
+    @BindView(R.id.titleName)
+    TextView titleName;
     private SectionedRecyclerViewAdapter leftAdapter;
     private TreeDataEntity treeDataEntity;
     private String checkId;
@@ -99,6 +102,7 @@ public class EvaluationDetailsActivity extends BaseActivity<EvaluationDetailsPre
     protected void onInitView() {
         Intent intent = getIntent();
         setEmptyTitle();
+        titleName.setText("测卷");
         //setDefaultTitle(intent.getStringExtra("titleName"));
         checkId = intent.getStringExtra("checkId");
         gradeId = intent.getStringExtra("gradeId");
@@ -119,7 +123,11 @@ public class EvaluationDetailsActivity extends BaseActivity<EvaluationDetailsPre
 
         initLeftRecycler();
         initLabelAdapter();
-        initTreeView();
+        //initTreeView();
+
+        /**请求知识树*/
+        checkId = null;
+        mPresenter.initTreeData(EvaluationDetailsActivity.this,paperType,gradeId,semesterId,subjectId,textbookId,MyApplication.getMyApplication().getUserId());
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         evaluationAdapter = new EvaluationAdapter(EvaluationDetailsActivity.this);
@@ -215,6 +223,7 @@ public class EvaluationDetailsActivity extends BaseActivity<EvaluationDetailsPre
                     }
                 }
                 root.addChild(node1);
+                node1.setExpanded(true);
             } else {
                 /**添加一级跟文件*/
                 TreeNode file1 = new TreeNode(new AutoTreeChildItemHolder.IconTreeItem(dataBean.getName(), String.valueOf(dataBean.getId()), String.valueOf(0))).setViewHolder(new AutoTreeChildItemHolder(getContext()));
@@ -266,7 +275,10 @@ public class EvaluationDetailsActivity extends BaseActivity<EvaluationDetailsPre
                 String name = treeItem.text;
                 isFocusTreeNode(node,true);
                 if (!id.equals(checkId)) {
-                    isFocusTreeNode(selectNode,false);
+                    if(selectNode != null){
+                        isFocusTreeNode(selectNode,false);
+                    }
+
                     checkId = id;
                     selectNode = node;
                     /**请求数据*/

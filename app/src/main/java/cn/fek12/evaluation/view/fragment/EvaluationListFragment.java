@@ -43,6 +43,7 @@ import cn.fek12.evaluation.model.entity.SubjectEntity;
 import cn.fek12.evaluation.model.entity.TextbookChildEntity;
 import cn.fek12.evaluation.model.entity.TextbookEntity;
 import cn.fek12.evaluation.presenter.EvaluationListPresenter;
+import cn.fek12.evaluation.view.activity.EvaluationDetailsActivity;
 import cn.fek12.evaluation.view.activity.EvaluationListActivity;
 import cn.fek12.evaluation.view.activity.TreeViewDialogActivity;
 import cn.fek12.evaluation.view.adapter.DictionaryChildSection;
@@ -51,6 +52,7 @@ import cn.fek12.evaluation.view.adapter.DictionarySubjectSection;
 import cn.fek12.evaluation.view.adapter.DictionaryTagChildSection;
 import cn.fek12.evaluation.view.widget.CustomViewPager;
 import cn.fek12.evaluation.view.widget.MultipleStatusView;
+import cn.fek12.evaluation.view.widget.NoScrollViewPager;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 
 /**
@@ -66,7 +68,7 @@ public class EvaluationListFragment extends BaseFragment<EvaluationListPresenter
     @BindView(R.id.magicIndicator)
     MagicIndicator magicIndicator;
     @BindView(R.id.view_pager)
-    CustomViewPager mViewPager;
+    NoScrollViewPager mViewPager;
     @BindView(R.id.load_view)
     MultipleStatusView loadView;
     private OnBackPressedClickListener mOnBackPressedClickListener;
@@ -121,7 +123,8 @@ public class EvaluationListFragment extends BaseFragment<EvaluationListPresenter
             @Override
             public void onPageSelected(int position) {
                 /**随堂测，单元测，专项测，复习测页面请求不传semesterId，教材item默认不选中*/
-                emptyCheck();
+                //mViewPager.setCurrentItem(0);
+                //emptyCheck();
                 updateContent(position);
             }
 
@@ -135,8 +138,13 @@ public class EvaluationListFragment extends BaseFragment<EvaluationListPresenter
     @Override
     public void onResume() {
         super.onResume();
+        if(mTitleData != null && mViewPager.getCurrentItem() != mTitleData.size() - 1){
+            mViewPager.setCurrentItem(0);
+        }
+
         emptyCheck();
         updateContent(mViewPager.getCurrentItem());
+
     }
 
     private void emptyCheck(){
@@ -381,8 +389,30 @@ public class EvaluationListFragment extends BaseFragment<EvaluationListPresenter
         intent.putExtra("paperType", value);
         intent.putExtra("ptype", ptypeId);
         intent.putExtra("userType", "1");//类型 测评1 自主测2
-        intent.putExtra("typePage", "2");//类型 微课进入1 测评进入2
+        intent.putExtra("typePage", "2");//类型 微课进入1 测评进x入2
         intent.putExtra("containListEntityJson", new Gson().toJson(containListEntity));
+        getActivity().startActivity(intent);
+    }
+
+    private void startContainActivityIntent(String titleName, String value,String ptypeId,Class clazz) {
+        ContainListEntity containListEntity = new ContainListEntity();
+        containListEntity.setGradeList(gradeList);
+        containListEntity.setSemesterList(semesterList);
+        containListEntity.setSubjectList(subjectList);
+        containListEntity.setTextBookList(textBookList);
+        Intent intent = new Intent(getContext(),clazz);
+        intent.putExtra("checkId","");
+        intent.putExtra("gradeId", gradeId);
+        intent.putExtra("semesterId", semesterId);
+        intent.putExtra("subjectId", subjectId);
+        intent.putExtra("textbookId", textbookId);
+        intent.putExtra("titleName",titleName);
+        intent.putExtra("ptype",ptypeId);
+        intent.putExtra("paperType", value);
+        intent.putExtra("typePos", 0);
+        intent.putExtra("userType", "1");//类型 测评1 自主测2
+        intent.putExtra("containListEntityJson",new Gson().toJson(containListEntity));
+        //intent.putExtra("mTreeDataJson",new Gson().toJson(mEntry));
         getActivity().startActivity(intent);
     }
 
@@ -396,7 +426,6 @@ public class EvaluationListFragment extends BaseFragment<EvaluationListPresenter
             dataBean.setType(0);
             mTitleData.add(0, dataBean);
             initMagicIndicator(mTitleData);
-
             for (int i = 0; i < mTitleData.size(); i++) {
                 if (mTitleData.get(i).getType() == 1 || mTitleData.get(i).getType() == 3 || mTitleData.get(i).getType() == 0) {
                     fragments.add(new EvaluationIndexPaperFragment());
@@ -414,6 +443,16 @@ public class EvaluationListFragment extends BaseFragment<EvaluationListPresenter
 
     private void updateContent(int pos) {
         if (adapter != null && mTitleData != null && mTitleData.size() > 0) {
+            if(mTitleData.get(pos).getType() == 1){
+                /**直接进入详情页面*/
+                startContainActivityIntent(mTitleData.get(pos).getName(), mTitleData.get(pos).getValue(), mTitleData.get(pos).getId(), EvaluationDetailsActivity.class);
+                return;
+            }
+            if(mTitleData.get(pos).getType() == 3){
+                /**直接进入详情页面*/
+                startActivityIntent(mTitleData.get(pos).getName(), mTitleData.get(pos).getValue(), mTitleData.get(pos).getId(), EvaluationListActivity.class);
+                return;
+            }
             BaseFragment baseFragment = (BaseFragment) adapter.getItem(mViewPager.getCurrentItem());
             if (baseFragment instanceof EvaluationIndexPaperFragment) {
                 EvaluationIndexPaperFragment fragment = (EvaluationIndexPaperFragment) baseFragment;

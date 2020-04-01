@@ -16,6 +16,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.fek12.evaluation.R;
+import cn.fek12.evaluation.application.MyApplication;
 import cn.fek12.evaluation.impl.ITreeView;
 import cn.fek12.evaluation.model.entity.TreeDataEntity;
 import cn.fek12.evaluation.model.holder.TreeChildItemHolder;
@@ -74,7 +75,7 @@ public class TreeViewDialogActivity extends BaseActivity<TreeViewPresenter> impl
     @Override
     protected void onLoadData() {
         loadView.showLoading();
-        mPresenter.initTreeData(getContext(), paperType,gradeId, semesterId, subjectId, textbookId, "413");
+        mPresenter.initTreeData(getContext(), paperType,gradeId, semesterId, subjectId, textbookId, MyApplication.getMyApplication().getUserId());
     }
 
     @Override
