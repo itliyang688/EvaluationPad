@@ -34,7 +34,7 @@ public class RecommendEvaluationSection extends Section {
     public RecommendEvaluationSection(Context context,List<HomeEvaluationDeta.DataBean.RecommendPaperBean> list, OnSelectItmeListener onSelectItmeListener) {
         super(SectionParameters.builder()
                 .itemResourceId(R.layout.recommend_itme)
-                .headerResourceId(R.layout.recommend_evaluation_header)
+                //.headerResourceId(R.layout.recommend_evaluation_header)
                 .build());
         mContext = context;
         mList = list;

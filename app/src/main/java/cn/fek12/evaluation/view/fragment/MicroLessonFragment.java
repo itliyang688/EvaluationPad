@@ -31,6 +31,7 @@ import cn.fek12.evaluation.model.entity.TextbookChildEntity;
 import cn.fek12.evaluation.model.entity.TextbookEntity;
 import cn.fek12.evaluation.presenter.MicroLessonPresenter;
 import cn.fek12.evaluation.view.activity.MenuDialogActivity;
+import cn.fek12.evaluation.view.activity.MicroLessonTreeActivity;
 import cn.fek12.evaluation.view.activity.TreeViewDialogActivity;
 import cn.fek12.evaluation.view.adapter.DictionaryChildSection;
 import cn.fek12.evaluation.view.adapter.DictionaryParentSection;
@@ -91,8 +92,13 @@ public class MicroLessonFragment extends BaseFragment<MicroLessonPresenter> impl
     @Override
     public void onResume() {
         super.onResume();
-        DictionaryChildSection semesterSection = (DictionaryChildSection) leftAdapter.getSection("semester");
-        emptyCheck(semesterSection);
+        if(mTabLayout != null && mTabLayout.getCurrentTab() != 0){
+            mViewPager.setCurrentItem(0);
+            mTabLayout.setCurrentTab(0);
+            updateContent();
+        }
+        //DictionaryChildSection semesterSection = (DictionaryChildSection) leftAdapter.getSection("semester");
+        //mptyCheck(semesterSection);
     }
 
     private void initLeftRecycler() {
@@ -162,6 +168,23 @@ public class MicroLessonFragment extends BaseFragment<MicroLessonPresenter> impl
         }));
     }
 
+    private void updateContent() {
+        int currentItme = mViewPager.getCurrentItem();
+        if(currentItme == 1 || currentItme == 2){
+            //String titleName = currentItme==1? "同步视频":"专题视频";
+            String value = currentItme==1? "SWEETOWN":"SPECIAL";
+            startContainActivityIntent("",value,currentItme, MicroLessonTreeActivity.class);
+            return;
+        }
+        BaseFragment baseFragment = (BaseFragment) adapter.getItem(currentItme);
+        if (baseFragment instanceof MicroLessonPageFragment) {
+            MicroLessonPageFragment fragment = (MicroLessonPageFragment) baseFragment;
+            fragment.queryIndexPagerData(gradeId, semesterId, subjectId, textbookId, MyApplication.getMyApplication().getUserId());
+            fragment.setLists(gradeList,subjectList,textBookList,semesterList);
+        }
+    }
+
+
     private void startActivityIntent(String titleName, String value, int typePos,Class clazz) {
         ContainListEntity containListEntity = new ContainListEntity();
         containListEntity.setGradeList(gradeList);
@@ -177,6 +200,24 @@ public class MicroLessonFragment extends BaseFragment<MicroLessonPresenter> impl
         intent.putExtra("paperType", value);
         intent.putExtra("typePos", typePos);
         intent.putExtra("typePage", "1");//类型 微课进入1 测评进入2
+        intent.putExtra("containListEntityJson", new Gson().toJson(containListEntity));
+        getActivity().startActivity(intent);
+    }
+
+    private void startContainActivityIntent(String id,String value,int typePos,Class clazz) {
+        ContainListEntity containListEntity = new ContainListEntity();
+        containListEntity.setGradeList(gradeList);
+        containListEntity.setSemesterList(semesterList);
+        containListEntity.setSubjectList(subjectList);
+        containListEntity.setTextBookList(textBookList);
+        Intent intent = new Intent(getContext(),clazz);
+        intent.putExtra("checkId",id);
+        intent.putExtra("gradeId", gradeId);
+        intent.putExtra("semesterId", semesterId);
+        intent.putExtra("subjectId", subjectId);
+        intent.putExtra("textbookId", textbookId);
+        intent.putExtra("paperType", value);
+        intent.putExtra("typePos", typePos);
         intent.putExtra("containListEntityJson", new Gson().toJson(containListEntity));
         getActivity().startActivity(intent);
     }
@@ -320,7 +361,13 @@ public class MicroLessonFragment extends BaseFragment<MicroLessonPresenter> impl
         mTabLayout.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelect(int position) {
-                mViewPager.setCurrentItem(position);
+                //mViewPager.setCurrentItem(position);
+                if(position == 1 || position == 2){
+                    //String titleName = currentItme==1? "同步视频":"专题视频";
+                    String value = position==1? "SWEETOWN":"SPECIAL";
+                    startContainActivityIntent("",value,position, MicroLessonTreeActivity.class);
+                    return;
+                }
             }
 
             @Override
@@ -338,8 +385,8 @@ public class MicroLessonFragment extends BaseFragment<MicroLessonPresenter> impl
             public void onPageSelected(int position) {
                 mTabLayout.setCurrentTab(position);
                 /**同步、专题页面请求不传semesterId，教材item默认不选中*/
-                DictionaryChildSection semesterSection = (DictionaryChildSection) leftAdapter.getSection("semester");
-                emptyCheck(semesterSection);
+                //DictionaryChildSection semesterSection = (DictionaryChildSection) leftAdapter.getSection("semester");
+                //emptyCheck(semesterSection);
                 updateContent();
             }
 
@@ -351,14 +398,6 @@ public class MicroLessonFragment extends BaseFragment<MicroLessonPresenter> impl
         mViewPager.setCurrentItem(0);
     }
 
-    private void updateContent() {
-        BaseFragment baseFragment = (BaseFragment) adapter.getItem(mViewPager.getCurrentItem());
-        if (baseFragment instanceof MicroLessonPageFragment) {
-            MicroLessonPageFragment fragment = (MicroLessonPageFragment) baseFragment;
-            fragment.queryIndexPagerData(gradeId, semesterId, subjectId, textbookId, MyApplication.getMyApplication().getUserId());
-            fragment.setLists(gradeList,subjectList,textBookList,semesterList);
-        }
-    }
 
     private class MyPagerAdapter extends FragmentPagerAdapter {
         List<Fragment> mFragments;

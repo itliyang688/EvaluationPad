@@ -43,6 +43,7 @@ public class SpecialVideoActivity extends BaseActivity<SpeciaVideoPlayPresenter>
     private long playScheduleTime;
     private int isCollection;
     private String isEnd = "0";
+    private long currentPos = 0;
 
     @Override
     public int setLayoutResource() {
@@ -51,7 +52,15 @@ public class SpecialVideoActivity extends BaseActivity<SpeciaVideoPlayPresenter>
 
     @Override
     protected void onInitView() {
-        setEmptyTitle();
+        setEmptyTitle(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                currentPos = myJzvdStd.getCurrentPositionWhenPlaying();
+                Jzvd.releaseAllVideos();
+                overridePendingTransition(com.fek12.basic.R.anim.slide_left_in, com.fek12.basic.R.anim.slide_right_out);
+                finish();
+            }
+        });
         Intent intent = getIntent();
         pathUrl = intent.getStringExtra("pathUrl");
         videoName = intent.getStringExtra("videoName");
@@ -111,15 +120,18 @@ public class SpecialVideoActivity extends BaseActivity<SpeciaVideoPlayPresenter>
         myJzvdStd.ivExtend.setImageResource(isCollection == 0 ? R.mipmap.collection_video_normal : R.mipmap.collection_video_check);
     }
 
+
+
     @Override
-    protected void onDestroy() {
+    public void onBackPressed() {
+        currentPos = myJzvdStd.getCurrentPositionWhenPlaying();
         Jzvd.releaseAllVideos();
-        super.onDestroy();
+        overridePendingTransition(com.fek12.basic.R.anim.slide_left_in, com.fek12.basic.R.anim.slide_right_out);
+        super.onBackPressed();
     }
 
     @Override
     protected void onPause() {
-        long currentPos = myJzvdStd.getCurrentPositionWhenPlaying();
         if(currentPos > 0 || isEnd.equals("1")){
             mPresenter.schedule(SpecialVideoActivity.this,cacheKey,structLayKey,String.valueOf(currentPos),
                     String.valueOf(videoType),String.valueOf(videoId), MyApplication.getMyApplication().getUserId(),0,isEnd);

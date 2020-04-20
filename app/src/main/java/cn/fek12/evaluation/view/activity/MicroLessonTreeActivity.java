@@ -115,7 +115,12 @@ public class MicroLessonTreeActivity extends BaseActivity<MicroLessonTreePresent
 
         initLeftRecycler();
         initLabelAdapter();
-        initTreeView();
+        //initTreeView();
+
+        /**请求知识树*/
+        checkId = null;
+        mPresenter.initTreeData(MicroLessonTreeActivity.this,paperType,gradeId,semesterId,subjectId,textbookId,MyApplication.getMyApplication().getUserId());
+
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         videoAdapter = new VideoAdapter(MicroLessonTreeActivity.this);
@@ -216,6 +221,7 @@ public class MicroLessonTreeActivity extends BaseActivity<MicroLessonTreePresent
                     }
                 }
                 root.addChild(node1);
+                node1.setExpanded(true);
             } else {
                 /**添加一级跟文件*/
                 TreeNode file1 = new TreeNode(new AutoTreeChildItemHolder.IconTreeItem(dataBean.getName(), String.valueOf(dataBean.getId()), String.valueOf(0))).setViewHolder(new AutoTreeChildItemHolder(getContext()));

@@ -99,16 +99,20 @@
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/dp_13"
         android:layout_marginRight="@dimen/dp_2"
+        android:paddingTop="@dimen/dp_23"
         android:background="@drawable/common_bg_list_half_of_screen"
         android:paddingLeft="@dimen/dp_10"
         android:paddingRight="@dimen/dp_10"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent">
+        <include
+            android:id="@+id/title"
+                layout="@layout/recommend_evaluation_header"/>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/contentView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/dp_23"
+            android:layout_below="@+id/title"
             android:layout_marginBottom="@dimen/dp_40"/>
     </cn.fek12.evaluation.view.widget.MultipleStatusView>
 </androidx.constraintlayout.widget.ConstraintLayout>

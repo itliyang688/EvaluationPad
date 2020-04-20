@@ -38,6 +38,7 @@ public class FullScreenVideoPlayActivity extends BaseActivity<SpeciaVideoPlayPre
     private long playScheduleTime;
     private int isCollection;
     private String isEnd = "0";
+    private long currentPos = 0;
 
     @Override
     public int setLayoutResource() {
@@ -83,6 +84,9 @@ public class FullScreenVideoPlayActivity extends BaseActivity<SpeciaVideoPlayPre
                 case R.id.fullscreen:
                     break;
                 case R.id.back:
+                    currentPos = myJzvdStd.getCurrentPositionWhenPlaying();
+                    Jzvd.releaseAllVideos();
+                    overridePendingTransition(com.fek12.basic.R.anim.slide_left_in, com.fek12.basic.R.anim.slide_right_out);
                     finish();
                     break;
                 case R.id.ivExtend:
@@ -98,13 +102,10 @@ public class FullScreenVideoPlayActivity extends BaseActivity<SpeciaVideoPlayPre
     };
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-    }
-
-    @Override
-    protected void onDestroy() {
+        currentPos = myJzvdStd.getCurrentPositionWhenPlaying();
         Jzvd.releaseAllVideos();
-        super.onDestroy();
+        overridePendingTransition(com.fek12.basic.R.anim.slide_left_in, com.fek12.basic.R.anim.slide_right_out);
+        super.onBackPressed();
     }
 
 
@@ -136,7 +137,6 @@ public class FullScreenVideoPlayActivity extends BaseActivity<SpeciaVideoPlayPre
 
     @Override
     protected void onPause() {
-        long currentPos = myJzvdStd.getCurrentPositionWhenPlaying();
         if(currentPos > 0 || isEnd.equals("1")){
             mPresenter.schedule(FullScreenVideoPlayActivity.this,cacheKey,structLayKey,String.valueOf(currentPos),
                     String.valueOf(videoType),String.valueOf(videoId), MyApplication.getMyApplication().getUserId(),typePage,isEnd);
