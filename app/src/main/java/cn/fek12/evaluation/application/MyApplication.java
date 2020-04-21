@@ -1,6 +1,7 @@
 package cn.fek12.evaluation.application;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.fek12.basic.application.BaseApplication;
 import com.google.gson.Gson;
@@ -25,7 +26,10 @@ public class MyApplication extends BaseApplication {
     public void onCreate() {
         super.onCreate();
         myApp = this;
-        //loadUserInfo();
+        loadUserInfo();
+        //int hight = AppUtils.getNavigationBarHeight(getApplicationContext());
+        //int hight1 = AppUtils.getStatusBarHeight(getApplicationContext());
+        //Log.e("hight::::::",hight+"-------"+hight1);
     }
 
     /**读取本地用户信息*/
