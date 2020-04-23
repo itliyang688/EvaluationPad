@@ -125,6 +125,7 @@ public class PieChartView extends ChartView{
 
 		//设置数据源
 		chart.setDataSource(chartData);
+		chart.getLabelPaint().setColor(Color.WHITE);
 
 	}
 	

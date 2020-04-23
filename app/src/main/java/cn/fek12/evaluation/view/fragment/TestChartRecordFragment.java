@@ -2,6 +2,7 @@ package cn.fek12.evaluation.view.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -149,9 +150,9 @@ public class TestChartRecordFragment extends BaseFragment<TestCharRecordPresente
             tvEmpty.setVisibility(View.INVISIBLE);
             pieChartView.chartDataSet(correctRateVoBean.getRate());
             pieChartView.invalidate();
-            tvCorrectCount.setText("答对题数：" + correctRateVoBean.getRightTotalCount() + " 道题");
-            tvTotal.setText("总答题数：" + correctRateVoBean.getTotalCount() + " 道题");
-            tvTimeDuration.setText("总练习时长：" + correctRateVoBean.getTotalTime() + "分钟");
+            tvCorrectCount.setText(Html.fromHtml("答对题数 : <font color='#878AE7'>"+ correctRateVoBean.getRightTotalCount() +"</font>" + " 道题"));
+            tvTotal.setText(Html.fromHtml("总答题数 : <font color='#4FC5EA'>"+ correctRateVoBean.getTotalCount() +"</font>" + " 道题"));
+            tvTimeDuration.setText(Html.fromHtml("总练习时长 : <font color='#F86846'>"+ correctRateVoBean.getTotalTime() +"</font>" + " 分钟"));
         } else {
             tvEmpty.setVisibility(View.VISIBLE);
             tvCorrectCount.setText("答对题数：0 道题");
