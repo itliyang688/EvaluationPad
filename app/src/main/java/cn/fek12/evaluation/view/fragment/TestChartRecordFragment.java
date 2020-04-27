@@ -149,7 +149,7 @@ public class TestChartRecordFragment extends BaseFragment<TestCharRecordPresente
                 && !TextUtils.isEmpty(String.valueOf(correctRateVoBean.getTotalCount())) && correctRateVoBean.getTotalCount() > 0) {
             tvEmpty.setVisibility(View.INVISIBLE);
             pieChartView.chartDataSet(correctRateVoBean.getRate());
-            pieChartView.invalidate();
+            pieChartView.refreshChart();
             tvCorrectCount.setText(Html.fromHtml("答对题数 : <font color='#878AE7'>"+ correctRateVoBean.getRightTotalCount() +"</font>" + " 道题"));
             tvTotal.setText(Html.fromHtml("总答题数 : <font color='#4FC5EA'>"+ correctRateVoBean.getTotalCount() +"</font>" + " 道题"));
             tvTimeDuration.setText(Html.fromHtml("总练习时长 : <font color='#F86846'>"+ correctRateVoBean.getTotalTime() +"</font>" + " 分钟"));

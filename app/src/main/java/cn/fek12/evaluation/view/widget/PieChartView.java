@@ -118,15 +118,13 @@ public class PieChartView extends ChartView{
 	}
 
 	public void chartDataSet(double rate){
-
+        chartData.clear();
 		chartData.add(new PieData(100 - rate+"%",100 - rate,Color.parseColor("#24C768"),false));//错误率
-
 		chartData.add(new PieData(rate+"%",rate, Color.parseColor("#FDE151"),true));//正确率
 
 		//设置数据源
 		chart.setDataSource(chartData);
 		chart.getLabelPaint().setColor(Color.WHITE);
-
 	}
 	
 	@Override
