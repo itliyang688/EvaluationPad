@@ -36,6 +36,10 @@ public class ConquerFootprintsFragment extends BaseFragment {
     TextView btnTestRecord;
     @BindView(R.id.llTopTitle)
     LinearLayout llTopTitle;
+    @BindView(R.id.llCourseRecord)
+    LinearLayout llCourseRecord;
+    @BindView(R.id.llTestRecord)
+    LinearLayout llTestRecord;
     private List<Fragment> fragmentList = new ArrayList<>();
     private MyPagerAdapter adapter;
 
@@ -68,17 +72,17 @@ public class ConquerFootprintsFragment extends BaseFragment {
         viewPager.setOffscreenPageLimit(2);
     }
 
-    @OnClick({R.id.btnCourseRecord, R.id.btnTestRecord})
+    @OnClick({R.id.llCourseRecord, R.id.llTestRecord})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.btnCourseRecord:
+            case R.id.llCourseRecord:
                 btnCourseRecord.setBackgroundResource(R.drawable.bg_present_item);
                 btnCourseRecord.setTextColor(getContext().getResources().getColor(R.color.white));
                 btnTestRecord.setTextColor(getContext().getResources().getColor(R.color.color_333));
                 btnTestRecord.setBackgroundResource(R.color.white);
                 selectTab(0);
                 break;
-            case R.id.btnTestRecord:
+            case R.id.llTestRecord:
                 btnTestRecord.setBackgroundResource(R.drawable.bg_present_item);
                 btnTestRecord.setTextColor(getContext().getResources().getColor(R.color.white));
                 btnCourseRecord.setTextColor(getContext().getResources().getColor(R.color.color_333));

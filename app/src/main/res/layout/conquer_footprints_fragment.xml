@@ -6,8 +6,7 @@
     <LinearLayout
         android:id="@+id/llTopTitle"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_20"
-        android:layout_marginTop="@dimen/dp_12"
+        android:layout_height="@dimen/dp_32"
         android:layout_marginLeft="@dimen/dp_30"
         android:layout_marginRight="@dimen/dp_30"
         android:visibility="visible"
@@ -15,37 +14,49 @@
 
         <RelativeLayout
             android:layout_width="0dp"
-            android:layout_height="@dimen/dp_20"
+            android:layout_height="@dimen/dp_44"
             android:layout_weight="1">
+            <LinearLayout
+                android:id="@+id/llCourseRecord"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dp_12"
+                android:layout_centerInParent="true">
+                <TextView
+                    android:id="@+id/btnCourseRecord"
+                    android:layout_width="@dimen/dp_80"
+                    android:layout_height="@dimen/dp_20"
+                    android:background="@drawable/bg_present_item"
+                    android:checked="true"
+                    android:gravity="center"
+                    android:text="课程记录"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp_12" />
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/btnCourseRecord"
-                android:layout_width="@dimen/dp_80"
-                android:layout_height="@dimen/dp_20"
-                android:layout_centerInParent="true"
-                android:background="@drawable/bg_present_item"
-                android:checked="true"
-                android:gravity="center"
-                android:text="课程记录"
-                android:textColor="@color/white"
-                android:textSize="@dimen/sp_12" />
         </RelativeLayout>
         <RelativeLayout
             android:layout_width="0dp"
-            android:layout_height="@dimen/dp_20"
+            android:layout_height="@dimen/dp_44"
             android:layout_weight="1">
+            <LinearLayout
+                android:id="@+id/llTestRecord"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dp_12"
+                android:layout_centerInParent="true">
+                <TextView
+                    android:id="@+id/btnTestRecord"
+                    android:layout_width="@dimen/dp_80"
+                    android:layout_height="@dimen/dp_20"
+                    android:background="@color/white"
+                    android:checked="true"
+                    android:gravity="center"
+                    android:text="练习记录"
+                    android:textColor="@color/color_333"
+                    android:textSize="@dimen/sp_12" />
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/btnTestRecord"
-                android:layout_width="@dimen/dp_80"
-                android:layout_height="@dimen/dp_20"
-                android:layout_centerInParent="true"
-                android:background="@color/white"
-                android:checked="true"
-                android:gravity="center"
-                android:text="练习记录"
-                android:textColor="@color/color_333"
-                android:textSize="@dimen/sp_12" />
         </RelativeLayout>
     </LinearLayout>
     <cn.fek12.evaluation.view.widget.NoScrollViewPager
