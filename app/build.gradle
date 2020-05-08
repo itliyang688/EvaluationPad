@@ -6,8 +6,8 @@ android {
         release {
             storeFile file('../fek12.jks')
             keyAlias = 'evaluate'
-            storePassword 'fek12'
-            keyPassword '9Y7ZlbNnT7Pky3S'
+            storePassword 'fek12000'
+            keyPassword 'fek12000'
         }
     }
     compileSdkVersion rootProject.ext.android.compileSdkVersion

@@ -8,7 +8,6 @@
         android:id="@+id/llStartDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/titleName"
         android:layout_centerInParent="true"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="@dimen/dp_30"
@@ -19,7 +18,6 @@
         <LinearLayout
             android:layout_width="@dimen/dp_140"
             android:layout_height="@dimen/dp_18"
-            android:layout_below="@+id/titleName"
             android:background="@drawable/curriculum_shape_bg">
 
             <ImageView
@@ -55,7 +53,6 @@
         android:id="@+id/llSubject"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/titleName"
         android:layout_toLeftOf="@+id/llStartDate"
         android:layout_marginTop="@dimen/dp_8"
         android:paddingTop="@dimen/dp_8"
@@ -65,7 +62,6 @@
             android:id="@+id/llContainSubject"
             android:layout_width="@dimen/dp_90"
             android:layout_height="@dimen/dp_18"
-            android:layout_below="@+id/titleName"
             android:background="@drawable/curriculum_shape_bg">
 
             <ImageView
@@ -102,7 +98,6 @@
         android:id="@+id/llEndDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/titleName"
         android:layout_marginLeft="@dimen/dp_30"
         android:paddingTop="@dimen/dp_8"
         android:paddingBottom="@dimen/dp_8"
@@ -112,7 +107,6 @@
         <LinearLayout
             android:layout_width="@dimen/dp_140"
             android:layout_height="@dimen/dp_18"
-            android:layout_below="@+id/titleName"
             android:layout_toRightOf="@+id/llStartDate"
             android:background="@drawable/curriculum_shape_bg">
 
@@ -167,5 +161,4 @@
 
 
     </cn.fek12.evaluation.view.widget.MultipleStatusView>
-
 </RelativeLayout>

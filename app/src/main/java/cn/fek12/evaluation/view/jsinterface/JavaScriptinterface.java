@@ -12,7 +12,9 @@ import cn.fek12.evaluation.model.config.Configs;
 import cn.fek12.evaluation.model.sharedPreferences.PrefUtilsData;
 import cn.fek12.evaluation.utils.DialogUtils;
 import cn.fek12.evaluation.view.activity.AnswerWebViewActivity;
+import cn.fek12.evaluation.view.activity.CommonWebViewActivity;
 import cn.fek12.evaluation.view.activity.CommonWebViewBackActivity;
+import cn.fek12.evaluation.view.activity.PersonalReportWebViewActivity;
 
 /**
  * @ProjectName: EvaluationPad
@@ -40,7 +42,18 @@ public class JavaScriptinterface {
     }
 
     /**
-     * JS调用返回解析数据
+     * 与js交互时用到的方法，在js里直接调用的,打开个人精准报告
+     */
+    @JavascriptInterface
+    public void personal_report(String paperResultId) {
+        String url = Configs.PERSONAL_REPORT+"userId="+MyApplication.getMyApplication().getUserId()+"&paperResultId="+paperResultId;
+        Intent intent = new Intent(mContext, PersonalReportWebViewActivity.class);
+        intent.putExtra("webUrl",url);
+        mContext.startActivity(intent);
+    }
+
+    /**
+     * JS调用关闭个人精准报告
      */
     @JavascriptInterface
     public String returnData() {

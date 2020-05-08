@@ -9,14 +9,12 @@
         android:id="@+id/llSubject"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/titleName"
         android:layout_alignParentRight="true"
         android:layout_marginRight="@dimen/dp_26"
         android:paddingRight="@dimen/dp_20"
         android:paddingLeft="@dimen/dp_20"
         android:paddingTop="@dimen/dp_15"
-        android:paddingBottom="@dimen/dp_5"
-        android:layout_toLeftOf="@+id/llStartDate">
+        android:paddingBottom="@dimen/dp_5">
     <LinearLayout
         android:id="@+id/llContainSubject"
         android:layout_width="@dimen/dp_90"

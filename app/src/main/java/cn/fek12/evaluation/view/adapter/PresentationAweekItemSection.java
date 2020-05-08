@@ -99,10 +99,10 @@ public class PresentationAweekItemSection extends Section {
     @Override
     public void onBindHeaderViewHolder(RecyclerView.ViewHolder holder) {
         MyHeaderViewHolder holderHolder = (MyHeaderViewHolder) holder;
-        if(mList == null || mList.size() == 0){
+        /*if(mList == null || mList.size() == 0){
             holderHolder.rlContain.setVisibility(View.GONE);
             return;
-        }
+        }*/
         holderHolder.tvHeader.setText(mHeader);
         if(mHeader.equals("近三天")){
             holderHolder.tvHeader.setTextColor(Color.parseColor("#6B400D"));

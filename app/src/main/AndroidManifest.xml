@@ -103,6 +103,9 @@
         <activity
             android:name=".view.activity.CommonWebViewBackActivity"
             android:screenOrientation="landscape" />
+        <activity
+            android:name=".view.activity.PersonalReportWebViewActivity"
+            android:screenOrientation="landscape" />
     </application>
 
 </manifest>

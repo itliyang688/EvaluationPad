@@ -247,6 +247,8 @@ public class PromoteFragment extends BaseFragment<PresentationPresenter> impleme
         currentPage = 1;
         leftAdapter.removeAllSections();
         leftAdapter.notifyDataSetChanged();
+        leftAdapter.addSection("threeDays", new PresentationAweekItemSection(1,null, getContext(), "近三天",null));
+        leftAdapter.addSection("aweek", new PresentationAweekItemSection(1,null, getContext(), "一周内", null));
         /**一周或三天报告请求失败还要去请求较早的报告*/
         mPresenter.queryEarlier(getContext(), grade, semester, subject, textbook,  MyApplication.getMyApplication().getUserId(), userType, String.valueOf(currentPage), pageSize);
     }
@@ -271,6 +273,8 @@ public class PromoteFragment extends BaseFragment<PresentationPresenter> impleme
         }
         if(!isEmpty){
             multipleStatusView.showEmpty();
+        }else{
+            leftAdapter.addSection("earlier", new PresentationAweekItemSection( 1, null, getContext(), "较早",null));
         }
         refreshLayout.finishLoadmore();
         refreshLayout.finishRefreshing();
