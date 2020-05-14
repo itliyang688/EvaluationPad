@@ -45,6 +45,14 @@ public abstract class PrefUtilsData {
         return SP.getString(PrefConstants.ANALYSIS, "");
     }
 
+    public static void setPaperResultIdCache(String paperResultId) {
+        SP.putString(PrefConstants.PAPERRESULTID, paperResultId);
+    }
+
+    public static String getPaperResultIdCache() {
+        return SP.getString(PrefConstants.PAPERRESULTID, "");
+    }
+
 
     /**
      * 适用于退出登录清除用户数据

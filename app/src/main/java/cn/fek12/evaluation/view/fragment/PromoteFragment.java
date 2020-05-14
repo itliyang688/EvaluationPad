@@ -162,7 +162,7 @@ public class PromoteFragment extends BaseFragment<PresentationPresenter> impleme
                 public void onSelectItme(int pos) {
                     int paperResultId = daylist.get(pos).getPaperResultId();
                     Intent intent = new Intent(getContext(), ConqueredActivity.class);
-                    intent.putExtra("paperResultId",paperResultId);
+                    intent.putExtra("paperResultId",String.valueOf(paperResultId));
                     startActivity(intent);
                 }
             }));
@@ -175,7 +175,7 @@ public class PromoteFragment extends BaseFragment<PresentationPresenter> impleme
                 public void onSelectItme(int pos) {
                     int paperResultId = aweeklist.get(pos).getPaperResultId();
                     Intent intent = new Intent(getContext(), ConqueredActivity.class);
-                    intent.putExtra("paperResultId",paperResultId);
+                    intent.putExtra("paperResultId",String.valueOf(paperResultId));
                     startActivity(intent);
                 }
             }));
@@ -208,7 +208,7 @@ public class PromoteFragment extends BaseFragment<PresentationPresenter> impleme
                             public void onSelectItme(int pos) {
                                 int paperResultId = earlierList.get(pos).getPaperResultId();
                                 Intent intent = new Intent(getContext(), ConqueredActivity.class);
-                                intent.putExtra("paperResultId",paperResultId);
+                                intent.putExtra("paperResultId",String.valueOf(paperResultId));
                                 startActivity(intent);
                             }
                         }));

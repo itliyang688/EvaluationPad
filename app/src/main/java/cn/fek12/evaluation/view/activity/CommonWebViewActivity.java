@@ -13,7 +13,6 @@ import com.fek12.basic.base.BaseActivity;
 import butterknife.BindView;
 import butterknife.OnClick;
 import cn.fek12.evaluation.R;
-import cn.fek12.evaluation.application.MyApplication;
 import cn.fek12.evaluation.view.jsinterface.JavaScriptinterface;
 import cn.fek12.evaluation.view.widget.NoRollWebView;
 

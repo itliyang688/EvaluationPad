@@ -2,18 +2,14 @@ package cn.fek12.evaluation.view.jsinterface;
 
 import android.content.Context;
 import android.content.Intent;
-import android.view.View;
 import android.webkit.JavascriptInterface;
-
-import com.fek12.basic.application.BaseApplication;
 
 import cn.fek12.evaluation.application.MyApplication;
 import cn.fek12.evaluation.model.config.Configs;
 import cn.fek12.evaluation.model.sharedPreferences.PrefUtilsData;
 import cn.fek12.evaluation.utils.DialogUtils;
-import cn.fek12.evaluation.view.activity.AnswerWebViewActivity;
-import cn.fek12.evaluation.view.activity.CommonWebViewActivity;
 import cn.fek12.evaluation.view.activity.CommonWebViewBackActivity;
+import cn.fek12.evaluation.view.activity.ConqueredActivity;
 import cn.fek12.evaluation.view.activity.PersonalReportWebViewActivity;
 
 /**
@@ -41,11 +37,19 @@ public class JavaScriptinterface {
         mContext.startActivity(intent);
     }
 
+    @JavascriptInterface
+    public void conquer() {
+        Intent intent = new Intent(mContext, ConqueredActivity.class);
+        intent.putExtra("paperResultId",PrefUtilsData.getPaperResultIdCache());
+        mContext.startActivity(intent);
+      }
+
     /**
      * 与js交互时用到的方法，在js里直接调用的,打开个人精准报告
      */
     @JavascriptInterface
     public void personal_report(String paperResultId) {
+        PrefUtilsData.setPaperResultIdCache(paperResultId);
         String url = Configs.PERSONAL_REPORT+"userId="+MyApplication.getMyApplication().getUserId()+"&paperResultId="+paperResultId;
         Intent intent = new Intent(mContext, PersonalReportWebViewActivity.class);
         intent.putExtra("webUrl",url);

@@ -1,7 +1,6 @@
 package cn.fek12.evaluation.view.activity;
 
 import android.content.Intent;
-import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;

@@ -1,5 +1,7 @@
 package cn.fek12.evaluation.model.entity;
 
+import com.chad.library.adapter.base.entity.MultiItemEntity;
+
 import java.io.Serializable;
 
 /**
@@ -9,7 +11,9 @@ import java.io.Serializable;
  * @Description:
  * @CreateDate: 2019/11/25 15:28
  */
-public class PresentationEntity implements Serializable {
+public class PresentationEntity implements Serializable, MultiItemEntity {
+    public static final int PICTURE_TITLE = 1;
+    public static final int PICTURE_CONTENT = 0;
     /**
      * id : 15962
      * name : test0924
@@ -25,6 +29,24 @@ public class PresentationEntity implements Serializable {
      * paperResultDate : 2019-10-14 16:32:28.0
      */
 
+    private int type;
+    private int titleType;
+
+    public int getTitleType() {
+        return titleType;
+    }
+
+    public void setTitleType(int titleType) {
+        this.titleType = titleType;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
     private int id;
     private String name;
     private String description;
@@ -143,4 +165,8 @@ public class PresentationEntity implements Serializable {
         this.paperResultDate = paperResultDate;
     }
 
+    @Override
+    public int getItemType() {
+        return type;
+    }
 }

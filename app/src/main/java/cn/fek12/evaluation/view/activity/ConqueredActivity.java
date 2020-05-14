@@ -30,7 +30,7 @@ public class ConqueredActivity extends BaseActivity<ConqueredPresenter> implemen
     @BindView(R.id.multipleStatusView)
     MultipleStatusView multipleStatusView;
     private ConqueredAdapter adapter;
-    private int paperResultId;
+    private String paperResultId;
     private List<ConqueredEntity.DataBean> mList;
 
     @Override
@@ -47,7 +47,7 @@ public class ConqueredActivity extends BaseActivity<ConqueredPresenter> implemen
     @Override
     protected void onInitView() {
         setEmptyTitle();
-        paperResultId = getIntent().getIntExtra("paperResultId",0);
+        paperResultId = getIntent().getStringExtra("paperResultId");
         adapter = new ConqueredAdapter(ConqueredActivity.this);
         adapter.setOnItemClickListener(this);
         recycler.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -57,7 +57,7 @@ public class ConqueredActivity extends BaseActivity<ConqueredPresenter> implemen
     @Override
     protected void onLoadData() {
         multipleStatusView.showLoading();
-        mPresenter.promoteDetail(ConqueredActivity.this,String.valueOf(paperResultId));
+        mPresenter.promoteDetail(ConqueredActivity.this,paperResultId);
     }
 
     @Override

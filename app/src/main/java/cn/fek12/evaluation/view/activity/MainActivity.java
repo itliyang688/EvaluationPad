@@ -1,6 +1,5 @@
 package cn.fek12.evaluation.view.activity;
 
-import android.view.KeyEvent;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -29,8 +28,8 @@ import cn.fek12.evaluation.model.entity.TabEntity;
 import cn.fek12.evaluation.view.fragment.EvaluationContainerFragment;
 import cn.fek12.evaluation.view.fragment.EvaluationFragment;
 import cn.fek12.evaluation.view.fragment.MicroLessonFragment;
-import cn.fek12.evaluation.view.fragment.PresentationFragment;
-import cn.fek12.evaluation.view.fragment.PromoteFragment;
+import cn.fek12.evaluation.view.fragment.PresentationNewsFragment;
+import cn.fek12.evaluation.view.fragment.PromoteNewsFragment;
 import cn.fek12.evaluation.view.fragment.RecordFragment;
 
 public class MainActivity extends BaseActivity implements BackFragmentInterface {
@@ -61,9 +60,9 @@ public class MainActivity extends BaseActivity implements BackFragmentInterface 
             mTabEntities.add(new TabEntity(mTitles[i], mIconSelectIds[i], mIconUnselectIds[i]));
         }
         mFragments.add(new EvaluationContainerFragment());
-        mFragments.add(new PresentationFragment());
+        mFragments.add(new PresentationNewsFragment());
         mFragments.add(new MicroLessonFragment());
-        mFragments.add(new PromoteFragment());
+        mFragments.add(new PromoteNewsFragment());
         mFragments.add(new RecordFragment());
         initCommonTabLayout();
         viewPage.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));

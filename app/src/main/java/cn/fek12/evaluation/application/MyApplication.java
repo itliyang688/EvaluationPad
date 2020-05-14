@@ -26,7 +26,7 @@ public class MyApplication extends BaseApplication {
     public void onCreate() {
         super.onCreate();
         myApp = this;
-        loadUserInfo();
+        //loadUserInfo();
         //int hight = AppUtils.getNavigationBarHeight(getApplicationContext());
         //int hight1 = AppUtils.getStatusBarHeight(getApplicationContext());
         //Log.e("hight::::::",hight+"-------"+hight1);

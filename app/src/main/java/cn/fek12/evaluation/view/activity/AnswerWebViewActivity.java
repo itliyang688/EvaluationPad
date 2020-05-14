@@ -1,7 +1,6 @@
 package cn.fek12.evaluation.view.activity;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -12,13 +11,11 @@ import android.widget.LinearLayout;
 import com.fek12.basic.base.BaseActivity;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.application.MyApplication;
 import cn.fek12.evaluation.model.config.Configs;
 import cn.fek12.evaluation.view.jsinterface.JavaScriptinterface;
-import cn.fek12.evaluation.view.widget.NoRollWebView;
 
 /**
  * @ProjectName: EvaluationPad

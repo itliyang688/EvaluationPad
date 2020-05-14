@@ -10,5 +10,6 @@ public interface PrefConstants {
     String USERID = "userId";
     String PER_LEVEL = "per_level";
     String ANALYSIS = "analysis";
+    String PAPERRESULTID = "paperResultId";
 
 }

@@ -26,7 +26,6 @@ import cn.fek12.evaluation.view.PopupWindow.SubjectPopupWindow;
 import cn.fek12.evaluation.view.dialog.SelectDateDialog;
 import cn.fek12.evaluation.view.jsinterface.JavaScriptinterface;
 import cn.fek12.evaluation.view.widget.MultipleStatusView;
-import cn.fek12.evaluation.view.widget.NoRollWebView;
 
 /**
  * @ProjectName: EvaluationPad
