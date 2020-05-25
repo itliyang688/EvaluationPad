@@ -38,6 +38,7 @@ import org.xclcharts.event.click.ArcPosition;
 import org.xclcharts.renderer.XEnum;
 import org.xclcharts.view.ChartView;
 
+import java.math.BigDecimal;
 import java.util.LinkedList;
 
 import cn.fek12.evaluation.R;
@@ -118,9 +119,10 @@ public class PieChartView extends ChartView{
 	}
 
 	public void chartDataSet(double rate){
+		double rateNum = Double.parseDouble(limitDouble2(rate,1));
         chartData.clear();
-		chartData.add(new PieData(100 - rate+"%",100 - rate,Color.parseColor("#24C768"),false));//错误率
-		chartData.add(new PieData(rate+"%",rate, Color.parseColor("#FDE151"),true));//正确率
+		chartData.add(new PieData(100 - rateNum+"%",100 - rateNum,Color.parseColor("#24C768"),false));//错误率
+		chartData.add(new PieData(rateNum+"%",rateNum, Color.parseColor("#FDE151"),true));//正确率
 
 		//设置数据源
 		chart.setDataSource(chartData);
@@ -135,4 +137,11 @@ public class PieChartView extends ChartView{
             Log.e(TAG, e.toString());
         }
     }
+
+
+	public static String limitDouble2(double d, int num) {
+		String d2 = String.format("%."+num+"f", d);
+
+		return new BigDecimal(d2).toString();
+	}
 }

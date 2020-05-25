@@ -11,7 +11,6 @@ import android.widget.LinearLayout;
 import com.fek12.basic.base.BaseActivity;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.application.MyApplication;
 import cn.fek12.evaluation.model.config.Configs;
@@ -34,6 +33,13 @@ public class AnswerWebViewActivity extends BaseActivity {
     private int paperResult;
     private int isanswered;
     private int paperId;
+    private String titleName;
+    public static AnswerWebViewActivity answerWebViewActivity;
+
+    public static AnswerWebViewActivity get() {
+        return answerWebViewActivity != null ? answerWebViewActivity : null;
+    }
+
 
     @Override
     public int setLayoutResource() {
@@ -42,10 +48,12 @@ public class AnswerWebViewActivity extends BaseActivity {
 
     @Override
     protected void onInitView() {
+        answerWebViewActivity = this;
         Intent intent = getIntent();
         isanswered = intent.getIntExtra("isanswered", 0);
         paperId = intent.getIntExtra("paperId", 0);
         paperResult = intent.getIntExtra("paperResult",0);
+        titleName = intent.getStringExtra("titleName");
         WebSettings webSettings = webView.getSettings();
         // 不使用缓存：
         webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
@@ -63,10 +71,10 @@ public class AnswerWebViewActivity extends BaseActivity {
         String url;
         if (isanswered == 0) {
             //url = "http://192.168.0.46/noc/html/index.html?userId=" + MyApplication.getMyApplication().getUserId() + "&paperId=" + paperId;
-            url = Configs.INDEX + "userId=" + MyApplication.getMyApplication().getUserId() + "&paperId=" + paperId;
+            url = Configs.INDEX + "userId=" + MyApplication.getMyApplication().getUserId() + "&paperId=" + paperId + "&titleName=" + titleName;
         } else {
             //url = "http://192.168.0.46/noc/html/analyze.html?userId=" + MyApplication.getMyApplication().getUserId() + "&paperId=" + paperId + "&paperResult=" + paperResult;
-            url = Configs.ANALYZE + "userId=" + MyApplication.getMyApplication().getUserId() + "&paperId=" + paperId + "&paperResult=" + paperResult;
+            url = Configs.ANALYZE + "userId=" + MyApplication.getMyApplication().getUserId() + "&paperId=" + paperId + "&paperResult=" + paperResult + "&titleName=" + titleName;
         }
         showLoading();
         webView.loadUrl(url);
@@ -90,8 +98,9 @@ public class AnswerWebViewActivity extends BaseActivity {
 
     }
 
-    @OnClick(R.id.titleView)
+    /*@OnClick(R.id.titleView)
     public void onViewClicked() {
         finish();
-    }
+    }*/
+
 }

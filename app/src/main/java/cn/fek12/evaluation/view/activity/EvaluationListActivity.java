@@ -373,6 +373,7 @@ public class EvaluationListActivity extends BaseActivity<EvaluationDetailsPresen
         Intent intent = new Intent(getContext(), AnswerWebViewActivity.class);
         intent.putExtra("isanswered",mList.get(position).getIsanswered());
         intent.putExtra("paperId",mList.get(position).getId());
+        intent.putExtra("titleName",mList.get(position).getName());
         startActivity(intent);
     }
 }

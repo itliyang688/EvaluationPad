@@ -167,6 +167,7 @@ public class EvaluationFragment extends BaseFragment<EvaluationPresenter> implem
                     Intent intent = new Intent(getContext(), AnswerWebViewActivity.class);
                     intent.putExtra("isanswered", recommendList.get(pos).getIsanswered());
                     intent.putExtra("paperId", recommendList.get(pos).getId());
+                    intent.putExtra("titleName", recommendList.get(pos).getName());
                     startActivity(intent);
                 }
             }));

@@ -61,8 +61,6 @@ public class PresentationNewsFragment extends BaseFragment<PresentationPresenter
     TextView header;
     @BindView(R.id.rlContain)
     RelativeLayout rlContain;
-    //private SectionedRecyclerViewAdapter leftAdapter;
-    //private Presentation1Adapter adapter;
     private PresentationNewsAdapter adapter;
     private MenuPopupWindow popupWindow;
     private boolean isLoadMore = false;
@@ -103,7 +101,6 @@ public class PresentationNewsFragment extends BaseFragment<PresentationPresenter
                         mPresenter.queryAWeek(getContext(), grade, semester, subject, textbook, MyApplication.getMyApplication().getUserId(), userType);
                     }
                 });
-                //popupWindow.setClippingEnabled(false);
                 AppUtils.fitPopupWindowOverStatusBar(popupWindow, true);
                 popupWindow.showAtLocation(rootView,
                         Gravity.RIGHT | Gravity.CENTER_HORIZONTAL, 0, 0);
@@ -196,6 +193,7 @@ public class PresentationNewsFragment extends BaseFragment<PresentationPresenter
                     Intent intent = new Intent(getContext(), AnswerWebViewActivity.class);
                     intent.putExtra("isanswered",1);
                     intent.putExtra("paperId",entity.getId());
+                    intent.putExtra("titleName",entity.getName());
                     intent.putExtra("paperResult",entity.getPaperResultId());
                     startActivity(intent);
                 }
@@ -265,8 +263,8 @@ public class PresentationNewsFragment extends BaseFragment<PresentationPresenter
                 title.setType(PresentationEntity.PICTURE_TITLE);
                 title.setTitleType(1);
                 presentationModels.add(title);
-                if (earlierList != null && earlierList.size() > 0) {
-                    for (PresentationEntity model : earlierList) {
+                if (daylist != null && daylist.size() > 0) {
+                    for (PresentationEntity model : daylist) {
                         //添加数据
                         presentationModels.add(model);
                     }
@@ -277,8 +275,8 @@ public class PresentationNewsFragment extends BaseFragment<PresentationPresenter
                 title2.setType(PresentationEntity.PICTURE_TITLE);
                 title2.setTitleType(2);
                 presentationModels.add(title2);
-                if (earlierList != null && earlierList.size() > 0) {
-                    for (PresentationEntity model : earlierList) {
+                if (aweeklist != null && aweeklist.size() > 0) {
+                    for (PresentationEntity model : aweeklist) {
                         //添加数据
                         presentationModels.add(model);
                     }

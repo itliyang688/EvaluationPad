@@ -9,7 +9,6 @@ import android.webkit.WebViewClient;
 import com.fek12.basic.base.BaseActivity;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.view.jsinterface.JavaScriptinterface;
 
@@ -21,23 +20,24 @@ import cn.fek12.evaluation.view.jsinterface.JavaScriptinterface;
  * @CreateDate: 2019/11/15 17:17
  */
 public class PersonalReportWebViewActivity extends BaseActivity {
-    private static PersonalReportWebViewActivity webViewActivity;
     @BindView(R.id.webView)
     WebView webView;
     private String webUrl;
+    public static PersonalReportWebViewActivity reportWebViewActivity;
+
+    public static PersonalReportWebViewActivity get() {
+        return reportWebViewActivity != null ? reportWebViewActivity : null;
+    }
+
 
     @Override
     public int setLayoutResource() {
         return R.layout.report_webview_activity;
     }
 
-    public static PersonalReportWebViewActivity get() {
-        return webViewActivity != null ? webViewActivity : null;
-    }
-
     @Override
     protected void onInitView() {
-        webViewActivity = this;
+        reportWebViewActivity = this;
         Intent intent = getIntent();
         webUrl = intent.getStringExtra("webUrl");
         WebSettings webSettings = webView.getSettings();
@@ -82,9 +82,5 @@ public class PersonalReportWebViewActivity extends BaseActivity {
     @Override
     protected void onLoadData() {
 
-    }
-    @OnClick(R.id.titleView)
-    public void onViewClicked() {
-        finish();
     }
 }

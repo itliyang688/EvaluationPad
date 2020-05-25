@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.fek12.basic.base.BaseFragment;
+import com.google.gson.Gson;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -189,6 +190,7 @@ public class TestChartRecordFragment extends BaseFragment<TestCharRecordPresente
         areaChartView.invalidate();
 
         /**li练习记录*/
+        String json = new Gson().toJson(entity.getData().getMore());
         if (entity.getData().getMore() != null && entity.getData().getMore().size() > 0) {
             tvEmptyList.setVisibility(View.GONE);
             llTestRecord.removeAllViews();
@@ -214,7 +216,7 @@ public class TestChartRecordFragment extends BaseFragment<TestCharRecordPresente
 
                 tvSubject.setText(bean.getSubject() + "  " + bean.getGrade() + "  " + bean.getTextBook());
                 tvChapter.setText(bean.getKnowledgePoint());
-                tvTime.setText("用时：" + bean.getKnowledgePoint() + "分钟");
+                tvTime.setText("用时：" + bean.getTime() + "分钟");
                 tvCorrectCount.setText("答对数：" + bean.getRightAmount() + "/" + bean.getCount());
                 /**查看解析*/
                 tbAnalysis.setOnClickListener(new View.OnClickListener() {

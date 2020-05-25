@@ -141,10 +141,10 @@ public class EvaluationListFragment extends BaseFragment<EvaluationListPresenter
         if(mTitleData != null && mViewPager.getCurrentItem() != mTitleData.size() - 1){
             mViewPager.setCurrentItem(0);
         }
-
         emptyCheck();
-        updateContent(mViewPager.getCurrentItem());
-
+        if(mViewPager.getCurrentItem() == 0){
+            updateContent(mViewPager.getCurrentItem());
+        }
     }
 
     private void emptyCheck(){

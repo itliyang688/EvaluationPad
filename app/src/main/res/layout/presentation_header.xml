@@ -13,7 +13,6 @@
         android:id="@+id/rlContain"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/dp_5"
         android:background="@drawable/bg_three_days_header"
         android:orientation="horizontal">
         <LinearLayout

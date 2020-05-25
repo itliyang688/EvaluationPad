@@ -111,6 +111,7 @@ public class EvaluationIndexPaperFragment extends BaseFragment<EvaluationIndexPa
                     Intent intent = new Intent(getContext(), AnswerWebViewActivity.class);
                     intent.putExtra("isanswered",entry.getData().getHot().get(pos).getIsanswered());
                     intent.putExtra("paperId",entry.getData().getHot().get(pos).getId());
+                    intent.putExtra("titleName",entry.getData().getHot().get(pos).getName());
                     startActivity(intent);
                 }
 
@@ -126,6 +127,7 @@ public class EvaluationIndexPaperFragment extends BaseFragment<EvaluationIndexPa
                     Intent intent = new Intent(getContext(), AnswerWebViewActivity.class);
                     intent.putExtra("isanswered",entry.getData().getUpdate().get(pos).getIsanswered());
                     intent.putExtra("paperId",entry.getData().getUpdate().get(pos).getId());
+                    intent.putExtra("titleName",entry.getData().getUpdate().get(pos).getName());
                     startActivity(intent);
                 }
 

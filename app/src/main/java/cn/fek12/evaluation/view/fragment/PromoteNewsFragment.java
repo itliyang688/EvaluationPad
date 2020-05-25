@@ -262,8 +262,8 @@ public class PromoteNewsFragment extends BaseFragment<PresentationPresenter> imp
                 title.setType(PresentationEntity.PICTURE_TITLE);
                 title.setTitleType(1);
                 presentationModels.add(title);
-                if (earlierList != null && earlierList.size() > 0) {
-                    for (PresentationEntity model : earlierList) {
+                if (daylist != null && daylist.size() > 0) {
+                    for (PresentationEntity model : daylist) {
                         //添加数据
                         presentationModels.add(model);
                     }
@@ -274,8 +274,8 @@ public class PromoteNewsFragment extends BaseFragment<PresentationPresenter> imp
                 title2.setType(PresentationEntity.PICTURE_TITLE);
                 title2.setTitleType(2);
                 presentationModels.add(title2);
-                if (earlierList != null && earlierList.size() > 0) {
-                    for (PresentationEntity model : earlierList) {
+                if (aweeklist != null && aweeklist.size() > 0) {
+                    for (PresentationEntity model : aweeklist) {
                         //添加数据
                         presentationModels.add(model);
                     }

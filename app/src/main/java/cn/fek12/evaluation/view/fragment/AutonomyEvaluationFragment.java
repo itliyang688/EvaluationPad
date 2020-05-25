@@ -697,6 +697,7 @@ public class AutonomyEvaluationFragment extends BaseFragment<AutonomyEvaluationP
                 /**跳转页面答题*/
                 Intent intent = new Intent(getContext(), AnswerWebViewActivity.class);
                 intent.putExtra("paperId",entity.getData());
+                //intent.putExtra("titleName",entity.get());
                 startActivity(intent);
             }
         });

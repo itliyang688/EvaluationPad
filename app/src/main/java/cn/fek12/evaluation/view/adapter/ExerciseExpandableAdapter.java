@@ -96,7 +96,7 @@ public class ExerciseExpandableAdapter extends ExpandableRecyclerView.Adapter<Ex
             holder.llContain.setVisibility(View.VISIBLE);
             holder.tvSubject.setText(list.get(position).getSubject()+"  "+list.get(position).getGrade()+"  "+list.get(position).getTextBook());
             holder.tvChapter.setText(list.get(position).getKnowledgePoint());
-            holder.tvTime.setText("用时："+list.get(position).getKnowledgePoint()+"分钟");
+            holder.tvTime.setText("用时："+list.get(position).getTime()+"分钟");
             holder.tvCorrectCount.setText("答对数："+list.get(position).getRightAmount()+"/"+list.get(position).getCount());
             /**查看解析*/
             holder.tbAnalysis.setOnClickListener(new View.OnClickListener() {
