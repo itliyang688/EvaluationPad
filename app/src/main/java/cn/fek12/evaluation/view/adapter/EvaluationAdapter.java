@@ -16,6 +16,9 @@ import cn.fek12.evaluation.model.entity.EvaluationListEntity;
 
 
 public class EvaluationAdapter extends RecyclerView.Adapter<EvaluationAdapter.EvaluationHolder> {
+    public static final int AUTONOMY_EVALUATION = 0;
+    public static final int EVALUATION = 1;
+    private int pageType;
     private OnItemClickListener mOnItemClickListener = null;
 
     private List<EvaluationListEntity.DataBean.PapersBean> mList = new ArrayList();
@@ -31,8 +34,9 @@ public class EvaluationAdapter extends RecyclerView.Adapter<EvaluationAdapter.Ev
 
     private Context context;
 
-    public EvaluationAdapter(Context context) {
+    public EvaluationAdapter(Context context,int pageType) {
         this.context = context;
+        this.pageType = pageType;
     }
 
     public void notifyChanged(List<EvaluationListEntity.DataBean.PapersBean> list,boolean isAdd) {
@@ -73,6 +77,7 @@ public class EvaluationAdapter extends RecyclerView.Adapter<EvaluationAdapter.Ev
         private View itemView;
         private TextView title;
         private TextView time;
+        private TextView tvState;
 
 
         public EvaluationHolder(View itemView) {
@@ -80,11 +85,22 @@ public class EvaluationAdapter extends RecyclerView.Adapter<EvaluationAdapter.Ev
             this.itemView = itemView;
             title = this.itemView.findViewById(R.id.title);
             time = this.itemView.findViewById(R.id.time);
+            tvState = this.itemView.findViewById(R.id.tvState);
         }
 
         public void setData(final int position) {
             title.setText(mList.get(position).getName());
             time.setText(mList.get(position).getCreateDate());
+            if(pageType == AUTONOMY_EVALUATION){
+                tvState.setVisibility(View.VISIBLE);
+                if(mList.get(position).getIsanswered() == 0){
+                    tvState.setText("未完成");
+                    tvState.setTextColor(context.getResources().getColor(R.color.color_FDAD2D));
+                }else{
+                    tvState.setText("已完成");
+                    tvState.setTextColor(context.getResources().getColor(R.color.color_06BB85));
+                }
+            }
         }
     }
 }

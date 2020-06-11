@@ -2,6 +2,7 @@ package cn.fek12.evaluation.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,6 +20,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.application.MyApplication;
+import cn.fek12.evaluation.impl.IAutonomyEvaluationList;
 import cn.fek12.evaluation.model.entity.ChildSectionEntity;
 import cn.fek12.evaluation.model.entity.ContainListEntity;
 import cn.fek12.evaluation.model.entity.EvaluationListEntity;
@@ -28,7 +30,6 @@ import cn.fek12.evaluation.model.entity.TextbookChildEntity;
 import cn.fek12.evaluation.model.entity.TextbookEntity;
 import cn.fek12.evaluation.model.entity.TreeDataEntity;
 import cn.fek12.evaluation.presenter.AutonomyEvaluationListPresenter;
-import cn.fek12.evaluation.presenter.EvaluationDetailsPresenter;
 import cn.fek12.evaluation.view.adapter.EvaluationAdapter;
 import cn.fek12.evaluation.view.adapter.EvaluationDetailsChildSection;
 import cn.fek12.evaluation.view.adapter.EvaluationDetailsParentSection;
@@ -53,6 +54,8 @@ public class AutonomyEvaluationListActivity extends BaseActivity<AutonomyEvaluat
     TwinklingRefreshLayout refreshLayout;
     @BindView(R.id.loadView)
     MultipleStatusView loadView;
+    @BindView(R.id.tvTitleName)
+    TextView tvTitleName;
     private SectionedRecyclerViewAdapter leftAdapter;
     private String checkId;
     private EvaluationAdapter evaluationAdapter;
@@ -79,6 +82,7 @@ public class AutonomyEvaluationListActivity extends BaseActivity<AutonomyEvaluat
     protected void onInitView() {
         Intent intent = getIntent();
         setEmptyTitle();
+        tvTitleName.setText("自测列表");
         //setDefaultTitle(intent.getStringExtra("titleName"));
         checkId = intent.getStringExtra("checkId");
         gradeId = intent.getStringExtra("gradeId");
@@ -97,7 +101,7 @@ public class AutonomyEvaluationListActivity extends BaseActivity<AutonomyEvaluat
         initLabelAdapter();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        evaluationAdapter = new EvaluationAdapter(AutonomyEvaluationListActivity.this);
+        evaluationAdapter = new EvaluationAdapter(AutonomyEvaluationListActivity.this, EvaluationAdapter.AUTONOMY_EVALUATION);
         evaluationAdapter.setOnItemClickListener(this);
         recyclerView.setAdapter(evaluationAdapter);
 
@@ -108,7 +112,7 @@ public class AutonomyEvaluationListActivity extends BaseActivity<AutonomyEvaluat
         refreshLayout.setBottomView(bottomProgressView);
 
         loadView.showLoading();
-        mPresenter.queryPaperList(this,gradeId,subjectId,textbookId,semesterId,MyApplication.getMyApplication().getUserId(),String.valueOf(currentPage));
+        mPresenter.queryPaperList(this, gradeId, subjectId, textbookId, semesterId, MyApplication.getMyApplication().getUserId(), String.valueOf(currentPage));
     }
 
     private RefreshListenerAdapter refreshListenerAdapter = new RefreshListenerAdapter() {
@@ -116,14 +120,14 @@ public class AutonomyEvaluationListActivity extends BaseActivity<AutonomyEvaluat
         public void onLoadMore(final TwinklingRefreshLayout refreshLayout) {
             isLoadMore = true;
             currentPage += 1;
-            mPresenter.queryPaperList(AutonomyEvaluationListActivity.this,gradeId,subjectId,textbookId,semesterId,MyApplication.getMyApplication().getUserId(),String.valueOf(currentPage));
+            mPresenter.queryPaperList(AutonomyEvaluationListActivity.this, gradeId, subjectId, textbookId, semesterId, MyApplication.getMyApplication().getUserId(), String.valueOf(currentPage));
         }
 
         @Override
         public void onRefresh(final TwinklingRefreshLayout refreshLayout) {
             isLoadMore = false;
             currentPage = 1;
-            mPresenter.queryPaperList(AutonomyEvaluationListActivity.this,gradeId,subjectId,textbookId,semesterId,MyApplication.getMyApplication().getUserId(),String.valueOf(currentPage));
+            mPresenter.queryPaperList(AutonomyEvaluationListActivity.this, gradeId, subjectId, textbookId, semesterId, MyApplication.getMyApplication().getUserId(), String.valueOf(currentPage));
         }
     };
 
@@ -164,7 +168,7 @@ public class AutonomyEvaluationListActivity extends BaseActivity<AutonomyEvaluat
                 subjectId = String.valueOf(subjectList.get(pos).getId());
                 leftAdapter.getAdapterForSection("subject").notifyAllItemsChanged("payloads");
 
-                mPresenter.queryTextBookList(getContext(),gradeId,subjectId);
+                mPresenter.queryTextBookList(getContext(), gradeId, subjectId);
             }
         }));
 
@@ -175,7 +179,7 @@ public class AutonomyEvaluationListActivity extends BaseActivity<AutonomyEvaluat
                 textbookId = String.valueOf(textBookList.get(pos).getId());
 
                 /**点击版本去查询教材*/
-                mPresenter.querySemesterList(getContext(),gradeId,subjectId,textbookId);
+                mPresenter.querySemesterList(getContext(), gradeId, subjectId, textbookId);
 
             }
         }));
@@ -184,11 +188,11 @@ public class AutonomyEvaluationListActivity extends BaseActivity<AutonomyEvaluat
             public void onSelectItme(int pos) {
                 leftAdapter.getAdapterForSection("semester").notifyAllItemsChanged("payloads");
                 semesterId = String.valueOf(semesterList.get(pos).getId());
-               /**请求页面数据*/
+                /**请求页面数据*/
                 isLoadMore = false;
                 currentPage = 1;
                 loadView.showLoading();
-                mPresenter.queryPaperList(AutonomyEvaluationListActivity.this,gradeId,subjectId,textbookId,semesterId,MyApplication.getMyApplication().getUserId(),String.valueOf(currentPage));
+                mPresenter.queryPaperList(AutonomyEvaluationListActivity.this, gradeId, subjectId, textbookId, semesterId, MyApplication.getMyApplication().getUserId(), String.valueOf(currentPage));
             }
         }));
         leftAdapter.notifyDataSetChanged();
@@ -214,29 +218,31 @@ public class AutonomyEvaluationListActivity extends BaseActivity<AutonomyEvaluat
     public void loadTreeSuc(TreeDataEntity entry) {
 
     }
+
     private List<EvaluationListEntity.DataBean.PapersBean> mList;
+
     @Override
     public void loadPaperListSuc(EvaluationListEntity entry) {
         EvaluationListEntity.DataBean.PageInfoBean pageInfoBean = entry.getData().getPage_info();
         List<EvaluationListEntity.DataBean.PapersBean> list = entry.getData().getPapers();
-        if(pageInfoBean.getTotalCount() == 0){
+        if (pageInfoBean.getTotalCount() == 0) {
             loadView.showEmpty();
             return;
         }
-        if(isLoadMore){
+        if (isLoadMore) {
             mList.addAll(entry.getData().getPapers());
-        }else{
+        } else {
             mList = entry.getData().getPapers();
         }
         loadView.showContent();
-        if(pageInfoBean.getTotalPage() > currentPage){
+        if (pageInfoBean.getTotalPage() > currentPage) {
             refreshLayout.setEnableLoadmore(true);
-        }else{
+        } else {
             refreshLayout.setEnableLoadmore(false);
         }
-        if(mList != null && mList.size() > 0){
-            evaluationAdapter.notifyChanged(mList,isLoadMore);
-            if(!isLoadMore){
+        if (mList != null && mList.size() > 0) {
+            evaluationAdapter.notifyChanged(mList, isLoadMore);
+            if (!isLoadMore) {
                 recyclerView.smoothScrollToPosition(0);
             }
         }
@@ -277,18 +283,18 @@ public class AutonomyEvaluationListActivity extends BaseActivity<AutonomyEvaluat
             }
 
             leftAdapter.notifyDataSetChanged();
-           /**请求页面数据*/
+            /**请求页面数据*/
             isLoadMore = false;
             currentPage = 1;
             loadView.showLoading();
-            mPresenter.queryPaperList(AutonomyEvaluationListActivity.this,gradeId,subjectId,textbookId,semesterId,MyApplication.getMyApplication().getUserId(),String.valueOf(currentPage));
+            mPresenter.queryPaperList(AutonomyEvaluationListActivity.this, gradeId, subjectId, textbookId, semesterId, MyApplication.getMyApplication().getUserId(), String.valueOf(currentPage));
         }
     }
 
     @Override
     public void loadTextBookSuc(TextbookEntity entry) {
         textBookList = entry.getData();
-        if(textBookList != null && textBookList.size() > 0){
+        if (textBookList != null && textBookList.size() > 0) {
             loadView.showContent();
             textbookId = String.valueOf(textBookList.get(0).getId());
 
@@ -297,27 +303,27 @@ public class AutonomyEvaluationListActivity extends BaseActivity<AutonomyEvaluat
 
             semesterList = textBookList.get(0).getSemester();
             EvaluationDetailsChildSection semesterSection = (EvaluationDetailsChildSection) leftAdapter.getSection("semester");
-            if(semesterList != null && semesterList.size() > 0){
+            if (semesterList != null && semesterList.size() > 0) {
                 semesterId = String.valueOf(semesterList.get(0).getId());
                 semesterSection.updateList(semesterList);
-            }else{
+            } else {
                 semesterId = null;
                 semesterSection.updateList(null);
             }
             leftAdapter.notifyDataSetChanged();
         }
 
-       /**请求页面数据*/
+        /**请求页面数据*/
         isLoadMore = false;
         currentPage = 1;
         loadView.showLoading();
-        mPresenter.queryPaperList(AutonomyEvaluationListActivity.this,gradeId,subjectId,textbookId,semesterId,MyApplication.getMyApplication().getUserId(),String.valueOf(currentPage));
+        mPresenter.queryPaperList(AutonomyEvaluationListActivity.this, gradeId, subjectId, textbookId, semesterId, MyApplication.getMyApplication().getUserId(), String.valueOf(currentPage));
     }
 
     @Override
     public void loadSemesterSuc(SemesterEntity entry) {
         semesterList = entry.getData();
-        if(semesterList != null && semesterList.size() > 0){
+        if (semesterList != null && semesterList.size() > 0) {
             semesterId = String.valueOf(semesterList.get(0).getId());
             EvaluationDetailsChildSection semesterSection = (EvaluationDetailsChildSection) leftAdapter.getSection("semester");
             semesterSection.updateList(semesterList);
@@ -328,7 +334,7 @@ public class AutonomyEvaluationListActivity extends BaseActivity<AutonomyEvaluat
         isLoadMore = false;
         currentPage = 1;
         loadView.showLoading();
-        mPresenter.queryPaperList(AutonomyEvaluationListActivity.this,gradeId,subjectId,textbookId,semesterId,MyApplication.getMyApplication().getUserId(),String.valueOf(currentPage));
+        mPresenter.queryPaperList(AutonomyEvaluationListActivity.this, gradeId, subjectId, textbookId, semesterId, MyApplication.getMyApplication().getUserId(), String.valueOf(currentPage));
     }
 
     @Override
@@ -357,9 +363,9 @@ public class AutonomyEvaluationListActivity extends BaseActivity<AutonomyEvaluat
     public void onItemClick(int position) {
         /**跳转页面答题*/
         Intent intent = new Intent(getContext(), AnswerWebViewActivity.class);
-        intent.putExtra("isanswered",mList.get(position).getIsanswered());
-        intent.putExtra("paperId",mList.get(position).getId());
-        intent.putExtra("titleName",mList.get(position).getName());
+        intent.putExtra("isanswered", mList.get(position).getIsanswered());
+        intent.putExtra("paperId", mList.get(position).getId());
+        intent.putExtra("titleName", mList.get(position).getName());
         startActivity(intent);
     }
 }

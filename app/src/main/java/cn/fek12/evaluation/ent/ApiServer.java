@@ -198,7 +198,7 @@ public interface ApiServer {
                                                     @Field("currentPage") String currentPage);
 
     @FormUrlEncoded
-    @POST("assessment/paperList")
+    @POST("independent/paperList")
     Observable<EvaluationListEntity> queryAutonomyPaperList(@Field("grade") String grade,
                                                     @Field("semester") String semester,
                                                     @Field("subject") String subject,

@@ -130,7 +130,7 @@ public class EvaluationDetailsActivity extends BaseActivity<EvaluationDetailsPre
         mPresenter.initTreeData(EvaluationDetailsActivity.this,paperType,gradeId,semesterId,subjectId,textbookId,MyApplication.getMyApplication().getUserId());
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        evaluationAdapter = new EvaluationAdapter(EvaluationDetailsActivity.this);
+        evaluationAdapter = new EvaluationAdapter(EvaluationDetailsActivity.this,EvaluationAdapter.EVALUATION);
         evaluationAdapter.setOnItemClickListener(this);
         recyclerView.setAdapter(evaluationAdapter);
 

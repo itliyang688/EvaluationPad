@@ -3,15 +3,18 @@
     android:id="@+id/rootView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:zhy="http://schemas.android.com/apk/res-auto"
     android:layout_marginLeft="@dimen/dp_13"
     android:layout_marginTop="@dimen/dp_3"
     android:layout_marginBottom="@dimen/dp_10"
     android:orientation="vertical">
 
-    <ImageView
+    <cn.fek12.evaluation.view.widget.RoundImageView
         android:id="@+id/ivSubject"
         android:layout_width="@dimen/dp_129"
         android:layout_height="@dimen/dp_92"
+        zhy:borderRadius="10dp"
+        zhy:type="round"
         android:scaleType="fitXY"
         android:src="@mipmap/mathematics_icon"/>
 

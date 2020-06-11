@@ -14,6 +14,7 @@ import java.util.List;
 
 import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.model.entity.HomeEvaluationDeta;
+import cn.fek12.evaluation.view.widget.RoundImageView;
 import io.github.luizgrp.sectionedrecyclerviewadapter.Section;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionParameters;
 
@@ -87,7 +88,7 @@ public class RecommendEvaluationSection extends Section {
         private TextView tvName;
         private TextView tvSubject;
         private TextView tvData;
-        private ImageView ivSubject;
+        private RoundImageView ivSubject;
         public MyItemViewHolder(View itemView) {
             super(itemView);
             tvName = itemView.findViewById(R.id.tvName);

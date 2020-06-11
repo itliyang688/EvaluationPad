@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.fek12.basic.base.BaseFragment;
 import com.fek12.basic.utils.toast.ToastUtils;
+import com.fek12.basic.view.titleView.BaseTitleView;
 import com.google.gson.Gson;
 import com.zhengsr.viewpagerlib.bean.PageBean;
 import com.zhengsr.viewpagerlib.callback.PageHelperListener;
@@ -32,6 +33,7 @@ import cn.fek12.evaluation.presenter.EvaluationPresenter;
 import cn.fek12.evaluation.view.activity.AnswerWebViewActivity;
 import cn.fek12.evaluation.view.adapter.RecommendEvaluationSection;
 import cn.fek12.evaluation.view.widget.MultipleStatusView;
+import cn.fek12.evaluation.view.widget.RoundImageView;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 
 /**
@@ -84,7 +86,9 @@ public class EvaluationFragment extends BaseFragment<EvaluationPresenter> implem
                 ToastUtils.popUpToast("hahha");
             }
         });*/
-        setDefaultTitle("测评", false);
+        BaseTitleView titleView = setDefaultTitle("测评", true);
+        titleView.setDefaultBackButtonImage(R.mipmap.home_back_icon);
+        titleView.setDefaultBackLeftTitle("主页",true);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext()){
             @Override
@@ -138,7 +142,7 @@ public class EvaluationFragment extends BaseFragment<EvaluationPresenter> implem
         loopViewpagerMz.setPageListener(pageBean, R.layout.evaluation_list_item_banner, new PageHelperListener<HomeEvaluationDeta.DataBean.BannerBean>() {
             @Override
             public void getItemView(View view, HomeEvaluationDeta.DataBean.BannerBean data) {
-                ImageView image = view.findViewById(R.id.image);
+                RoundImageView image = view.findViewById(R.id.image);
                 Glide.with(getContext()).load(data.getImageUrl()).into(image);
                 //Glide.with(getContext()).load(data.getImageUrl()).placeholder(R.mipmap.empty_bg).error(R.mipmap.empty_bg).into(image);
             }

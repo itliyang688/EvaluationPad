@@ -14,5 +14,6 @@
 
     <color name="app_bg">#06BB86</color>
     <color name="app_title">#83D4BC</color>
-    <color name="colorAccent">#8A531D</color>
+    <color name="colorAccent">#8a531d</color>
+    <color name="color_8A531D">#8A531D</color>
 </resources>

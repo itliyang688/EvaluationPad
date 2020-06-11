@@ -109,7 +109,7 @@ public class EvaluationListActivity extends BaseActivity<EvaluationDetailsPresen
         initLabelAdapter();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        evaluationAdapter = new EvaluationAdapter(EvaluationListActivity.this);
+        evaluationAdapter = new EvaluationAdapter(EvaluationListActivity.this,EvaluationAdapter.EVALUATION);
         evaluationAdapter.setOnItemClickListener(this);
         recyclerView.setAdapter(evaluationAdapter);
 

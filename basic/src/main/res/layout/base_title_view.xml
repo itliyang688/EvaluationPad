@@ -12,26 +12,42 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/iv_left_back"
+        <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/dp_34"
-            android:layout_marginStart="@dimen/dp_6"
-            android:background="@drawable/title_btn_color_selector"
-            android:src="@drawable/ic_toolbar_left_back"
-            android:visibility="gone" />
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/iv_left_back"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_34"
+                android:layout_marginStart="@dimen/dp_6"
+                android:background="@drawable/title_btn_color_selector"
+                android:src="@drawable/ic_toolbar_left_back"
+                android:visibility="gone" />
+            <TextView
+                android:id="@+id/left_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_8A531D"
+                android:layout_centerVertical="true"
+                android:textSize="@dimen/sp_15"
+                android:layout_marginLeft="@dimen/dp_35"
+                android:visibility="gone"
+                android:text="主页"/>
+        </RelativeLayout>
+
 
         <TextView
             android:id="@+id/tv_left_title"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="@dimen/dp_34"
             android:gravity="center"
+            android:layout_marginLeft="@dimen/dp_10"
             android:text="标题"
-            android:textColor="@color/white"
+            android:textColor="@color/color_8A531D"
             android:maxEms="8"
             android:ellipsize="end"
             android:lines="1"
-            android:textSize="@dimen/sp_18"
+            android:textSize="@dimen/sp_15"
             android:visibility="gone" />
     </LinearLayout>
     <!--中间布局-->
@@ -42,7 +58,7 @@
         android:layout_gravity="center_horizontal"
         android:gravity="center"
         android:background="@drawable/bg_common_btn"
-        android:textColor="@color/colorAccent"
+        android:textColor="@color/color_8A531D"
         android:textSize="@dimen/sp_18"
         android:text="标题"/>
     <RelativeLayout

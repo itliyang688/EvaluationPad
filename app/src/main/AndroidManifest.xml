@@ -34,6 +34,7 @@
 
         <activity android:name=".view.activity.SplashActivity"
             android:theme="@style/LauncherTheme"
+            android:exported="true"
             android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -84,10 +85,35 @@
             android:screenOrientation="landscape" />
         <activity
             android:name=".view.activity.VideoPlayListActivity"
-            android:screenOrientation="landscape" />
+            android:exported="true"
+            android:screenOrientation="landscape" >
+            <intent-filter>
+                <!-- 自定义action -->
+                <action android:name="app.intent.action.VIDEO_LIST_VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".view.activity.RemedialPracticeWebActivity"
+            android:exported="true"
+            android:screenOrientation="landscape" >
+            <intent-filter>
+                <!-- 自定义action -->
+                <action android:name="app.intent.action.REMEDIAL_PRACTICE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
         <activity
             android:name=".view.activity.ConqueredActivity"
-            android:screenOrientation="landscape" />
+            android:exported="true"
+            android:screenOrientation="landscape" >
+            <intent-filter>
+                <!-- 自定义action -->
+                <action android:name="app.intent.action.CONQUER_VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
         <activity
             android:name=".view.activity.AnswerWebViewActivity"
             android:screenOrientation="landscape" />

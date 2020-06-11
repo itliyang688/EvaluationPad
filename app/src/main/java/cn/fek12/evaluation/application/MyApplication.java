@@ -1,9 +1,18 @@
 package cn.fek12.evaluation.application;
 
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.IBinder;
+import android.os.RemoteException;
 import android.text.TextUtils;
 import android.util.Log;
 
 import com.fek12.basic.application.BaseApplication;
+import com.fek12.basic.utils.toast.ToastUtils;
+import com.future_education.module_login.IUserData;
+import com.future_education.module_login.OnUserDataUpdateListener;
 import com.google.gson.Gson;
 
 import java.util.concurrent.TimeUnit;
@@ -12,6 +21,7 @@ import cn.fek12.evaluation.ent.CookieReadInterceptor;
 import cn.fek12.evaluation.ent.CookiesSaveInterceptor;
 import cn.fek12.evaluation.ent.InterceptorUtil;
 import cn.fek12.evaluation.ent.ParameterInterceptor;
+import cn.fek12.evaluation.model.entity.StudentInfoEntity;
 import cn.fek12.evaluation.model.entity.UserInfoEntity;
 import cn.fek12.evaluation.model.sharedPreferences.PrefUtilsData;
 import cn.fek12.evaluation.utils.AppUtils;
@@ -22,6 +32,9 @@ public class MyApplication extends BaseApplication {
     private static OkHttpClient mOkHttpClient;
     private static final int DEFAULT_TIMEOUT = 30;
     private String userId = "413";
+    private static final String TAG = "AIDL_Log";
+    private IUserData iUserData;
+    private boolean connected;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -30,7 +43,84 @@ public class MyApplication extends BaseApplication {
         //int hight = AppUtils.getNavigationBarHeight(getApplicationContext());
         //int hight1 = AppUtils.getStatusBarHeight(getApplicationContext());
         //Log.e("hight::::::",hight+"-------"+hight1);
+        bindService();
     }
+
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+        // 使用通知功能后，需要解绑，因onServiceDisconnected已经将iUserData置空，需要放在unbindService前面
+        if (iUserData != null && iUserData.asBinder().isBinderAlive()) {
+            try {
+                iUserData.unregisterListener(onUserDataUpdateListener);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+        unbindService(serviceConnection);
+    }
+
+    private void bindService() {
+        Intent intent = new Intent();
+        intent.setPackage("com.future_education.launcher");
+        intent.setAction("com.future_education.launcher.aidlService");
+        bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+    }
+
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            connected = true;
+            iUserData = IUserData.Stub.asInterface(service);
+            if(iUserData != null){
+                try {
+                    String studentInfo = iUserData.getStudentInfo();
+                    StudentInfoEntity entity = new Gson().fromJson(studentInfo, StudentInfoEntity.class);
+                    PrefUtilsData.setUserId(entity.getPer_id());
+                    PrefUtilsData.setPer_level(String.valueOf(entity.getPer_level()));
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
+            //如果不使用通知功能，以下代码不是必须的
+            try {
+                iUserData.registerListener(onUserDataUpdateListener);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            iUserData = null;
+            connected = false;
+        }
+    };
+
+    //如果不使用通知功能，以下代码不是必须的
+    private OnUserDataUpdateListener onUserDataUpdateListener = new OnUserDataUpdateListener.Stub() {
+        @Override
+        public void onLoginStateUpdate(boolean isLogin) throws RemoteException {
+            Log.d(TAG, "onLoginStateUpdate: "+ isLogin);
+        }
+
+        @Override
+        public void onTokenUpdate(String token) throws RemoteException {
+            Log.d(TAG, "onTokenUpdate: "+ token);
+        }
+
+        @Override
+        public void onLoginInfoUpdate(String loginInfo) throws RemoteException {
+            Log.d(TAG, "onLoginInfoUpdate: "+loginInfo);
+        }
+
+        @Override
+        public void onStudentInfoUpdate(String studentInfo) throws RemoteException {
+            Log.d(TAG, "onStudentInfoUpdate: "+studentInfo);
+        }
+    };
+
+
 
     /**读取本地用户信息*/
     private void loadUserInfo(){
@@ -76,4 +166,5 @@ public class MyApplication extends BaseApplication {
         }
         return mOkHttpClient;
     }
+
 }

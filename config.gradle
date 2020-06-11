@@ -9,7 +9,7 @@ ext {
     android = [
             compileSdkVersion: 28,
             buildToolsVersion: "28.0.3",
-            applicationId    : "cn.fek12.evaluationpad",
+            applicationId    : "cn.fek12.evaluation",
             minSdkVersion    : 21,
             targetSdkVersion : 28,
             versionCode      : 1,

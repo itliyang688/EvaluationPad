@@ -201,6 +201,14 @@ public class BaseTitleView extends FrameLayout {
         return leftBack;
     }
 
+    public void setDefaultBackLeftTitle(String title,boolean isShow) {
+        if(isShow){
+            TextView tvTitle = (TextView) findViewById(R.id.left_title);
+            tvTitle.setText(title);
+            tvTitle.setVisibility(View.VISIBLE);
+        }
+    }
+
 
     /**
      * 使用自定义布局时,

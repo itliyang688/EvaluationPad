@@ -18,6 +18,7 @@ import java.util.List;
 import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.model.entity.AWeekEntity;
 import cn.fek12.evaluation.model.entity.PresentationEntity;
+import cn.fek12.evaluation.view.widget.RoundImageView;
 import io.github.luizgrp.sectionedrecyclerviewadapter.Section;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionParameters;
 
@@ -129,7 +130,7 @@ public class PresentationAweekItemSection extends Section {
         private TextView tvSubject;
         private TextView tvTime;
         private TextView tvScore;
-        private ImageView ivSubject;
+        private RoundImageView ivSubject;
         private LinearLayout rootView;
         public MyItemViewHolder(View itemView) {
             super(itemView);
