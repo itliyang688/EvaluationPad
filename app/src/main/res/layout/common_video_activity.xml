@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/synchro_video_bg"
+    android:layout_marginLeft="@dimen/dp_14"
+    android:layout_marginRight="@dimen/dp_14"
+    android:layout_marginBottom="@dimen/dp_14"
+    android:layout_marginTop="@dimen/dp_8"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ImageView
+            android:id="@+id/iv_left_back"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_36"
+            android:layout_marginTop="@dimen/dp_11"
+            android:layout_marginStart="@dimen/dp_11"
+            android:background="@drawable/title_btn_color_selector"
+            android:src="@mipmap/back_icon" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:paddingBottom="@dimen/dp_14"
+        android:paddingRight="@dimen/dp_14"
+        android:paddingLeft="@dimen/dp_14"
+        android:layout_weight="1">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/dp_15"
+            android:background="@mipmap/content_bg">
+
+            <RelativeLayout
+                android:layout_width="@dimen/dp_277"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="@dimen/dp_68"
+                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/dp_32"
+                    android:paddingRight="@dimen/dp_15">
+                    <ImageView
+                        android:id="@+id/ivTitleIcon"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_113"
+                        android:layout_marginLeft="@dimen/dp_36"
+                        android:layout_marginRight="@dimen/dp_41"
+                        android:src="@mipmap/austria_number"/>
+                    <TextView
+                        android:id="@+id/tvTitleName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/color_333"
+                        android:layout_marginTop="@dimen/dp_13"
+                        android:textSize="@dimen/sp_14"
+                        android:maxEms="13"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:layout_gravity="center"
+                        android:text="奥数全能解法及训练"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_18"
+                        android:gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/dp_29"
+                        android:orientation="horizontal">
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@mipmap/introduce_icon"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/color_F9AD21"
+                            android:textSize="@dimen/sp_12"
+                            android:layout_marginLeft="@dimen/dp_10"
+                            android:layout_gravity="center"
+                            android:text="课程内容"/>
+                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/tvIntroduce"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/color_333"
+                        android:layout_marginTop="@dimen/dp_8"
+                        android:layout_marginLeft="@dimen/dp_29"
+                        android:layout_marginRight="@dimen/dp_33"
+                        android:scrollbars="none"
+                        android:gravity="center_vertical"
+                        android:text="        多动手，使学生的创作个性得以最大限度地发挥。在手工制作中思维较其他活动更开阔，最充分地表达现有水平，用手工制作的方法对想象中的东西进行创造，在从虚到实的过程中发展学生的观察力、记忆力、想象力、创造力，有利于脑部的发育。 在手工制作过程中，往往都需要多方面的配合，特别是与人的配合，同过合作，动手制作的过程，会使儿童更懂得与人沟通，换位思考，促进交往能力发展。"
+                        android:textSize="@dimen/sp_10"/>
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="@dimen/dp_616"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true">
+                 <cn.fek12.evaluation.view.widget.MultipleStatusView
+                     android:id="@+id/loadView"
+                     android:layout_width="match_parent"
+                     android:layout_height="match_parent"
+                     android:layout_marginTop="@dimen/dp_27"
+                     android:layout_marginLeft="@dimen/dp_50"
+                     android:layout_marginRight="@dimen/dp_45"
+                     android:layout_marginBottom="@dimen/dp_27">
+                     <com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
+                         xmlns:app="http://schemas.android.com/apk/res-auto"
+                         android:id="@+id/refreshLayout"
+                         android:layout_width="match_parent"
+                         android:layout_height="match_parent"
+                         app:tr_wave_height="180dp"
+                         app:tr_head_height="100dp">
+
+                         <androidx.recyclerview.widget.RecyclerView
+                             android:id="@+id/recyclerView"
+                             android:layout_width="match_parent"
+                             android:layout_height="match_parent"/>
+                     </com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout>
+                 </cn.fek12.evaluation.view.widget.MultipleStatusView>
+
+            </RelativeLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+
+
+</LinearLayout>

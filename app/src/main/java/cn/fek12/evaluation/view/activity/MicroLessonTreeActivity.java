@@ -187,34 +187,34 @@ public class MicroLessonTreeActivity extends BaseActivity<MicroLessonTreePresent
             List<TreeDataEntity.DataBean.ChildsBeanXX> node2List = dataBean.getChilds();
             if (node2List != null && node2List.size() > 0) {
                 /**添加一级跟文件夹*/
-                TreeNode node1 = new TreeNode(new TreeParentItemHolder.IconTreeItem(dataBean.getName())).setViewHolder(new TreeParentItemHolder(getContext()));
+                TreeNode node1 = new TreeNode(new TreeParentItemHolder.IconTreeItem(dataBean.getName())).setViewHolder(new TreeParentItemHolder(getContext(),TreeParentItemHolder.ORIGINAL));
                 for (TreeDataEntity.DataBean.ChildsBeanXX childsBeanXX : node2List) {
                     List<TreeDataEntity.DataBean.ChildsBeanXX.ChildsBeanX> node3List = childsBeanXX.getChilds();
                     if (node3List != null && node3List.size() > 0) {
-                        TreeNode node2 = new TreeNode(new TreeParentItemHolder.IconTreeItem(childsBeanXX.getName())).setViewHolder(new TreeParentItemHolder(getContext()));
+                        TreeNode node2 = new TreeNode(new TreeParentItemHolder.IconTreeItem(childsBeanXX.getName())).setViewHolder(new TreeParentItemHolder(getContext(),TreeParentItemHolder.ORIGINAL));
                         node1.addChild(node2);
                         /**第三级*/
                         for (TreeDataEntity.DataBean.ChildsBeanXX.ChildsBeanX childsBeanX : node3List) {
                             List<TreeDataEntity.DataBean.ChildsBeanXX.ChildsBeanX.ChildsBean> node4List = childsBeanX.getChilds();
                             if (node4List != null && node4List.size() > 0) {
-                                TreeNode node3 = new TreeNode(new TreeParentItemHolder.IconTreeItem(childsBeanX.getName())).setViewHolder(new TreeParentItemHolder(getContext()));
+                                TreeNode node3 = new TreeNode(new TreeParentItemHolder.IconTreeItem(childsBeanX.getName())).setViewHolder(new TreeParentItemHolder(getContext(),TreeParentItemHolder.ORIGINAL));
                                 node2.addChild(node3);
                                 /**第四级*/
                                 for (TreeDataEntity.DataBean.ChildsBeanXX.ChildsBeanX.ChildsBean childsBean : node4List) {
-                                    TreeNode file4 = new TreeNode(new AutoTreeChildItemHolder.IconTreeItem(childsBean.getName(), String.valueOf(childsBean.getId()), String.valueOf(childsBean.getParentId()))).setViewHolder(new AutoTreeChildItemHolder(getContext()));
+                                    TreeNode file4 = new TreeNode(new AutoTreeChildItemHolder.IconTreeItem(childsBean.getName(), String.valueOf(childsBean.getId()), String.valueOf(childsBean.getParentId()))).setViewHolder(new AutoTreeChildItemHolder(getContext(),AutoTreeChildItemHolder.ORIGINAL));
                                     node3.addChild(file4);
                                     nodeListenerAndUpdate(file4);
                                     defaultCheck(file4, String.valueOf(childsBean.getId()));
                                 }
                             } else {
-                                TreeNode file3 = new TreeNode(new AutoTreeChildItemHolder.IconTreeItem(childsBeanX.getName(), String.valueOf(childsBeanX.getId()), String.valueOf(childsBeanX.getParentId()))).setViewHolder(new AutoTreeChildItemHolder(getContext()));
+                                TreeNode file3 = new TreeNode(new AutoTreeChildItemHolder.IconTreeItem(childsBeanX.getName(), String.valueOf(childsBeanX.getId()), String.valueOf(childsBeanX.getParentId()))).setViewHolder(new AutoTreeChildItemHolder(getContext(),AutoTreeChildItemHolder.ORIGINAL));
                                 node2.addChild(file3);
                                 nodeListenerAndUpdate(file3);
                                 defaultCheck(file3, String.valueOf(childsBeanX.getId()));
                             }
                         }
                     } else {
-                        TreeNode file2 = new TreeNode(new AutoTreeChildItemHolder.IconTreeItem(childsBeanXX.getName(), String.valueOf(childsBeanXX.getId()), String.valueOf(childsBeanXX.getParentId()))).setViewHolder(new AutoTreeChildItemHolder(getContext()));
+                        TreeNode file2 = new TreeNode(new AutoTreeChildItemHolder.IconTreeItem(childsBeanXX.getName(), String.valueOf(childsBeanXX.getId()), String.valueOf(childsBeanXX.getParentId()))).setViewHolder(new AutoTreeChildItemHolder(getContext(),AutoTreeChildItemHolder.ORIGINAL));
                         node1.addChild(file2);
                         nodeListenerAndUpdate(file2);
                         defaultCheck(file2, String.valueOf(childsBeanXX.getId()));
@@ -224,7 +224,7 @@ public class MicroLessonTreeActivity extends BaseActivity<MicroLessonTreePresent
                 node1.setExpanded(true);
             } else {
                 /**添加一级跟文件*/
-                TreeNode file1 = new TreeNode(new AutoTreeChildItemHolder.IconTreeItem(dataBean.getName(), String.valueOf(dataBean.getId()), String.valueOf(0))).setViewHolder(new AutoTreeChildItemHolder(getContext()));
+                TreeNode file1 = new TreeNode(new AutoTreeChildItemHolder.IconTreeItem(dataBean.getName(), String.valueOf(dataBean.getId()), String.valueOf(0))).setViewHolder(new AutoTreeChildItemHolder(getContext(),AutoTreeChildItemHolder.ORIGINAL));
                 root.addChild(file1);
                 nodeListenerAndUpdate(file1);
                 defaultCheck(file1, String.valueOf(dataBean.getId()));

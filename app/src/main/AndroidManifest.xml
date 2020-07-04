@@ -132,6 +132,18 @@
         <activity
             android:name=".view.activity.PersonalReportWebViewActivity"
             android:screenOrientation="landscape" />
+        <activity
+            android:name=".view.activity.PrimarySchoolSynchroVideoActivity"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".view.activity.RiseMiddleSchoolVideoActivity"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".view.activity.CompositionTreasureVideoActivity"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".view.activity.CommonVideoActivity"
+            android:screenOrientation="landscape" />
     </application>
 
 </manifest>

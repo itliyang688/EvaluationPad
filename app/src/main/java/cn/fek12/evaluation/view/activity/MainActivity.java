@@ -1,5 +1,6 @@
 package cn.fek12.evaluation.view.activity;
 
+import android.view.MotionEvent;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -25,10 +26,13 @@ import java.util.TimerTask;
 import butterknife.BindView;
 import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.model.entity.TabEntity;
+import cn.fek12.evaluation.utils.AppUtils;
 import cn.fek12.evaluation.view.fragment.EvaluationContainerFragment;
 import cn.fek12.evaluation.view.fragment.EvaluationFragment;
+import cn.fek12.evaluation.view.fragment.MicroLessonContainerFragment;
 import cn.fek12.evaluation.view.fragment.MicroLessonFragment;
 import cn.fek12.evaluation.view.fragment.PresentationNewsFragment;
+import cn.fek12.evaluation.view.fragment.PrimarySchoolVideoFragment;
 import cn.fek12.evaluation.view.fragment.PromoteNewsFragment;
 import cn.fek12.evaluation.view.fragment.RecordFragment;
 
@@ -61,7 +65,9 @@ public class MainActivity extends BaseActivity implements BackFragmentInterface 
         }
         mFragments.add(new EvaluationContainerFragment());
         mFragments.add(new PresentationNewsFragment());
-        mFragments.add(new MicroLessonFragment());
+        //mFragments.add(new MicroLessonFragment());
+        mFragments.add(new MicroLessonContainerFragment());
+        //mFragments.add(new PrimarySchoolVideoFragment());
         mFragments.add(new PromoteNewsFragment());
         mFragments.add(new RecordFragment());
         initCommonTabLayout();
@@ -100,6 +106,19 @@ public class MainActivity extends BaseActivity implements BackFragmentInterface 
         }
     }
 
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        for (int i = 0; i < event.getPointerCount(); i++) {
+            float x = event.getX(i);
+            float y = event.getY(i);
+
+            if (!AppUtils.touchEventInView(MicroLessonContainerFragment.getFragment().getRightView(), x, y)) {
+                MicroLessonContainerFragment.getFragment().colseFrame();
+            }
+        }
+
+        return super.dispatchTouchEvent(event);
+    }
 
     private void initCommonTabLayout() {
         commonTabLayout.setTabData(mTabEntities);
@@ -137,7 +156,7 @@ public class MainActivity extends BaseActivity implements BackFragmentInterface 
             }
         });
 
-        viewPage.setCurrentItem(1);
+        viewPage.setCurrentItem(0);
         //enlargeAndreduction(previousPos,true);
     }
 

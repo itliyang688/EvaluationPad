@@ -15,9 +15,13 @@ import cn.fek12.evaluation.R;
 public class TreeParentItemHolder extends TreeNode.BaseNodeViewHolder<TreeParentItemHolder.IconTreeItem> {
     private TextView tvValue;
     private ImageView arrowView;
+    private int pageType;
+    public static final int ORIGINAL = 0;
+    public static final int NOW = 1;
 
-    public TreeParentItemHolder(Context context) {
+    public TreeParentItemHolder(Context context, int pageType) {
         super(context);
+        this.pageType = pageType;
     }
 
     @Override
@@ -28,16 +32,28 @@ public class TreeParentItemHolder extends TreeNode.BaseNodeViewHolder<TreeParent
         tvValue.setText(value.text);
 
         arrowView = (ImageView) view.findViewById(R.id.arrow_icon);
-
+        if(pageType == ORIGINAL){
+            arrowView.setImageResource(R.mipmap.arrow_right);
+        }else{
+            arrowView.setImageResource(R.mipmap.bookmark_right);
+        }
         return view;
     }
 
     @Override
     public void toggle(boolean active) {
         if(active){
-            arrowView.setImageResource(R.mipmap.arrow_down);
+            if(pageType == ORIGINAL){
+                arrowView.setImageResource(R.mipmap.arrow_down);
+            }else{
+                arrowView.setImageResource(R.mipmap.bookmark_down);
+            }
         }else{
-            arrowView.setImageResource(R.mipmap.arrow_right);
+            if(pageType == ORIGINAL){
+                arrowView.setImageResource(R.mipmap.arrow_right);
+            }else{
+                arrowView.setImageResource(R.mipmap.bookmark_right);
+            }
         }
     }
 

@@ -95,17 +95,17 @@ public class TreeViewDialogActivity extends BaseActivity<TreeViewPresenter> impl
             List<TreeDataEntity.DataBean.ChildsBeanXX> node2List = dataBean.getChilds();
             if (node2List != null && node2List.size() > 0) {
                 /**添加一级跟文件夹*/
-                TreeNode node1 = new TreeNode(new TreeParentItemHolder.IconTreeItem(dataBean.getName())).setViewHolder(new TreeParentItemHolder(getContext()));
+                TreeNode node1 = new TreeNode(new TreeParentItemHolder.IconTreeItem(dataBean.getName())).setViewHolder(new TreeParentItemHolder(getContext(),TreeParentItemHolder.ORIGINAL));
                 for (TreeDataEntity.DataBean.ChildsBeanXX childsBeanXX : node2List) {
                     List<TreeDataEntity.DataBean.ChildsBeanXX.ChildsBeanX> node3List = childsBeanXX.getChilds();
                     if (node3List != null && node3List.size() > 0) {
-                        TreeNode node2 = new TreeNode(new TreeParentItemHolder.IconTreeItem(childsBeanXX.getName())).setViewHolder(new TreeParentItemHolder(getContext()));
+                        TreeNode node2 = new TreeNode(new TreeParentItemHolder.IconTreeItem(childsBeanXX.getName())).setViewHolder(new TreeParentItemHolder(getContext(),TreeParentItemHolder.ORIGINAL));
                         node1.addChild(node2);
                         /**第三级*/
                         for (TreeDataEntity.DataBean.ChildsBeanXX.ChildsBeanX childsBeanX : node3List) {
                             List<TreeDataEntity.DataBean.ChildsBeanXX.ChildsBeanX.ChildsBean> node4List = childsBeanX.getChilds();
                             if (node4List != null && node4List.size() > 0) {
-                                TreeNode node3 = new TreeNode(new TreeParentItemHolder.IconTreeItem(childsBeanX.getName())).setViewHolder(new TreeParentItemHolder(getContext()));
+                                TreeNode node3 = new TreeNode(new TreeParentItemHolder.IconTreeItem(childsBeanX.getName())).setViewHolder(new TreeParentItemHolder(getContext(),TreeParentItemHolder.ORIGINAL));
                                 node2.addChild(node3);
                                 /**第四级*/
                                 for (TreeDataEntity.DataBean.ChildsBeanXX.ChildsBeanX.ChildsBean childsBean : node4List) {

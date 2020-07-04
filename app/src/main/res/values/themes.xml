@@ -40,6 +40,7 @@
 
     <style name="LauncherTheme" parent="AppTheme">
         <item name="android:background">@mipmap/splash_icon</item>
+        <!--<item name="android:background">@color/white</item>-->
     </style>
 
     <style name="AppTheme.Light" parent="AppTheme">

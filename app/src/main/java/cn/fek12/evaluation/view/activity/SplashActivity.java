@@ -1,6 +1,7 @@
 package cn.fek12.evaluation.view.activity;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
@@ -33,8 +34,15 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void onInitView() {
         //animationView(rlRoot);
-        startActivity(MainActivity.class);
-        finish();
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                startActivity(MainActivity.class);
+                finish();
+            }
+        }, 2000);//2秒后执行Runnable中的run方法
+
     }
 
     @Override
