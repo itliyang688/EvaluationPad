@@ -92,6 +92,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_5"
                 android:layout_toRightOf="@+id/label"
+                android:paddingRight="@dimen/dp_14"
                 android:layout_marginTop="@dimen/dp_11"
                 android:scrollbars="none" />
 

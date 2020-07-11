@@ -513,7 +513,7 @@ public class EvaluationDetailsActivity extends BaseActivity<EvaluationDetailsPre
 
     @Override
     public void loadTreeEmpty() {
-
+        layout.removeAllViews();
     }
 
     @Override

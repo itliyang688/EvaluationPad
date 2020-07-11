@@ -245,20 +245,23 @@ public class PrimarySchoolSynchroVideoActivity extends BaseActivity<SynchroVideo
             public void onClick(TreeNode node, Object value) {
                 AutoTreeChildItemHolder.IconTreeItem treeItem = (AutoTreeChildItemHolder.IconTreeItem) value;
                 String id = treeItem.id;
-                String parentId = treeItem.parentId;
-                String name = treeItem.text;
+                //String parentId = treeItem.parentId;
+                //String name = treeItem.text;
                 isFocusTreeNode(node, true);
+                if (selectNode != null) {
+                    isFocusTreeNode(selectNode, false);
+                }
                 if (!id.equals(checkId)) {
-                    if (selectNode != null) {
-                        isFocusTreeNode(selectNode, false);
-                    }
                     checkId = id;
                     selectNode = node;
-                    /**请求数据*/
-                    isLoadMore = false;
-                    currentPage = 1;
-                    initData();
+                }else{
+                    checkId = "";
+                    selectNode = null;
                 }
+                /**请求数据*/
+                isLoadMore = false;
+                currentPage = 1;
+                initData();
             }
         });
     }
@@ -482,7 +485,7 @@ public class PrimarySchoolSynchroVideoActivity extends BaseActivity<SynchroVideo
 
     @Override
     public void loadTreeEmpty() {
-
+        layout.removeAllViews();
     }
 
     @Override

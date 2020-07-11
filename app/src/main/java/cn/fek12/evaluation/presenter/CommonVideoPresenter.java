@@ -9,9 +9,8 @@ import com.fek12.basic.base.BasePresenter;
 import cn.fek12.evaluation.base.BaseObserver;
 import cn.fek12.evaluation.ent.ApiRetrofit;
 import cn.fek12.evaluation.ent.RxHelper;
-import cn.fek12.evaluation.impl.IRiseMiddleSchool;
-import cn.fek12.evaluation.impl.ISynchroVideoTree;
-import cn.fek12.evaluation.model.entity.GradeDictionaryListEntity;
+import cn.fek12.evaluation.impl.ICommonVideo;
+import cn.fek12.evaluation.impl.IMicroLessonMore;
 import cn.fek12.evaluation.model.entity.MicrolessonVideoEntity;
 import cn.fek12.evaluation.model.entity.SemesterEntity;
 import cn.fek12.evaluation.model.entity.SubjectEntity;
@@ -26,33 +25,10 @@ import cn.fek12.evaluation.model.entity.VideoMoreListEntity;
  * @Description:
  * @CreateDate: 2019/10/23 15:14
  */
-public class RiseMiddleSchoolPresenter extends BasePresenter<IRiseMiddleSchool.View> implements IRiseMiddleSchool{
+public class CommonVideoPresenter extends BasePresenter<ICommonVideo.View> implements ICommonVideo {
     private View infoView;
-    public RiseMiddleSchoolPresenter(@NonNull View view, Context activity) {
+    public CommonVideoPresenter(@NonNull View view, Context activity) {
         this.infoView = view;
-    }
-
-
-    @Override
-    public void initTreeData(Context context, String pageType, String grade, String semester, String subject, String textbook, String userId) {
-        ApiRetrofit.getInstance().getApiService().queryTreeData(pageType,grade,semester,subject,textbook,userId)
-                .compose(RxHelper.observableIO2Main(context))
-                .subscribe(new BaseObserver<TreeDataEntity>() {
-
-                    @Override
-                    public void onSuccess(TreeDataEntity entry) {
-                        if(entry.getState().equals("0")){
-                            infoView.loadTreeSuc(entry);
-                        }else{
-                            infoView.loadTreeEmpty();
-                        }
-                    }
-
-                    @Override
-                    public void onError(String msg) {
-                        infoView.loadTreeEmpty();
-                    }
-                });
     }
 
     @Override

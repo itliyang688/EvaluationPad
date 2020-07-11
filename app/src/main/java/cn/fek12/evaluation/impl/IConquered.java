@@ -8,7 +8,7 @@ import cn.fek12.evaluation.model.entity.ConqueredEntity;
 import cn.fek12.evaluation.model.entity.HomeEvaluationDeta;
 
 public interface IConquered {
-    void promoteDetail(Context context, String paperResultId );
+    void promoteDetail(Context context, String paperResultId);
     interface View extends BaseView {
         void loadSuc(ConqueredEntity entry);
         void loadEmpty();

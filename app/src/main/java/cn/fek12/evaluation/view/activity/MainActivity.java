@@ -1,5 +1,12 @@
 package cn.fek12.evaluation.view.activity;
 
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.IBinder;
+import android.os.RemoteException;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -8,7 +15,6 @@ import android.widget.ImageView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 import com.fek12.basic.base.BackFragmentInterface;
@@ -18,6 +24,8 @@ import com.fek12.basic.utils.toast.ToastUtils;
 import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
+import com.future_education.module_login.IUserData;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -25,18 +33,22 @@ import java.util.TimerTask;
 
 import butterknife.BindView;
 import cn.fek12.evaluation.R;
+import cn.fek12.evaluation.model.entity.StudentInfoEntity;
 import cn.fek12.evaluation.model.entity.TabEntity;
+import cn.fek12.evaluation.model.sharedPreferences.PrefUtilsData;
 import cn.fek12.evaluation.utils.AppUtils;
 import cn.fek12.evaluation.view.fragment.EvaluationContainerFragment;
-import cn.fek12.evaluation.view.fragment.EvaluationFragment;
 import cn.fek12.evaluation.view.fragment.MicroLessonContainerFragment;
 import cn.fek12.evaluation.view.fragment.MicroLessonFragment;
 import cn.fek12.evaluation.view.fragment.PresentationNewsFragment;
-import cn.fek12.evaluation.view.fragment.PrimarySchoolVideoFragment;
 import cn.fek12.evaluation.view.fragment.PromoteNewsFragment;
 import cn.fek12.evaluation.view.fragment.RecordFragment;
 
 public class MainActivity extends BaseActivity implements BackFragmentInterface {
+    private static boolean isExit = false;
+    private static final String TAG = "AIDL_Log";
+    private IUserData iUserData;
+    private boolean connected;
     private BaseFragment baseFragment;
     private String[] mTitles = {"测评", "报告", "微课", "提升", "记录"};
     @BindView(R.id.viewPage)
@@ -51,7 +63,6 @@ public class MainActivity extends BaseActivity implements BackFragmentInterface 
     private int[] mIconSelectIds = {
             R.mipmap.ic_bottom_evaluation_checked, R.mipmap.ic_bottom_report_checked,
             R.mipmap.ic_bottom_micro_class_checked, R.mipmap.ic_bottom_advance_checked, R.mipmap.ic_bottom_record_checked};
-    private int previousPos = 0;
 
     @Override
     public int setLayoutResource() {
@@ -60,6 +71,7 @@ public class MainActivity extends BaseActivity implements BackFragmentInterface 
 
     @Override
     protected void onInitView() {
+        bindService();
         for (int i = 0; i < mTitles.length; i++) {
             mTabEntities.add(new TabEntity(mTitles[i], mIconSelectIds[i], mIconUnselectIds[i]));
         }
@@ -74,23 +86,6 @@ public class MainActivity extends BaseActivity implements BackFragmentInterface 
         viewPage.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
         viewPage.setOffscreenPageLimit(5);
 
-    }
-
-    private EvaluationFragment evaluationFragment;
-    private FragmentTransaction fragmentTransaction;
-
-    public void showEvaluationFragment() {
-        fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        //如果所有的fragment都不为空的话，把所有的fragment都进行隐藏。最开始进入应用程序，fragment为空时，此方法不执行
-
-        if (evaluationFragment == null) {
-            evaluationFragment = new EvaluationFragment();
-            fragmentTransaction.add(R.id.fragment_container, evaluationFragment);
-        } else {
-            fragmentTransaction.setCustomAnimations(R.anim.slide_left_in, 0);
-            fragmentTransaction.show(evaluationFragment);
-        }
-        fragmentTransaction.commit();
     }
 
     @Override
@@ -119,7 +114,6 @@ public class MainActivity extends BaseActivity implements BackFragmentInterface 
 
         return super.dispatchTouchEvent(event);
     }
-
     private void initCommonTabLayout() {
         commonTabLayout.setTabData(mTabEntities);
         commonTabLayout.setOnTabSelectListener(new OnTabSelectListener() {
@@ -158,18 +152,6 @@ public class MainActivity extends BaseActivity implements BackFragmentInterface 
 
         viewPage.setCurrentItem(0);
         //enlargeAndreduction(previousPos,true);
-    }
-
-    private void enlargeAndreduction(int position,boolean isEnlarge){
-        ImageView imageView = commonTabLayout.getIconView(position);
-        Animation animation = null;
-        if(isEnlarge){
-            animation = AnimationUtils.loadAnimation(MainActivity.this,R.anim.anim_enlarge);
-        }else{
-            animation= AnimationUtils.loadAnimation(MainActivity.this,R.anim.anim_reduction);
-        }
-        animation.setFillAfter(true);
-        imageView.startAnimation(animation);
     }
 
 
@@ -214,13 +196,42 @@ public class MainActivity extends BaseActivity implements BackFragmentInterface 
                      }
              }
 
-    private static boolean isExit = false;
 
-    /*@Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(keyCode == KeyEvent.KEYCODE_BACK) {
-            exit();
-         }
-        return false;
-        }*/
+    private void bindService() {
+        Intent intent = new Intent();
+        intent.setPackage("com.future_education.launcher");
+        intent.setAction("com.future_education.launcher.aidlService");
+        boolean isSuc = bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+        Log.d(TAG, "bindService: "+ isSuc);
+    }
+
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            connected = true;
+            iUserData = IUserData.Stub.asInterface(service);
+            if(iUserData != null){
+                try {
+                    String studentInfo = iUserData.getStudentInfo();
+                    StudentInfoEntity entity = new Gson().fromJson(studentInfo, StudentInfoEntity.class);
+                    PrefUtilsData.setUserId(entity.getPer_id());
+                    PrefUtilsData.setPer_level(String.valueOf(entity.getPer_level()));
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            iUserData = null;
+            connected = false;
+        }
+    };
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unbindService(serviceConnection);
+    }
 }

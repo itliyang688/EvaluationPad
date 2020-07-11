@@ -61,7 +61,7 @@ public class RemedialPracticeWebActivity extends BaseActivity {
         //String url = "http://192.168.0.46/noc/html/SmallWork.html?userId=" + MyApplication.getMyApplication().getUserId() + "&subjectCategoryId=" + subjectCategoryId;
         //String url = "http://218.245.6.132:11111/html/SmallWork.html?userId=" + MyApplication.getMyApplication().getUserId() + "&subjectCategoryId=" + subjectCategoryId;
         showLoading();
-        String url = Configs.SMALLWORK + "userId=" + MyApplication.getMyApplication().getUserId() + "&subjectCategoryId=" + subjectCategoryId;
+        String url = Configs.SMALLWORK + "userId=" + MyApplication.getMyApplication().getUserId() + "&subjectCategoryNum=" + subjectCategoryId;
         webView.loadUrl(url);
 
         webView.setWebViewClient(new WebViewClient() {

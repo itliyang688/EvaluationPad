@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -11,12 +12,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.fek12.evaluation.R;
+import cn.fek12.evaluation.model.entity.MicrolessonVideoEntity;
 
 
 public class CommonVideoAdapter extends RecyclerView.Adapter<CommonVideoAdapter.ExerciseNotesHolder> {
     private OnItemClickListener mOnItemClickListener = null;
 
-    private List mList = new ArrayList();
+    private List<MicrolessonVideoEntity.DataBean.RecordsBean> mList = new ArrayList();
 
     public interface OnItemClickListener {
         void onItemClick(int position);
@@ -33,7 +35,7 @@ public class CommonVideoAdapter extends RecyclerView.Adapter<CommonVideoAdapter.
         this.context = context;
     }
 
-    public void notifyChanged(List list,boolean isAdd) {
+    public void notifyChanged(List<MicrolessonVideoEntity.DataBean.RecordsBean> list,boolean isAdd) {
         if(isAdd){
             mList.addAll(list);
         }else{
@@ -44,7 +46,7 @@ public class CommonVideoAdapter extends RecyclerView.Adapter<CommonVideoAdapter.
 
     @Override
     public int getItemCount() {
-        return 20;
+        return mList.size();
     }
 
     @Override
@@ -69,16 +71,17 @@ public class CommonVideoAdapter extends RecyclerView.Adapter<CommonVideoAdapter.
     class ExerciseNotesHolder extends RecyclerView.ViewHolder {
 
         private View itemView;
+        private TextView tvName;
 
 
         public ExerciseNotesHolder(View itemView) {
             super(itemView);
             this.itemView = itemView;
-
+            tvName = this.itemView.findViewById(R.id.tvName);
         }
 
         public void setData(final int position) {
-
+            tvName.setText(mList.get(position).getVideoName());
         }
     }
 }

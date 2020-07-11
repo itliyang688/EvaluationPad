@@ -161,9 +161,7 @@ public class PromoteFragment extends BaseFragment<PresentationPresenter> impleme
                 @Override
                 public void onSelectItme(int pos) {
                     int paperResultId = daylist.get(pos).getPaperResultId();
-                    Intent intent = new Intent(getContext(), ConqueredActivity.class);
-                    intent.putExtra("paperResultId",String.valueOf(paperResultId));
-                    startActivity(intent);
+                    startConquered(paperResultId);
                 }
             }));
         }
@@ -174,9 +172,7 @@ public class PromoteFragment extends BaseFragment<PresentationPresenter> impleme
                 @Override
                 public void onSelectItme(int pos) {
                     int paperResultId = aweeklist.get(pos).getPaperResultId();
-                    Intent intent = new Intent(getContext(), ConqueredActivity.class);
-                    intent.putExtra("paperResultId",String.valueOf(paperResultId));
-                    startActivity(intent);
+                    startConquered(paperResultId);
                 }
             }));
         }
@@ -207,9 +203,7 @@ public class PromoteFragment extends BaseFragment<PresentationPresenter> impleme
                             @Override
                             public void onSelectItme(int pos) {
                                 int paperResultId = earlierList.get(pos).getPaperResultId();
-                                Intent intent = new Intent(getContext(), ConqueredActivity.class);
-                                intent.putExtra("paperResultId",String.valueOf(paperResultId));
-                                startActivity(intent);
+                                startConquered(paperResultId);
                             }
                         }));
             }
@@ -217,6 +211,12 @@ public class PromoteFragment extends BaseFragment<PresentationPresenter> impleme
         leftAdapter.notifyDataSetChanged();
         refreshLayout.finishLoadmore();
         refreshLayout.finishRefreshing();
+    }
+
+    private void startConquered(int paperResultId){
+        Intent intent = new Intent(getContext(), ConqueredActivity.class);
+        intent.putExtra("paperResultId",String.valueOf(paperResultId));
+        startActivity(intent);
     }
 
     @Override

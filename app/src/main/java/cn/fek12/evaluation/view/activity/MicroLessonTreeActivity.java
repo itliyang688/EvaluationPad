@@ -487,7 +487,7 @@ public class MicroLessonTreeActivity extends BaseActivity<MicroLessonTreePresent
 
     @Override
     public void loadTreeEmpty() {
-
+        layout.removeAllViews();
     }
 
     @Override

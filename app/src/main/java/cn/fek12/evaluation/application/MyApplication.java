@@ -43,84 +43,12 @@ public class MyApplication extends BaseApplication {
         //int hight = AppUtils.getNavigationBarHeight(getApplicationContext());
         //int hight1 = AppUtils.getStatusBarHeight(getApplicationContext());
         //Log.e("hight::::::",hight+"-------"+hight1);
-        bindService();
     }
 
-    @Override
-    public void onTerminate() {
-        super.onTerminate();
-        // 使用通知功能后，需要解绑，因onServiceDisconnected已经将iUserData置空，需要放在unbindService前面
-        if (iUserData != null && iUserData.asBinder().isBinderAlive()) {
-            try {
-                iUserData.unregisterListener(onUserDataUpdateListener);
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-        }
-        unbindService(serviceConnection);
+    public String getUserId() {
+        //return PrefUtilsData.getUserId();
+        return userId;
     }
-
-    private void bindService() {
-        Intent intent = new Intent();
-        intent.setPackage("com.future_education.launcher");
-        intent.setAction("com.future_education.launcher.aidlService");
-        bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
-    }
-
-    private ServiceConnection serviceConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            connected = true;
-            iUserData = IUserData.Stub.asInterface(service);
-            if(iUserData != null){
-                try {
-                    String studentInfo = iUserData.getStudentInfo();
-                    StudentInfoEntity entity = new Gson().fromJson(studentInfo, StudentInfoEntity.class);
-                    PrefUtilsData.setUserId(entity.getPer_id());
-                    PrefUtilsData.setPer_level(String.valueOf(entity.getPer_level()));
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
-            }
-            //如果不使用通知功能，以下代码不是必须的
-            try {
-                iUserData.registerListener(onUserDataUpdateListener);
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            iUserData = null;
-            connected = false;
-        }
-    };
-
-    //如果不使用通知功能，以下代码不是必须的
-    private OnUserDataUpdateListener onUserDataUpdateListener = new OnUserDataUpdateListener.Stub() {
-        @Override
-        public void onLoginStateUpdate(boolean isLogin) throws RemoteException {
-            Log.d(TAG, "onLoginStateUpdate: "+ isLogin);
-        }
-
-        @Override
-        public void onTokenUpdate(String token) throws RemoteException {
-            Log.d(TAG, "onTokenUpdate: "+ token);
-        }
-
-        @Override
-        public void onLoginInfoUpdate(String loginInfo) throws RemoteException {
-            Log.d(TAG, "onLoginInfoUpdate: "+loginInfo);
-        }
-
-        @Override
-        public void onStudentInfoUpdate(String studentInfo) throws RemoteException {
-            Log.d(TAG, "onStudentInfoUpdate: "+studentInfo);
-        }
-    };
-
-
 
     /**读取本地用户信息*/
     private void loadUserInfo(){
@@ -131,11 +59,6 @@ public class MyApplication extends BaseApplication {
         UserInfoEntity entity = new Gson().fromJson(infoDete, UserInfoEntity.class);
         PrefUtilsData.setUserId(entity.getRoot().getAccount().getUserId());
         PrefUtilsData.setPer_level(String.valueOf(entity.getRoot().getAccount().getPer_level()));
-    }
-
-    public String getUserId() {
-        //return PrefUtilsData.getUserId();
-        return userId;
     }
 
     public void setUserId(String userId) {

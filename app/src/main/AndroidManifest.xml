@@ -144,6 +144,9 @@
         <activity
             android:name=".view.activity.CommonVideoActivity"
             android:screenOrientation="landscape" />
+        <activity
+            android:name=".view.activity.MicrolessonVideoPlayActivity"
+            android:screenOrientation="landscape" />
     </application>
 
 </manifest>

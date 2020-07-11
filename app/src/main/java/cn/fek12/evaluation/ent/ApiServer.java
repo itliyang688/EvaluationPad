@@ -3,6 +3,7 @@ package cn.fek12.evaluation.ent;
 import cn.fek12.evaluation.model.entity.AWeekEntity;
 import cn.fek12.evaluation.model.entity.AssessmentIndexPaperResp;
 import cn.fek12.evaluation.model.entity.CheckPaperNameEntity;
+import cn.fek12.evaluation.model.entity.CollectionEntity;
 import cn.fek12.evaluation.model.entity.CollectionListEntity;
 import cn.fek12.evaluation.model.entity.CommonEntity;
 import cn.fek12.evaluation.model.entity.ConqueredEntity;
@@ -13,6 +14,7 @@ import cn.fek12.evaluation.model.entity.GradeDictionaryListEntity;
 import cn.fek12.evaluation.model.entity.HomeEvaluationDeta;
 import cn.fek12.evaluation.model.entity.MicroLessonEnetity;
 import cn.fek12.evaluation.model.entity.MicroLessonTreeEntity;
+import cn.fek12.evaluation.model.entity.MicrolessonVideoEntity;
 import cn.fek12.evaluation.model.entity.PaperTypeListResp;
 import cn.fek12.evaluation.model.entity.PracticeListEntity;
 import cn.fek12.evaluation.model.entity.RecordsEntitiy;
@@ -57,7 +59,7 @@ public interface ApiServer {
      */
     @FormUrlEncoded
     @POST("promote/promoteDetail")
-    Observable<ConqueredEntity> promoteDetail(@Field("paperResultId") String paperResultId );
+    Observable<ConqueredEntity> promoteDetail(@Field("paperResultId") String paperResultId);
 
     /**
      * 相关视频列表页面
@@ -315,5 +317,23 @@ public interface ApiServer {
      */
     @GET("/practice/list/{userId}/{structId}/{date}")
     Observable<PracticeListEntity> getPracticeList(@Path("userId") String userId, @Path("structId") String structId, @Path("date") String date);
+
+    /**
+     * 微课小学模块
+     */
+    @GET("nocVideo/queryCoursePackVideo")
+    Observable<MicrolessonVideoEntity> queryCoursePackVideo(@Query("coursePackType")String coursePackType,@Query("knowledgePointId") String knowledgePointId, @Query("userId")String userId, @Query("current")String current, @Query("size")String size);
+
+    /**
+     * 收藏、取消收藏
+     */
+    @FormUrlEncoded
+    @POST("nocVideoCollection/addOrCancelVideoCollection")
+    Observable<CollectionEntity> addOrCancelVideoCollection(
+                                        @Field("videoId") String videoId,
+                                        @Field("status") String status ,
+                                        @Field("userId") String userId);
+
+
 }
 

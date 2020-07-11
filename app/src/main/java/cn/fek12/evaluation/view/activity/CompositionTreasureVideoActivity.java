@@ -25,12 +25,14 @@ import butterknife.OnClick;
 import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.application.MyApplication;
 import cn.fek12.evaluation.impl.IRiseMiddleSchool;
+import cn.fek12.evaluation.model.entity.MicrolessonVideoEntity;
 import cn.fek12.evaluation.model.entity.TreeDataEntity;
 import cn.fek12.evaluation.model.entity.VideoMoreListEntity;
 import cn.fek12.evaluation.model.holder.AutoTreeChildItemHolder;
 import cn.fek12.evaluation.model.holder.TreeParentItemHolder;
 import cn.fek12.evaluation.presenter.RiseMiddleSchoolPresenter;
 import cn.fek12.evaluation.utils.FastDFSUtil;
+import cn.fek12.evaluation.view.adapter.PrimarySchoolVideoAdapter;
 import cn.fek12.evaluation.view.adapter.VideoAdapter;
 import cn.fek12.evaluation.view.widget.MultipleStatusView;
 
@@ -41,7 +43,7 @@ import cn.fek12.evaluation.view.widget.MultipleStatusView;
  * @Description:
  * @CreateDate: 2020/7/2 13:14
  */
-public class CompositionTreasureVideoActivity extends BaseActivity<RiseMiddleSchoolPresenter> implements IRiseMiddleSchool.View, VideoAdapter.OnItemClickListener {
+public class CompositionTreasureVideoActivity extends BaseActivity<RiseMiddleSchoolPresenter> implements IRiseMiddleSchool.View, PrimarySchoolVideoAdapter.OnItemClickListener {
     @BindView(R.id.layout)
     LinearLayout layout;
     @BindView(R.id.recyclerView)
@@ -53,13 +55,12 @@ public class CompositionTreasureVideoActivity extends BaseActivity<RiseMiddleSch
     private TreeDataEntity treeDataEntity;
     private String checkId = null;
     private TreeNode selectNode;
-    private VideoAdapter videoAdapter;
+    private PrimarySchoolVideoAdapter videoAdapter;
     private String gradeId;
     private String subjectId;
     private String semesterId;
     private String textbookId;
-
-    private List<VideoMoreListEntity.DataBean> mList;
+    private List<MicrolessonVideoEntity.DataBean.RecordsBean> mList;
 
     private int currentPage = 1;
     private boolean isLoadMore = false;
@@ -81,9 +82,9 @@ public class CompositionTreasureVideoActivity extends BaseActivity<RiseMiddleSch
         mPresenter.initTreeData(CompositionTreasureVideoActivity.this, paperType, gradeId, semesterId, subjectId, textbookId, MyApplication.getMyApplication().getUserId());
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        videoAdapter = new VideoAdapter(CompositionTreasureVideoActivity.this);
+        videoAdapter = new PrimarySchoolVideoAdapter(CompositionTreasureVideoActivity.this);
         videoAdapter.setOnItemClickListener(this);
-        GridLayoutManager manager = new GridLayoutManager(getContext(), 5);
+        GridLayoutManager manager = new GridLayoutManager(getContext(), 4);
         recyclerView.setLayoutManager(manager);
         recyclerView.setAdapter(videoAdapter);
 
@@ -95,12 +96,17 @@ public class CompositionTreasureVideoActivity extends BaseActivity<RiseMiddleSch
 
         refreshLayout.setEnableLoadmore(false);
         refreshLayout.setEnableRefresh(false);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         initData();
     }
 
     private void initData() {
         loadView.showLoading();
-        mPresenter.queryPaperList(this, gradeId, subjectId, textbookId, semesterId, String.valueOf(currentPage), checkId, checkId, String.valueOf(1));
+        mPresenter.queryVideoList(CompositionTreasureVideoActivity.this,"3","",MyApplication.getMyApplication().getUserId(),String.valueOf(currentPage),"12");
     }
 
     private RefreshListenerAdapter refreshListenerAdapter = new RefreshListenerAdapter() {
@@ -266,35 +272,45 @@ public class CompositionTreasureVideoActivity extends BaseActivity<RiseMiddleSch
     }
 
     @Override
-    public void loadVideoTreeListSuc(VideoMoreListEntity entry) {
-        mList = entry.getData();
-        if (mList != null && mList.size() > 0) {
-            loadView.showContent();
-            videoAdapter.notifyChanged(mList, false);
-        } else {
-            loadView.showEmpty();
-        }
+    public void loadFail(String msg) {
+        loadView.showEmpty();
+        refreshLayout.finishLoadmore();
+        refreshLayout.finishRefreshing();
     }
 
-
     @Override
-    public void loadFail(String msg) {
-
+    public void loadVideoEmpty() {
+        loadView.showEmpty();
+        refreshLayout.finishLoadmore();
+        refreshLayout.finishRefreshing();
     }
 
     @Override
     public void loadTreeEmpty() {
-
+        layout.removeAllViews();
     }
 
     @Override
-    public void loadDictionaryEmpty() {
+    public void loadVideoSuc(MicrolessonVideoEntity entry) {
+        if(isLoadMore){
+            mList.addAll(entry.getData().getRecords());
+        }else{
+            mList = entry.getData().getRecords();
+        }
+        if(entry.getData().getPages() == 0){
+            loadView.showEmpty();
+            return;
+        }
+        loadView.showContent();
+        if(entry.getData().getPages() > currentPage){
+            refreshLayout.setEnableLoadmore(true);
+        }else{
+            refreshLayout.setEnableLoadmore(false);
+        }
 
-    }
-
-    @Override
-    public void loadVideoTreeListEmpty() {
-        loadView.showEmpty();
+        if(mList != null && mList.size() > 0){
+            videoAdapter.notifyChanged(mList,isLoadMore);
+        }
         refreshLayout.finishLoadmore();
         refreshLayout.finishRefreshing();
     }
@@ -305,7 +321,7 @@ public class CompositionTreasureVideoActivity extends BaseActivity<RiseMiddleSch
     }
 
     private void startSpecialVideo(int pos, Class cla) {
-        String path = "";
+        /*String path = "";
         try {
             path = FastDFSUtil.generateSourceUrl(mList.get(pos).getAddressUrl());
         } catch (Exception e) {
@@ -322,7 +338,7 @@ public class CompositionTreasureVideoActivity extends BaseActivity<RiseMiddleSch
         intent.putExtra("describe", mList.get(pos).getIntroduction());
         intent.putExtra("isCollection", mList.get(pos).getIsCollection());
         intent.putExtra("playScheduleTime", mList.get(pos).getPlayScheduleTime());
-        startActivity(intent);
+        startActivity(intent);*/
     }
 
     @OnClick({R.id.iv_left_back})

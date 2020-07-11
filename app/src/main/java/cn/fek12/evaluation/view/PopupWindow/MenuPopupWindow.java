@@ -140,10 +140,10 @@ public class MenuPopupWindow extends PopupWindow {
 
 		evaluationList = new ArrayList<>();
 		ChildSectionEntity sectionEntity = new ChildSectionEntity();
-		sectionEntity.setId(1);
+		sectionEntity.setId("1");
 		sectionEntity.setName("全部");
 		ChildSectionEntity sectionEntity1 = new ChildSectionEntity();
-		sectionEntity1.setId(2);
+		sectionEntity1.setId("2");
 		sectionEntity1.setName("自主测");
 		evaluationList.add(sectionEntity);
 		evaluationList.add(sectionEntity1);

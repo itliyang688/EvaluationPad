@@ -14,14 +14,20 @@ import com.lcodecore.tkrefreshlayout.Footer.BottomProgressView;
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.fek12.evaluation.R;
+import cn.fek12.evaluation.application.MyApplication;
+import cn.fek12.evaluation.model.entity.MicrolessonVideoEntity;
+import cn.fek12.evaluation.presenter.CommonVideoPresenter;
+import cn.fek12.evaluation.utils.FastDFSUtil;
 import cn.fek12.evaluation.view.adapter.CommonVideoAdapter;
 import cn.fek12.evaluation.view.widget.MultipleStatusView;
 
-public class CommonVideoActivity extends BaseActivity implements CommonVideoAdapter.OnItemClickListener{
+public class CommonVideoActivity extends BaseActivity<CommonVideoPresenter> implements CommonVideoPresenter.View,CommonVideoAdapter.OnItemClickListener{
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
     @BindView(R.id.refreshLayout)
@@ -44,6 +50,8 @@ public class CommonVideoActivity extends BaseActivity implements CommonVideoAdap
     private int currentPage = 1;
     private boolean isLoadMore = false;
     private CommonVideoAdapter commonVideoAdapter;
+    private List<MicrolessonVideoEntity.DataBean.RecordsBean> mList;
+    private int coursePackType = 0;
 
     @Override
     public int setLayoutResource() {
@@ -54,6 +62,15 @@ public class CommonVideoActivity extends BaseActivity implements CommonVideoAdap
     protected void onInitView() {
         Intent intent = getIntent();
         pageType = intent.getIntExtra("pageType", 0);
+        if(pageType == 1){
+            coursePackType = 2;//小学奥数
+        }else if(pageType == 2){
+            coursePackType = 5;//课外阅读
+        }else if(pageType == 3){
+            coursePackType = 4;//国学经典
+        }else if(pageType == 4){
+            coursePackType = 6;//手工坊
+        }
         initDataView();
 
         refreshLayout.setEnableLoadmore(false);
@@ -63,7 +80,7 @@ public class CommonVideoActivity extends BaseActivity implements CommonVideoAdap
         refreshLayout.setBottomView(bottomProgressView);
 
         refreshLayout.setEnableLoadmore(false);
-        refreshLayout.setEnableRefresh(false);
+        //refreshLayout.setEnableRefresh(false);
 
         commonVideoAdapter = new CommonVideoAdapter(this);
         commonVideoAdapter.setOnItemClickListener(this);
@@ -76,18 +93,31 @@ public class CommonVideoActivity extends BaseActivity implements CommonVideoAdap
         public void onLoadMore(final TwinklingRefreshLayout refreshLayout) {
             isLoadMore = true;
             currentPage += 1;
+            mPresenter.queryVideoList(CommonVideoActivity.this,String.valueOf(coursePackType),"", MyApplication.getMyApplication().getUserId(),String.valueOf(currentPage),"12");
         }
 
         @Override
         public void onRefresh(final TwinklingRefreshLayout refreshLayout) {
             isLoadMore = false;
             currentPage = 1;
+            mPresenter.queryVideoList(CommonVideoActivity.this,String.valueOf(coursePackType),"", MyApplication.getMyApplication().getUserId(),String.valueOf(currentPage),"12");
         }
     };
 
     @Override
-    protected void onLoadData() {
+    protected void onResume() {
+        super.onResume();
+        loadView.showLoading();
+        mPresenter.queryVideoList(CommonVideoActivity.this,String.valueOf(coursePackType),"", MyApplication.getMyApplication().getUserId(),String.valueOf(currentPage),"12");
 
+    }
+
+    @Override
+    protected void onLoadData() {
+    }
+    @Override
+    protected CommonVideoPresenter onInitLogicImpl() {
+        return new CommonVideoPresenter(this, getContext());
     }
 
     @Override
@@ -129,6 +159,58 @@ public class CommonVideoActivity extends BaseActivity implements CommonVideoAdap
 
     @Override
     public void onItemClick(int position) {
+        String path = "";
+        try {
+            path = FastDFSUtil.generateSourceUrl(mList.get(position).getVideoUrl());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Intent intent = new Intent(CommonVideoActivity.this,MicrolessonVideoPlayActivity.class);
+        intent.putExtra("pathUrl",path);
+        intent.putExtra("videoName",mList.get(position).getVideoName());
+        intent.putExtra("videoId",mList.get(position).getVideoId());
+        intent.putExtra("imgUrl",mList.get(position).getImgUrl());
+        intent.putExtra("playScheduleTime",mList.get(position).getPlayScheduleTime());
+        intent.putExtra("isCollection",mList.get(position).getIsCollection());
+        CommonVideoActivity.this.startActivity(intent);
+    }
 
+    @Override
+    public void loadVideoSuc(MicrolessonVideoEntity entry) {
+        if(isLoadMore){
+            mList.addAll(entry.getData().getRecords());
+        }else{
+            mList = entry.getData().getRecords();
+        }
+        if(entry.getData().getPages() == 0){
+            loadView.showEmpty();
+            return;
+        }
+        loadView.showContent();
+        if(entry.getData().getPages() > currentPage){
+            refreshLayout.setEnableLoadmore(true);
+        }else{
+            refreshLayout.setEnableLoadmore(false);
+        }
+
+        if(mList != null && mList.size() > 0){
+            commonVideoAdapter.notifyChanged(mList,isLoadMore);
+        }
+        refreshLayout.finishLoadmore();
+        refreshLayout.finishRefreshing();
+    }
+
+    @Override
+    public void loadFail(String msg) {
+        loadView.showEmpty();
+        refreshLayout.finishLoadmore();
+        refreshLayout.finishRefreshing();
+    }
+
+    @Override
+    public void loadVideoEmpty() {
+        loadView.showEmpty();
+        refreshLayout.finishLoadmore();
+        refreshLayout.finishRefreshing();
     }
 }

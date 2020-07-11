@@ -30,6 +30,7 @@ import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.application.MyApplication;
 import cn.fek12.evaluation.impl.IRiseMiddleSchool;
 import cn.fek12.evaluation.model.entity.ChildSectionEntity;
+import cn.fek12.evaluation.model.entity.MicrolessonVideoEntity;
 import cn.fek12.evaluation.model.entity.SubjectEntity;
 import cn.fek12.evaluation.model.entity.TextbookChildEntity;
 import cn.fek12.evaluation.model.entity.TreeDataEntity;
@@ -39,6 +40,7 @@ import cn.fek12.evaluation.model.holder.TreeParentItemHolder;
 import cn.fek12.evaluation.presenter.RiseMiddleSchoolPresenter;
 import cn.fek12.evaluation.utils.AppUtils;
 import cn.fek12.evaluation.utils.FastDFSUtil;
+import cn.fek12.evaluation.view.adapter.PrimarySchoolVideoAdapter;
 import cn.fek12.evaluation.view.adapter.VideoAdapter;
 import cn.fek12.evaluation.view.widget.MultipleStatusView;
 
@@ -49,7 +51,7 @@ import cn.fek12.evaluation.view.widget.MultipleStatusView;
  * @Description:
  * @CreateDate: 2020/7/2 13:14
  */
-public class RiseMiddleSchoolVideoActivity extends BaseActivity<RiseMiddleSchoolPresenter> implements IRiseMiddleSchool.View, VideoAdapter.OnItemClickListener {
+public class RiseMiddleSchoolVideoActivity extends BaseActivity<RiseMiddleSchoolPresenter> implements IRiseMiddleSchool.View, PrimarySchoolVideoAdapter.OnItemClickListener {
     @BindView(R.id.layout)
     LinearLayout layout;
     @BindView(R.id.recyclerView)
@@ -75,14 +77,14 @@ public class RiseMiddleSchoolVideoActivity extends BaseActivity<RiseMiddleSchool
     private TreeDataEntity treeDataEntity;
     private String checkId = null;
     private TreeNode selectNode;
-    private VideoAdapter videoAdapter;
+    private PrimarySchoolVideoAdapter videoAdapter;
     private int tagPos;
     private String gradeId;
     private String subjectId;
     private String semesterId;
     private String textbookId;
 
-    private List<VideoMoreListEntity.DataBean> mList;
+    private List<MicrolessonVideoEntity.DataBean.RecordsBean> mList;
 
     private int currentPage = 1;
     private boolean isLoadMore = false;
@@ -107,7 +109,7 @@ public class RiseMiddleSchoolVideoActivity extends BaseActivity<RiseMiddleSchool
         mPresenter.initTreeData(RiseMiddleSchoolVideoActivity.this, paperType, gradeId, semesterId, subjectId, textbookId, MyApplication.getMyApplication().getUserId());
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        videoAdapter = new VideoAdapter(RiseMiddleSchoolVideoActivity.this);
+        videoAdapter = new PrimarySchoolVideoAdapter(RiseMiddleSchoolVideoActivity.this);
         videoAdapter.setOnItemClickListener(this);
         GridLayoutManager manager = new GridLayoutManager(getContext(), 5);
         recyclerView.setLayoutManager(manager);
@@ -121,12 +123,17 @@ public class RiseMiddleSchoolVideoActivity extends BaseActivity<RiseMiddleSchool
 
         refreshLayout.setEnableLoadmore(false);
         refreshLayout.setEnableRefresh(false);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         initData();
     }
 
     private void initData() {
         loadView.showLoading();
-        mPresenter.queryPaperList(this, gradeId, subjectId, textbookId, semesterId, String.valueOf(currentPage), checkId, checkId, String.valueOf(1));
+        mPresenter.queryVideoList(this,"3","",MyApplication.getMyApplication().getUserId(),String.valueOf(currentPage),"12");
     }
 
     private RefreshListenerAdapter refreshListenerAdapter = new RefreshListenerAdapter() {
@@ -293,36 +300,47 @@ public class RiseMiddleSchoolVideoActivity extends BaseActivity<RiseMiddleSchool
         }
     }
 
-    @Override
-    public void loadVideoTreeListSuc(VideoMoreListEntity entry) {
-        mList = entry.getData();
-        if (mList != null && mList.size() > 0) {
-            loadView.showContent();
-            videoAdapter.notifyChanged(mList, false);
-        } else {
-            loadView.showEmpty();
-        }
-    }
-
 
     @Override
     public void loadFail(String msg) {
+        loadView.showEmpty();
+        refreshLayout.finishLoadmore();
+        refreshLayout.finishRefreshing();
+    }
 
+    @Override
+    public void loadVideoEmpty() {
+        loadView.showEmpty();
+        refreshLayout.finishLoadmore();
+        refreshLayout.finishRefreshing();
     }
 
     @Override
     public void loadTreeEmpty() {
-
+        layout.removeAllViews();
     }
 
     @Override
-    public void loadDictionaryEmpty() {
+    public void loadVideoSuc(MicrolessonVideoEntity entry) {
+        if(isLoadMore){
+            mList.addAll(entry.getData().getRecords());
+        }else{
+            mList = entry.getData().getRecords();
+        }
+        if(entry.getData().getPages() == 0){
+            loadView.showEmpty();
+            return;
+        }
+        loadView.showContent();
+        if(entry.getData().getPages() > currentPage){
+            refreshLayout.setEnableLoadmore(true);
+        }else{
+            refreshLayout.setEnableLoadmore(false);
+        }
 
-    }
-
-    @Override
-    public void loadVideoTreeListEmpty() {
-        loadView.showEmpty();
+        if(mList != null && mList.size() > 0){
+            videoAdapter.notifyChanged(mList,isLoadMore);
+        }
         refreshLayout.finishLoadmore();
         refreshLayout.finishRefreshing();
     }
@@ -333,7 +351,7 @@ public class RiseMiddleSchoolVideoActivity extends BaseActivity<RiseMiddleSchool
     }
 
     private void startSpecialVideo(int pos, Class cla) {
-        String path = "";
+       /* String path = "";
         try {
             path = FastDFSUtil.generateSourceUrl(mList.get(pos).getAddressUrl());
         } catch (Exception e) {
@@ -350,7 +368,7 @@ public class RiseMiddleSchoolVideoActivity extends BaseActivity<RiseMiddleSchool
         intent.putExtra("describe", mList.get(pos).getIntroduction());
         intent.putExtra("isCollection", mList.get(pos).getIsCollection());
         intent.putExtra("playScheduleTime", mList.get(pos).getPlayScheduleTime());
-        startActivity(intent);
+        startActivity(intent);*/
     }
 
     @OnClick({R.id.iv_left_back,R.id.llTitle, R.id.tvSelect1, R.id.tvSelect2, R.id.tvSelect3})

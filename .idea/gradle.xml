@@ -1,15 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="GradleMigrationSettings" migrationVersion="1" />
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
-        <compositeConfiguration>
-          <compositeBuild compositeDefinitionSource="SCRIPT" />
-        </compositeConfiguration>
+        <option name="delegatedBuild" value="false" />
+        <option name="testRunner" value="PLATFORM" />
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/basic" />
+            <option value="$PROJECT_DIR$/calendar" />
+            <option value="$PROJECT_DIR$/expandablerecyclerview" />
+            <option value="$PROJECT_DIR$/jiaozivideoplayer" />
+            <option value="$PROJECT_DIR$/stickyheaders" />
+            <option value="$PROJECT_DIR$/tagLibrary" />
+            <option value="$PROJECT_DIR$/viewpagerlib" />
+            <option value="$PROJECT_DIR$/xclChartsLib" />
+          </set>
+        </option>
         <option name="resolveModulePerSourceSet" value="false" />
-        <option name="testRunner" value="PLATFORM" />
       </GradleProjectSettings>
     </option>
   </component>
