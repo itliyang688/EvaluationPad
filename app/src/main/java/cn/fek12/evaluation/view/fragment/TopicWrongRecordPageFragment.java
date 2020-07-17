@@ -1,9 +1,13 @@
 package cn.fek12.evaluation.view.fragment;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
+import android.view.WindowManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -152,7 +156,7 @@ public class TopicWrongRecordPageFragment extends BaseFragment {
                 startDateDialog.show();
                 break;
             case R.id.llSubject:
-                subjectPopupWindow = new SubjectPopupWindow(getContext(), new SubjectPopupWindow.OnSelectItmeListener() {
+                subjectPopupWindow = new SubjectPopupWindow(getActivity(), new SubjectPopupWindow.OnSelectItmeListener() {
                     @Override
                     public void onSelectItme(String subjectId, String subjectName) {
                         //loadView.showLoading();
@@ -166,13 +170,20 @@ public class TopicWrongRecordPageFragment extends BaseFragment {
                 });
                 AppUtils.fitPopupWindowOverStatusBar(subjectPopupWindow, true);
                 ivArrow.setImageResource(R.mipmap.rise_icon);
-                subjectPopupWindow.showAsDropDown(llContainSubject, -155, 0);
+                //subjectPopupWindow.showAsDropDown(llContainSubject, -155, 0);
+                subjectPopupWindow.showAtLocation(llSubject,Gravity.CLIP_VERTICAL,-20,20);
                 subjectPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
                     @Override
                     public void onDismiss() {
+                        //backgroundAlpha(1f);
                         ivArrow.setImageResource(R.mipmap.lower_icon);
                     }
                 });
+
+                subjectPopupWindow.setFocusable(true);
+                subjectPopupWindow.setBackgroundDrawable(new BitmapDrawable());
+                //backgroundAlpha(0.5f);
+
 
                 break;
             case R.id.llEndDate:
@@ -196,5 +207,17 @@ public class TopicWrongRecordPageFragment extends BaseFragment {
                 endDateDialog.show();
                 break;
         }
+    }
+
+    /**
+     * 设置添加屏幕的背景透明度
+     * @param bgAlpha
+     */
+    public void backgroundAlpha(float bgAlpha)
+    {
+        activity = (Activity) mContext;
+        WindowManager.LayoutParams lp = activity.getWindow().getAttributes();
+        lp.alpha = bgAlpha; //0.0-1.0
+        activity.getWindow().setAttributes(lp);
     }
 }

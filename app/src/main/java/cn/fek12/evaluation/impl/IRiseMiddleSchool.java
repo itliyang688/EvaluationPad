@@ -13,7 +13,7 @@ import cn.fek12.evaluation.model.entity.TreeDataEntity;
 import cn.fek12.evaluation.model.entity.VideoMoreListEntity;
 
 public interface IRiseMiddleSchool {
-    void initTreeData(Context context, String pageType, String grade, String semester, String subject, String textbook, String userId);
+    void initTreeData(Context context, String type);
     void queryVideoList(Context context,String coursePackType, String knowledgePointId,String userId,String current,String size);
     interface View extends BaseView {
         void loadTreeSuc(TreeDataEntity entry);

@@ -18,7 +18,7 @@
             android:layout_width="@dimen/dp_122"
             android:layout_height="@dimen/dp_92"
             zhy:borderRadius="10dp"
-            android:scaleType="centerCrop"
+            android:scaleType="fitXY"
             zhy:type="round"
             android:src="@mipmap/empty_bg"/>
         <ImageView

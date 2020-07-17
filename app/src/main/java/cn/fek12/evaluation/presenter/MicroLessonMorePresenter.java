@@ -12,6 +12,7 @@ import cn.fek12.evaluation.ent.RxHelper;
 import cn.fek12.evaluation.impl.IEvaluationDetails;
 import cn.fek12.evaluation.impl.IMicroLessonMore;
 import cn.fek12.evaluation.model.entity.EvaluationListEntity;
+import cn.fek12.evaluation.model.entity.MicroLessonPageEnetity;
 import cn.fek12.evaluation.model.entity.SemesterEntity;
 import cn.fek12.evaluation.model.entity.SubjectEntity;
 import cn.fek12.evaluation.model.entity.TextbookEntity;
@@ -122,57 +123,13 @@ public class MicroLessonMorePresenter extends BasePresenter<IMicroLessonMore.Vie
     }
 
     @Override
-    public void recommendList(Context context, String grade, String subject, String textbook, String semester, String userId, String type,String currentPage) {
-        ApiRetrofit.getInstance().getApiService().recommendMoreList(grade,semester,subject,textbook,type,userId)
+    public void moreVideoList(Context context, String gradeId, String subId, String secId, String versionId,String moreType, String userId,String current,String size) {
+        ApiRetrofit.getInstance().getApiService().getJuniorMainVideoInfo(gradeId,subId,secId,versionId,moreType,userId,current,size)
                 .compose(RxHelper.observableIO2Main(context))
-                .subscribe(new BaseObserver<VideoMoreListEntity>() {
+                .subscribe(new BaseObserver<MicroLessonPageEnetity>() {
 
                     @Override
-                    public void onSuccess(VideoMoreListEntity entry) {
-                        if(entry.getState().equals("0")){
-                            infoView.loadListSuc(entry);
-                        }else{
-                            infoView.loadDictionaryEmpty();
-                        }
-                    }
-
-                    @Override
-                    public void onError(String msg) {
-                        infoView.loadListEmpty();
-                    }
-                });
-    }
-
-    @Override
-    public void hotList(Context context, String grade, String subject, String textbook, String semester, String userId, String type, String currentPage) {
-        ApiRetrofit.getInstance().getApiService().hotMoreList(grade,semester,subject,textbook,type,userId)
-                .compose(RxHelper.observableIO2Main(context))
-                .subscribe(new BaseObserver<VideoMoreListEntity>() {
-
-                    @Override
-                    public void onSuccess(VideoMoreListEntity entry) {
-                        if(entry.getState().equals("0")){
-                            infoView.loadListSuc(entry);
-                        }else{
-                            infoView.loadDictionaryEmpty();
-                        }
-                    }
-
-                    @Override
-                    public void onError(String msg) {
-                        infoView.loadListEmpty();
-                    }
-                });
-    }
-
-    @Override
-    public void nearList(Context context, String grade, String subject, String textbook, String semester, String userId, String type, String currentPage) {
-        ApiRetrofit.getInstance().getApiService().nearMoreList(grade,semester,subject,textbook,type,userId)
-                .compose(RxHelper.observableIO2Main(context))
-                .subscribe(new BaseObserver<VideoMoreListEntity>() {
-
-                    @Override
-                    public void onSuccess(VideoMoreListEntity entry) {
+                    public void onSuccess(MicroLessonPageEnetity entry) {
                         if(entry.getState().equals("0")){
                             infoView.loadListSuc(entry);
                         }else{

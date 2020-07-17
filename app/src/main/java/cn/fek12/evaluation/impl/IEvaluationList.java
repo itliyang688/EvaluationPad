@@ -17,7 +17,7 @@ import cn.fek12.evaluation.model.entity.TextbookEntity;
 
 public interface IEvaluationList {
     void getPaperTypeList(Context context);
-    void queryGradeDictionaryList(Context context);
+    void queryGradeDictionaryList(Context context,String secType);
     void querySubjectList(Context context,String grade);
     void queryTextBookList(Context context,String grade,String subject);
     void querySemesterList(Context context,String grade,String subject,String textbook);

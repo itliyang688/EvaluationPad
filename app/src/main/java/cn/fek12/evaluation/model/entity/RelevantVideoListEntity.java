@@ -13,7 +13,7 @@ import java.util.List;
 public class RelevantVideoListEntity implements Serializable {
 
     /**
-     * data : {"video":{"videoId":21,"type":0,"addressUrl":"http://192.168.0.46/group1/M00/00/00/wKgALl2yqzuAD3DaATnuuNJ5UHk845.mp4","videoName":"输错数据的平均数","videoCreateTime":1574049034260,"playScheduleTime":60,"count":0,"collect":0,"subject":"数学","textbook":"人教版"},"key":"*grade:4*:subject:14*:textbook:18*:semester:16*:subjectCategory:28049*","relatedVideo":[{"videoId":20,"type":0,"addressUrl":"http://192.168.0.46/group1/M00/00/00/wKgALl23kwyAMozOAOBSBYftCKo270.mp4","videoName":"样本平均数的价值","videoCreateTime":1574049004953,"playScheduleTime":60,"count":0,"collect":0,"subject":"数学","textbook":"人教版"}]}
+     * data : {"video":{"videoId":"344d726b-67e2-453d-91ee-61254145888d","videoName":"测试一下时间","subjcetName":"小学英语","createDate":"2020/07/13","imgUrl":"http://218.245.6.132/group1/M00/00/B1/2vUGhF8JNnaAKTjJAAA5Nhd3I5E322.jpg","videoUrl":"http://218.245.6.132/group1/M00/00/B1/2vUGhF8JNnKACK89ALXuAGQXBck157.mp4","playScheduleTime":0,"isCollection":0,"playCount":0,"subject":"2b923c2c-2d0b-11ea-85e1-00155d79743b","textbookName":"人教B版","gradeName":"一年级"},"relatedVideo":[{"videoId":"7149bc71-d0bf-4f27-9031-393ec4160bdd","videoName":"测试123123","subjcetName":"小学英语","createDate":"2020/07/11","imgUrl":"http://218.245.6.132/group1/M00/00/B1/2vUGhF8JQZmAf8fBAAA5Nhd3I5E804.jpg","videoUrl":"http://218.245.6.132/group1/M00/00/B1/2vUGhF8JQZmAaWXkALXuAGQXBck457.mp4","playScheduleTime":0,"isCollection":0,"playCount":0,"subject":"2b923c2c-2d0b-11ea-85e1-00155d79743b","textbookName":"人教B版","gradeName":"一年级"},{"videoId":"ce2576c2-0584-4a3a-b475-dddf6748ee93","videoName":"测试版本","subjcetName":"小学英语","createDate":"2020/07/11","imgUrl":"http://218.245.6.132/group1/M00/00/B1/2vUGhF8JT7GALlblAAA5Nhd3I5E975.jpg","videoUrl":"http://218.245.6.132/group1/M00/00/B1/2vUGhF8JT7CAGBmQALXuAGQXBck235.mp4","playScheduleTime":0,"isCollection":0,"playCount":0,"subject":"5bd4cf39-1d8c-11e6-85b3-00163e022218","textbookName":"人教B版","gradeName":"一年级"},{"videoId":"edb80176-665f-4b92-95c1-bfe58c4829ea","videoName":"测试一下视频ss","subjcetName":"小学英语","createDate":"2020/07/13","imgUrl":"http://218.245.6.132/group1/M00/00/B1/2vUGhF8JOXOAVadGAAA5Nhd3I5E325.jpg","videoUrl":"http://218.245.6.132/group1/M00/00/B1/2vUGhF8JOXKANYKuALXuAGQXBck003.mp4","playScheduleTime":0,"isCollection":0,"playCount":0,"subject":"2b923c2c-2d0b-11ea-85e1-00155d79743b","textbookName":"人教B版","gradeName":"一年级"}]}
      * state : 0
      * message : 成功
      */
@@ -48,13 +48,12 @@ public class RelevantVideoListEntity implements Serializable {
 
     public static class DataBean {
         /**
-         * video : {"videoId":21,"type":0,"addressUrl":"http://192.168.0.46/group1/M00/00/00/wKgALl2yqzuAD3DaATnuuNJ5UHk845.mp4","videoName":"输错数据的平均数","videoCreateTime":1574049034260,"playScheduleTime":60,"count":0,"collect":0,"subject":"数学","textbook":"人教版"}
-         * key : *grade:4*:subject:14*:textbook:18*:semester:16*:subjectCategory:28049*
-         * relatedVideo : [{"videoId":20,"type":0,"addressUrl":"http://192.168.0.46/group1/M00/00/00/wKgALl23kwyAMozOAOBSBYftCKo270.mp4","videoName":"样本平均数的价值","videoCreateTime":1574049004953,"playScheduleTime":60,"count":0,"collect":0,"subject":"数学","textbook":"人教版"}]
+         * video : {"videoId":"344d726b-67e2-453d-91ee-61254145888d","videoName":"测试一下时间","subjcetName":"小学英语","createDate":"2020/07/13","imgUrl":"http://218.245.6.132/group1/M00/00/B1/2vUGhF8JNnaAKTjJAAA5Nhd3I5E322.jpg","videoUrl":"http://218.245.6.132/group1/M00/00/B1/2vUGhF8JNnKACK89ALXuAGQXBck157.mp4","playScheduleTime":0,"isCollection":0,"playCount":0,"subject":"2b923c2c-2d0b-11ea-85e1-00155d79743b","textbookName":"人教B版","gradeName":"一年级"}
+         * relatedVideo : [{"videoId":"7149bc71-d0bf-4f27-9031-393ec4160bdd","videoName":"测试123123","subjcetName":"小学英语","createDate":"2020/07/11","imgUrl":"http://218.245.6.132/group1/M00/00/B1/2vUGhF8JQZmAf8fBAAA5Nhd3I5E804.jpg","videoUrl":"http://218.245.6.132/group1/M00/00/B1/2vUGhF8JQZmAaWXkALXuAGQXBck457.mp4","playScheduleTime":0,"isCollection":0,"playCount":0,"subject":"2b923c2c-2d0b-11ea-85e1-00155d79743b","textbookName":"人教B版","gradeName":"一年级"},{"videoId":"ce2576c2-0584-4a3a-b475-dddf6748ee93","videoName":"测试版本","subjcetName":"小学英语","createDate":"2020/07/11","imgUrl":"http://218.245.6.132/group1/M00/00/B1/2vUGhF8JT7GALlblAAA5Nhd3I5E975.jpg","videoUrl":"http://218.245.6.132/group1/M00/00/B1/2vUGhF8JT7CAGBmQALXuAGQXBck235.mp4","playScheduleTime":0,"isCollection":0,"playCount":0,"subject":"5bd4cf39-1d8c-11e6-85b3-00163e022218","textbookName":"人教B版","gradeName":"一年级"},{"videoId":"edb80176-665f-4b92-95c1-bfe58c4829ea","videoName":"测试一下视频ss","subjcetName":"小学英语","createDate":"2020/07/13","imgUrl":"http://218.245.6.132/group1/M00/00/B1/2vUGhF8JOXOAVadGAAA5Nhd3I5E325.jpg","videoUrl":"http://218.245.6.132/group1/M00/00/B1/2vUGhF8JOXKANYKuALXuAGQXBck003.mp4","playScheduleTime":0,"isCollection":0,"playCount":0,"subject":"2b923c2c-2d0b-11ea-85e1-00155d79743b","textbookName":"人教B版","gradeName":"一年级"}]
          */
 
         private VideoBean video;
-        private List<VideoBean> relatedVideo;
+        private List<RelatedVideoBean> relatedVideo;
 
         public VideoBean getVideo() {
             return video;
@@ -64,70 +63,49 @@ public class RelevantVideoListEntity implements Serializable {
             this.video = video;
         }
 
-        public List<VideoBean> getRelatedVideo() {
+        public List<RelatedVideoBean> getRelatedVideo() {
             return relatedVideo;
         }
 
-        public void setRelatedVideo(List<VideoBean> relatedVideo) {
+        public void setRelatedVideo(List<RelatedVideoBean> relatedVideo) {
             this.relatedVideo = relatedVideo;
         }
 
         public static class VideoBean {
             /**
-             * videoId : 21
-             * type : 0
-             * addressUrl : http://192.168.0.46/group1/M00/00/00/wKgALl2yqzuAD3DaATnuuNJ5UHk845.mp4
-             * videoName : 输错数据的平均数
-             * videoCreateTime : 1574049034260
-             * playScheduleTime : 60
-             * count : 0
-             * collect : 0
-             * subject : 数学
-             * textbook : 人教版
+             * videoId : 344d726b-67e2-453d-91ee-61254145888d
+             * videoName : 测试一下时间
+             * subjcetName : 小学英语
+             * createDate : 2020/07/13
+             * imgUrl : http://218.245.6.132/group1/M00/00/B1/2vUGhF8JNnaAKTjJAAA5Nhd3I5E322.jpg
+             * videoUrl : http://218.245.6.132/group1/M00/00/B1/2vUGhF8JNnKACK89ALXuAGQXBck157.mp4
+             * playScheduleTime : 0
+             * isCollection : 0
+             * playCount : 0
+             * subject : 2b923c2c-2d0b-11ea-85e1-00155d79743b
+             * textbookName : 人教B版
+             * gradeName : 一年级
              */
 
-            private int videoId;
-            private int type;
-            private String addressUrl;
+            private String videoId;
             private String videoName;
-            private String cacheKey;
-            private String videoCreateTime;
+            private String subjcetName;
+            private String createDate;
+            private String imgUrl;
+            private String videoUrl;
             private int playScheduleTime;
-            private int count;
             private int isCollection;
+            private int playCount;
             private String subject;
-            private String textbook;
+            private String textbookName;
+            private String gradeName;
 
-            public String getCacheKey() {
-                return cacheKey;
-            }
-
-            public void setCacheKey(String cacheKey) {
-                this.cacheKey = cacheKey;
-            }
-
-            public int getVideoId() {
+            public String getVideoId() {
                 return videoId;
             }
 
-            public void setVideoId(int videoId) {
+            public void setVideoId(String videoId) {
                 this.videoId = videoId;
-            }
-
-            public int getType() {
-                return type;
-            }
-
-            public void setType(int type) {
-                this.type = type;
-            }
-
-            public String getAddressUrl() {
-                return addressUrl;
-            }
-
-            public void setAddressUrl(String addressUrl) {
-                this.addressUrl = addressUrl;
             }
 
             public String getVideoName() {
@@ -138,12 +116,36 @@ public class RelevantVideoListEntity implements Serializable {
                 this.videoName = videoName;
             }
 
-            public String getVideoCreateTime() {
-                return videoCreateTime;
+            public String getSubjcetName() {
+                return subjcetName;
             }
 
-            public void setVideoCreateTime(String videoCreateTime) {
-                this.videoCreateTime = videoCreateTime;
+            public void setSubjcetName(String subjcetName) {
+                this.subjcetName = subjcetName;
+            }
+
+            public String getCreateDate() {
+                return createDate;
+            }
+
+            public void setCreateDate(String createDate) {
+                this.createDate = createDate;
+            }
+
+            public String getImgUrl() {
+                return imgUrl;
+            }
+
+            public void setImgUrl(String imgUrl) {
+                this.imgUrl = imgUrl;
+            }
+
+            public String getVideoUrl() {
+                return videoUrl;
+            }
+
+            public void setVideoUrl(String videoUrl) {
+                this.videoUrl = videoUrl;
             }
 
             public int getPlayScheduleTime() {
@@ -154,20 +156,20 @@ public class RelevantVideoListEntity implements Serializable {
                 this.playScheduleTime = playScheduleTime;
             }
 
-            public int getCount() {
-                return count;
-            }
-
-            public void setCount(int count) {
-                this.count = count;
-            }
-
             public int getIsCollection() {
                 return isCollection;
             }
 
             public void setIsCollection(int isCollection) {
                 this.isCollection = isCollection;
+            }
+
+            public int getPlayCount() {
+                return playCount;
+            }
+
+            public void setPlayCount(int playCount) {
+                this.playCount = playCount;
             }
 
             public String getSubject() {
@@ -178,12 +180,146 @@ public class RelevantVideoListEntity implements Serializable {
                 this.subject = subject;
             }
 
-            public String getTextbook() {
-                return textbook;
+            public String getTextbookName() {
+                return textbookName;
             }
 
-            public void setTextbook(String textbook) {
-                this.textbook = textbook;
+            public void setTextbookName(String textbookName) {
+                this.textbookName = textbookName;
+            }
+
+            public String getGradeName() {
+                return gradeName;
+            }
+
+            public void setGradeName(String gradeName) {
+                this.gradeName = gradeName;
+            }
+        }
+
+        public static class RelatedVideoBean {
+            /**
+             * videoId : 7149bc71-d0bf-4f27-9031-393ec4160bdd
+             * videoName : 测试123123
+             * subjcetName : 小学英语
+             * createDate : 2020/07/11
+             * imgUrl : http://218.245.6.132/group1/M00/00/B1/2vUGhF8JQZmAf8fBAAA5Nhd3I5E804.jpg
+             * videoUrl : http://218.245.6.132/group1/M00/00/B1/2vUGhF8JQZmAaWXkALXuAGQXBck457.mp4
+             * playScheduleTime : 0
+             * isCollection : 0
+             * playCount : 0
+             * subject : 2b923c2c-2d0b-11ea-85e1-00155d79743b
+             * textbookName : 人教B版
+             * gradeName : 一年级
+             */
+
+            private String videoId;
+            private String videoName;
+            private String subjcetName;
+            private String createDate;
+            private String imgUrl;
+            private String videoUrl;
+            private int playScheduleTime;
+            private int isCollection;
+            private int playCount;
+            private String subject;
+            private String textbookName;
+            private String gradeName;
+
+            public String getVideoId() {
+                return videoId;
+            }
+
+            public void setVideoId(String videoId) {
+                this.videoId = videoId;
+            }
+
+            public String getVideoName() {
+                return videoName;
+            }
+
+            public void setVideoName(String videoName) {
+                this.videoName = videoName;
+            }
+
+            public String getSubjcetName() {
+                return subjcetName;
+            }
+
+            public void setSubjcetName(String subjcetName) {
+                this.subjcetName = subjcetName;
+            }
+
+            public String getCreateDate() {
+                return createDate;
+            }
+
+            public void setCreateDate(String createDate) {
+                this.createDate = createDate;
+            }
+
+            public String getImgUrl() {
+                return imgUrl;
+            }
+
+            public void setImgUrl(String imgUrl) {
+                this.imgUrl = imgUrl;
+            }
+
+            public String getVideoUrl() {
+                return videoUrl;
+            }
+
+            public void setVideoUrl(String videoUrl) {
+                this.videoUrl = videoUrl;
+            }
+
+            public int getPlayScheduleTime() {
+                return playScheduleTime;
+            }
+
+            public void setPlayScheduleTime(int playScheduleTime) {
+                this.playScheduleTime = playScheduleTime;
+            }
+
+            public int getIsCollection() {
+                return isCollection;
+            }
+
+            public void setIsCollection(int isCollection) {
+                this.isCollection = isCollection;
+            }
+
+            public int getPlayCount() {
+                return playCount;
+            }
+
+            public void setPlayCount(int playCount) {
+                this.playCount = playCount;
+            }
+
+            public String getSubject() {
+                return subject;
+            }
+
+            public void setSubject(String subject) {
+                this.subject = subject;
+            }
+
+            public String getTextbookName() {
+                return textbookName;
+            }
+
+            public void setTextbookName(String textbookName) {
+                this.textbookName = textbookName;
+            }
+
+            public String getGradeName() {
+                return gradeName;
+            }
+
+            public void setGradeName(String gradeName) {
+                this.gradeName = gradeName;
             }
         }
     }

@@ -28,8 +28,24 @@ public class MicrolessonVideoPlayPresenter extends BasePresenter<IMicrolessVideo
         this.infoView = view;
     }
     @Override
-    public void schedule(Context context) {
+    public void addOrUpdateVideoPlayCount(Context context,String playLength,String userId,String videoId) {
+        ApiRetrofit.getInstance().getApiService().addOrUpdateVideoPlayCount(playLength,userId,videoId)
+                .compose(RxHelper.observableIO2Main(context))
+                .subscribe(new BaseObserver<CollectionEntity>() {
 
+                    @Override
+                    public void onSuccess(CollectionEntity entry) {
+
+                        if (entry != null){
+
+                        }
+                    }
+
+                    @Override
+                    public void onError(String msg) {
+                        Log.d("onError", "onError: "+msg);
+                    }
+                });
     }
 
     @Override

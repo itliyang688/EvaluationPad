@@ -1,7 +1,9 @@
 package cn.fek12.evaluation.view.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -27,7 +29,9 @@ import cn.fek12.evaluation.impl.ICurriculemRecord;
 import cn.fek12.evaluation.model.entity.CurriculumEntity;
 import cn.fek12.evaluation.presenter.CurriculumRecordPresenter;
 import cn.fek12.evaluation.utils.AppUtils;
+import cn.fek12.evaluation.utils.FastDFSUtil;
 import cn.fek12.evaluation.view.PopupWindow.SubjectPopupWindow;
+import cn.fek12.evaluation.view.activity.MicrolessonVideoPlayActivity;
 import cn.fek12.evaluation.view.adapter.CurriculumRecordAdapter;
 import cn.fek12.evaluation.view.dialog.SelectDateDialog;
 import cn.fek12.evaluation.view.widget.MultipleStatusView;
@@ -39,7 +43,7 @@ import cn.fek12.evaluation.view.widget.MultipleStatusView;
  * @Description:
  * @CreateDate: 2019/11/20 15:18
  */
-public class CurriculumRecordFragment extends BaseFragment<CurriculumRecordPresenter> implements ICurriculemRecord.View {
+public class CurriculumRecordFragment extends BaseFragment<CurriculumRecordPresenter> implements ICurriculemRecord.View,CurriculumRecordAdapter.OnItemClickListener {
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
     @BindView(R.id.tvSubject)
@@ -96,6 +100,7 @@ public class CurriculumRecordFragment extends BaseFragment<CurriculumRecordPrese
         refreshLayout.setBottomView(bottomProgressView);
 
         adapter = new CurriculumRecordAdapter(getContext());
+        adapter.setOnItemClickListener(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
     }
@@ -203,12 +208,16 @@ public class CurriculumRecordFragment extends BaseFragment<CurriculumRecordPrese
                         currentPage = 1;
                         tvSubject.setText(subjectName);
                         subject = subjectId;
+                        if(subjectId.equals("0")){
+                            subject = null;
+                        }
                         mPresenter.courseRecord(getContext(), startDate, endDate, subject, MyApplication.getMyApplication().getUserId(), String.valueOf(currentPage));
                     }
                 });
                 AppUtils.fitPopupWindowOverStatusBar(subjectPopupWindow, true);
                 ivArrow.setImageResource(R.mipmap.rise_icon);
-                subjectPopupWindow.showAsDropDown(llContainSubject, -155, 0);
+                //subjectPopupWindow.showAsDropDown(llContainSubject, -155, 0);
+                subjectPopupWindow.showAtLocation(llSubject, Gravity.CENTER_VERTICAL,0,15);
                 subjectPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
                     @Override
                     public void onDismiss() {
@@ -233,5 +242,23 @@ public class CurriculumRecordFragment extends BaseFragment<CurriculumRecordPrese
     @Override
     public boolean onBackPressed() {
         return false;
+    }
+
+    @Override
+    public void onItemClick(CurriculumEntity.DataBean.VideosBean videoBean) {
+        String path = "";
+        try {
+            path = FastDFSUtil.generateSourceUrl(videoBean.getVideoUrl());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Intent intent = new Intent(mContext, MicrolessonVideoPlayActivity.class);
+        intent.putExtra("pathUrl",path);
+        intent.putExtra("videoName",videoBean.getVideoName());
+        intent.putExtra("videoId",videoBean.getVideoId());
+        intent.putExtra("imgUrl",videoBean.getImgUrl());
+        intent.putExtra("playScheduleTime",videoBean.getPlayScheduleTime());
+        intent.putExtra("isCollection",videoBean.getIsCollection());
+        mContext.startActivity(intent);
     }
 }

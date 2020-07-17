@@ -1,6 +1,9 @@
 package cn.fek12.evaluation.view.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.Gravity;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -13,6 +16,8 @@ import com.fek12.basic.utils.toast.ToastUtils;
 
 import org.zakariya.stickyheaders.StickyHeaderLayoutManager;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 import cn.fek12.evaluation.R;
@@ -22,7 +27,10 @@ import cn.fek12.evaluation.model.entity.CollectionListEntity;
 import cn.fek12.evaluation.model.entity.CommonEntity;
 import cn.fek12.evaluation.presenter.MicroLessonRecordPresenter;
 import cn.fek12.evaluation.utils.AppUtils;
+import cn.fek12.evaluation.utils.FastDFSUtil;
+import cn.fek12.evaluation.view.PopupWindow.SubjectAllPopupWindow;
 import cn.fek12.evaluation.view.PopupWindow.SubjectPopupWindow;
+import cn.fek12.evaluation.view.activity.MicrolessonVideoPlayActivity;
 import cn.fek12.evaluation.view.adapter.MicroLessonRecordAdapter;
 import cn.fek12.evaluation.view.widget.MultipleStatusView;
 
@@ -49,8 +57,8 @@ public class MicroLessonRecordFragment extends BaseFragment<MicroLessonRecordPre
     private MicroLessonRecordAdapter adapter;
     private int mPageType;//1微课学习2我的收藏
     private boolean isVisibleToUser;
-    private String subject = null;
-    private SubjectPopupWindow subjectPopupWindow;
+    private String subject = "";
+    private SubjectAllPopupWindow subjectPopupWindow;
 
     public MicroLessonRecordFragment(int pageType) {
         mPageType = pageType;
@@ -83,11 +91,18 @@ public class MicroLessonRecordFragment extends BaseFragment<MicroLessonRecordPre
 
     private void collectionList() {
         if (isVisibleToUser) {
+
             multipleStatusView.showLoading();
             if (mPageType == 1) {//微课学习
                 titleName.setText("微课学习");
+                if(TextUtils.isEmpty(subject)){
+                    subject = "undefined";
+                }
                 mPresenter.microLessonList(getContext(), MyApplication.getMyApplication().getUserId(), subject);
             } else {//我的收藏
+                if(!TextUtils.isEmpty(subject) && subject.equals("undefined")){
+                    subject = "";
+                }
                 titleName.setText("我的收藏");
                 mPresenter.collectionList(getContext(), MyApplication.getMyApplication().getUserId(), subject);
             }
@@ -109,13 +124,13 @@ public class MicroLessonRecordFragment extends BaseFragment<MicroLessonRecordPre
         multipleStatusView.showContent();
         boolean isEmpty = false;
         if (entry.getData() != null) {
-            if (entry.getData().getWeek() != null && entry.getData().getWeek().size() > 0) {
+            if (entry.getData().getAweek() != null && entry.getData().getAweek().size() > 0) {
                 isEmpty = true;
             }
-            if (entry.getData().getMonth() != null && entry.getData().getMonth().size() > 0) {
+            if (entry.getData().getAmonth() != null && entry.getData().getAmonth().size() > 0) {
                 isEmpty = true;
             }
-            if (entry.getData().getNear() != null && entry.getData().getNear().size() > 0) {
+            if (entry.getData().getEarlier() != null && entry.getData().getEarlier().size() > 0) {
                 isEmpty = true;
             }
 
@@ -130,17 +145,7 @@ public class MicroLessonRecordFragment extends BaseFragment<MicroLessonRecordPre
     }
 
     @Override
-    public void loadMicroLessonSuc(CollectionListEntity entry) {
-
-    }
-
-    @Override
-    public void loadMicroLessonEmpty() {
-        multipleStatusView.showEmpty();
-    }
-
-    @Override
-    public void loadCollectionSuc(CommonEntity entry) {
+    public void loadCollectionSuc() {
         ToastUtils.popUpToast("已取消收藏");
         multipleStatusView.showLoading();
         mPresenter.collectionList(getContext(), MyApplication.getMyApplication().getUserId(), subject);
@@ -169,23 +174,46 @@ public class MicroLessonRecordFragment extends BaseFragment<MicroLessonRecordPre
     }
 
     @Override
-    public void onItemClick(String cacheKey, String videoId, String videoType) {
-        mPresenter.collection(getContext(), cacheKey, videoType, videoId, "0", MyApplication.getMyApplication().getUserId());
+    public void onItemClick(String videoId) {
+        mPresenter.collection(getContext(), videoId, "0",  MyApplication.getMyApplication().getUserId());
+    }
+
+    @Override
+    public void onVideoPlay(CollectionListEntity.DataBean.VideoBean videoBean) {
+        String path = "";
+        try {
+            path = FastDFSUtil.generateSourceUrl(videoBean.getVideoUrl());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Intent intent = new Intent(mContext, MicrolessonVideoPlayActivity.class);
+        intent.putExtra("pathUrl",path);
+        intent.putExtra("videoName",videoBean.getVideoName());
+        intent.putExtra("videoId",videoBean.getVideoId());
+        intent.putExtra("imgUrl",videoBean.getImgUrl());
+        intent.putExtra("playScheduleTime",videoBean.getPlayScheduleTime());
+        intent.putExtra("isCollection",videoBean.getIsCollection());
+        mContext.startActivity(intent);
     }
 
     @OnClick(R.id.llSubject)
     public void onViewClicked() {
-        subjectPopupWindow = new SubjectPopupWindow(getContext(), new SubjectPopupWindow.OnSelectItmeListener() {
+        subjectPopupWindow = new SubjectAllPopupWindow(getContext(), new SubjectAllPopupWindow.OnSelectItmeListener() {
             @Override
             public void onSelectItme(String subjectId, String subjectName) {
                 tvSubject.setText(subjectName);
-                subject = subjectId.equals("0") ? null : subjectId;
+                if (mPageType == 1) {//微课学习
+                    subject = subjectId.equals("0") ? "undefined" : subjectId;
+                }else{
+                    subject = subjectId.equals("0") ? "" : subjectId;
+                }
                 collectionList();
             }
         });
         AppUtils.fitPopupWindowOverStatusBar(subjectPopupWindow, true);
         ivArrow.setImageResource(R.mipmap.rise_icon);
-        subjectPopupWindow.showAsDropDown(llSubject, -166, 0);
+        subjectPopupWindow.showAsDropDown(llSubject, 0, 0,Gravity.RIGHT);
+        //subjectPopupWindow.showAtLocation(llSubject, Gravity.RIGHT,0,-100);
         subjectPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {

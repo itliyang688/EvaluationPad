@@ -11,6 +11,7 @@ import cn.fek12.evaluation.ent.ApiRetrofit;
 import cn.fek12.evaluation.ent.RxHelper;
 import cn.fek12.evaluation.impl.ISynchroVideoTree;
 import cn.fek12.evaluation.model.entity.GradeDictionaryListEntity;
+import cn.fek12.evaluation.model.entity.MicrolessonVideoEntity;
 import cn.fek12.evaluation.model.entity.SemesterEntity;
 import cn.fek12.evaluation.model.entity.SubjectEntity;
 import cn.fek12.evaluation.model.entity.TextbookEntity;
@@ -32,8 +33,8 @@ public class SynchroVideoTreePresenter extends BasePresenter<ISynchroVideoTree.V
 
     /**请求年级*/
     @Override
-    public void queryGradeDictionaryList(Context context) {
-        ApiRetrofit.getInstance().getApiService().queryGradeDictionaryList()
+    public void queryGradeDictionaryList(Context context,String secType) {
+        ApiRetrofit.getInstance().getApiService().queryGradeDictionaryList(secType)
                 .compose(RxHelper.observableIO2Main(context))
                 .subscribe(new BaseObserver<GradeDictionaryListEntity>() {
 
@@ -144,13 +145,13 @@ public class SynchroVideoTreePresenter extends BasePresenter<ISynchroVideoTree.V
     }
 
     @Override
-    public void queryPaperList(Context context, String grade, String subject, String textbook, String semester, String userId, String currentPage, String knowledge,String type) {
-        ApiRetrofit.getInstance().getApiService().videoTreeList(grade,semester,subject,textbook,type,knowledge,userId)
+    public void queryPaperList(Context context, String gradeId, String secId, String subId, String versionId, String knowledgeId, String userId, String current, String size) {
+        ApiRetrofit.getInstance().getApiService().querySyncVideoPage(gradeId,secId,subId,versionId,knowledgeId,userId,current,size)
                 .compose(RxHelper.observableIO2Main(context))
-                .subscribe(new BaseObserver<VideoMoreListEntity>() {
+                .subscribe(new BaseObserver<MicrolessonVideoEntity>() {
 
                     @Override
-                    public void onSuccess(VideoMoreListEntity entry) {
+                    public void onSuccess(MicrolessonVideoEntity entry) {
                         if(entry.getState().equals("0")){
                             infoView.loadVideoTreeListSuc(entry);
                         }else{

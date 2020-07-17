@@ -11,13 +11,11 @@ import cn.fek12.evaluation.model.entity.RelevantVideoListEntity;
 public interface IMicroLessonRecord {
     void collectionList(Context context, String userId,String subject);
     void microLessonList(Context context, String userId,String subject);
-    void collection(Context context, String cacheKey, String type, String videoId,String isCollection, String userId);
+    void collection(Context context, String videoId,String isCollection, String userId);
     interface View extends BaseView {
         void loadCollectionSuc(CollectionListEntity entry);
         void loadCollectionEmpty();
-        void loadMicroLessonSuc(CollectionListEntity entry);
-        void loadMicroLessonEmpty();
-        void loadCollectionSuc(CommonEntity entry);
+        void loadCollectionSuc();
         void loadCollectionFail();
     }
 }

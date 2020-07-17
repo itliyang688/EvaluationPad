@@ -31,7 +31,9 @@ public class MyApplication extends BaseApplication {
     public static MyApplication myApp;
     private static OkHttpClient mOkHttpClient;
     private static final int DEFAULT_TIMEOUT = 30;
-    private String userId = "413";
+    //private String userId = "413";
+    //private String userId = "5a5a4534-0392-416a-9170-c923f563ca00";
+    private String userId = "c73a79c5-622b-4d81-81bc-e862f45694cc";
     private static final String TAG = "AIDL_Log";
     private IUserData iUserData;
     private boolean connected;

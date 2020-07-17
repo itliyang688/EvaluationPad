@@ -56,7 +56,7 @@ public class PresentationEntity implements Serializable, MultiItemEntity {
     private String courseName;
     private int isanswered;
     private int grade;
-    private int subject;
+    private String subject;
     private String imageUrl;
     private int paperResultId;
     private String paperResultDate;
@@ -133,11 +133,11 @@ public class PresentationEntity implements Serializable, MultiItemEntity {
         this.grade = grade;
     }
 
-    public int getSubject() {
+    public String getSubject() {
         return subject;
     }
 
-    public void setSubject(int subject) {
+    public void setSubject(String subject) {
         this.subject = subject;
     }
 

@@ -8,7 +8,8 @@ package cn.fek12.evaluation.model.config;
  * @CreateDate: 2019/12/18 14:00
  */
 public class Configs {
-    public static final String WEB_BASE_URL = "http://218.245.6.132:11111/";
+    //public static final String WEB_BASE_URL = "http://218.245.6.132:11111/";
+    public static final String WEB_BASE_URL = "http://218.245.6.132:11113/";
     //public static final String WEB_BASE_URL = "http://192.168.0.46/noc/";
     //public static final String WEB_BASE_URL1 = "http://192.168.0.77:11111/";
     public static final String INDEX = WEB_BASE_URL + "html/index.html?";//答题

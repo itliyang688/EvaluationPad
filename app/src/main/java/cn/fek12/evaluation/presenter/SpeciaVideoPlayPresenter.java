@@ -45,7 +45,7 @@ public class SpeciaVideoPlayPresenter extends BasePresenter<ISpeciaVideoPlay.Vie
                         }
                     });
         }else{
-            ApiRetrofit.getInstance().getApiService().addCourseRecord(playScheduleTime,videoId,userId)
+            /*ApiRetrofit.getInstance().getApiService().addCourseRecord(playScheduleTime,videoId,userId)
                     .compose(RxHelper.observableIO2Main(context))
                     .subscribe(new BaseObserver<CommonEntity>() {
 
@@ -59,7 +59,7 @@ public class SpeciaVideoPlayPresenter extends BasePresenter<ISpeciaVideoPlay.Vie
                         @Override
                         public void onError(String msg) {
                         }
-                    });
+                    });*/
         }
     }
 

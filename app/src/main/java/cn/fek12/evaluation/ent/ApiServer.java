@@ -13,7 +13,7 @@ import cn.fek12.evaluation.model.entity.EvaluationListEntity;
 import cn.fek12.evaluation.model.entity.GradeDictionaryListEntity;
 import cn.fek12.evaluation.model.entity.HomeEvaluationDeta;
 import cn.fek12.evaluation.model.entity.MicroLessonEnetity;
-import cn.fek12.evaluation.model.entity.MicroLessonTreeEntity;
+import cn.fek12.evaluation.model.entity.MicroLessonPageEnetity;
 import cn.fek12.evaluation.model.entity.MicrolessonVideoEntity;
 import cn.fek12.evaluation.model.entity.PaperTypeListResp;
 import cn.fek12.evaluation.model.entity.PracticeListEntity;
@@ -21,7 +21,9 @@ import cn.fek12.evaluation.model.entity.RecordsEntitiy;
 import cn.fek12.evaluation.model.entity.RelevantVideoListEntity;
 import cn.fek12.evaluation.model.entity.SemesterEntity;
 import cn.fek12.evaluation.model.entity.SubjectEntity;
+import cn.fek12.evaluation.model.entity.SubjectModel;
 import cn.fek12.evaluation.model.entity.SubjectsEntity;
+import cn.fek12.evaluation.model.entity.SubjectsObsoleteEntity;
 import cn.fek12.evaluation.model.entity.TestRecordEntity;
 import cn.fek12.evaluation.model.entity.TextbookEntity;
 import cn.fek12.evaluation.model.entity.TopicCountEntity;
@@ -84,7 +86,7 @@ public interface ApiServer {
     Observable<SemesterEntity> querySemester(@Field("grade") String grade, @Field("subject") String subject, @Field("textbook") String textbook);
 
     @GET("assessment/gradeDictionaryList")
-    Observable<GradeDictionaryListEntity> queryGradeDictionaryList();
+    Observable<GradeDictionaryListEntity> queryGradeDictionaryList(@Query("secType") String secType);
 
     @GET("assessment/paperTypeList")
     Observable<PaperTypeListResp> getPaperTypeList();
@@ -129,6 +131,7 @@ public interface ApiServer {
     @FormUrlEncoded
     @POST("promote/addCourseRecord")
     Observable<CommonEntity> addCourseRecord(@Field("playScheduleTime") String playScheduleTime,
+                                      @Field("subjectCategoryId ") String subjectCategoryId,
                                       @Field("videoId") String videoId,
                                       @Field("userId") String userId);
 
@@ -237,15 +240,13 @@ public interface ApiServer {
                                                   @Field("userId") String userId);
 
     /**收藏列表*/
-    @FormUrlEncoded
-    @POST("video/collection/list")
-    Observable<CollectionListEntity> collectionList(@Field("userId") String userId,
-                                                    @Field("subject") String subject);
-    /**收藏列表*/
-    @FormUrlEncoded
-    @POST("video/hisPlay")
-    Observable<CollectionListEntity> hisPlayList(@Field("userId") String userId,
-                                                    @Field("subject") String subject);
+    @GET("nocVideoCollection/queryUserCollectionList")
+    Observable<CollectionListEntity> collectionList(@Query("userId") String userId,
+                                                    @Query("subId") String subId);
+    /**观看历史*/
+    @GET("nocVideoData/queryPlayRecordByUserId/{userId}/{subId}")
+    Observable<CollectionListEntity> hisPlayList(@Path("userId") String userId,
+                                                    @Path("subId") String subId);
 
     /**推荐查看更多*/
     @FormUrlEncoded
@@ -305,7 +306,13 @@ public interface ApiServer {
      * 学科
      */
     @GET("/dictionary/subjects")
-    Observable<SubjectsEntity> subjects();
+    Observable<SubjectsObsoleteEntity> subjects();
+
+    /**
+     * 学科
+     */
+    @GET("nocSubject/getNocSubjectInfoList")
+    Observable<SubjectsEntity> getNocSubjectInfoList();
 
     /**
      * 获取月份
@@ -322,7 +329,12 @@ public interface ApiServer {
      * 微课小学模块
      */
     @GET("nocVideo/queryCoursePackVideo")
-    Observable<MicrolessonVideoEntity> queryCoursePackVideo(@Query("coursePackType")String coursePackType,@Query("knowledgePointId") String knowledgePointId, @Query("userId")String userId, @Query("current")String current, @Query("size")String size);
+    Observable<MicrolessonVideoEntity> queryCoursePackVideo(@Query("coursePackType")String coursePackType,
+                                                            @Query("knowledgePointId") String knowledgePointId,
+                                                            @Query("userId")String userId,
+                                                            @Query("current")String current,
+                                                            @Query("size")String size,
+                                                            @Query("coursePackId")String coursePackId);
 
     /**
      * 收藏、取消收藏
@@ -334,6 +346,60 @@ public interface ApiServer {
                                         @Field("status") String status ,
                                         @Field("userId") String userId);
 
+    /**
+     * 添加或修改视频播放量及用户视频播放记录
+     */
+    @FormUrlEncoded
+    @POST("nocVideoData/addOrUpdateVideoPlayCount")
+    Observable<CollectionEntity> addOrUpdateVideoPlayCount(
+            @Field("playLength") String playLength,
+            @Field("userId") String userId ,
+            @Field("videoId") String videoId);
+
+    /**小学同步视频*/
+    @FormUrlEncoded
+    @POST("nocVideo/querySyncVideoPage")
+    Observable<MicrolessonVideoEntity> querySyncVideoPage(@Field("gradeId") String grade,
+                                                  @Field("secId") String secId,
+                                                  @Field("subId") String subId,
+                                                  @Field("versionId") String versionId,
+                                                  @Field("knowledgeId") String knowledgeId,
+                                                  @Field("userId") String userId,
+                                                  @Field("current")String current,
+                                                  @Field("size")String size);
+
+    /**
+     * 获取左侧知识树
+     */
+    @GET("nocVideoCoursePack/queryGoodsClassDataTree/{type}")
+    Observable<TreeDataEntity> queryGoodsClassDataTree(@Path("type") String type );
+
+    /**首页微课全部模块*/
+    @GET("nocVideo/getJuniorMainVideoInfo")
+    Observable<MicroLessonEnetity> getJuniorMainVideoInfo(@Query("gradeId") String gradeId,
+                                                  @Query("subId") String subId,
+                                                  @Query("secId") String secId,
+                                                  @Query("versionId") String versionId,
+                                                  @Query("moreType") String moreType,
+                                                  @Query("userId") String userId);
+
+    /***带分页的微课模块*/
+    @GET("nocVideo/getJuniorMainVideoInfo")
+    Observable<MicroLessonPageEnetity> getJuniorMainVideoInfo(@Query("gradeId") String gradeId,
+                                                              @Query("subId") String subId,
+                                                              @Query("secId") String secId,
+                                                              @Query("versionId") String versionId,
+                                                              @Query("moreType") String moreType,
+                                                              @Query("userId") String userId,
+                                                              @Query("current") String current,
+                                                              @Query("size") String size);
+
+
+    /**
+     * 查询学科
+     */
+    @GET("nocVideoCoursePack/getBkCoursePackSubList/{type}")
+    Observable<SubjectModel> getBkCoursePackSubList(@Path("type") String type);
 
 }
 

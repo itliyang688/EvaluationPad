@@ -12,8 +12,9 @@ import java.util.List;
  */
 public class CurriculumEntity implements Serializable {
 
+
     /**
-     * data : {"page_info":{"totalCount":1,"totalPage":1,"pageSize":30,"currentPage":1},"videos":[{"videoId":108,"addressUrl":"group1/M00/00/00/2vUGhF3aAy6ARvCzAIjznj-xCYw660.mp4","isCollection":0,"playScheduleTime":3222,"count":3,"subject":"数学","textbook":"人教版","grade":"四年级","date":"2019-11-24"}]}
+     * data : {"page_info":{"totalCount":1,"totalPage":1,"pageSize":30,"currentPage":1},"videos":[{"videoId":"e718cef7-21eb-4e89-86bf-a8980f9e63fb","videoName":"测试数据-gaowx","imgUrl":"http://218.245.6.132/group1/M00/00/B2/2vUGhF8RAw2ADmjXAAArEyn-Zis955.jpg","videoUrl":"http://218.245.6.132/group1/M00/00/B2/2vUGhF8RAwyAIpOZAFTZs3X4Kdk029.mp4","playScheduleTime":183253,"isCollection":0,"playCount":0,"subject":"小学英语","textbookName":"人教B版","gradeName":"一年级","subjectCategoryId":57172,"date":"2020-07-17 11:34:58.0","length":489,"content":"哈哈哈哈哈哈哈","playBack":"37.5"}]}
      * state : 0
      * message : 成功
      */
@@ -49,7 +50,7 @@ public class CurriculumEntity implements Serializable {
     public static class DataBean {
         /**
          * page_info : {"totalCount":1,"totalPage":1,"pageSize":30,"currentPage":1}
-         * videos : [{"videoId":108,"addressUrl":"group1/M00/00/00/2vUGhF3aAy6ARvCzAIjznj-xCYw660.mp4","isCollection":0,"playScheduleTime":3222,"count":3,"subject":"数学","textbook":"人教版","grade":"四年级","date":"2019-11-24"}]
+         * videos : [{"videoId":"e718cef7-21eb-4e89-86bf-a8980f9e63fb","videoName":"测试数据-gaowx","imgUrl":"http://218.245.6.132/group1/M00/00/B2/2vUGhF8RAw2ADmjXAAArEyn-Zis955.jpg","videoUrl":"http://218.245.6.132/group1/M00/00/B2/2vUGhF8RAwyAIpOZAFTZs3X4Kdk029.mp4","playScheduleTime":183253,"isCollection":0,"playCount":0,"subject":"小学英语","textbookName":"人教B版","gradeName":"一年级","subjectCategoryId":57172,"date":"2020-07-17 11:34:58.0","length":489,"content":"哈哈哈哈哈哈哈","playBack":"37.5"}]
          */
 
         private PageInfoBean page_info;
@@ -119,27 +120,46 @@ public class CurriculumEntity implements Serializable {
 
         public static class VideosBean {
             /**
-             * videoId : 108
-             * addressUrl : group1/M00/00/00/2vUGhF3aAy6ARvCzAIjznj-xCYw660.mp4
+             * videoId : e718cef7-21eb-4e89-86bf-a8980f9e63fb
+             * videoName : 测试数据-gaowx
+             * imgUrl : http://218.245.6.132/group1/M00/00/B2/2vUGhF8RAw2ADmjXAAArEyn-Zis955.jpg
+             * videoUrl : http://218.245.6.132/group1/M00/00/B2/2vUGhF8RAwyAIpOZAFTZs3X4Kdk029.mp4
+             * playScheduleTime : 183253
              * isCollection : 0
-             * playScheduleTime : 3222
-             * count : 3
-             * subject : 数学
-             * textbook : 人教版
-             * grade : 四年级
-             * date : 2019-11-24
+             * playCount : 0
+             * subject : 小学英语
+             * textbookName : 人教B版
+             * gradeName : 一年级
+             * subjectCategoryId : 57172
+             * date : 2020-07-17 11:34:58.0
+             * length : 489
+             * content : 哈哈哈哈哈哈哈
+             * playBack : 37.5
              */
 
-            private int videoId;
-            private String addressUrl;
-            private int isCollection;
-            private int playScheduleTime;
-            private int count;
+            private String videoId;
             private String videoName;
+            private String imgUrl;
+            private String videoUrl;
+            private long playScheduleTime;
+            private int isCollection;
+            private int playCount;
             private String subject;
-            private String textbook;
-            private String grade;
+            private String textbookName;
+            private String gradeName;
+            private int subjectCategoryId;
             private String date;
+            private int length;
+            private String content;
+            private String playBack;
+
+            public String getVideoId() {
+                return videoId;
+            }
+
+            public void setVideoId(String videoId) {
+                this.videoId = videoId;
+            }
 
             public String getVideoName() {
                 return videoName;
@@ -149,20 +169,28 @@ public class CurriculumEntity implements Serializable {
                 this.videoName = videoName;
             }
 
-            public int getVideoId() {
-                return videoId;
+            public String getImgUrl() {
+                return imgUrl;
             }
 
-            public void setVideoId(int videoId) {
-                this.videoId = videoId;
+            public void setImgUrl(String imgUrl) {
+                this.imgUrl = imgUrl;
             }
 
-            public String getAddressUrl() {
-                return addressUrl;
+            public String getVideoUrl() {
+                return videoUrl;
             }
 
-            public void setAddressUrl(String addressUrl) {
-                this.addressUrl = addressUrl;
+            public void setVideoUrl(String videoUrl) {
+                this.videoUrl = videoUrl;
+            }
+
+            public long getPlayScheduleTime() {
+                return playScheduleTime;
+            }
+
+            public void setPlayScheduleTime(long playScheduleTime) {
+                this.playScheduleTime = playScheduleTime;
             }
 
             public int getIsCollection() {
@@ -173,20 +201,12 @@ public class CurriculumEntity implements Serializable {
                 this.isCollection = isCollection;
             }
 
-            public int getPlayScheduleTime() {
-                return playScheduleTime;
+            public int getPlayCount() {
+                return playCount;
             }
 
-            public void setPlayScheduleTime(int playScheduleTime) {
-                this.playScheduleTime = playScheduleTime;
-            }
-
-            public int getCount() {
-                return count;
-            }
-
-            public void setCount(int count) {
-                this.count = count;
+            public void setPlayCount(int playCount) {
+                this.playCount = playCount;
             }
 
             public String getSubject() {
@@ -197,20 +217,28 @@ public class CurriculumEntity implements Serializable {
                 this.subject = subject;
             }
 
-            public String getTextbook() {
-                return textbook;
+            public String getTextbookName() {
+                return textbookName;
             }
 
-            public void setTextbook(String textbook) {
-                this.textbook = textbook;
+            public void setTextbookName(String textbookName) {
+                this.textbookName = textbookName;
             }
 
-            public String getGrade() {
-                return grade;
+            public String getGradeName() {
+                return gradeName;
             }
 
-            public void setGrade(String grade) {
-                this.grade = grade;
+            public void setGradeName(String gradeName) {
+                this.gradeName = gradeName;
+            }
+
+            public int getSubjectCategoryId() {
+                return subjectCategoryId;
+            }
+
+            public void setSubjectCategoryId(int subjectCategoryId) {
+                this.subjectCategoryId = subjectCategoryId;
             }
 
             public String getDate() {
@@ -219,6 +247,30 @@ public class CurriculumEntity implements Serializable {
 
             public void setDate(String date) {
                 this.date = date;
+            }
+
+            public int getLength() {
+                return length;
+            }
+
+            public void setLength(int length) {
+                this.length = length;
+            }
+
+            public String getContent() {
+                return content;
+            }
+
+            public void setContent(String content) {
+                this.content = content;
+            }
+
+            public String getPlayBack() {
+                return playBack;
+            }
+
+            public void setPlayBack(String playBack) {
+                this.playBack = playBack;
             }
         }
     }

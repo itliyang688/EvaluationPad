@@ -15,6 +15,7 @@ import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.base.BaseObserver;
 import cn.fek12.evaluation.ent.ApiRetrofit;
 import cn.fek12.evaluation.ent.RxHelper;
+import cn.fek12.evaluation.model.entity.SubjectsEntity;
 import cn.fek12.evaluation.model.entity.SubjectsObsoleteEntity;
 import cn.fek12.evaluation.view.widget.MultipleStatusView;
 
@@ -25,7 +26,7 @@ import cn.fek12.evaluation.view.widget.MultipleStatusView;
  * @Description:
  * @CreateDate: 2019/12/4 15:22
  */
-public class SubjectPopupWindow extends PopupWindow {
+public class SubjectAllPopupWindow extends PopupWindow {
     private Context mContext;
     private View mMenuView;
     private LinearLayout llContain;
@@ -33,10 +34,10 @@ public class SubjectPopupWindow extends PopupWindow {
     private OnSelectItmeListener mOnSelectItmeListener = null;
 
     public interface OnSelectItmeListener {
-        void onSelectItme(String subjectId,String subjectName);
+        void onSelectItme(String subjectId, String subjectName);
     }
 
-    public SubjectPopupWindow(Context context, OnSelectItmeListener onSelectItmeListener){
+    public SubjectAllPopupWindow(Context context, OnSelectItmeListener onSelectItmeListener){
         this.mContext = context;
         this.mOnSelectItmeListener = onSelectItmeListener;
 
@@ -73,31 +74,31 @@ public class SubjectPopupWindow extends PopupWindow {
     }
 
     public void querySubjectList() {
-        ApiRetrofit.getInstance().getApiService().subjects()
+        ApiRetrofit.getInstance().getApiService().getNocSubjectInfoList()
                 .compose(RxHelper.observableIO2Main(mContext))
-                .subscribe(new BaseObserver<SubjectsObsoleteEntity>() {
+                .subscribe(new BaseObserver<SubjectsEntity>() {
 
                     @Override
-                    public void onSuccess(SubjectsObsoleteEntity entry) {
+                    public void onSuccess(SubjectsEntity entry) {
                         if(entry.getState().equals("0")){
                             llContain.removeAllViews();
-                            SubjectsObsoleteEntity.DataBean dataBean = new SubjectsObsoleteEntity.DataBean();
-                            dataBean.setId(0);
-                            dataBean.setName("全部");
-                            List<SubjectsObsoleteEntity.DataBean> mList = entry.getData();
+                            SubjectsEntity.DataBean dataBean = new SubjectsEntity.DataBean();
+                            dataBean.setSubId("0");
+                            dataBean.setSubName("全部");
+                            List<SubjectsEntity.DataBean> mList = entry.getData();
                             mList.add(0,dataBean);
 
                             for(int i = 0; i < mList.size(); i++){
                                 View viewItem = LayoutInflater.from(mContext).inflate(R.layout.subject_itme, null);
                                 TextView tvName = viewItem.findViewById(R.id.tvName);
-                                tvName.setText(mList.get(i).getName());
+                                tvName.setText(mList.get(i).getSubName());
                                 int finalI = i;
                                 viewItem.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
                                         tvName.setTextColor(mContext.getResources().getColor(R.color.white));
                                         if(mOnSelectItmeListener != null){
-                                            mOnSelectItmeListener.onSelectItme(String.valueOf(mList.get(finalI).getId()),mList.get(finalI).getName());
+                                            mOnSelectItmeListener.onSelectItme(String.valueOf(mList.get(finalI).getSubId()),mList.get(finalI).getSubName());
                                         }
                                         dismiss();
                                     }

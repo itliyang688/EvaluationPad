@@ -24,7 +24,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_22">
+            android:layout_marginLeft="@dimen/dp_15">
 
             <RelativeLayout
                 android:id="@+id/label"
@@ -40,7 +40,7 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_11"
+                    android:layout_marginTop="@dimen/dp_15"
                     android:orientation="vertical">
 
                     <TextView
@@ -92,8 +92,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_5"
                 android:layout_toRightOf="@+id/label"
-                android:paddingRight="@dimen/dp_14"
-                android:layout_marginTop="@dimen/dp_11"
+                android:paddingRight="@dimen/dp_5"
+                android:layout_marginTop="@dimen/dp_15"
                 android:scrollbars="none" />
 
         </RelativeLayout>
@@ -162,10 +162,10 @@
                      android:id="@+id/loadView"
                      android:layout_width="match_parent"
                      android:layout_height="match_parent"
-                     android:paddingTop="@dimen/dp_47"
-                     android:layout_marginLeft="@dimen/dp_35"
-                     android:layout_marginRight="@dimen/dp_35"
-                     android:layout_marginBottom="@dimen/dp_35">
+                     android:paddingTop="@dimen/dp_65"
+                     android:layout_marginLeft="@dimen/dp_23"
+                     android:layout_marginRight="@dimen/dp_23"
+                     android:layout_marginBottom="@dimen/dp_28">
                      <com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
                          xmlns:app="http://schemas.android.com/apk/res-auto"
                          android:id="@+id/refreshLayout"

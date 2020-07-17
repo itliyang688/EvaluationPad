@@ -26,21 +26,21 @@ import cn.fek12.evaluation.application.MyApplication;
 import cn.fek12.evaluation.impl.ISynchroVideoTree;
 import cn.fek12.evaluation.model.entity.ChildSectionEntity;
 import cn.fek12.evaluation.model.entity.GradeDictionaryListEntity;
+import cn.fek12.evaluation.model.entity.MicrolessonVideoEntity;
 import cn.fek12.evaluation.model.entity.SemesterEntity;
 import cn.fek12.evaluation.model.entity.SubjectEntity;
 import cn.fek12.evaluation.model.entity.TextbookChildEntity;
 import cn.fek12.evaluation.model.entity.TextbookEntity;
 import cn.fek12.evaluation.model.entity.TreeDataEntity;
-import cn.fek12.evaluation.model.entity.VideoMoreListEntity;
 import cn.fek12.evaluation.model.holder.AutoTreeChildItemHolder;
 import cn.fek12.evaluation.model.holder.TreeParentItemHolder;
 import cn.fek12.evaluation.presenter.SynchroVideoTreePresenter;
 import cn.fek12.evaluation.utils.FastDFSUtil;
+import cn.fek12.evaluation.view.adapter.PrimarySchoolVideoAdapter;
 import cn.fek12.evaluation.view.adapter.SynchroVideoChildSection;
 import cn.fek12.evaluation.view.adapter.SynchroVideoParentSection;
 import cn.fek12.evaluation.view.adapter.SynchroVideoSubjectSection;
 import cn.fek12.evaluation.view.adapter.SynchroVideoTagSection;
-import cn.fek12.evaluation.view.adapter.VideoAdapter;
 import cn.fek12.evaluation.view.widget.MultipleStatusView;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 
@@ -51,7 +51,7 @@ import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapt
  * @Description:
  * @CreateDate: 2020/6/29 13:14
  */
-public class PrimarySchoolSynchroVideoActivity extends BaseActivity<SynchroVideoTreePresenter> implements ISynchroVideoTree.View, VideoAdapter.OnItemClickListener {
+public class PrimarySchoolSynchroVideoActivity extends BaseActivity<SynchroVideoTreePresenter> implements ISynchroVideoTree.View, PrimarySchoolVideoAdapter.OnItemClickListener {
     @BindView(R.id.recycler)
     RecyclerView leftRecycler;
     @BindView(R.id.layout)
@@ -66,7 +66,7 @@ public class PrimarySchoolSynchroVideoActivity extends BaseActivity<SynchroVideo
     private TreeDataEntity treeDataEntity;
     private String checkId = null;
     private TreeNode selectNode;
-    private VideoAdapter videoAdapter;
+    private PrimarySchoolVideoAdapter videoAdapter;
     private int tagPos;
     private String gradeId;
     private String subjectId;
@@ -77,11 +77,11 @@ public class PrimarySchoolSynchroVideoActivity extends BaseActivity<SynchroVideo
     private List<SubjectEntity.DataBean> subjectList;
     private List<TextbookChildEntity> textBookList;
     private List<ChildSectionEntity> semesterList;
-    private List<VideoMoreListEntity.DataBean> mList;
+    private List<MicrolessonVideoEntity.DataBean.RecordsBean> mList;
 
     private int currentPage = 1;
     private boolean isLoadMore = false;
-    private String paperType = "SWEETOWN";
+    private String paperType = "SYNCHRO";
 
     @Override
     public int setLayoutResource() {
@@ -93,14 +93,14 @@ public class PrimarySchoolSynchroVideoActivity extends BaseActivity<SynchroVideo
         initLeftRecycler();
         initLabelAdapter();
 
-        mPresenter.queryGradeDictionaryList(getContext());
+        mPresenter.queryGradeDictionaryList(getContext(),"1");
         /**请求知识树*/
         checkId = null;
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        videoAdapter = new VideoAdapter(PrimarySchoolSynchroVideoActivity.this);
+        videoAdapter = new PrimarySchoolVideoAdapter(PrimarySchoolSynchroVideoActivity.this);
         videoAdapter.setOnItemClickListener(this);
-        GridLayoutManager manager = new GridLayoutManager(getContext(), 5);
+        GridLayoutManager manager = new GridLayoutManager(getContext(), 4);
         recyclerView.setLayoutManager(manager);
         recyclerView.setAdapter(videoAdapter);
 
@@ -117,7 +117,7 @@ public class PrimarySchoolSynchroVideoActivity extends BaseActivity<SynchroVideo
 
     private void initData() {
         loadView.showLoading();
-        mPresenter.queryPaperList(this, gradeId, subjectId, textbookId, semesterId, String.valueOf(currentPage), checkId, checkId, String.valueOf(1));
+        mPresenter.queryPaperList(this, gradeId, semesterId, subjectId, textbookId, checkId,MyApplication.getMyApplication().getUserId(), String.valueOf(currentPage), String.valueOf(12));
     }
 
     private RefreshListenerAdapter refreshListenerAdapter = new RefreshListenerAdapter() {
@@ -354,14 +354,28 @@ public class PrimarySchoolSynchroVideoActivity extends BaseActivity<SynchroVideo
     }
 
     @Override
-    public void loadVideoTreeListSuc(VideoMoreListEntity entry) {
-        mList = entry.getData();
-        if (mList != null && mList.size() > 0) {
-            loadView.showContent();
-            videoAdapter.notifyChanged(mList, false);
-        } else {
-            loadView.showEmpty();
+    public void loadVideoTreeListSuc(MicrolessonVideoEntity entry) {
+        if(isLoadMore){
+            mList.addAll(entry.getData().getRecords());
+        }else{
+            mList = entry.getData().getRecords();
         }
+        if(entry.getData().getPages() == 0){
+            loadView.showEmpty();
+            return;
+        }
+        loadView.showContent();
+        if(entry.getData().getPages() > currentPage){
+            refreshLayout.setEnableLoadmore(true);
+        }else{
+            refreshLayout.setEnableLoadmore(false);
+        }
+
+        if(mList != null && mList.size() > 0){
+            videoAdapter.notifyChanged(mList,isLoadMore);
+        }
+        refreshLayout.finishLoadmore();
+        refreshLayout.finishRefreshing();
     }
 
     @Override
@@ -502,27 +516,19 @@ public class PrimarySchoolSynchroVideoActivity extends BaseActivity<SynchroVideo
 
     @Override
     public void onItemClick(int position) {
-        startSpecialVideo(position, FullScreenVideoPlayActivity.class);
-    }
-
-    private void startSpecialVideo(int pos, Class cla) {
         String path = "";
         try {
-            path = FastDFSUtil.generateSourceUrl(mList.get(pos).getAddressUrl());
+            path = FastDFSUtil.generateSourceUrl(mList.get(position).getVideoUrl());
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Intent intent = new Intent(getContext(), cla);
-        intent.putExtra("pathUrl", path);
-        intent.putExtra("videoName", mList.get(pos).getVideoName());
-        intent.putExtra("chapter", mList.get(pos).getSpecialName());
-        intent.putExtra("cacheKey", mList.get(pos).getCacheKey());
-        intent.putExtra("structLayKey", mList.get(pos).getStructLayKey());
-        intent.putExtra("videoType", mList.get(pos).getType());
-        intent.putExtra("videoId", mList.get(pos).getVideoId());
-        intent.putExtra("describe", mList.get(pos).getIntroduction());
-        intent.putExtra("isCollection", mList.get(pos).getIsCollection());
-        intent.putExtra("playScheduleTime", mList.get(pos).getPlayScheduleTime());
+        Intent intent = new Intent(this,MicrolessonVideoPlayActivity.class);
+        intent.putExtra("pathUrl",path);
+        intent.putExtra("videoName",mList.get(position).getVideoName());
+        intent.putExtra("videoId",mList.get(position).getVideoId());
+        intent.putExtra("imgUrl",mList.get(position).getImgUrl());
+        intent.putExtra("playScheduleTime",mList.get(position).getPlayScheduleTime());
+        intent.putExtra("isCollection",mList.get(position).getIsCollection());
         startActivity(intent);
     }
 

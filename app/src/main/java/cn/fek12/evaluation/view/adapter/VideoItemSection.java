@@ -73,9 +73,10 @@ public class VideoItemSection extends Section {
             }
         });
         itemHolder.tvName.setText(mList.get(position).getVideoName());
-        itemHolder.tvPlayNumber.setText(mList.get(position).getPlayNum());
-        itemHolder.tvSubject.setText(mList.get(position).getTextbookName()+ " "+ mList.get(position).getSubjectName());
-        itemHolder.tvTime.setText(mList.get(position).getVideoCreateTime());
+        itemHolder.tvPlayNumber.setText(String.valueOf(mList.get(position).getPlayCount()));
+        itemHolder.tvSubject.setText(mList.get(position).getTextbookName());
+        itemHolder.tvGrade.setText(mList.get(position).getSubjcetName());
+        itemHolder.tvTime.setText(mList.get(position).getCreateDate());
         //String imgUrl = "http://192.168.0.46/group1/M00/00/02/wKgALl324MmAa3AuAAAnk16E_l4634.jpg?token=bbb9e3960a6d1882a11ee26815e0dd17&ts=1576460493";
         String imgUrl = mList.get(position).getImgUrl();
         Glide.with(MyApplication.getApp()).load(imgUrl).placeholder(R.mipmap.empty_bg).error(R.mipmap.empty_bg).into(itemHolder.ivCover);
@@ -134,6 +135,7 @@ public class VideoItemSection extends Section {
     class MyItemViewHolder extends RecyclerView.ViewHolder {
         private TextView tvName;
         private TextView tvSubject;
+        private TextView tvGrade;
         private RoundImageView ivCover;
         private TextView tvTime;
         private TextView tvPlayNumber;
@@ -144,6 +146,7 @@ public class VideoItemSection extends Section {
             tvName = itemView.findViewById(R.id.tvName);
             ivCover = itemView.findViewById(R.id.ivCover);
             tvSubject = itemView.findViewById(R.id.tvSubject);
+            tvGrade = itemView.findViewById(R.id.tvGrade);
             tvTime = itemView.findViewById(R.id.tvTime);
             tvPlayNumber = itemView.findViewById(R.id.tvPlayNumber);
         }

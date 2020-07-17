@@ -5,12 +5,14 @@
     android:orientation="vertical">
     <cn.fek12.evaluation.view.widget.MultipleStatusView
         android:id="@+id/loadView"
-        android:layout_width="@dimen/dp_187"
+        android:layout_width="@dimen/dp_160"
         android:layout_height="@dimen/dp_311"
-        android:background="@mipmap/subjtct_layout_bg"
+        android:layout_marginTop="@dimen/dp_5"
+        android:background="@mipmap/subject_bg"
         android:visibility="visible">
+        <!--android:background="@mipmap/subjtct_layout_bg"-->
         <ScrollView
-            android:layout_width="@dimen/dp_187"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingTop="@dimen/dp_30"
             android:paddingBottom="@dimen/dp_15"

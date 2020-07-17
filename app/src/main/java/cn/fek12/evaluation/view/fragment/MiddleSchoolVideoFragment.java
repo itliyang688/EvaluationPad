@@ -31,6 +31,7 @@ import cn.fek12.evaluation.model.entity.TextbookChildEntity;
 import cn.fek12.evaluation.model.entity.TextbookEntity;
 import cn.fek12.evaluation.presenter.MicroLessonPresenter;
 import cn.fek12.evaluation.view.activity.MicroLessonTreeActivity;
+import cn.fek12.evaluation.view.activity.PrepareExaminationActivity;
 import cn.fek12.evaluation.view.activity.TreeViewDialogActivity;
 import cn.fek12.evaluation.view.adapter.DictionaryChildSection;
 import cn.fek12.evaluation.view.adapter.DictionaryParentSection;
@@ -83,7 +84,7 @@ public class MiddleSchoolVideoFragment extends BaseFragment<MicroLessonPresenter
 
     @Override
     protected void onLoadDataRemote() {
-        mPresenter.queryGradeDictionaryList(getContext());
+        mPresenter.queryGradeDictionaryList(getContext(),"2");
     }
 
     @Override
@@ -150,12 +151,7 @@ public class MiddleSchoolVideoFragment extends BaseFragment<MicroLessonPresenter
                 leftAdapter.getAdapterForSection("semester").notifyAllItemsChanged("payloads");
                 semesterId = String.valueOf(semesterList.get(pos).getId());
                 int currentItme = mViewPager.getCurrentItem();
-                if(currentItme == 1 || currentItme == 2){
-                    /**进入知识树页面*/
-                    String titleName = currentItme==1? "同步视频":"专题视频";
-                    String value = currentItme==1? "SWEETOWN":"SPECIAL";
-                    startActivityIntent(titleName, value, currentItme, TreeViewDialogActivity.class);
-                }else{
+                if(currentItme == 0){
                     /**请求右侧页面数据*/
                     updateContent();
                 }
@@ -165,37 +161,32 @@ public class MiddleSchoolVideoFragment extends BaseFragment<MicroLessonPresenter
 
     private void updateContent() {
         int currentItme = mViewPager.getCurrentItem();
-        if(currentItme == 1 || currentItme == 2 || currentItme == 3){
-            //String titleName = currentItme==1? "同步视频":"专题视频";
-            String value = currentItme==1? "SWEETOWN":"SPECIAL";
-            startContainActivityIntent("",value,currentItme, MicroLessonTreeActivity.class);
+        if(currentItme == 0){
+            BaseFragment baseFragment = (BaseFragment) adapter.getItem(currentItme);
+            if (baseFragment instanceof MicroLessonPageFragment) {
+                MicroLessonPageFragment fragment = (MicroLessonPageFragment) baseFragment;
+                fragment.queryIndexPagerData(gradeId, semesterId, subjectId, textbookId, MyApplication.getMyApplication().getUserId());
+                fragment.setLists(gradeList,subjectList,textBookList,semesterList);
+            }
             return;
         }
-        BaseFragment baseFragment = (BaseFragment) adapter.getItem(currentItme);
-        if (baseFragment instanceof MicroLessonPageFragment) {
-            MicroLessonPageFragment fragment = (MicroLessonPageFragment) baseFragment;
-            fragment.queryIndexPagerData(gradeId, semesterId, subjectId, textbookId, MyApplication.getMyApplication().getUserId());
-            fragment.setLists(gradeList,subjectList,textBookList,semesterList);
+
+        if(currentItme == 1){
+            String value = "SYNCHRO";
+            startContainActivityIntent("",value,currentItme, MicroLessonTreeActivity.class);
+        }else if(currentItme == 2){
+            startActivityIntent("1", PrepareExaminationActivity.class);
+        }else if(currentItme == 3){
+            startActivityIntent("2", PrepareExaminationActivity.class);
         }
     }
 
 
-    private void startActivityIntent(String titleName, String value, int typePos,Class clazz) {
+    private void startActivityIntent(String paperType,Class clazz) {
         ContainListEntity containListEntity = new ContainListEntity();
-        containListEntity.setGradeList(gradeList);
-        containListEntity.setSemesterList(semesterList);
         containListEntity.setSubjectList(subjectList);
-        containListEntity.setTextBookList(textBookList);
         Intent intent = new Intent(getContext(), clazz);
-        intent.putExtra("gradeId", gradeId);
-        intent.putExtra("semesterId", semesterId);
-        intent.putExtra("subjectId", subjectId);
-        intent.putExtra("textbookId", textbookId);
-        intent.putExtra("titleName", titleName);
-        intent.putExtra("paperType", value);
-        intent.putExtra("typePos", typePos);
-        intent.putExtra("typePage", "1");//类型 微课进入1 测评进入2
-        intent.putExtra("containListEntityJson", new Gson().toJson(containListEntity));
+        intent.putExtra("paperType", paperType);
         getActivity().startActivity(intent);
     }
 
@@ -357,11 +348,12 @@ public class MiddleSchoolVideoFragment extends BaseFragment<MicroLessonPresenter
             @Override
             public void onTabSelect(int position) {
                 //mViewPager.setCurrentItem(position);
-                if(position == 1 || position == 2 || position == 3){
+                if(position == 1){
                     //String titleName = currentItme==1? "同步视频":"专题视频";
                     String value = position==1? "SWEETOWN":"SPECIAL";
                     startContainActivityIntent("",value,position, MicroLessonTreeActivity.class);
-                    return;
+                }else {
+                    startActivityIntent(String.valueOf(position), PrepareExaminationActivity.class);
                 }
             }
 

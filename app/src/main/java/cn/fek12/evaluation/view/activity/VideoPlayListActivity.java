@@ -7,6 +7,7 @@ import android.widget.LinearLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.fek12.basic.base.BaseActivity;
 import com.fek12.basic.utils.toast.ToastUtils;
 
@@ -18,6 +19,7 @@ import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.application.MyApplication;
 import cn.fek12.evaluation.impl.IVideoPlayList;
 import cn.fek12.evaluation.model.config.Configs;
+import cn.fek12.evaluation.model.entity.CollectionEntity;
 import cn.fek12.evaluation.model.entity.CommonEntity;
 import cn.fek12.evaluation.model.entity.RelevantVideoListEntity;
 import cn.fek12.evaluation.presenter.VideoPlayListPresenter;
@@ -47,7 +49,7 @@ public class VideoPlayListActivity extends BaseActivity<VideoPlayListPresenter> 
     private RelevantVideoAdapter adapter;
     private RelevantVideoListEntity.DataBean.VideoBean videoBean;
     private int isCollection;
-    private List<RelevantVideoListEntity.DataBean.VideoBean> mList;
+    private List<RelevantVideoListEntity.DataBean.RelatedVideoBean> mList;
     private String isEnd = "0";
 
     @Override
@@ -79,7 +81,7 @@ public class VideoPlayListActivity extends BaseActivity<VideoPlayListPresenter> 
                 videoBean = entry.getData().getVideo();
                 String path = null;
                 try {
-                    path = FastDFSUtil.generateSourceUrl(videoBean.getAddressUrl());
+                    path = FastDFSUtil.generateSourceUrl(videoBean.getVideoUrl());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -90,6 +92,7 @@ public class VideoPlayListActivity extends BaseActivity<VideoPlayListPresenter> 
                 jzVideo.ivExtend.setImageResource(isCollection == 0 ? R.mipmap.collection_video_normal : R.mipmap.collection_video_check);
                 jzVideo.ivExtend.setOnClickListener(onClickListener);
                 jzVideo.setOnStateAutoComplete(VideoPlayListActivity.this);
+                Glide.with(MyApplication.getApp()).load(videoBean.getImgUrl()).into(jzVideo.thumbImageView);
                 //jzVideo.thumbImageView.setImageResource(R.mipmap.empty_bg);
                 /*String finalPath = path;
                 new Handler().post(new Runnable() {
@@ -131,7 +134,7 @@ public class VideoPlayListActivity extends BaseActivity<VideoPlayListPresenter> 
                     } else {
                         tag = "0";
                     }
-                    mPresenter.collection(VideoPlayListActivity.this, videoBean.getCacheKey(), String.valueOf(videoBean.getType()), String.valueOf(videoBean.getVideoId()), tag, MyApplication.getMyApplication().getUserId());
+                    mPresenter.collection(VideoPlayListActivity.this,String.valueOf(videoBean.getVideoId()),tag, MyApplication.getMyApplication().getUserId());
                     break;
             }
         }
@@ -141,7 +144,7 @@ public class VideoPlayListActivity extends BaseActivity<VideoPlayListPresenter> 
     protected void onPause() {
         long currentPos = jzVideo.getCurrentPositionWhenPlaying();
         if(currentPos > 0 || isEnd.equals("1")){
-            mPresenter.schedule(VideoPlayListActivity.this, String.valueOf(currentPos), String.valueOf(videoBean.getVideoId()), MyApplication.getMyApplication().getUserId());
+            mPresenter.schedule(VideoPlayListActivity.this, String.valueOf(currentPos),subjectCategoryId, String.valueOf(videoBean.getVideoId()), MyApplication.getMyApplication().getUserId());
         }
         super.onPause();
     }
@@ -158,7 +161,7 @@ public class VideoPlayListActivity extends BaseActivity<VideoPlayListPresenter> 
     }
 
     @Override
-    public void loadCollectionSuc(CommonEntity entry) {
+    public void loadCollectionSuc(CollectionEntity entry) {
         if (tag.equals("0")) {
             isCollection = 0;
             ToastUtils.popUpToast("已取消");
@@ -185,25 +188,19 @@ public class VideoPlayListActivity extends BaseActivity<VideoPlayListPresenter> 
 
     @Override
     public void onItemClick(int position) {
-        startSpecialVideo(position,FullScreenVideoPlayActivity.class);
-    }
-
-    private void startSpecialVideo(int pos, Class cla){
         String path = "";
         try {
-            path = FastDFSUtil.generateSourceUrl(mList.get(pos).getAddressUrl());
-        }  catch (Exception e) {
+            path = FastDFSUtil.generateSourceUrl(mList.get(position).getVideoUrl());
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        Intent intent = new Intent(getContext(), cla);
+        Intent intent = new Intent(this,MicrolessonVideoPlayActivity.class);
         intent.putExtra("pathUrl",path);
-        intent.putExtra("videoName",mList.get(pos).getVideoName());
-        intent.putExtra("cacheKey",mList.get(pos).getCacheKey());
-        intent.putExtra("videoType",mList.get(pos).getType());
-        intent.putExtra("typePage",1);
-        intent.putExtra("videoId",mList.get(pos).getVideoId());
-        intent.putExtra("isCollection",mList.get(pos).getIsCollection());
-        intent.putExtra("playScheduleTime",mList.get(pos).getPlayScheduleTime());
+        intent.putExtra("videoName",mList.get(position).getVideoName());
+        intent.putExtra("videoId",mList.get(position).getVideoId());
+        intent.putExtra("imgUrl",mList.get(position).getImgUrl());
+        intent.putExtra("playScheduleTime",mList.get(position).getPlayScheduleTime());
+        intent.putExtra("isCollection",mList.get(position).getIsCollection());
         startActivity(intent);
     }
 

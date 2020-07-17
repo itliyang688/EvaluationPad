@@ -176,7 +176,7 @@ public class MenuPopupWindow extends PopupWindow {
 
 	public void queryGradeDictionaryList(Context context) {
 		//multipleStatusView.showLoading();
-		ApiRetrofit.getInstance().getApiService().queryGradeDictionaryList()
+		ApiRetrofit.getInstance().getApiService().queryGradeDictionaryList("0")
 				.compose(RxHelper.observableIO2Main(context))
 				.subscribe(new BaseObserver<GradeDictionaryListEntity>() {
 

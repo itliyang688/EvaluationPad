@@ -340,32 +340,29 @@ public class PromoteNewsFragment extends BaseFragment<PresentationPresenter> imp
     private void isEmpty() {
         List<PresentationEntity> presentationModels = new ArrayList<>();
         boolean isEmpty = false;
+        //添加标题
+        PresentationEntity title = new PresentationEntity();
+        title.setType(1);
+        title.setTitleType(1);
+        presentationModels.add(title);
         if (daylist != null && daylist.size() > 0) {
             isEmpty = true;
-            //添加标题
-            PresentationEntity title = new PresentationEntity();
-            title.setType(1);
-            title.setTitleType(1);
-            presentationModels.add(title);
-            if (daylist != null && daylist.size() > 0) {
-                for (PresentationEntity model : daylist) {
-                    //添加数据
-                    presentationModels.add(model);
-                }
+            for (PresentationEntity model : daylist) {
+                //添加数据
+                presentationModels.add(model);
             }
         }
+
+        //添加标题
+        PresentationEntity title2 = new PresentationEntity();
+        title2.setType(1);
+        title2.setTitleType(2);
+        presentationModels.add(title2);
         if (aweeklist != null && aweeklist.size() > 0) {
             isEmpty = true;
-            //添加标题
-            PresentationEntity title2 = new PresentationEntity();
-            title2.setType(1);
-            title2.setTitleType(2);
-            presentationModels.add(title2);
-            if (aweeklist != null && aweeklist.size() > 0) {
-                for (PresentationEntity model : earlierList) {
-                    //添加数据
-                    presentationModels.add(model);
-                }
+            for (PresentationEntity model : aweeklist) {
+                //添加数据
+                presentationModels.add(model);
             }
         }
 

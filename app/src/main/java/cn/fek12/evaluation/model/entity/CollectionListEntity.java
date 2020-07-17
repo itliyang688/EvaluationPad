@@ -12,9 +12,8 @@ import java.util.List;
  */
 public class CollectionListEntity implements Serializable {
 
-
     /**
-     * data : {"week":[{"videoId":104,"cacheKey":"special:*grade:1*:subject:13*:textbook:63*:semester:16*:chapter:22*:video:104","structLayKey":"special:*grade:1*:subject:13*:textbook:63*:semester:16*:chapter:22*","type":2,"addressUrl":"http://218.245.6.132/group1/M00/00/00/2vUGhF3Y-HWAaZ97AIjznj-xCYw118.mp4","videoName":"专题视频","playNum":15,"videoCreateTime":"2019/11/22","isCollection":1,"playScheduleTime":616422,"beforeActionTime":1574503242968,"specialName":"一年级语文测试测试11111","introduction":"专题视频","textbookName":"部编版","subjectName":"语文"}],"month":null,"near":null}
+     * data : {"earlier":[],"amonth":[],"aweek":[{"videoId":"344d726b-67e2-453d-91ee-61254145888d","videoName":"测试一下时间","subjcetName":"小学数学","createDate":"2020/07/13","imgUrl":"http://218.245.6.132/group1/M00/00/B1/2vUGhF8JNnaAKTjJAAA5Nhd3I5E322.jpg","videoUrl":"http://218.245.6.132/group1/M00/00/B1/2vUGhF8JNnKACK89ALXuAGQXBck157.mp4","playScheduleTime":0,"isCollection":1,"playCount":0,"subject":null,"textbookName":"人教版,人教B版","gradeName":"一年级","videoContent":"水电费"}]}
      * state : 0
      * message : 成功
      */
@@ -48,131 +47,80 @@ public class CollectionListEntity implements Serializable {
     }
 
     public static class DataBean {
-        /**
-         * week : [{"videoId":104,"cacheKey":"special:*grade:1*:subject:13*:textbook:63*:semester:16*:chapter:22*:video:104","structLayKey":"special:*grade:1*:subject:13*:textbook:63*:semester:16*:chapter:22*","type":2,"addressUrl":"http://218.245.6.132/group1/M00/00/00/2vUGhF3Y-HWAaZ97AIjznj-xCYw118.mp4","videoName":"专题视频","playNum":15,"videoCreateTime":"2019/11/22","isCollection":1,"playScheduleTime":616422,"beforeActionTime":1574503242968,"specialName":"一年级语文测试测试11111","introduction":"专题视频","textbookName":"部编版","subjectName":"语文"}]
-         * month : null
-         * near : null
-         */
+        private List<VideoBean> earlier;
+        private List<VideoBean> amonth;
+        private List<VideoBean> aweek;
 
-        private List<VideoBean> month;
-        private List<VideoBean> near;
-        private List<VideoBean> week;
-
-        public List<VideoBean> getMonth() {
-            return month;
+        public List<VideoBean> getEarlier() {
+            return earlier;
         }
 
-        public void setMonth(List<VideoBean> month) {
-            this.month = month;
+        public void setEarlier(List<VideoBean> earlier) {
+            this.earlier = earlier;
         }
 
-        public List<VideoBean> getNear() {
-            return near;
+        public List<VideoBean> getAmonth() {
+            return amonth;
         }
 
-        public void setNear(List<VideoBean> near) {
-            this.near = near;
+        public void setAmonth(List<VideoBean> amonth) {
+            this.amonth = amonth;
         }
 
-        public List<VideoBean> getWeek() {
-            return week;
+        public List<VideoBean> getAweek() {
+            return aweek;
         }
 
-        public void setWeek(List<VideoBean> week) {
-            this.week = week;
+        public void setAweek(List<VideoBean> aweek) {
+            this.aweek = aweek;
         }
 
         public static class VideoBean {
             /**
-             * videoId : 104
-             * cacheKey : special:*grade:1*:subject:13*:textbook:63*:semester:16*:chapter:22*:video:104
-             * structLayKey : special:*grade:1*:subject:13*:textbook:63*:semester:16*:chapter:22*
-             * type : 2
-             * addressUrl : http://218.245.6.132/group1/M00/00/00/2vUGhF3Y-HWAaZ97AIjznj-xCYw118.mp4
-             * videoName : 专题视频
-             * playNum : 15
-             * videoCreateTime : 2019/11/22
+             * videoId : 344d726b-67e2-453d-91ee-61254145888d
+             * videoName : 测试一下时间
+             * subjcetName : 小学数学
+             * createDate : 2020/07/13
+             * imgUrl : http://218.245.6.132/group1/M00/00/B1/2vUGhF8JNnaAKTjJAAA5Nhd3I5E322.jpg
+             * videoUrl : http://218.245.6.132/group1/M00/00/B1/2vUGhF8JNnKACK89ALXuAGQXBck157.mp4
+             * playScheduleTime : 0
              * isCollection : 1
-             * playScheduleTime : 616422
-             * beforeActionTime : 1574503242968
-             * specialName : 一年级语文测试测试11111
-             * introduction : 专题视频
-             * textbookName : 部编版
-             * subjectName : 语文
+             * playCount : 0
+             * subject : null
+             * textbookName : 人教版,人教B版
+             * gradeName : 一年级
+             * videoContent : 水电费
              */
 
-            private int videoId;
-            private String cacheKey;
-            private String structLayKey;
-            private int type;
-            private String addressUrl;
+            private String videoId;
             private String videoName;
-            private int playNum;
-            private String videoCreateTime;
-            private int isCollection;
-            private long playScheduleTime;
-            private long beforeActionTime;
-            private String specialName;
+            private String subjcetName;
+            private String playBack;
+            private String createDate;
             private String imgUrl;
-            private String introduction;
-            private String schedule;
+            private String videoUrl;
+            private int playScheduleTime;
+            private int isCollection;
+            private int playCount;
+            private Object subject;
             private String textbookName;
-            private String subjectName;
+            private String gradeName;
+            private String videoContent;
 
-            public String getImgUrl() {
-                return imgUrl;
+            public String getPlayBack() {
+                return playBack;
             }
 
-            public void setImgUrl(String imgUrl) {
-                this.imgUrl = imgUrl;
+            public void setPlayBack(String playBack) {
+                this.playBack = playBack;
             }
 
-            public String getSchedule() {
-                return schedule;
-            }
-
-            public void setSchedule(String schedule) {
-                this.schedule = schedule;
-            }
-
-            public int getVideoId() {
+            public String getVideoId() {
                 return videoId;
             }
 
-            public void setVideoId(int videoId) {
+            public void setVideoId(String videoId) {
                 this.videoId = videoId;
-            }
-
-            public String getCacheKey() {
-                return cacheKey;
-            }
-
-            public void setCacheKey(String cacheKey) {
-                this.cacheKey = cacheKey;
-            }
-
-            public String getStructLayKey() {
-                return structLayKey;
-            }
-
-            public void setStructLayKey(String structLayKey) {
-                this.structLayKey = structLayKey;
-            }
-
-            public int getType() {
-                return type;
-            }
-
-            public void setType(int type) {
-                this.type = type;
-            }
-
-            public String getAddressUrl() {
-                return addressUrl;
-            }
-
-            public void setAddressUrl(String addressUrl) {
-                this.addressUrl = addressUrl;
             }
 
             public String getVideoName() {
@@ -183,20 +131,44 @@ public class CollectionListEntity implements Serializable {
                 this.videoName = videoName;
             }
 
-            public int getPlayNum() {
-                return playNum;
+            public String getSubjcetName() {
+                return subjcetName;
             }
 
-            public void setPlayNum(int playNum) {
-                this.playNum = playNum;
+            public void setSubjcetName(String subjcetName) {
+                this.subjcetName = subjcetName;
             }
 
-            public String getVideoCreateTime() {
-                return videoCreateTime;
+            public String getCreateDate() {
+                return createDate;
             }
 
-            public void setVideoCreateTime(String videoCreateTime) {
-                this.videoCreateTime = videoCreateTime;
+            public void setCreateDate(String createDate) {
+                this.createDate = createDate;
+            }
+
+            public String getImgUrl() {
+                return imgUrl;
+            }
+
+            public void setImgUrl(String imgUrl) {
+                this.imgUrl = imgUrl;
+            }
+
+            public String getVideoUrl() {
+                return videoUrl;
+            }
+
+            public void setVideoUrl(String videoUrl) {
+                this.videoUrl = videoUrl;
+            }
+
+            public int getPlayScheduleTime() {
+                return playScheduleTime;
+            }
+
+            public void setPlayScheduleTime(int playScheduleTime) {
+                this.playScheduleTime = playScheduleTime;
             }
 
             public int getIsCollection() {
@@ -207,36 +179,20 @@ public class CollectionListEntity implements Serializable {
                 this.isCollection = isCollection;
             }
 
-            public long getPlayScheduleTime() {
-                return playScheduleTime;
+            public int getPlayCount() {
+                return playCount;
             }
 
-            public void setPlayScheduleTime(long playScheduleTime) {
-                this.playScheduleTime = playScheduleTime;
+            public void setPlayCount(int playCount) {
+                this.playCount = playCount;
             }
 
-            public long getBeforeActionTime() {
-                return beforeActionTime;
+            public Object getSubject() {
+                return subject;
             }
 
-            public void setBeforeActionTime(long beforeActionTime) {
-                this.beforeActionTime = beforeActionTime;
-            }
-
-            public String getSpecialName() {
-                return specialName;
-            }
-
-            public void setSpecialName(String specialName) {
-                this.specialName = specialName;
-            }
-
-            public String getIntroduction() {
-                return introduction;
-            }
-
-            public void setIntroduction(String introduction) {
-                this.introduction = introduction;
+            public void setSubject(Object subject) {
+                this.subject = subject;
             }
 
             public String getTextbookName() {
@@ -247,12 +203,20 @@ public class CollectionListEntity implements Serializable {
                 this.textbookName = textbookName;
             }
 
-            public String getSubjectName() {
-                return subjectName;
+            public String getGradeName() {
+                return gradeName;
             }
 
-            public void setSubjectName(String subjectName) {
-                this.subjectName = subjectName;
+            public void setGradeName(String gradeName) {
+                this.gradeName = gradeName;
+            }
+
+            public String getVideoContent() {
+                return videoContent;
+            }
+
+            public void setVideoContent(String videoContent) {
+                this.videoContent = videoContent;
             }
         }
     }

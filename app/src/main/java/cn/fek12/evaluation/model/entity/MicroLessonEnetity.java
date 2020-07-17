@@ -13,7 +13,7 @@ import java.util.List;
 public class MicroLessonEnetity implements Serializable {
 
     /**
-     * data : {"near":[{"videoId":1,"cacheKey":"special:*grade:1*:subject:1*:textbook:1*:semester:1*:chapter:1*:video:1","structLayKey":"special:*grade:1*:subject:1*:textbook:1*:semester:1*:chapter:1*","type":2,"addressUrl":"http://192.168.0.46/group1/M00/00/00/wKgALl23kwyAMozOAOBSBYftCKo270.mp4?token=2cc8cea563f06bc61576893cb5d8e542","videoName":"未来教育视频","videoCreateTime":null,"specialName":"专题视频","introduction":"未来教育视频"}],"hot":[{"videoId":1,"cacheKey":"special:*grade:1*:subject:1*:textbook:1*:semester:1*:chapter:1*:video:1","structLayKey":"special:*grade:1*:subject:1*:textbook:1*:semester:1*:chapter:1*","type":2,"addressUrl":"http://192.168.0.46/group1/M00/00/00/wKgALl23kwyAMozOAOBSBYftCKo270.mp4?token=2cc8cea563f06bc61576893cb5d8e542","videoName":"未来教育视频","videoCreateTime":null,"specialName":"专题视频","introduction":"未来教育视频"}],"recommoned":[{"videoId":1,"cacheKey":"special:*grade:1*:subject:1*:textbook:1*:semester:1*:chapter:1*:video:1","structLayKey":"special:*grade:1*:subject:1*:textbook:1*:semester:1*:chapter:1*","type":2,"addressUrl":"http://192.168.0.46/group1/M00/00/00/wKgALl23kwyAMozOAOBSBYftCKo270.mp4?token=2cc8cea563f06bc61576893cb5d8e542","videoName":"未来教育视频","videoCreateTime":null,"specialName":"专题视频","introduction":"未来教育视频"}]}
+     * data : {"recommend":[{"videoId":"5d45d386-50e5-4a04-bc27-7af29586bcb5","videoName":"测试一下","subjcetName":"初中英语","createDate":"2020/07/11","imgUrl":"group1/M00/00/B1/2vUGhF8JWiqAHrg5AAA5Nhd3I5E687.jpg","videoUrl":"group1/M00/00/B1/2vUGhF8JWimAfzm4ALXuAGQXBck505.mp4","playScheduleTime":0,"isCollection":0,"playCount":0,"subject":null,"textbookName":null,"gradeName":null},{"videoId":"7c6b6f76-d774-41d9-8c88-4de813b66fba","videoName":"test-gaowx","subjcetName":"初中化学","createDate":"2020/07/15","imgUrl":"group1/M00/00/B2/2vUGhF8OeGSAWInOAAGDcBU2MFE945.jpg","videoUrl":"group1/M00/00/B2/2vUGhF8OeGKACk8zACSeHrS87oE651.mp4","playScheduleTime":0,"isCollection":0,"playCount":0,"subject":null,"textbookName":null,"gradeName":null},{"videoId":"9ff519a5-a5fa-48c2-962e-47f1c029e88b","videoName":"test-gaowx","subjcetName":"初中语文","createDate":"2020/07/15","imgUrl":"group1/M00/00/B2/2vUGhF8OePSASbo1AAGDcBU2MFE776.jpg","videoUrl":"group1/M00/00/B2/2vUGhF8OePSARkZQACSeHrS87oE038.mp4","playScheduleTime":0,"isCollection":0,"playCount":0,"subject":null,"textbookName":null,"gradeName":null},{"videoId":"5d45d386-50e5-4a04-bc27-7af29586bcb5","videoName":"测试一下","subjcetName":"初中英语","createDate":"2020/07/11","imgUrl":"group1/M00/00/B1/2vUGhF8JWiqAHrg5AAA5Nhd3I5E687.jpg","videoUrl":"group1/M00/00/B1/2vUGhF8JWimAfzm4ALXuAGQXBck505.mp4","playScheduleTime":0,"isCollection":0,"playCount":0,"subject":null,"textbookName":null,"gradeName":null},{"videoId":"7c6b6f76-d774-41d9-8c88-4de813b66fba","videoName":"test-gaowx","subjcetName":"初中化学","createDate":"2020/07/15","imgUrl":"group1/M00/00/B2/2vUGhF8OeGSAWInOAAGDcBU2MFE945.jpg","videoUrl":"group1/M00/00/B2/2vUGhF8OeGKACk8zACSeHrS87oE651.mp4","playScheduleTime":0,"isCollection":0,"playCount":0,"subject":null,"textbookName":null,"gradeName":null}],"near":[{"videoId":"9ff519a5-a5fa-48c2-962e-47f1c029e88b","videoName":"test-gaowx","subjcetName":"初中语文","createDate":"2020/07/15","imgUrl":"group1/M00/00/B2/2vUGhF8OePSASbo1AAGDcBU2MFE776.jpg","videoUrl":"group1/M00/00/B2/2vUGhF8OePSARkZQACSeHrS87oE038.mp4","playScheduleTime":0,"isCollection":0,"playCount":0,"subject":null,"textbookName":null,"gradeName":null},{"videoId":"7c6b6f76-d774-41d9-8c88-4de813b66fba","videoName":"test-gaowx","subjcetName":"初中化学","createDate":"2020/07/15","imgUrl":"group1/M00/00/B2/2vUGhF8OeGSAWInOAAGDcBU2MFE945.jpg","videoUrl":"group1/M00/00/B2/2vUGhF8OeGKACk8zACSeHrS87oE651.mp4","playScheduleTime":0,"isCollection":0,"playCount":0,"subject":null,"textbookName":null,"gradeName":null},{"videoId":"bd13a7be-3fa1-4f39-8195-caeba345a5ed","videoName":"test-gaowx","subjcetName":"初中英语","createDate":"2020/07/15","imgUrl":"group1/M00/00/B2/2vUGhF8OeEyAGzClAABZ3Y9eOlU928.jpg","videoUrl":"group1/M00/00/B2/2vUGhF8OeEyAdS1bAKUvhNDG1nk823.mp4","playScheduleTime":0,"isCollection":0,"playCount":0,"subject":null,"textbookName":null,"gradeName":null},{"videoId":"5d45d386-50e5-4a04-bc27-7af29586bcb5","videoName":"测试一下","subjcetName":"初中英语","createDate":"2020/07/11","imgUrl":"group1/M00/00/B1/2vUGhF8JWiqAHrg5AAA5Nhd3I5E687.jpg","videoUrl":"group1/M00/00/B1/2vUGhF8JWimAfzm4ALXuAGQXBck505.mp4","playScheduleTime":0,"isCollection":0,"playCount":0,"subject":null,"textbookName":null,"gradeName":null}],"hot":[{"videoId":"5d45d386-50e5-4a04-bc27-7af29586bcb5","videoName":"测试一下","subjcetName":"初中英语","createDate":"2020/07/11","imgUrl":"group1/M00/00/B1/2vUGhF8JWiqAHrg5AAA5Nhd3I5E687.jpg","videoUrl":"group1/M00/00/B1/2vUGhF8JWimAfzm4ALXuAGQXBck505.mp4","playScheduleTime":0,"isCollection":0,"playCount":0,"subject":null,"textbookName":null,"gradeName":null},{"videoId":"7c6b6f76-d774-41d9-8c88-4de813b66fba","videoName":"test-gaowx","subjcetName":"初中化学","createDate":"2020/07/15","imgUrl":"group1/M00/00/B2/2vUGhF8OeGSAWInOAAGDcBU2MFE945.jpg","videoUrl":"group1/M00/00/B2/2vUGhF8OeGKACk8zACSeHrS87oE651.mp4","playScheduleTime":0,"isCollection":0,"playCount":0,"subject":null,"textbookName":null,"gradeName":null},{"videoId":"9ff519a5-a5fa-48c2-962e-47f1c029e88b","videoName":"test-gaowx","subjcetName":"初中语文","createDate":"2020/07/15","imgUrl":"group1/M00/00/B2/2vUGhF8OePSASbo1AAGDcBU2MFE776.jpg","videoUrl":"group1/M00/00/B2/2vUGhF8OePSARkZQACSeHrS87oE038.mp4","playScheduleTime":0,"isCollection":0,"playCount":0,"subject":null,"textbookName":null,"gradeName":null},{"videoId":"bd13a7be-3fa1-4f39-8195-caeba345a5ed","videoName":"test-gaowx","subjcetName":"初中英语","createDate":"2020/07/15","imgUrl":"group1/M00/00/B2/2vUGhF8OeEyAGzClAABZ3Y9eOlU928.jpg","videoUrl":"group1/M00/00/B2/2vUGhF8OeEyAdS1bAKUvhNDG1nk823.mp4","playScheduleTime":0,"isCollection":0,"playCount":0,"subject":null,"textbookName":null,"gradeName":null}]}
      * state : 0
      * message : 成功
      */
@@ -47,9 +47,17 @@ public class MicroLessonEnetity implements Serializable {
     }
 
     public static class DataBean {
+        private List<VideoBean> recommend;
         private List<VideoBean> near;
         private List<VideoBean> hot;
-        private List<VideoBean> recommoned;
+
+        public List<VideoBean> getRecommend() {
+            return recommend;
+        }
+
+        public void setRecommend(List<VideoBean> recommend) {
+            this.recommend = recommend;
+        }
 
         public List<VideoBean> getNear() {
             return near;
@@ -67,42 +75,66 @@ public class MicroLessonEnetity implements Serializable {
             this.hot = hot;
         }
 
-        public List<VideoBean> getRecommoned() {
-            return recommoned;
-        }
-
-        public void setRecommoned(List<VideoBean> recommoned) {
-            this.recommoned = recommoned;
-        }
-
-        public static class VideoBean {
+        public static class RecommendBean {
             /**
-             * videoId : 1
-             * cacheKey : special:*grade:1*:subject:1*:textbook:1*:semester:1*:chapter:1*:video:1
-             * structLayKey : special:*grade:1*:subject:1*:textbook:1*:semester:1*:chapter:1*
-             * type : 2
-             * addressUrl : http://192.168.0.46/group1/M00/00/00/wKgALl23kwyAMozOAOBSBYftCKo270.mp4?token=2cc8cea563f06bc61576893cb5d8e542
-             * videoName : 未来教育视频
-             * videoCreateTime : null
-             * specialName : 专题视频
-             * introduction : 未来教育视频
+             * videoId : 5d45d386-50e5-4a04-bc27-7af29586bcb5
+             * videoName : 测试一下
+             * subjcetName : 初中英语
+             * createDate : 2020/07/11
+             * imgUrl : group1/M00/00/B1/2vUGhF8JWiqAHrg5AAA5Nhd3I5E687.jpg
+             * videoUrl : group1/M00/00/B1/2vUGhF8JWimAfzm4ALXuAGQXBck505.mp4
+             * playScheduleTime : 0
+             * isCollection : 0
+             * playCount : 0
+             * subject : null
+             * textbookName : null
+             * gradeName : null
              */
 
-            private int videoId;
-            private String cacheKey;
-            private String structLayKey;
-            private String playNum;
-            private int type;
-            private int isCollection;
-            private long playScheduleTime = 0;
-            private String addressUrl;
-            private String imgUrl;
+            private String videoId;
             private String videoName;
-            private String videoCreateTime;
-            private String specialName;
-            private String introduction;
-            private String textbookName;
-            private String subjectName;
+            private String subjcetName;
+            private String createDate;
+            private String imgUrl;
+            private String videoUrl;
+            private int playScheduleTime;
+            private int isCollection;
+            private int playCount;
+            private Object subject;
+            private Object textbookName;
+            private Object gradeName;
+
+            public String getVideoId() {
+                return videoId;
+            }
+
+            public void setVideoId(String videoId) {
+                this.videoId = videoId;
+            }
+
+            public String getVideoName() {
+                return videoName;
+            }
+
+            public void setVideoName(String videoName) {
+                this.videoName = videoName;
+            }
+
+            public String getSubjcetName() {
+                return subjcetName;
+            }
+
+            public void setSubjcetName(String subjcetName) {
+                this.subjcetName = subjcetName;
+            }
+
+            public String getCreateDate() {
+                return createDate;
+            }
+
+            public void setCreateDate(String createDate) {
+                this.createDate = createDate;
+            }
 
             public String getImgUrl() {
                 return imgUrl;
@@ -112,27 +144,19 @@ public class MicroLessonEnetity implements Serializable {
                 this.imgUrl = imgUrl;
             }
 
-            public String getTextbookName() {
-                return textbookName;
+            public String getVideoUrl() {
+                return videoUrl;
             }
 
-            public void setTextbookName(String textbookName) {
-                this.textbookName = textbookName;
+            public void setVideoUrl(String videoUrl) {
+                this.videoUrl = videoUrl;
             }
 
-            public String getSubjectName() {
-                return subjectName;
-            }
-
-            public void setSubjectName(String subjectName) {
-                this.subjectName = subjectName;
-            }
-
-            public long getPlayScheduleTime() {
+            public int getPlayScheduleTime() {
                 return playScheduleTime;
             }
 
-            public void setPlayScheduleTime(long playScheduleTime) {
+            public void setPlayScheduleTime(int playScheduleTime) {
                 this.playScheduleTime = playScheduleTime;
             }
 
@@ -144,52 +168,74 @@ public class MicroLessonEnetity implements Serializable {
                 this.isCollection = isCollection;
             }
 
-            public String getPlayNum() {
-                return playNum;
+            public int getPlayCount() {
+                return playCount;
             }
 
-            public void setPlayNum(String playNum) {
-                this.playNum = playNum;
+            public void setPlayCount(int playCount) {
+                this.playCount = playCount;
             }
 
-            public int getVideoId() {
+            public Object getSubject() {
+                return subject;
+            }
+
+            public void setSubject(Object subject) {
+                this.subject = subject;
+            }
+
+            public Object getTextbookName() {
+                return textbookName;
+            }
+
+            public void setTextbookName(Object textbookName) {
+                this.textbookName = textbookName;
+            }
+
+            public Object getGradeName() {
+                return gradeName;
+            }
+
+            public void setGradeName(Object gradeName) {
+                this.gradeName = gradeName;
+            }
+        }
+
+        public static class VideoBean {
+            /**
+             * videoId : 9ff519a5-a5fa-48c2-962e-47f1c029e88b
+             * videoName : test-gaowx
+             * subjcetName : 初中语文
+             * createDate : 2020/07/15
+             * imgUrl : group1/M00/00/B2/2vUGhF8OePSASbo1AAGDcBU2MFE776.jpg
+             * videoUrl : group1/M00/00/B2/2vUGhF8OePSARkZQACSeHrS87oE038.mp4
+             * playScheduleTime : 0
+             * isCollection : 0
+             * playCount : 0
+             * subject : null
+             * textbookName : null
+             * gradeName : null
+             */
+
+            private String videoId;
+            private String videoName;
+            private String subjcetName;
+            private String createDate;
+            private String imgUrl;
+            private String videoUrl;
+            private int playScheduleTime;
+            private int isCollection;
+            private int playCount;
+            private String subject;
+            private String textbookName;
+            private String gradeName;
+
+            public String getVideoId() {
                 return videoId;
             }
 
-            public void setVideoId(int videoId) {
+            public void setVideoId(String videoId) {
                 this.videoId = videoId;
-            }
-
-            public String getCacheKey() {
-                return cacheKey;
-            }
-
-            public void setCacheKey(String cacheKey) {
-                this.cacheKey = cacheKey;
-            }
-
-            public String getStructLayKey() {
-                return structLayKey;
-            }
-
-            public void setStructLayKey(String structLayKey) {
-                this.structLayKey = structLayKey;
-            }
-
-            public int getType() {
-                return type;
-            }
-
-            public void setType(int type) {
-                this.type = type;
-            }
-
-            public String getAddressUrl() {
-                return addressUrl;
-            }
-
-            public void setAddressUrl(String addressUrl) {
-                this.addressUrl = addressUrl;
             }
 
             public String getVideoName() {
@@ -200,28 +246,210 @@ public class MicroLessonEnetity implements Serializable {
                 this.videoName = videoName;
             }
 
-            public String getVideoCreateTime() {
-                return videoCreateTime;
+            public String getSubjcetName() {
+                return subjcetName;
             }
 
-            public void setVideoCreateTime(String videoCreateTime) {
-                this.videoCreateTime = videoCreateTime;
+            public void setSubjcetName(String subjcetName) {
+                this.subjcetName = subjcetName;
             }
 
-            public String getSpecialName() {
-                return specialName;
+            public String getCreateDate() {
+                return createDate;
             }
 
-            public void setSpecialName(String specialName) {
-                this.specialName = specialName;
+            public void setCreateDate(String createDate) {
+                this.createDate = createDate;
             }
 
-            public String getIntroduction() {
-                return introduction;
+            public String getImgUrl() {
+                return imgUrl;
             }
 
-            public void setIntroduction(String introduction) {
-                this.introduction = introduction;
+            public void setImgUrl(String imgUrl) {
+                this.imgUrl = imgUrl;
+            }
+
+            public String getVideoUrl() {
+                return videoUrl;
+            }
+
+            public void setVideoUrl(String videoUrl) {
+                this.videoUrl = videoUrl;
+            }
+
+            public int getPlayScheduleTime() {
+                return playScheduleTime;
+            }
+
+            public void setPlayScheduleTime(int playScheduleTime) {
+                this.playScheduleTime = playScheduleTime;
+            }
+
+            public int getIsCollection() {
+                return isCollection;
+            }
+
+            public void setIsCollection(int isCollection) {
+                this.isCollection = isCollection;
+            }
+
+            public int getPlayCount() {
+                return playCount;
+            }
+
+            public void setPlayCount(int playCount) {
+                this.playCount = playCount;
+            }
+
+            public String getSubject() {
+                return subject;
+            }
+
+            public void setSubject(String subject) {
+                this.subject = subject;
+            }
+
+            public String getTextbookName() {
+                return textbookName;
+            }
+
+            public void setTextbookName(String textbookName) {
+                this.textbookName = textbookName;
+            }
+
+            public String getGradeName() {
+                return gradeName;
+            }
+
+            public void setGradeName(String gradeName) {
+                this.gradeName = gradeName;
+            }
+        }
+
+        public static class HotBean {
+            /**
+             * videoId : 5d45d386-50e5-4a04-bc27-7af29586bcb5
+             * videoName : 测试一下
+             * subjcetName : 初中英语
+             * createDate : 2020/07/11
+             * imgUrl : group1/M00/00/B1/2vUGhF8JWiqAHrg5AAA5Nhd3I5E687.jpg
+             * videoUrl : group1/M00/00/B1/2vUGhF8JWimAfzm4ALXuAGQXBck505.mp4
+             * playScheduleTime : 0
+             * isCollection : 0
+             * playCount : 0
+             * subject : null
+             * textbookName : null
+             * gradeName : null
+             */
+
+            private String videoId;
+            private String videoName;
+            private String subjcetName;
+            private String createDate;
+            private String imgUrl;
+            private String videoUrl;
+            private int playScheduleTime;
+            private int isCollection;
+            private int playCount;
+            private Object subject;
+            private Object textbookName;
+            private Object gradeName;
+
+            public String getVideoId() {
+                return videoId;
+            }
+
+            public void setVideoId(String videoId) {
+                this.videoId = videoId;
+            }
+
+            public String getVideoName() {
+                return videoName;
+            }
+
+            public void setVideoName(String videoName) {
+                this.videoName = videoName;
+            }
+
+            public String getSubjcetName() {
+                return subjcetName;
+            }
+
+            public void setSubjcetName(String subjcetName) {
+                this.subjcetName = subjcetName;
+            }
+
+            public String getCreateDate() {
+                return createDate;
+            }
+
+            public void setCreateDate(String createDate) {
+                this.createDate = createDate;
+            }
+
+            public String getImgUrl() {
+                return imgUrl;
+            }
+
+            public void setImgUrl(String imgUrl) {
+                this.imgUrl = imgUrl;
+            }
+
+            public String getVideoUrl() {
+                return videoUrl;
+            }
+
+            public void setVideoUrl(String videoUrl) {
+                this.videoUrl = videoUrl;
+            }
+
+            public int getPlayScheduleTime() {
+                return playScheduleTime;
+            }
+
+            public void setPlayScheduleTime(int playScheduleTime) {
+                this.playScheduleTime = playScheduleTime;
+            }
+
+            public int getIsCollection() {
+                return isCollection;
+            }
+
+            public void setIsCollection(int isCollection) {
+                this.isCollection = isCollection;
+            }
+
+            public int getPlayCount() {
+                return playCount;
+            }
+
+            public void setPlayCount(int playCount) {
+                this.playCount = playCount;
+            }
+
+            public Object getSubject() {
+                return subject;
+            }
+
+            public void setSubject(Object subject) {
+                this.subject = subject;
+            }
+
+            public Object getTextbookName() {
+                return textbookName;
+            }
+
+            public void setTextbookName(Object textbookName) {
+                this.textbookName = textbookName;
+            }
+
+            public Object getGradeName() {
+                return gradeName;
+            }
+
+            public void setGradeName(Object gradeName) {
+                this.gradeName = gradeName;
             }
         }
     }

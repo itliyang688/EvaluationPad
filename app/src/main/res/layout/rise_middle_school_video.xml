@@ -147,10 +147,10 @@
                      android:id="@+id/loadView"
                      android:layout_width="match_parent"
                      android:layout_height="match_parent"
-                     android:paddingTop="@dimen/dp_47"
-                     android:layout_marginLeft="@dimen/dp_35"
-                     android:layout_marginRight="@dimen/dp_35"
-                     android:layout_marginBottom="@dimen/dp_35">
+                     android:paddingTop="@dimen/dp_65"
+                     android:layout_marginLeft="@dimen/dp_23"
+                     android:layout_marginRight="@dimen/dp_23"
+                     android:layout_marginBottom="@dimen/dp_28">
                      <com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
                          xmlns:app="http://schemas.android.com/apk/res-auto"
                          android:id="@+id/refreshLayout"

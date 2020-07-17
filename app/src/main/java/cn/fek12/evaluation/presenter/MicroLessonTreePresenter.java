@@ -9,15 +9,12 @@ import com.fek12.basic.base.BasePresenter;
 import cn.fek12.evaluation.base.BaseObserver;
 import cn.fek12.evaluation.ent.ApiRetrofit;
 import cn.fek12.evaluation.ent.RxHelper;
-import cn.fek12.evaluation.impl.IEvaluationDetails;
 import cn.fek12.evaluation.impl.IMicroLessonTree;
-import cn.fek12.evaluation.model.entity.EvaluationListEntity;
-import cn.fek12.evaluation.model.entity.MicroLessonTreeEntity;
+import cn.fek12.evaluation.model.entity.MicrolessonVideoEntity;
 import cn.fek12.evaluation.model.entity.SemesterEntity;
 import cn.fek12.evaluation.model.entity.SubjectEntity;
 import cn.fek12.evaluation.model.entity.TextbookEntity;
 import cn.fek12.evaluation.model.entity.TreeDataEntity;
-import cn.fek12.evaluation.model.entity.VideoMoreListEntity;
 
 /**
  * @ProjectName: EvaluationPad
@@ -123,13 +120,13 @@ public class MicroLessonTreePresenter extends BasePresenter<IMicroLessonTree.Vie
     }
 
     @Override
-    public void queryPaperList(Context context, String grade, String subject, String textbook, String semester, String userId, String currentPage, String knowledge,String type) {
-        ApiRetrofit.getInstance().getApiService().videoTreeList(grade,semester,subject,textbook,type,knowledge,userId)
+    public void queryPaperList(Context context, String gradeId, String secId, String subId, String versionId, String knowledgeId, String userId, String current, String size) {
+        ApiRetrofit.getInstance().getApiService().querySyncVideoPage(gradeId,secId,subId,versionId,knowledgeId,userId,current,size)
                 .compose(RxHelper.observableIO2Main(context))
-                .subscribe(new BaseObserver<VideoMoreListEntity>() {
+                .subscribe(new BaseObserver<MicrolessonVideoEntity>() {
 
                     @Override
-                    public void onSuccess(VideoMoreListEntity entry) {
+                    public void onSuccess(MicrolessonVideoEntity entry) {
                         if(entry.getState().equals("0")){
                             infoView.loadVideoTreeListSuc(entry);
                         }else{

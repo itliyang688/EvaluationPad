@@ -24,6 +24,7 @@ import cn.fek12.evaluation.impl.IMicroLessonMore;
 import cn.fek12.evaluation.model.entity.ChildSectionEntity;
 import cn.fek12.evaluation.model.entity.ContainListEntity;
 import cn.fek12.evaluation.model.entity.MicroLessonEnetity;
+import cn.fek12.evaluation.model.entity.MicroLessonPageEnetity;
 import cn.fek12.evaluation.model.entity.SemesterEntity;
 import cn.fek12.evaluation.model.entity.SubjectEntity;
 import cn.fek12.evaluation.model.entity.TextbookChildEntity;
@@ -73,9 +74,10 @@ public class MicroLessonMoreActivity extends BaseActivity<MicroLessonMorePresent
     private List<SubjectEntity.DataBean> subjectList;
     private List<TextbookChildEntity> textBookList;
     private List<ChildSectionEntity> semesterList;
-    private List<VideoMoreListEntity.DataBean> mList;
+    private List<MicroLessonPageEnetity.DataBean.RecordsBean> mList;
 
     private int currentPage = 1;
+    private String pageSize = "20";
     private boolean isLoadMore = false;
 
     @Override
@@ -93,7 +95,7 @@ public class MicroLessonMoreActivity extends BaseActivity<MicroLessonMorePresent
         semesterId = intent.getStringExtra("semesterId");
         textbookId = intent.getStringExtra("textbookId");
         typePos = intent.getIntExtra("typePos",0);
-        clickPos = intent.getIntExtra("clickPos",0);
+        clickPos = intent.getIntExtra("clickPos",1);
         tvTitleName.setText(intent.getStringExtra("titleName"));
         ContainListEntity containListEntity = new Gson().fromJson(intent.getStringExtra("containListEntityJson"), ContainListEntity.class);
         gradeList = containListEntity.getGradeList();
@@ -127,13 +129,7 @@ public class MicroLessonMoreActivity extends BaseActivity<MicroLessonMorePresent
 
     private void initData(){
         loadView.showLoading();
-        if(clickPos == 0){//热门
-            mPresenter.hotList(this,gradeId,subjectId,textbookId,semesterId, MyApplication.getMyApplication().getUserId(),typePos == 0? null:String.valueOf(typePos),String.valueOf(currentPage));
-        }else if(clickPos == 1){//最近更新
-            mPresenter.nearList(this,gradeId,subjectId,textbookId,semesterId, MyApplication.getMyApplication().getUserId(),typePos == 0? null:String.valueOf(typePos),String.valueOf(currentPage));
-        }else if(clickPos == 2){//为你推荐
-            mPresenter.recommendList(this,gradeId,subjectId,textbookId,semesterId, MyApplication.getMyApplication().getUserId(),typePos == 0? null:String.valueOf(typePos),String.valueOf(currentPage));
-        }
+        mPresenter.moreVideoList(this,gradeId,subjectId,semesterId,textbookId,String.valueOf(clickPos),MyApplication.getMyApplication().getUserId(),String.valueOf(currentPage),pageSize);
     }
 
     private RefreshListenerAdapter refreshListenerAdapter = new RefreshListenerAdapter() {
@@ -222,14 +218,29 @@ public class MicroLessonMoreActivity extends BaseActivity<MicroLessonMorePresent
     }
 
     @Override
-    public void loadListSuc(VideoMoreListEntity entry) {
-        mList = entry.getData();
-        if(mList == null || mList.size() == 0){
+    public void loadListSuc(MicroLessonPageEnetity entry) {
+        loadView.showContent();
+        if(isLoadMore){
+            mList.addAll(entry.getData().getRecords());
+        }else{
+            mList = entry.getData().getRecords();
+        }
+        if(entry.getData().getPages() == 0){
             loadView.showEmpty();
             return;
         }
-        loadView.showContent();
-        videoAdapter.notifyChanged(mList,false);
+
+        if(entry.getData().getPages() > currentPage){
+            refreshLayout.setEnableLoadmore(true);
+        }else{
+            refreshLayout.setEnableLoadmore(false);
+        }
+
+        if(mList != null && mList.size() > 0){
+            videoAdapter.notifyChanged(mList,isLoadMore);
+        }
+        refreshLayout.finishLoadmore();
+        refreshLayout.finishRefreshing();
     }
 
     @Override
@@ -356,32 +367,19 @@ public class MicroLessonMoreActivity extends BaseActivity<MicroLessonMorePresent
 
     @Override
     public void onItemClick(int position) {
-        if(typePos == 2){//专题视频
-            startSpecialVideo(position,SpecialVideoActivity.class);
-        }else{
-            startSpecialVideo(position,FullScreenVideoPlayActivity.class);
-        }
-    }
-
-    private void startSpecialVideo(int pos, Class cla){
         String path = "";
         try {
-            path = FastDFSUtil.generateSourceUrl(mList.get(pos).getAddressUrl());
-        }  catch (Exception e) {
+            path = FastDFSUtil.generateSourceUrl(mList.get(position).getVideoUrl());
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        Intent intent = new Intent(getContext(), cla);
+        Intent intent = new Intent(this,MicrolessonVideoPlayActivity.class);
         intent.putExtra("pathUrl",path);
-        intent.putExtra("videoName",mList.get(pos).getVideoName());
-        intent.putExtra("chapter",mList.get(pos).getSpecialName());
-        intent.putExtra("cacheKey",mList.get(pos).getCacheKey());
-        intent.putExtra("structLayKey",mList.get(pos).getStructLayKey());
-        intent.putExtra("videoType",mList.get(pos).getType());
-        intent.putExtra("videoId",mList.get(pos).getVideoId());
-        intent.putExtra("describe",mList.get(pos).getIntroduction());
-        intent.putExtra("isCollection",mList.get(pos).getIsCollection());
-        intent.putExtra("playScheduleTime",mList.get(pos).getPlayScheduleTime());
-        intent.putExtra("imgUrl",mList.get(pos).getImgUrl());
+        intent.putExtra("videoName",mList.get(position).getVideoName());
+        intent.putExtra("videoId",mList.get(position).getVideoId());
+        intent.putExtra("imgUrl",mList.get(position).getImgUrl());
+        intent.putExtra("playScheduleTime",mList.get(position).getPlayScheduleTime());
+        intent.putExtra("isCollection",mList.get(position).getIsCollection());
         startActivity(intent);
     }
 }

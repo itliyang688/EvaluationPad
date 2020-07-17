@@ -25,7 +25,7 @@ import cn.fek12.evaluation.view.widget.RoundImageView;
 
 public class RelevantVideoAdapter extends RecyclerView.Adapter<RelevantVideoAdapter.EvaluationHolder> {
     private OnItemClickListener mOnItemClickListener = null;
-    private List<RelevantVideoListEntity.DataBean.VideoBean> mList = new ArrayList();
+    private List<RelevantVideoListEntity.DataBean.RelatedVideoBean> mList = new ArrayList();
 
     public interface OnItemClickListener {
         void onItemClick(int position);
@@ -41,7 +41,7 @@ public class RelevantVideoAdapter extends RecyclerView.Adapter<RelevantVideoAdap
         this.context = context;
     }
 
-    public void notifyChanged(List<RelevantVideoListEntity.DataBean.VideoBean> list) {
+    public void notifyChanged(List<RelevantVideoListEntity.DataBean.RelatedVideoBean> list) {
         mList = list;
         notifyDataSetChanged();
     }
@@ -93,8 +93,8 @@ public class RelevantVideoAdapter extends RecyclerView.Adapter<RelevantVideoAdap
         public void setData(final int position) {
             tvName.setText(mList.get(position).getVideoName());
             tvSubject.setText(mList.get(position).getSubject());
-            tvTextbook.setText(mList.get(position).getTextbook());
-            tvPlayNumber.setText(String.valueOf(mList.get(position).getCount()));
+            tvTextbook.setText(mList.get(position).getTextbookName());
+            tvPlayNumber.setText(String.valueOf(mList.get(position).getPlayCount()));
             /*ivCover.post(new Runnable() {
                 @Override
                 public void run() {

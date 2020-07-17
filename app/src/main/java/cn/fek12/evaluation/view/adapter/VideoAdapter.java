@@ -17,13 +17,14 @@ import java.util.List;
 
 import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.application.MyApplication;
+import cn.fek12.evaluation.model.entity.MicroLessonPageEnetity;
 import cn.fek12.evaluation.model.entity.VideoMoreListEntity;
 
 
 public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.EvaluationHolder> {
     private OnItemClickListener mOnItemClickListener = null;
 
-    private List<VideoMoreListEntity.DataBean> mList = new ArrayList();
+    private List<MicroLessonPageEnetity.DataBean.RecordsBean> mList = new ArrayList();
 
     public interface OnItemClickListener {
         void onItemClick(int position);
@@ -40,7 +41,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.EvaluationHo
         this.context = context;
     }
 
-    public void notifyChanged(List<VideoMoreListEntity.DataBean> list, boolean isAdd) {
+    public void notifyChanged(List<MicroLessonPageEnetity.DataBean.RecordsBean> list, boolean isAdd) {
         if(isAdd){
             mList.addAll(list);
         }else{
@@ -78,6 +79,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.EvaluationHo
         private View itemView;
         private TextView tvName;
         private TextView tvSubject;
+        private TextView tvGrade;
         private ImageView ivCover;
         private TextView tvTime;
         private TextView tvPlayNumber;
@@ -91,15 +93,17 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.EvaluationHo
             tvName = this.itemView.findViewById(R.id.tvName);
             ivCover = this.itemView.findViewById(R.id.ivCover);
             tvSubject = this.itemView.findViewById(R.id.tvSubject);
+            tvGrade = this.itemView.findViewById(R.id.tvGrade);
             tvTime = this.itemView.findViewById(R.id.tvTime);
             tvPlayNumber = this.itemView.findViewById(R.id.tvPlayNumber);
         }
 
         public void setData(final int position) {
             tvName.setText(mList.get(position).getVideoName());
-            tvSubject.setText(mList.get(position).getTextbookName()+" "+mList.get(position).getSubjectName());
-            tvTime.setText(mList.get(position).getVideoCreateTime());
-            tvPlayNumber.setText(String.valueOf(mList.get(position).getPlayNum()));
+            tvSubject.setText(mList.get(position).getTextbookName());
+            tvGrade.setText(mList.get(position).getSubjcetName());
+            tvTime.setText(mList.get(position).getCreateDate());
+            tvPlayNumber.setText(String.valueOf(mList.get(position).getPlayCount()));
             String imgUrl = mList.get(position).getImgUrl();
             Glide.with(MyApplication.getApp()).load(imgUrl).placeholder(R.mipmap.empty_bg).error(R.mipmap.empty_bg).into(ivCover);
         }

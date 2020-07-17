@@ -253,7 +253,7 @@ public class EvaluationListFragment extends BaseFragment<EvaluationListPresenter
         loadView.postDelayed(new Runnable() {
             @Override
             public void run() {
-                mPresenter.queryGradeDictionaryList(getContext());
+                mPresenter.queryGradeDictionaryList(getContext(),"0");
             }
         },300);
     }

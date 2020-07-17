@@ -33,7 +33,7 @@ public class CommonVideoPresenter extends BasePresenter<ICommonVideo.View> imple
 
     @Override
     public void queryVideoList(Context context, String coursePackType, String knowledgePointId, String userId, String current, String size) {
-        ApiRetrofit.getInstance().getApiService().queryCoursePackVideo(coursePackType,knowledgePointId,userId,current,size)
+        ApiRetrofit.getInstance().getApiService().queryCoursePackVideo(coursePackType,knowledgePointId,userId,current,size,null)
                 .compose(RxHelper.observableIO2Main(context))
                 .subscribe(new BaseObserver<MicrolessonVideoEntity>() {
                     @Override

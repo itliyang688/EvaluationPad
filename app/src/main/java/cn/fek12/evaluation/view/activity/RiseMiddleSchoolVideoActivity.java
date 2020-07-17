@@ -40,6 +40,7 @@ import cn.fek12.evaluation.model.holder.TreeParentItemHolder;
 import cn.fek12.evaluation.presenter.RiseMiddleSchoolPresenter;
 import cn.fek12.evaluation.utils.AppUtils;
 import cn.fek12.evaluation.utils.FastDFSUtil;
+import cn.fek12.evaluation.view.adapter.HorizontalItemDecoration;
 import cn.fek12.evaluation.view.adapter.PrimarySchoolVideoAdapter;
 import cn.fek12.evaluation.view.adapter.VideoAdapter;
 import cn.fek12.evaluation.view.widget.MultipleStatusView;
@@ -78,20 +79,14 @@ public class RiseMiddleSchoolVideoActivity extends BaseActivity<RiseMiddleSchool
     private String checkId = null;
     private TreeNode selectNode;
     private PrimarySchoolVideoAdapter videoAdapter;
-    private int tagPos;
-    private String gradeId;
-    private String subjectId;
-    private String semesterId;
-    private String textbookId;
 
     private List<MicrolessonVideoEntity.DataBean.RecordsBean> mList;
 
     private int currentPage = 1;
     private boolean isLoadMore = false;
-    private String paperType = "SWEETOWN";
     private boolean isSelectOpend = false;
     private int selectSubject = 1;
-    private boolean isButtionFocus = false;
+    private String selectType = "2";//1.小升初 数学 2.小升初 语文 3.小升初 英语
 
     @Override
     public int setLayoutResource() {
@@ -100,18 +95,14 @@ public class RiseMiddleSchoolVideoActivity extends BaseActivity<RiseMiddleSchool
 
     @Override
     protected void onInitView() {
-        gradeId = "1";
-        semesterId = "16";
-        subjectId = "13";
-        textbookId = "63";
         /**请求知识树*/
         checkId = null;
-        mPresenter.initTreeData(RiseMiddleSchoolVideoActivity.this, paperType, gradeId, semesterId, subjectId, textbookId, MyApplication.getMyApplication().getUserId());
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         videoAdapter = new PrimarySchoolVideoAdapter(RiseMiddleSchoolVideoActivity.this);
         videoAdapter.setOnItemClickListener(this);
-        GridLayoutManager manager = new GridLayoutManager(getContext(), 5);
+        GridLayoutManager manager = new GridLayoutManager(getContext(), 4);
+        //recyclerView.addItemDecoration(new HorizontalItemDecoration(31,this));//10表示10dp
         recyclerView.setLayoutManager(manager);
         recyclerView.setAdapter(videoAdapter);
 
@@ -133,7 +124,8 @@ public class RiseMiddleSchoolVideoActivity extends BaseActivity<RiseMiddleSchool
 
     private void initData() {
         loadView.showLoading();
-        mPresenter.queryVideoList(this,"3","",MyApplication.getMyApplication().getUserId(),String.valueOf(currentPage),"12");
+        mPresenter.initTreeData(RiseMiddleSchoolVideoActivity.this, selectType);
+        mPresenter.queryVideoList(this,selectType,checkId,MyApplication.getMyApplication().getUserId(),String.valueOf(currentPage),"12");
     }
 
     private RefreshListenerAdapter refreshListenerAdapter = new RefreshListenerAdapter() {
@@ -322,6 +314,7 @@ public class RiseMiddleSchoolVideoActivity extends BaseActivity<RiseMiddleSchool
 
     @Override
     public void loadVideoSuc(MicrolessonVideoEntity entry) {
+        loadView.showContent();
         if(isLoadMore){
             mList.addAll(entry.getData().getRecords());
         }else{
@@ -331,7 +324,7 @@ public class RiseMiddleSchoolVideoActivity extends BaseActivity<RiseMiddleSchool
             loadView.showEmpty();
             return;
         }
-        loadView.showContent();
+
         if(entry.getData().getPages() > currentPage){
             refreshLayout.setEnableLoadmore(true);
         }else{
@@ -347,28 +340,20 @@ public class RiseMiddleSchoolVideoActivity extends BaseActivity<RiseMiddleSchool
 
     @Override
     public void onItemClick(int position) {
-        startSpecialVideo(position, FullScreenVideoPlayActivity.class);
-    }
-
-    private void startSpecialVideo(int pos, Class cla) {
-       /* String path = "";
+        String path = "";
         try {
-            path = FastDFSUtil.generateSourceUrl(mList.get(pos).getAddressUrl());
+            path = FastDFSUtil.generateSourceUrl(mList.get(position).getVideoUrl());
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Intent intent = new Intent(getContext(), cla);
-        intent.putExtra("pathUrl", path);
-        intent.putExtra("videoName", mList.get(pos).getVideoName());
-        intent.putExtra("chapter", mList.get(pos).getSpecialName());
-        intent.putExtra("cacheKey", mList.get(pos).getCacheKey());
-        intent.putExtra("structLayKey", mList.get(pos).getStructLayKey());
-        intent.putExtra("videoType", mList.get(pos).getType());
-        intent.putExtra("videoId", mList.get(pos).getVideoId());
-        intent.putExtra("describe", mList.get(pos).getIntroduction());
-        intent.putExtra("isCollection", mList.get(pos).getIsCollection());
-        intent.putExtra("playScheduleTime", mList.get(pos).getPlayScheduleTime());
-        startActivity(intent);*/
+        Intent intent = new Intent(this,MicrolessonVideoPlayActivity.class);
+        intent.putExtra("pathUrl",path);
+        intent.putExtra("videoName",mList.get(position).getVideoName());
+        intent.putExtra("videoId",mList.get(position).getVideoId());
+        intent.putExtra("imgUrl",mList.get(position).getImgUrl());
+        intent.putExtra("playScheduleTime",mList.get(position).getPlayScheduleTime());
+        intent.putExtra("isCollection",mList.get(position).getIsCollection());
+        startActivity(intent);
     }
 
     @OnClick({R.id.iv_left_back,R.id.llTitle, R.id.tvSelect1, R.id.tvSelect2, R.id.tvSelect3})
@@ -403,16 +388,22 @@ public class RiseMiddleSchoolVideoActivity extends BaseActivity<RiseMiddleSchool
             case R.id.tvSelect1:
                 tvSelectText.setText("语文");
                 selectSubject = 1;
+                selectType = "2";
+                initData();
                 colseFrame();
                 break;
             case R.id.tvSelect2:
                 tvSelectText.setText("数学");
                 selectSubject = 2;
+                selectType = "1";
+                initData();
                 colseFrame();
                 break;
             case R.id.tvSelect3:
                 tvSelectText.setText("英语");
                 selectSubject = 3;
+                selectType = "3";
+                initData();
                 colseFrame();
                 break;
             case R.id.iv_left_back:

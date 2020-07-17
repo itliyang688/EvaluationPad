@@ -8,7 +8,7 @@ import cn.fek12.evaluation.model.entity.CollectionEntity;
 import cn.fek12.evaluation.model.entity.CommonEntity;
 
 public interface IMicrolessVideoPlay {
-    void schedule(Context context);
+    void addOrUpdateVideoPlayCount(Context context,String playLength,String userId,String videoId);
     void collection(Context context, String videoId, String status, String userId);
     interface View extends BaseView {
         void loadCollectionSuc(CollectionEntity entry);

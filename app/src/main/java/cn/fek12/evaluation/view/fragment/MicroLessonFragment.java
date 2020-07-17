@@ -86,7 +86,7 @@ public class MicroLessonFragment extends BaseFragment<MicroLessonPresenter> impl
 
     @Override
     protected void onLoadDataRemote() {
-        mPresenter.queryGradeDictionaryList(getContext());
+        mPresenter.queryGradeDictionaryList(getContext(),"0");
     }
 
     @Override

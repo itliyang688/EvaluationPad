@@ -63,13 +63,13 @@ public class CommonVideoActivity extends BaseActivity<CommonVideoPresenter> impl
         Intent intent = getIntent();
         pageType = intent.getIntExtra("pageType", 0);
         if(pageType == 1){
-            coursePackType = 2;//小学奥数
+            coursePackType = 4;//小学奥数
         }else if(pageType == 2){
-            coursePackType = 5;//课外阅读
+            coursePackType = 6;//课外阅读
         }else if(pageType == 3){
-            coursePackType = 4;//国学经典
+            coursePackType = 7;//国学经典
         }else if(pageType == 4){
-            coursePackType = 6;//手工坊
+            coursePackType = 8;//手工坊
         }
         initDataView();
 

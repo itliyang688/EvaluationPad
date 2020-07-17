@@ -59,8 +59,8 @@ public class EvaluationListPresenter extends BasePresenter<IEvaluationList.View>
 
     /**请求年级*/
     @Override
-    public void queryGradeDictionaryList(Context context) {
-        ApiRetrofit.getInstance().getApiService().queryGradeDictionaryList()
+    public void queryGradeDictionaryList(Context context,String secType) {
+        ApiRetrofit.getInstance().getApiService().queryGradeDictionaryList(secType)
                 .compose(RxHelper.observableIO2Main(context))
                 .subscribe(new BaseObserver<GradeDictionaryListEntity>() {
 

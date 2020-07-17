@@ -57,7 +57,7 @@ public class PrimarySchoolVideoAdapter extends RecyclerView.Adapter<PrimarySchoo
 
     @Override
     public PrimarySchoolVideoAdapter.EvaluationHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.video_item, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.school_video_item, parent, false);
         return new EvaluationHolder(view);
     }
 
@@ -78,7 +78,6 @@ public class PrimarySchoolVideoAdapter extends RecyclerView.Adapter<PrimarySchoo
 
         private View itemView;
         private TextView tvName;
-        private TextView tvSubject;
         private ImageView ivCover;
         private TextView tvTime;
         private TextView tvPlayNumber;
@@ -91,14 +90,13 @@ public class PrimarySchoolVideoAdapter extends RecyclerView.Adapter<PrimarySchoo
             rootView = this.itemView.findViewById(R.id.rootView);
             tvName = this.itemView.findViewById(R.id.tvName);
             ivCover = this.itemView.findViewById(R.id.ivCover);
-            tvSubject = this.itemView.findViewById(R.id.tvSubject);
             tvTime = this.itemView.findViewById(R.id.tvTime);
             tvPlayNumber = this.itemView.findViewById(R.id.tvPlayNumber);
         }
 
         public void setData(final int position) {
             tvName.setText(mList.get(position).getVideoName());
-            tvSubject.setText(mList.get(position).getTextbook()+" "+mList.get(position).getSubject());
+            //tvSubject.setText(mList.get(position).getTextbook()+" "+mList.get(position).getSubject());
             tvTime.setText(mList.get(position).getCreateDate());
             tvPlayNumber.setText(String.valueOf(mList.get(position).getPlayCount()));
             String imgUrl = mList.get(position).getImgUrl();

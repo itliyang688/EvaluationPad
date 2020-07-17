@@ -130,10 +130,9 @@ public class MicrolessonVideoPlayActivity extends BaseActivity<MicrolessonVideoP
 
     @Override
     protected void onPause() {
-        /*if(currentPos > 0 || isEnd.equals("1")){
-            mPresenter.schedule(MicrolessonVideoPlayActivity.this,cacheKey,structLayKey,String.valueOf(currentPos),
-                    String.valueOf(videoType),String.valueOf(videoId), MyApplication.getMyApplication().getUserId(),typePage,isEnd);
-        }*/
+        if(currentPos > 0){
+            mPresenter.addOrUpdateVideoPlayCount(MicrolessonVideoPlayActivity.this,String.valueOf(currentPos),MyApplication.getMyApplication().getUserId(),videoId);
+        }
         super.onPause();
     }
 

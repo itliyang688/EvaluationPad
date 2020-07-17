@@ -33,11 +33,18 @@
         <item name="android:windowExitAnimation">@anim/modal_out</item>
     </style>
 
+    <!-- 选择学科-->
+    <style name="PopupSubAnimation" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/push_in</item>
+        <item name="android:windowExitAnimation">@anim/push_out</item>
+    </style>
+
     <!-- 选择照片底部弹出层 -->
     <style name="PopupAnimation" parent="android:Animation">
         <item name="android:windowEnterAnimation">@anim/slide_right_in</item>
         <item name="android:windowExitAnimation">@anim/slide_right_out</item>
     </style>
+
 
     <style name="TreeNodeStyleCustom">
         <item name="android:paddingLeft">20dp</item>

@@ -24,6 +24,7 @@ import cn.fek12.evaluation.model.entity.CollectionListEntity;
 import cn.fek12.evaluation.model.entity.MicroLessonEnetity;
 import cn.fek12.evaluation.utils.FastDFSUtil;
 import cn.fek12.evaluation.view.activity.FullScreenVideoPlayActivity;
+import cn.fek12.evaluation.view.activity.MicrolessonVideoPlayActivity;
 import cn.fek12.evaluation.view.widget.RoundImageView;
 
 /**
@@ -41,7 +42,8 @@ public class MicroLessonRecordAdapter extends SectioningAdapter {
     private int count = 0;
     private OnItemClickListener mOnItemClickListener;
     public interface OnItemClickListener {
-        void onItemClick(String cacheKey,String videoId,String videoType);
+        void onItemClick(String videoId);
+        void onVideoPlay(CollectionListEntity.DataBean.VideoBean videoBean);
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
@@ -67,20 +69,20 @@ public class MicroLessonRecordAdapter extends SectioningAdapter {
     @Override
     public int getNumberOfItemsInSection(int sectionIndex) {
         if(sectionIndex == 0){
-            if(mDataBean.getWeek() == null){
+            if(mDataBean.getAweek() == null){
                 return 0;
             }
-            return mDataBean.getWeek().size();
+            return mDataBean.getAweek().size();
         }else if(sectionIndex == 1){
-            if(mDataBean.getMonth() == null){
+            if(mDataBean.getAmonth() == null){
                 return 0;
             }
-            return mDataBean.getMonth().size();
+            return mDataBean.getAmonth().size();
         }else if(sectionIndex == 2){
-            if(mDataBean.getNear() == null){
+            if(mDataBean.getEarlier() == null){
                 return 0;
             }
-            return mDataBean.getNear().size();
+            return mDataBean.getEarlier().size();
         }
         return 0;
     }
@@ -108,23 +110,23 @@ public class MicroLessonRecordAdapter extends SectioningAdapter {
         ItemViewHolder ivh = (ItemViewHolder) viewHolder;
         List<CollectionListEntity.DataBean.VideoBean> videoList = null;
         if(sectionIndex == 0){
-            videoList = mDataBean.getWeek();
+            videoList = mDataBean.getAweek();
         }else if(sectionIndex == 1){
-            videoList = mDataBean.getMonth();
+            videoList = mDataBean.getAmonth();
         }else if(sectionIndex == 2){
-            videoList = mDataBean.getNear();
+            videoList = mDataBean.getEarlier();
         }
         if(videoList != null){
             ivh.tvName.setText(videoList.get(itemIndex).getVideoName());
-            if(videoList.get(itemIndex).getType() == 2){
+            if(!TextUtils.isEmpty(videoList.get(itemIndex).getVideoContent())){
                 ivh.tvDescribe.setVisibility(View.VISIBLE);
-                ivh.tvDescribe.setText("视频简介："+videoList.get(itemIndex).getIntroduction());
+                ivh.tvDescribe.setText("视频简介："+videoList.get(itemIndex).getVideoContent());
             }else{
                 ivh.tvDescribe.setVisibility(View.INVISIBLE);
             }
             ivh.tvSemester.setText(videoList.get(itemIndex).getTextbookName());
-            ivh.tvSubject.setText(videoList.get(itemIndex).getSubjectName());
-            String percentage = videoList.get(itemIndex).getSchedule();
+            ivh.tvSubject.setText(videoList.get(itemIndex).getGradeName()+" "+videoList.get(itemIndex).getSubjcetName());
+            String percentage = videoList.get(itemIndex).getPlayBack();
             if(TextUtils.isEmpty(percentage)){
                 percentage = "0";
             }
@@ -182,48 +184,27 @@ public class MicroLessonRecordAdapter extends SectioningAdapter {
             final int item = MicroLessonRecordAdapter.this.getPositionOfItemInSection(section, adapterPosition);
             List<CollectionListEntity.DataBean.VideoBean> videoList = null;
             if(section == 0){
-                videoList = mDataBean.getWeek();
+                videoList = mDataBean.getAweek();
             }else if(section == 1){
-                videoList = mDataBean.getMonth();
+                videoList = mDataBean.getAmonth();
             }else if(section == 2){
-                videoList = mDataBean.getNear();
+                videoList = mDataBean.getEarlier();
             }
             switch (v.getId()){
                 case R.id.rootView:
                     if(mOnItemClickListener != null){
-                        startSpecialVideo(videoList,item, FullScreenVideoPlayActivity.class);
+                        mOnItemClickListener.onVideoPlay(videoList.get(item));
                     }
                     break;
                 case R.id.ivCollection:
                     if(mOnItemClickListener != null){
-                        mOnItemClickListener.onItemClick(videoList.get(item).getCacheKey(),String.valueOf(videoList.get(item).getVideoId()),String.valueOf(videoList.get(item).getType()));
+                        mOnItemClickListener.onItemClick(String.valueOf(videoList.get(item).getVideoId()));
                     }
                     break;
             }
         }
     }
 
-    private void startSpecialVideo(List<CollectionListEntity.DataBean.VideoBean> list, int pos, Class cla){
-        String path = "";
-        try {
-            path = FastDFSUtil.generateSourceUrl(list.get(pos).getAddressUrl());
-        }  catch (Exception e) {
-            e.printStackTrace();
-        }
-        Intent intent = new Intent(mContext, cla);
-        intent.putExtra("pathUrl",path);
-        intent.putExtra("videoName",list.get(pos).getVideoName());
-        intent.putExtra("chapter",list.get(pos).getSpecialName());
-        intent.putExtra("cacheKey",list.get(pos).getCacheKey());
-        intent.putExtra("structLayKey",list.get(pos).getStructLayKey());
-        intent.putExtra("videoType",list.get(pos).getType());
-        intent.putExtra("videoId",list.get(pos).getVideoId());
-        intent.putExtra("describe",list.get(pos).getIntroduction());
-        intent.putExtra("imgUrl",list.get(pos).getImgUrl());
-        intent.putExtra("isCollection",list.get(pos).getIsCollection());
-        intent.putExtra("playScheduleTime",list.get(pos).getPlayScheduleTime());
-        mContext.startActivity(intent);
-    }
 
     public class HeaderViewHolder extends SectioningAdapter.HeaderViewHolder implements View.OnClickListener {
 
