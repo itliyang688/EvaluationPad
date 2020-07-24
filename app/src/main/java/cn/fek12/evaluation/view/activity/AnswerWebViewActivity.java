@@ -71,10 +71,10 @@ public class AnswerWebViewActivity extends BaseActivity {
         String url;
         if (isanswered == 0) {
             //url = "http://192.168.0.46/noc/html/index.html?userId=" + MyApplication.getMyApplication().getUserId() + "&paperId=" + paperId;
-            url = Configs.INDEX + "userId=" + MyApplication.getMyApplication().getUserId() + "&paperId=" + paperId + "&titleName=" + titleName;
+            url = Configs.INDEX + "userId=" + MyApplication.getMyApp().getUserId() + "&paperId=" + paperId + "&titleName=" + titleName;
         } else {
             //url = "http://192.168.0.46/noc/html/analyze.html?userId=" + MyApplication.getMyApplication().getUserId() + "&paperId=" + paperId + "&paperResult=" + paperResult;
-            url = Configs.ANALYZE + "userId=" + MyApplication.getMyApplication().getUserId() + "&paperId=" + paperId + "&paperResult=" + paperResult + "&titleName=" + titleName;
+            url = Configs.ANALYZE + "userId=" + MyApplication.getMyApp().getUserId() + "&paperId=" + paperId + "&paperResult=" + paperResult + "&titleName=" + titleName;
         }
         showLoading();
         webView.loadUrl(url);

@@ -3,7 +3,6 @@ package cn.fek12.evaluation.view.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,9 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.fek12.basic.base.BaseFragment;
-import com.fek12.basic.utils.toast.ToastUtils;
 import com.fek12.basic.view.titleView.BaseTitleView;
-import com.google.gson.Gson;
 import com.zhengsr.viewpagerlib.bean.PageBean;
 import com.zhengsr.viewpagerlib.callback.PageHelperListener;
 import com.zhengsr.viewpagerlib.indicator.NormalIndicator;
@@ -114,14 +111,14 @@ public class EvaluationFragment extends BaseFragment<EvaluationPresenter> implem
         if(adapter != null && recommendList != null){
             isRefreshtBanner = false;
             multipleStatusView.showLoading();
-            mPresenter.initEvaluation(getContext(), MyApplication.getMyApplication().getUserId(),PrefUtilsData.getPer_level());
+            mPresenter.initEvaluation(getContext(), MyApplication.getMyApp().getUserId(),PrefUtilsData.getPer_level());
         }
     }
 
     @Override
     protected void onLoadDataRemote() {
         multipleStatusView.showLoading();
-        mPresenter.initEvaluation(getContext(), MyApplication.getMyApplication().getUserId(),PrefUtilsData.getPer_level());
+        mPresenter.initEvaluation(getContext(), MyApplication.getMyApp().getUserId(),PrefUtilsData.getPer_level());
     }
 
     @Override
@@ -152,7 +149,9 @@ public class EvaluationFragment extends BaseFragment<EvaluationPresenter> implem
     @Override
     public void loginSuc(HomeEvaluationDeta entry) {
         if(isRefreshtBanner){
-            initBanner(entry.getData().getBanner());
+            if(entry.getData() != null && entry.getData().getBanner() != null && entry.getData().getBanner().size() > 0){
+                initBanner(entry.getData().getBanner());
+            }
         }
         HomeEvaluationDeta.DataBean.MyPaperBean paperBean = entry.getData().getMyPaper();
         if (paperBean != null) {

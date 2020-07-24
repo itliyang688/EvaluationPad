@@ -1,8 +1,6 @@
 package cn.fek12.evaluation.view.activity;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Bundle;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -14,7 +12,6 @@ import com.unnamed.b.atv.view.AndroidTreeView;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.application.MyApplication;
 import cn.fek12.evaluation.impl.ITreeView;
@@ -75,7 +72,7 @@ public class TreeViewDialogActivity extends BaseActivity<TreeViewPresenter> impl
     @Override
     protected void onLoadData() {
         loadView.showLoading();
-        mPresenter.initTreeData(getContext(), paperType,gradeId, semesterId, subjectId, textbookId, MyApplication.getMyApplication().getUserId());
+        mPresenter.initTreeData(getContext(), paperType,gradeId, semesterId, subjectId, textbookId, MyApplication.getMyApp().getUserId());
     }
 
     @Override

@@ -20,7 +20,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.application.MyApplication;
-import cn.fek12.evaluation.impl.IAutonomyEvaluationList;
 import cn.fek12.evaluation.model.entity.ChildSectionEntity;
 import cn.fek12.evaluation.model.entity.ContainListEntity;
 import cn.fek12.evaluation.model.entity.EvaluationListEntity;
@@ -112,7 +111,7 @@ public class AutonomyEvaluationListActivity extends BaseActivity<AutonomyEvaluat
         refreshLayout.setBottomView(bottomProgressView);
 
         loadView.showLoading();
-        mPresenter.queryPaperList(this, gradeId, subjectId, textbookId, semesterId, MyApplication.getMyApplication().getUserId(), String.valueOf(currentPage));
+        mPresenter.queryPaperList(this, gradeId, subjectId, textbookId, semesterId, MyApplication.getMyApp().getUserId(), String.valueOf(currentPage));
     }
 
     private RefreshListenerAdapter refreshListenerAdapter = new RefreshListenerAdapter() {
@@ -120,14 +119,14 @@ public class AutonomyEvaluationListActivity extends BaseActivity<AutonomyEvaluat
         public void onLoadMore(final TwinklingRefreshLayout refreshLayout) {
             isLoadMore = true;
             currentPage += 1;
-            mPresenter.queryPaperList(AutonomyEvaluationListActivity.this, gradeId, subjectId, textbookId, semesterId, MyApplication.getMyApplication().getUserId(), String.valueOf(currentPage));
+            mPresenter.queryPaperList(AutonomyEvaluationListActivity.this, gradeId, subjectId, textbookId, semesterId, MyApplication.getMyApp().getUserId(), String.valueOf(currentPage));
         }
 
         @Override
         public void onRefresh(final TwinklingRefreshLayout refreshLayout) {
             isLoadMore = false;
             currentPage = 1;
-            mPresenter.queryPaperList(AutonomyEvaluationListActivity.this, gradeId, subjectId, textbookId, semesterId, MyApplication.getMyApplication().getUserId(), String.valueOf(currentPage));
+            mPresenter.queryPaperList(AutonomyEvaluationListActivity.this, gradeId, subjectId, textbookId, semesterId, MyApplication.getMyApp().getUserId(), String.valueOf(currentPage));
         }
     };
 
@@ -192,7 +191,7 @@ public class AutonomyEvaluationListActivity extends BaseActivity<AutonomyEvaluat
                 isLoadMore = false;
                 currentPage = 1;
                 loadView.showLoading();
-                mPresenter.queryPaperList(AutonomyEvaluationListActivity.this, gradeId, subjectId, textbookId, semesterId, MyApplication.getMyApplication().getUserId(), String.valueOf(currentPage));
+                mPresenter.queryPaperList(AutonomyEvaluationListActivity.this, gradeId, subjectId, textbookId, semesterId, MyApplication.getMyApp().getUserId(), String.valueOf(currentPage));
             }
         }));
         leftAdapter.notifyDataSetChanged();
@@ -287,7 +286,7 @@ public class AutonomyEvaluationListActivity extends BaseActivity<AutonomyEvaluat
             isLoadMore = false;
             currentPage = 1;
             loadView.showLoading();
-            mPresenter.queryPaperList(AutonomyEvaluationListActivity.this, gradeId, subjectId, textbookId, semesterId, MyApplication.getMyApplication().getUserId(), String.valueOf(currentPage));
+            mPresenter.queryPaperList(AutonomyEvaluationListActivity.this, gradeId, subjectId, textbookId, semesterId, MyApplication.getMyApp().getUserId(), String.valueOf(currentPage));
         }
     }
 
@@ -317,7 +316,7 @@ public class AutonomyEvaluationListActivity extends BaseActivity<AutonomyEvaluat
         isLoadMore = false;
         currentPage = 1;
         loadView.showLoading();
-        mPresenter.queryPaperList(AutonomyEvaluationListActivity.this, gradeId, subjectId, textbookId, semesterId, MyApplication.getMyApplication().getUserId(), String.valueOf(currentPage));
+        mPresenter.queryPaperList(AutonomyEvaluationListActivity.this, gradeId, subjectId, textbookId, semesterId, MyApplication.getMyApp().getUserId(), String.valueOf(currentPage));
     }
 
     @Override
@@ -334,7 +333,7 @@ public class AutonomyEvaluationListActivity extends BaseActivity<AutonomyEvaluat
         isLoadMore = false;
         currentPage = 1;
         loadView.showLoading();
-        mPresenter.queryPaperList(AutonomyEvaluationListActivity.this, gradeId, subjectId, textbookId, semesterId, MyApplication.getMyApplication().getUserId(), String.valueOf(currentPage));
+        mPresenter.queryPaperList(AutonomyEvaluationListActivity.this, gradeId, subjectId, textbookId, semesterId, MyApplication.getMyApp().getUserId(), String.valueOf(currentPage));
     }
 
     @Override

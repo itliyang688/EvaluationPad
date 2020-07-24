@@ -17,6 +17,7 @@ import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 import com.unnamed.b.atv.model.TreeNode;
 import com.unnamed.b.atv.view.AndroidTreeView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -32,7 +33,6 @@ import cn.fek12.evaluation.model.entity.SubjectEntity;
 import cn.fek12.evaluation.model.entity.TextbookChildEntity;
 import cn.fek12.evaluation.model.entity.TextbookEntity;
 import cn.fek12.evaluation.model.entity.TreeDataEntity;
-import cn.fek12.evaluation.model.entity.VideoMoreListEntity;
 import cn.fek12.evaluation.model.holder.AutoTreeChildItemHolder;
 import cn.fek12.evaluation.model.holder.TreeParentItemHolder;
 import cn.fek12.evaluation.presenter.MicroLessonTreePresenter;
@@ -42,7 +42,6 @@ import cn.fek12.evaluation.view.adapter.EvaluationDetailsParentSection;
 import cn.fek12.evaluation.view.adapter.EvaluationDetailsSubjectSection;
 import cn.fek12.evaluation.view.adapter.EvaluationDetailsTagSection;
 import cn.fek12.evaluation.view.adapter.PrimarySchoolVideoAdapter;
-import cn.fek12.evaluation.view.adapter.VideoAdapter;
 import cn.fek12.evaluation.view.widget.MultipleStatusView;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 
@@ -107,7 +106,7 @@ public class MicroLessonTreeActivity extends BaseActivity<MicroLessonTreePresent
         textBookList = containListEntity.getTextBookList();
         semesterList = containListEntity.getSemesterList();
 
-        tagPos = gradeList.size() + subjectList.size();
+        //tagPos = gradeList.size() + subjectList.size();
 
         initLeftRecycler();
         initLabelAdapter();
@@ -115,7 +114,7 @@ public class MicroLessonTreeActivity extends BaseActivity<MicroLessonTreePresent
 
         /**请求知识树*/
         checkId = null;
-        mPresenter.initTreeData(MicroLessonTreeActivity.this,paperType,gradeId,semesterId,subjectId,textbookId,MyApplication.getMyApplication().getUserId());
+        mPresenter.initTreeData(MicroLessonTreeActivity.this,paperType,gradeId,semesterId,subjectId,textbookId,MyApplication.getMyApp().getUserId());
 
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -138,7 +137,7 @@ public class MicroLessonTreeActivity extends BaseActivity<MicroLessonTreePresent
 
     private void initData(){
         loadView.showLoading();
-        mPresenter.queryPaperList(this, gradeId, semesterId, subjectId, textbookId, checkId,MyApplication.getMyApplication().getUserId(), String.valueOf(currentPage), String.valueOf(12));
+        mPresenter.queryPaperList(this, gradeId, semesterId, subjectId, textbookId, checkId,MyApplication.getMyApp().getUserId(), String.valueOf(currentPage), String.valueOf(12));
     }
     private RefreshListenerAdapter refreshListenerAdapter = new RefreshListenerAdapter() {
         @Override
@@ -155,6 +154,9 @@ public class MicroLessonTreeActivity extends BaseActivity<MicroLessonTreePresent
     };
 
     private void initLeftRecycler() {
+        if(gradeList != null && gradeList.size() > 0){
+            tagPos = gradeList.size();
+        }
         leftAdapter = new SectionedRecyclerViewAdapter();
         GridLayoutManager manager = new GridLayoutManager(getContext(), 12);
         manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
@@ -162,9 +164,11 @@ public class MicroLessonTreeActivity extends BaseActivity<MicroLessonTreePresent
             public int getSpanSize(int position) {
                 if (leftAdapter.getSectionItemViewType(position) == SectionedRecyclerViewAdapter.VIEW_TYPE_HEADER) {
                     return 12;
-                } else if (position == tagPos + 2) {
+                }else if (tagPos != 0 && position == tagPos + 1) {
                     return 12;
-                } else {
+                } else if (tagPos != 0 && position == tagPos + 3) {
+                    return 12;
+                }  else {
                     return 1;
                 }
             }
@@ -307,7 +311,14 @@ public class MicroLessonTreeActivity extends BaseActivity<MicroLessonTreePresent
             }
         }));
 
-        leftAdapter.addSection("subject", new EvaluationDetailsSubjectSection(subjectList, subjectId, new EvaluationDetailsSubjectSection.OnSelectItmeListener() {
+        List<TextbookChildEntity> tagList = new ArrayList<>();
+        for(SubjectEntity.DataBean dataBeans : subjectList){
+            TextbookChildEntity childEntity = new TextbookChildEntity();
+            childEntity.setId(dataBeans.getId());
+            childEntity.setName(dataBeans.getName());
+            tagList.add(childEntity);
+        }
+        leftAdapter.addSection("subject", new EvaluationDetailsTagSection(getContext(), tagList, subjectId, new EvaluationDetailsTagSection.OnSelectItmeListener() {
             @Override
             public void onSelectItme(int pos) {
                 subjectId = String.valueOf(subjectList.get(pos).getId());
@@ -316,6 +327,15 @@ public class MicroLessonTreeActivity extends BaseActivity<MicroLessonTreePresent
                 mPresenter.queryTextBookList(getContext(),gradeId,subjectId);
             }
         }));
+        /*leftAdapter.addSection("subject", new EvaluationDetailsSubjectSection(subjectList, subjectId, new EvaluationDetailsSubjectSection.OnSelectItmeListener() {
+            @Override
+            public void onSelectItme(int pos) {
+                subjectId = String.valueOf(subjectList.get(pos).getId());
+                leftAdapter.getAdapterForSection("subject").notifyAllItemsChanged("payloads");
+
+                mPresenter.queryTextBookList(getContext(),gradeId,subjectId);
+            }
+        }));*/
 
         leftAdapter.addSection("textbook", new EvaluationDetailsTagSection(getContext(), textBookList, textbookId, new EvaluationDetailsTagSection.OnSelectItmeListener() {
             @Override
@@ -335,7 +355,7 @@ public class MicroLessonTreeActivity extends BaseActivity<MicroLessonTreePresent
                 semesterId = String.valueOf(semesterList.get(pos).getId());
                 /**请求知识树*/
                 checkId = null;
-                mPresenter.initTreeData(MicroLessonTreeActivity.this,paperType,gradeId,semesterId,subjectId,textbookId,MyApplication.getMyApplication().getUserId());
+                mPresenter.initTreeData(MicroLessonTreeActivity.this,paperType,gradeId,semesterId,subjectId,textbookId,MyApplication.getMyApp().getUserId());
                 /**请求页面数据*/
                 isLoadMore = false;
                 currentPage = 1;
@@ -399,7 +419,7 @@ public class MicroLessonTreeActivity extends BaseActivity<MicroLessonTreePresent
         subjectList = entry.getData();
         if (subjectList != null && subjectList.size() > 0) {
             loadView.showContent();
-            tagPos = gradeList.size() + subjectList.size();
+            //tagPos = gradeList.size() + subjectList.size();
             subjectId = String.valueOf(subjectList.get(0).getId());
 
             EvaluationDetailsSubjectSection subjectSection = (EvaluationDetailsSubjectSection) leftAdapter.getSection("subject");
@@ -429,7 +449,7 @@ public class MicroLessonTreeActivity extends BaseActivity<MicroLessonTreePresent
             leftAdapter.notifyDataSetChanged();
             /**请求知识树*/
             checkId = null;
-            mPresenter.initTreeData(MicroLessonTreeActivity.this,paperType,gradeId,semesterId,subjectId,textbookId,MyApplication.getMyApplication().getUserId());
+            mPresenter.initTreeData(MicroLessonTreeActivity.this,paperType,gradeId,semesterId,subjectId,textbookId,MyApplication.getMyApp().getUserId());
             /**请求页面数据*/
             isLoadMore = false;
             currentPage = 1;
@@ -462,7 +482,7 @@ public class MicroLessonTreeActivity extends BaseActivity<MicroLessonTreePresent
 
         /**请求知识树*/
         checkId = null;
-        mPresenter.initTreeData(MicroLessonTreeActivity.this,paperType,gradeId,semesterId,subjectId,textbookId,MyApplication.getMyApplication().getUserId());
+        mPresenter.initTreeData(MicroLessonTreeActivity.this,paperType,gradeId,semesterId,subjectId,textbookId,MyApplication.getMyApp().getUserId());
         /**请求页面数据*/
         isLoadMore = false;
         currentPage = 1;
@@ -482,7 +502,7 @@ public class MicroLessonTreeActivity extends BaseActivity<MicroLessonTreePresent
         }
         /**请求知识树*/
         checkId = null;
-        mPresenter.initTreeData(MicroLessonTreeActivity.this,paperType,gradeId,semesterId,subjectId,textbookId,MyApplication.getMyApplication().getUserId());
+        mPresenter.initTreeData(MicroLessonTreeActivity.this,paperType,gradeId,semesterId,subjectId,textbookId,MyApplication.getMyApp().getUserId());
         /**请求页面数据*/
         isLoadMore = false;
         currentPage = 1;

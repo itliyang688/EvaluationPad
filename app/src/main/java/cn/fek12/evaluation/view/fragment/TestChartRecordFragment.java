@@ -22,13 +22,12 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.application.MyApplication;
-import cn.fek12.evaluation.impl.ITestCharRecord;
 import cn.fek12.evaluation.model.config.Configs;
 import cn.fek12.evaluation.model.entity.RecordInfoEntity;
 import cn.fek12.evaluation.model.entity.TestRecordEntity;
 import cn.fek12.evaluation.presenter.TestCharRecordPresenter;
 import cn.fek12.evaluation.utils.AppUtils;
-import cn.fek12.evaluation.view.PopupWindow.SubjectPopupWindow;
+import cn.fek12.evaluation.view.PopupWindow.SubjectAllPopupWindow;
 import cn.fek12.evaluation.view.activity.CommonWebViewActivity;
 import cn.fek12.evaluation.view.activity.ExerciseNotesActivity;
 import cn.fek12.evaluation.view.activity.RankingListActivity;
@@ -74,7 +73,7 @@ public class TestChartRecordFragment extends BaseFragment<TestCharRecordPresente
     LinearLayout llContainSubject;
     @BindView(R.id.tvEmptyList)
     TextView tvEmptyList;
-    private SubjectPopupWindow subjectPopupWindow;
+    private SubjectAllPopupWindow subjectPopupWindow;
     private String mSubjectId = "0";
 
     @Override
@@ -86,7 +85,7 @@ public class TestChartRecordFragment extends BaseFragment<TestCharRecordPresente
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser && pieChartView != null) {
-            mPresenter.requestData(getContext(), mSubjectId, MyApplication.getMyApplication().getUserId());
+            mPresenter.requestData(getContext(), mSubjectId, MyApplication.getMyApp().getUserId());
         }
     }
 
@@ -97,7 +96,7 @@ public class TestChartRecordFragment extends BaseFragment<TestCharRecordPresente
 
     @Override
     protected void onLoadDataRemote() {
-        mPresenter.requestData(getContext(), mSubjectId, MyApplication.getMyApplication().getUserId());
+        mPresenter.requestData(getContext(), mSubjectId, MyApplication.getMyApp().getUserId());
     }
 
     @Override
@@ -122,17 +121,18 @@ public class TestChartRecordFragment extends BaseFragment<TestCharRecordPresente
                 startActivity(new Intent(getContext(), RankingListActivity.class));
                 break;
             case R.id.llSubject:
-                subjectPopupWindow = new SubjectPopupWindow(getContext(), new SubjectPopupWindow.OnSelectItmeListener() {
+                subjectPopupWindow = new SubjectAllPopupWindow(getContext(), new SubjectAllPopupWindow.OnSelectItmeListener() {
                     @Override
                     public void onSelectItme(String subjectId, String subjectName) {
                         tvSubject.setText(subjectName);
                         mSubjectId = subjectId;
-                        mPresenter.requestData(getContext(), mSubjectId, MyApplication.getMyApplication().getUserId());
+                        mPresenter.requestData(getContext(), mSubjectId, MyApplication.getMyApp().getUserId());
                     }
                 });
                 AppUtils.fitPopupWindowOverStatusBar(subjectPopupWindow, true);
                 ivArrow.setImageResource(R.mipmap.rise_icon);
-                subjectPopupWindow.showAsDropDown(llContainSubject, -155, 0);
+                subjectPopupWindow.showAsDropDown(llContainSubject, -90, 0);
+                //subjectPopupWindow.showAtLocation(llContainSubject, Gravity.CENTER,0,0);
                 subjectPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
                     @Override
                     public void onDismiss() {
@@ -222,7 +222,7 @@ public class TestChartRecordFragment extends BaseFragment<TestCharRecordPresente
                 tbAnalysis.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        String url = Configs.SMALL + "userId=" + MyApplication.getMyApplication().getUserId() + "&subjectCategoryId=" + bean.getSubjectCategoryId() + "&practiceId=" + bean.getPracticeId();
+                        String url = Configs.SMALL + "userId=" + MyApplication.getMyApp().getUserId() + "&subjectCategoryId=" + bean.getSubjectCategoryId() + "&practiceId=" + bean.getPracticeId();
                         Intent intent = new Intent(getContext(), CommonWebViewActivity.class);
                         intent.putExtra("webUrl", url);
                         startActivity(intent);
@@ -232,7 +232,7 @@ public class TestChartRecordFragment extends BaseFragment<TestCharRecordPresente
                 tbPractice.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        String url = Configs.SMALLWORK + "userId=" + MyApplication.getMyApplication().getUserId() + "&subjectCategoryId=" + bean.getSubjectCategoryId();
+                        String url = Configs.SMALLWORK + "userId=" + MyApplication.getMyApp().getUserId() + "&subjectCategoryId=" + bean.getSubjectCategoryId();
                         Intent intent = new Intent(getContext(), CommonWebViewActivity.class);
                         intent.putExtra("webUrl", url);
                         startActivity(intent);

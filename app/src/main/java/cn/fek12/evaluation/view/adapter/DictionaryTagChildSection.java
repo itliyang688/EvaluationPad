@@ -2,7 +2,6 @@ package cn.fek12.evaluation.view.adapter;
 
 import android.graphics.Color;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,10 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.fek12.evaluation.R;
-import cn.fek12.evaluation.model.entity.DictionaryListResp;
-import cn.fek12.evaluation.model.entity.SubjectEntity;
 import cn.fek12.evaluation.model.entity.TextbookChildEntity;
-import cn.fek12.evaluation.model.entity.TextbookEntity;
 import io.github.luizgrp.sectionedrecyclerviewadapter.Section;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionParameters;
 

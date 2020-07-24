@@ -30,7 +30,7 @@ import cn.fek12.evaluation.model.entity.CurriculumEntity;
 import cn.fek12.evaluation.presenter.CurriculumRecordPresenter;
 import cn.fek12.evaluation.utils.AppUtils;
 import cn.fek12.evaluation.utils.FastDFSUtil;
-import cn.fek12.evaluation.view.PopupWindow.SubjectPopupWindow;
+import cn.fek12.evaluation.view.PopupWindow.SubjectAllPopupWindow;
 import cn.fek12.evaluation.view.activity.MicrolessonVideoPlayActivity;
 import cn.fek12.evaluation.view.adapter.CurriculumRecordAdapter;
 import cn.fek12.evaluation.view.dialog.SelectDateDialog;
@@ -69,7 +69,7 @@ public class CurriculumRecordFragment extends BaseFragment<CurriculumRecordPrese
     @BindView(R.id.llContainSubject)
     LinearLayout llContainSubject;
     private CurriculumRecordAdapter adapter;
-    private SubjectPopupWindow subjectPopupWindow;
+    private SubjectAllPopupWindow subjectPopupWindow;
     private int mPageType;
     private int currentPage = 1;
     private boolean isLoadMore = false;
@@ -110,14 +110,14 @@ public class CurriculumRecordFragment extends BaseFragment<CurriculumRecordPrese
         public void onLoadMore(final TwinklingRefreshLayout refreshLayout) {
             isLoadMore = true;
             currentPage += 1;
-            mPresenter.courseRecord(getContext(), startDate, endDate, subject, MyApplication.getMyApplication().getUserId(), String.valueOf(currentPage));
+            mPresenter.courseRecord(getContext(), startDate, endDate, subject, MyApplication.getMyApp().getUserId(), String.valueOf(currentPage));
         }
 
         @Override
         public void onRefresh(final TwinklingRefreshLayout refreshLayout) {
             isLoadMore = false;
             currentPage = 1;
-            mPresenter.courseRecord(getContext(), startDate, endDate, subject, MyApplication.getMyApplication().getUserId(), String.valueOf(currentPage));
+            mPresenter.courseRecord(getContext(), startDate, endDate, subject, MyApplication.getMyApp().getUserId(), String.valueOf(currentPage));
         }
     };
 
@@ -167,7 +167,7 @@ public class CurriculumRecordFragment extends BaseFragment<CurriculumRecordPrese
                             loadView.showLoading();
                             isLoadMore = false;
                             currentPage = 1;
-                            mPresenter.courseRecord(getContext(), startDate, endDate, subject, MyApplication.getMyApplication().getUserId(), String.valueOf(currentPage));
+                            mPresenter.courseRecord(getContext(), startDate, endDate, subject, MyApplication.getMyApp().getUserId(), String.valueOf(currentPage));
                         }
                         startDate = date;
                         tvStartDate.setText(date);
@@ -194,13 +194,13 @@ public class CurriculumRecordFragment extends BaseFragment<CurriculumRecordPrese
                         loadView.showLoading();
                         isLoadMore = false;
                         currentPage = 1;
-                        mPresenter.courseRecord(getContext(), startDate, endDate, subject, MyApplication.getMyApplication().getUserId(), String.valueOf(currentPage));
+                        mPresenter.courseRecord(getContext(), startDate, endDate, subject, MyApplication.getMyApp().getUserId(), String.valueOf(currentPage));
                     }
                 });
                 endDateDialog.show();
                 break;
             case R.id.llSubject:
-                subjectPopupWindow = new SubjectPopupWindow(getContext(), new SubjectPopupWindow.OnSelectItmeListener() {
+                subjectPopupWindow = new SubjectAllPopupWindow(getContext(), new SubjectAllPopupWindow.OnSelectItmeListener() {
                     @Override
                     public void onSelectItme(String subjectId, String subjectName) {
                         loadView.showLoading();
@@ -211,13 +211,14 @@ public class CurriculumRecordFragment extends BaseFragment<CurriculumRecordPrese
                         if(subjectId.equals("0")){
                             subject = null;
                         }
-                        mPresenter.courseRecord(getContext(), startDate, endDate, subject, MyApplication.getMyApplication().getUserId(), String.valueOf(currentPage));
+                        mPresenter.courseRecord(getContext(), startDate, endDate, subject, MyApplication.getMyApp().getUserId(), String.valueOf(currentPage));
                     }
                 });
+
                 AppUtils.fitPopupWindowOverStatusBar(subjectPopupWindow, true);
                 ivArrow.setImageResource(R.mipmap.rise_icon);
-                //subjectPopupWindow.showAsDropDown(llContainSubject, -155, 0);
-                subjectPopupWindow.showAtLocation(llSubject, Gravity.CENTER_VERTICAL,0,15);
+                //subjectPopupWindow.showAsDropDown(llContainSubject, -155, 0);e
+                subjectPopupWindow.showAtLocation(llSubject, Gravity.CENTER_VERTICAL,0,0);
                 subjectPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
                     @Override
                     public void onDismiss() {
@@ -231,7 +232,7 @@ public class CurriculumRecordFragment extends BaseFragment<CurriculumRecordPrese
     @Override
     protected void onLoadDataRemote() {
         loadView.showLoading();
-        mPresenter.courseRecord(getContext(), startDate, endDate, subject, MyApplication.getMyApplication().getUserId(), String.valueOf(currentPage));
+        mPresenter.courseRecord(getContext(), startDate, endDate, subject, MyApplication.getMyApp().getUserId(), String.valueOf(currentPage));
     }
 
     @Override

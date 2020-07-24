@@ -102,7 +102,7 @@ public class SpecialVideoActivity extends BaseActivity<SpeciaVideoPlayPresenter>
                     }else{
                         tag = "0";
                     }
-                    mPresenter.collection(SpecialVideoActivity.this,cacheKey,String.valueOf(videoType),String.valueOf(videoId),tag,MyApplication.getMyApplication().getUserId());
+                    mPresenter.collection(SpecialVideoActivity.this,cacheKey,String.valueOf(videoType),String.valueOf(videoId),tag,MyApplication.getMyApp().getUserId());
                     break;
             }
         }
@@ -134,7 +134,7 @@ public class SpecialVideoActivity extends BaseActivity<SpeciaVideoPlayPresenter>
     protected void onPause() {
         if(currentPos > 0 || isEnd.equals("1")){
             mPresenter.schedule(SpecialVideoActivity.this,cacheKey,structLayKey,String.valueOf(currentPos),
-                    String.valueOf(videoType),String.valueOf(videoId), MyApplication.getMyApplication().getUserId(),0,isEnd);
+                    String.valueOf(videoType),String.valueOf(videoId), MyApplication.getMyApp().getUserId(),0,isEnd);
         }
         super.onPause();
     }

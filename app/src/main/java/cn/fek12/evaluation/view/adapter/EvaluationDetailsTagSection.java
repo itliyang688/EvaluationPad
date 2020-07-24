@@ -1,7 +1,6 @@
 package cn.fek12.evaluation.view.adapter;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.View;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
@@ -13,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.fek12.evaluation.R;
-import cn.fek12.evaluation.model.entity.DictionaryListResp;
 import cn.fek12.evaluation.model.entity.TextbookChildEntity;
 import io.github.luizgrp.sectionedrecyclerviewadapter.Section;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionParameters;
@@ -36,7 +34,7 @@ public class EvaluationDetailsTagSection extends Section {
     }
     private int selectPosition = 0;
     private List<TextbookChildEntity> mList = new ArrayList<>();
-    public EvaluationDetailsTagSection(Context context,List<TextbookChildEntity> list,String checkId, OnSelectItmeListener onSelectItmeListener) {
+    public EvaluationDetailsTagSection(Context context, List<TextbookChildEntity> list, String checkId, OnSelectItmeListener onSelectItmeListener) {
         super(SectionParameters.builder()
                 .itemResourceId(R.layout.evaluation_list_tag)
                 .headerResourceId(R.layout.evaluation_list_header_dictionary)

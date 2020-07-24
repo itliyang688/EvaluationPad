@@ -7,15 +7,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fek12.basic.base.BaseFragment;
-import com.fek12.basic.utils.toast.ToastUtils;
 import com.google.gson.Gson;
 
 import java.util.List;
 
 import butterknife.BindView;
 import cn.fek12.evaluation.R;
-import cn.fek12.evaluation.application.MyApplication;
-import cn.fek12.evaluation.model.config.Configs;
 import cn.fek12.evaluation.model.entity.AssessmentIndexPaperResp;
 import cn.fek12.evaluation.model.entity.ChildSectionEntity;
 import cn.fek12.evaluation.model.entity.ContainListEntity;
@@ -23,7 +20,6 @@ import cn.fek12.evaluation.model.entity.SubjectEntity;
 import cn.fek12.evaluation.model.entity.TextbookChildEntity;
 import cn.fek12.evaluation.presenter.EvaluationIndexPagerPresenter;
 import cn.fek12.evaluation.view.activity.AnswerWebViewActivity;
-import cn.fek12.evaluation.view.activity.CommonWebViewActivity;
 import cn.fek12.evaluation.view.activity.EvaluationListActivity;
 import cn.fek12.evaluation.view.adapter.EvaluationPaperSection;
 import cn.fek12.evaluation.view.widget.MultipleStatusView;
@@ -53,7 +49,7 @@ public class EvaluationIndexPaperFragment extends BaseFragment<EvaluationIndexPa
     private List<TextbookChildEntity> textBookList;
     private List<ChildSectionEntity> semesterList;
 
-    public void setLists(List<ChildSectionEntity> grades,List<SubjectEntity.DataBean> subjects,List<TextbookChildEntity> textBooks,List<ChildSectionEntity> semesters){
+    public void setLists(List<ChildSectionEntity> grades, List<SubjectEntity.DataBean> subjects, List<TextbookChildEntity> textBooks, List<ChildSectionEntity> semesters){
         gradeList = grades;
         subjectList = subjects;
         textBookList = textBooks;

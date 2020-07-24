@@ -32,7 +32,6 @@ import cn.fek12.evaluation.model.entity.TextbookEntity;
 import cn.fek12.evaluation.presenter.MicroLessonPresenter;
 import cn.fek12.evaluation.view.activity.MicroLessonTreeActivity;
 import cn.fek12.evaluation.view.activity.PrepareExaminationActivity;
-import cn.fek12.evaluation.view.activity.TreeViewDialogActivity;
 import cn.fek12.evaluation.view.adapter.DictionaryChildSection;
 import cn.fek12.evaluation.view.adapter.DictionaryParentSection;
 import cn.fek12.evaluation.view.adapter.DictionarySubjectSection;
@@ -105,7 +104,7 @@ public class MiddleSchoolVideoFragment extends BaseFragment<MicroLessonPresenter
             public int getSpanSize(int position) {
                 if (leftAdapter.getSectionItemViewType(position) == SectionedRecyclerViewAdapter.VIEW_TYPE_HEADER) {
                     return 3;
-                } else if (position == tagPos + 3) {
+                } else if (tagPos != 0 && position == tagPos + 3) {
                     return 3;
                 } else {
                     return 1;
@@ -165,7 +164,7 @@ public class MiddleSchoolVideoFragment extends BaseFragment<MicroLessonPresenter
             BaseFragment baseFragment = (BaseFragment) adapter.getItem(currentItme);
             if (baseFragment instanceof MicroLessonPageFragment) {
                 MicroLessonPageFragment fragment = (MicroLessonPageFragment) baseFragment;
-                fragment.queryIndexPagerData(gradeId, semesterId, subjectId, textbookId, MyApplication.getMyApplication().getUserId());
+                fragment.queryIndexPagerData(gradeId, semesterId, subjectId, textbookId, MyApplication.getMyApp().getUserId());
                 fragment.setLists(gradeList,subjectList,textBookList,semesterList);
             }
             return;

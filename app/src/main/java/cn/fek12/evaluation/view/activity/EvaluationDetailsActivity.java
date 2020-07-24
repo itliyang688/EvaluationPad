@@ -18,13 +18,13 @@ import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 import com.unnamed.b.atv.model.TreeNode;
 import com.unnamed.b.atv.view.AndroidTreeView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.application.MyApplication;
-import cn.fek12.evaluation.impl.IEvaluationDetails;
 import cn.fek12.evaluation.model.entity.ChildSectionEntity;
 import cn.fek12.evaluation.model.entity.ContainListEntity;
 import cn.fek12.evaluation.model.entity.EvaluationListEntity;
@@ -34,12 +34,8 @@ import cn.fek12.evaluation.model.entity.TextbookChildEntity;
 import cn.fek12.evaluation.model.entity.TextbookEntity;
 import cn.fek12.evaluation.model.entity.TreeDataEntity;
 import cn.fek12.evaluation.model.holder.AutoTreeChildItemHolder;
-import cn.fek12.evaluation.model.holder.TreeChildItemHolder;
 import cn.fek12.evaluation.model.holder.TreeParentItemHolder;
 import cn.fek12.evaluation.presenter.EvaluationDetailsPresenter;
-import cn.fek12.evaluation.view.adapter.DictionaryChildSection;
-import cn.fek12.evaluation.view.adapter.DictionarySubjectSection;
-import cn.fek12.evaluation.view.adapter.DictionaryTagChildSection;
 import cn.fek12.evaluation.view.adapter.EvaluationAdapter;
 import cn.fek12.evaluation.view.adapter.EvaluationDetailsChildSection;
 import cn.fek12.evaluation.view.adapter.EvaluationDetailsParentSection;
@@ -119,7 +115,7 @@ public class EvaluationDetailsActivity extends BaseActivity<EvaluationDetailsPre
         textBookList = containListEntity.getTextBookList();
         semesterList = containListEntity.getSemesterList();
 
-        tagPos = gradeList.size() + subjectList.size();
+        //tagPos = gradeList.size() + subjectList.size();
 
         initLeftRecycler();
         initLabelAdapter();
@@ -127,7 +123,7 @@ public class EvaluationDetailsActivity extends BaseActivity<EvaluationDetailsPre
 
         /**请求知识树*/
         checkId = null;
-        mPresenter.initTreeData(EvaluationDetailsActivity.this,paperType,gradeId,semesterId,subjectId,textbookId,MyApplication.getMyApplication().getUserId());
+        mPresenter.initTreeData(EvaluationDetailsActivity.this,paperType,gradeId,semesterId,subjectId,textbookId,MyApplication.getMyApp().getUserId());
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         evaluationAdapter = new EvaluationAdapter(EvaluationDetailsActivity.this,EvaluationAdapter.EVALUATION);
@@ -141,7 +137,7 @@ public class EvaluationDetailsActivity extends BaseActivity<EvaluationDetailsPre
         refreshLayout.setBottomView(bottomProgressView);
 
         loadView.showLoading();
-        mPresenter.queryPaperList(this,gradeId,subjectId,textbookId,semesterId,ptype,MyApplication.getMyApplication().getUserId(),userType,String.valueOf(currentPage),checkId,null);
+        mPresenter.queryPaperList(this,gradeId,subjectId,textbookId,semesterId,ptype,MyApplication.getMyApp().getUserId(),userType,String.valueOf(currentPage),checkId,null);
     }
 
     private RefreshListenerAdapter refreshListenerAdapter = new RefreshListenerAdapter() {
@@ -149,18 +145,21 @@ public class EvaluationDetailsActivity extends BaseActivity<EvaluationDetailsPre
         public void onLoadMore(final TwinklingRefreshLayout refreshLayout) {
             isLoadMore = true;
             currentPage += 1;
-            mPresenter.queryPaperList(EvaluationDetailsActivity.this,gradeId,subjectId,textbookId,semesterId,ptype,MyApplication.getMyApplication().getUserId(),userType,String.valueOf(currentPage),checkId,null);
+            mPresenter.queryPaperList(EvaluationDetailsActivity.this,gradeId,subjectId,textbookId,semesterId,ptype,MyApplication.getMyApp().getUserId(),userType,String.valueOf(currentPage),checkId,null);
         }
 
         @Override
         public void onRefresh(final TwinklingRefreshLayout refreshLayout) {
             isLoadMore = false;
             currentPage = 1;
-            mPresenter.queryPaperList(EvaluationDetailsActivity.this,gradeId,subjectId,textbookId,semesterId,ptype,MyApplication.getMyApplication().getUserId(),userType,String.valueOf(currentPage),checkId,null);
+            mPresenter.queryPaperList(EvaluationDetailsActivity.this,gradeId,subjectId,textbookId,semesterId,ptype,MyApplication.getMyApp().getUserId(),userType,String.valueOf(currentPage),checkId,null);
         }
     };
 
     private void initLeftRecycler() {
+        if(gradeList != null && gradeList.size() > 0){
+            tagPos = gradeList.size();
+        }
         leftAdapter = new SectionedRecyclerViewAdapter();
         GridLayoutManager manager = new GridLayoutManager(getContext(), 12);
         manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
@@ -168,7 +167,9 @@ public class EvaluationDetailsActivity extends BaseActivity<EvaluationDetailsPre
             public int getSpanSize(int position) {
                 if (leftAdapter.getSectionItemViewType(position) == SectionedRecyclerViewAdapter.VIEW_TYPE_HEADER) {
                     return 12;
-                } else if (position == tagPos + 2) {
+                }else if (tagPos != 0 && position == tagPos + 1) {
+                    return 12;
+                } else if (tagPos != 0 && position == tagPos + 3) {
                     return 12;
                 } else {
                     return 1;
@@ -285,7 +286,7 @@ public class EvaluationDetailsActivity extends BaseActivity<EvaluationDetailsPre
                     isLoadMore = false;
                     currentPage = 1;
                     loadView.showLoading();
-                    mPresenter.queryPaperList(EvaluationDetailsActivity.this,gradeId,subjectId,textbookId,semesterId,ptype,MyApplication.getMyApplication().getUserId(),userType,String.valueOf(currentPage),checkId,null);
+                    mPresenter.queryPaperList(EvaluationDetailsActivity.this,gradeId,subjectId,textbookId,semesterId,ptype,MyApplication.getMyApp().getUserId(),userType,String.valueOf(currentPage),checkId,null);
                 }
             }
         });
@@ -315,7 +316,14 @@ public class EvaluationDetailsActivity extends BaseActivity<EvaluationDetailsPre
             }
         }));
 
-        leftAdapter.addSection("subject", new EvaluationDetailsSubjectSection(subjectList, subjectId, new EvaluationDetailsSubjectSection.OnSelectItmeListener() {
+        List<TextbookChildEntity> tagList = new ArrayList<>();
+        for(SubjectEntity.DataBean dataBeans : subjectList){
+            TextbookChildEntity childEntity = new TextbookChildEntity();
+            childEntity.setId(dataBeans.getId());
+            childEntity.setName(dataBeans.getName());
+            tagList.add(childEntity);
+        }
+        leftAdapter.addSection("subject", new EvaluationDetailsTagSection(getContext(), tagList, subjectId, new EvaluationDetailsTagSection.OnSelectItmeListener() {
             @Override
             public void onSelectItme(int pos) {
                 subjectId = String.valueOf(subjectList.get(pos).getId());
@@ -324,6 +332,16 @@ public class EvaluationDetailsActivity extends BaseActivity<EvaluationDetailsPre
                 mPresenter.queryTextBookList(getContext(),gradeId,subjectId);
             }
         }));
+
+        /*leftAdapter.addSection("subject", new EvaluationDetailsSubjectSection(subjectList, subjectId, new EvaluationDetailsSubjectSection.OnSelectItmeListener() {
+            @Override
+            public void onSelectItme(int pos) {
+                subjectId = String.valueOf(subjectList.get(pos).getId());
+                leftAdapter.getAdapterForSection("subject").notifyAllItemsChanged("payloads");
+
+                mPresenter.queryTextBookList(getContext(),gradeId,subjectId);
+            }
+        }));*/
 
         leftAdapter.addSection("textbook", new EvaluationDetailsTagSection(getContext(), textBookList, textbookId, new EvaluationDetailsTagSection.OnSelectItmeListener() {
             @Override
@@ -343,12 +361,12 @@ public class EvaluationDetailsActivity extends BaseActivity<EvaluationDetailsPre
                 semesterId = String.valueOf(semesterList.get(pos).getId());
                 /**请求知识树*/
                 checkId = null;
-                mPresenter.initTreeData(EvaluationDetailsActivity.this,paperType,gradeId,semesterId,subjectId,textbookId,MyApplication.getMyApplication().getUserId());
+                mPresenter.initTreeData(EvaluationDetailsActivity.this,paperType,gradeId,semesterId,subjectId,textbookId,MyApplication.getMyApp().getUserId());
                 /**请求页面数据*/
                 isLoadMore = false;
                 currentPage = 1;
                 loadView.showLoading();
-                mPresenter.queryPaperList(EvaluationDetailsActivity.this,gradeId,subjectId,textbookId,semesterId,ptype,MyApplication.getMyApplication().getUserId(),userType,String.valueOf(currentPage),checkId,null);
+                mPresenter.queryPaperList(EvaluationDetailsActivity.this,gradeId,subjectId,textbookId,semesterId,ptype,MyApplication.getMyApp().getUserId(),userType,String.valueOf(currentPage),checkId,null);
             }
         }));
         leftAdapter.notifyDataSetChanged();
@@ -412,7 +430,7 @@ public class EvaluationDetailsActivity extends BaseActivity<EvaluationDetailsPre
         subjectList = entry.getData();
         if (subjectList != null && subjectList.size() > 0) {
             loadView.showContent();
-            tagPos = gradeList.size() + subjectList.size();
+            //tagPos = gradeList.size() + subjectList.size();
             subjectId = String.valueOf(subjectList.get(0).getId());
 
             EvaluationDetailsSubjectSection subjectSection = (EvaluationDetailsSubjectSection) leftAdapter.getSection("subject");
@@ -442,12 +460,12 @@ public class EvaluationDetailsActivity extends BaseActivity<EvaluationDetailsPre
             leftAdapter.notifyDataSetChanged();
             /**请求知识树*/
             checkId = null;
-            mPresenter.initTreeData(EvaluationDetailsActivity.this,paperType,gradeId,semesterId,subjectId,textbookId,MyApplication.getMyApplication().getUserId());
+            mPresenter.initTreeData(EvaluationDetailsActivity.this,paperType,gradeId,semesterId,subjectId,textbookId,MyApplication.getMyApp().getUserId());
             /**请求页面数据*/
             isLoadMore = false;
             currentPage = 1;
             loadView.showLoading();
-            mPresenter.queryPaperList(EvaluationDetailsActivity.this,gradeId,subjectId,textbookId,semesterId,ptype,MyApplication.getMyApplication().getUserId(),userType,String.valueOf(currentPage),checkId,null);
+            mPresenter.queryPaperList(EvaluationDetailsActivity.this,gradeId,subjectId,textbookId,semesterId,ptype,MyApplication.getMyApp().getUserId(),userType,String.valueOf(currentPage),checkId,null);
 
         }
     }
@@ -476,12 +494,12 @@ public class EvaluationDetailsActivity extends BaseActivity<EvaluationDetailsPre
 
         /**请求知识树*/
         checkId = null;
-        mPresenter.initTreeData(EvaluationDetailsActivity.this,paperType,gradeId,semesterId,subjectId,textbookId,MyApplication.getMyApplication().getUserId());
+        mPresenter.initTreeData(EvaluationDetailsActivity.this,paperType,gradeId,semesterId,subjectId,textbookId,MyApplication.getMyApp().getUserId());
         /**请求页面数据*/
         isLoadMore = false;
         currentPage = 1;
         loadView.showLoading();
-        mPresenter.queryPaperList(EvaluationDetailsActivity.this,gradeId,subjectId,textbookId,semesterId,ptype,MyApplication.getMyApplication().getUserId(),userType,String.valueOf(currentPage),checkId,null);
+        mPresenter.queryPaperList(EvaluationDetailsActivity.this,gradeId,subjectId,textbookId,semesterId,ptype,MyApplication.getMyApp().getUserId(),userType,String.valueOf(currentPage),checkId,null);
 
     }
 
@@ -497,12 +515,12 @@ public class EvaluationDetailsActivity extends BaseActivity<EvaluationDetailsPre
         }
         /**请求知识树*/
         checkId = null;
-        mPresenter.initTreeData(EvaluationDetailsActivity.this,paperType,gradeId,semesterId,subjectId,textbookId,MyApplication.getMyApplication().getUserId());
+        mPresenter.initTreeData(EvaluationDetailsActivity.this,paperType,gradeId,semesterId,subjectId,textbookId,MyApplication.getMyApp().getUserId());
         /**请求页面数据*/
         isLoadMore = false;
         currentPage = 1;
         loadView.showLoading();
-        mPresenter.queryPaperList(EvaluationDetailsActivity.this,gradeId,subjectId,textbookId,semesterId,ptype,MyApplication.getMyApplication().getUserId(),userType,String.valueOf(currentPage),checkId,null);
+        mPresenter.queryPaperList(EvaluationDetailsActivity.this,gradeId,subjectId,textbookId,semesterId,ptype,MyApplication.getMyApp().getUserId(),userType,String.valueOf(currentPage),checkId,null);
 
     }
 

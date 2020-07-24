@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.webkit.JavascriptInterface;
 
-import com.fek12.basic.utils.toast.ToastUtils;
-
 import cn.fek12.evaluation.application.MyApplication;
 import cn.fek12.evaluation.model.config.Configs;
 import cn.fek12.evaluation.model.sharedPreferences.PrefUtilsData;
@@ -61,7 +59,7 @@ public class JavaScriptinterface {
     @JavascriptInterface
     public void personal_report(String paperResultId) {
         PrefUtilsData.setPaperResultIdCache(paperResultId);
-        String url = Configs.PERSONAL_REPORT+"userId="+MyApplication.getMyApplication().getUserId()+"&paperResultId="+paperResultId;
+        String url = Configs.PERSONAL_REPORT+"userId="+MyApplication.getMyApp().getUserId()+"&paperResultId="+paperResultId;
         Intent intent = new Intent(mContext, PersonalReportWebViewActivity.class);
         intent.putExtra("webUrl",url);
         mContext.startActivity(intent);
@@ -91,7 +89,7 @@ public class JavaScriptinterface {
      */
     @JavascriptInterface
     public String getUserId() {
-        return MyApplication.getMyApplication().getUserId();
+        return MyApplication.getMyApp().getUserId();
     }
 
     /**

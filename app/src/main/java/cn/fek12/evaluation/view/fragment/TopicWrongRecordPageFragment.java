@@ -27,7 +27,7 @@ import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.application.MyApplication;
 import cn.fek12.evaluation.model.config.Configs;
 import cn.fek12.evaluation.utils.AppUtils;
-import cn.fek12.evaluation.view.PopupWindow.SubjectPopupWindow;
+import cn.fek12.evaluation.view.PopupWindow.SubjectAllPopupWindow;
 import cn.fek12.evaluation.view.dialog.SelectDateDialog;
 import cn.fek12.evaluation.view.jsinterface.JavaScriptinterface;
 import cn.fek12.evaluation.view.widget.MultipleStatusView;
@@ -63,7 +63,7 @@ public class TopicWrongRecordPageFragment extends BaseFragment {
     private String startDate = "";
     private String endDate = "";
     private String subject = "";
-    private SubjectPopupWindow subjectPopupWindow;
+    private SubjectAllPopupWindow subjectPopupWindow;
 
     @Override
     protected int getLayoutResource() {
@@ -96,7 +96,7 @@ public class TopicWrongRecordPageFragment extends BaseFragment {
 
         //String webUrl = Configs.RECORD + "userId="+MyApplication.getMyApplication().getUserId();
         loadView.showLoading();
-        String webUrl = Configs.RECORD + "userId=" + MyApplication.getMyApplication().getUserId() + "&beginDate=" + startDate + "&endDate=" + endDate + "&subject=" + subject;
+        String webUrl = Configs.RECORD + "userId=" + MyApplication.getMyApp().getUserId() + "&beginDate=" + startDate + "&endDate=" + endDate + "&subject=" + subject;
         webView.loadUrl(webUrl);
 
         webView.setWebViewClient(new WebViewClient() {
@@ -146,7 +146,7 @@ public class TopicWrongRecordPageFragment extends BaseFragment {
                                 ToastUtils.popUpToast("不能大于结束时间");
                                 return;
                             }
-                            String webUrl = Configs.RECORD + "userId=" + MyApplication.getMyApplication().getUserId() + "&beginDate=" + startDate + "&endDate=" + endDate + "&subject=" + subject;
+                            String webUrl = Configs.RECORD + "userId=" + MyApplication.getMyApp().getUserId() + "&beginDate=" + startDate + "&endDate=" + endDate + "&subject=" + subject;
                             webView.loadUrl(webUrl);
                         }
                         startDate = date;
@@ -156,13 +156,13 @@ public class TopicWrongRecordPageFragment extends BaseFragment {
                 startDateDialog.show();
                 break;
             case R.id.llSubject:
-                subjectPopupWindow = new SubjectPopupWindow(getActivity(), new SubjectPopupWindow.OnSelectItmeListener() {
+                subjectPopupWindow = new SubjectAllPopupWindow(getContext(), new SubjectAllPopupWindow.OnSelectItmeListener() {
                     @Override
                     public void onSelectItme(String subjectId, String subjectName) {
                         //loadView.showLoading();
                         tvSubject.setText(subjectName);
                         subject = subjectId.equals("0") ? "" : subjectId;
-                        String webUrl = Configs.RECORD + "userId=" + MyApplication.getMyApplication().getUserId() + "&beginDate=" + startDate + "&endDate=" + endDate + "&subject=" + subject;
+                        String webUrl = Configs.RECORD + "userId=" + MyApplication.getMyApp().getUserId() + "&beginDate=" + startDate + "&endDate=" + endDate + "&subject=" + subject;
                         webView.loadUrl(webUrl);
                         //webView.loadUrl("http://192.168.0.46/noc/html/ErrorRework.html");
                         //webView.reload(); //刷新
@@ -171,7 +171,7 @@ public class TopicWrongRecordPageFragment extends BaseFragment {
                 AppUtils.fitPopupWindowOverStatusBar(subjectPopupWindow, true);
                 ivArrow.setImageResource(R.mipmap.rise_icon);
                 //subjectPopupWindow.showAsDropDown(llContainSubject, -155, 0);
-                subjectPopupWindow.showAtLocation(llSubject,Gravity.CLIP_VERTICAL,-20,20);
+                subjectPopupWindow.showAtLocation(llSubject,Gravity.CLIP_VERTICAL,-20,0);
                 subjectPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
                     @Override
                     public void onDismiss() {
@@ -200,7 +200,7 @@ public class TopicWrongRecordPageFragment extends BaseFragment {
                         }
                         endDate = date;
                         tvEndDate.setText(date);
-                        String webUrl = Configs.RECORD + "userId=" + MyApplication.getMyApplication().getUserId() + "&beginDate=" + startDate + "&endDate=" + endDate + "&subject=" + subject;
+                        String webUrl = Configs.RECORD + "userId=" + MyApplication.getMyApp().getUserId() + "&beginDate=" + startDate + "&endDate=" + endDate + "&subject=" + subject;
                         webView.loadUrl(webUrl);
                     }
                 });

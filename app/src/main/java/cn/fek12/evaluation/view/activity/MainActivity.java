@@ -33,6 +33,7 @@ import java.util.TimerTask;
 
 import butterknife.BindView;
 import cn.fek12.evaluation.R;
+import cn.fek12.evaluation.application.MyApplication;
 import cn.fek12.evaluation.model.entity.StudentInfoEntity;
 import cn.fek12.evaluation.model.entity.TabEntity;
 import cn.fek12.evaluation.model.sharedPreferences.PrefUtilsData;
@@ -71,7 +72,6 @@ public class MainActivity extends BaseActivity implements BackFragmentInterface 
 
     @Override
     protected void onInitView() {
-        bindService();
         for (int i = 0; i < mTitles.length; i++) {
             mTabEntities.add(new TabEntity(mTitles[i], mIconSelectIds[i], mIconUnselectIds[i]));
         }
@@ -196,42 +196,9 @@ public class MainActivity extends BaseActivity implements BackFragmentInterface 
                      }
              }
 
-
-    private void bindService() {
-        Intent intent = new Intent();
-        intent.setPackage("com.future_education.launcher");
-        intent.setAction("com.future_education.launcher.aidlService");
-        boolean isSuc = bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
-        Log.d(TAG, "bindService: "+ isSuc);
-    }
-
-    private ServiceConnection serviceConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            connected = true;
-            iUserData = IUserData.Stub.asInterface(service);
-            if(iUserData != null){
-                try {
-                    String studentInfo = iUserData.getStudentInfo();
-                    StudentInfoEntity entity = new Gson().fromJson(studentInfo, StudentInfoEntity.class);
-                    PrefUtilsData.setUserId(entity.getPer_id());
-                    PrefUtilsData.setPer_level(String.valueOf(entity.getPer_level()));
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            iUserData = null;
-            connected = false;
-        }
-    };
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unbindService(serviceConnection);
+        MyApplication.getMyApp().unbindService();
     }
 }

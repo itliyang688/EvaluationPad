@@ -102,7 +102,7 @@ public class ExerciseExpandableAdapter extends ExpandableRecyclerView.Adapter<Ex
             holder.tbAnalysis.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    String url = Configs.SMALL + "userId=" + MyApplication.getMyApplication().getUserId() + "&subjectCategoryId=" + list.get(position).getSubjectCategoryId() + "&practiceId=" + list.get(position).getPracticeId();
+                    String url = Configs.SMALL + "userId=" + MyApplication.getMyApp().getUserId() + "&subjectCategoryId=" + list.get(position).getSubjectCategoryId() + "&practiceId=" + list.get(position).getPracticeId();
                     Intent intent = new Intent(mContext, CommonWebViewActivity.class);
                     intent.putExtra("webUrl",url);
                     mContext.startActivity(intent);
@@ -112,7 +112,7 @@ public class ExerciseExpandableAdapter extends ExpandableRecyclerView.Adapter<Ex
             holder.tbPractice.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    String url = Configs.SMALLWORK + "userId=" + MyApplication.getMyApplication().getUserId() + "&subjectCategoryId=" + list.get(position).getSubjectCategoryId();
+                    String url = Configs.SMALLWORK + "userId=" + MyApplication.getMyApp().getUserId() + "&subjectCategoryId=" + list.get(position).getSubjectCategoryId();
                     Intent intent = new Intent(mContext, CommonWebViewActivity.class);
                     intent.putExtra("webUrl",url);
                     mContext.startActivity(intent);

@@ -7,13 +7,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fek12.basic.base.BaseFragment;
-import com.fek12.basic.base.BasePresenter;
 import com.google.gson.Gson;
 
-import org.csource.common.MyException;
-
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import butterknife.BindView;
@@ -26,10 +21,8 @@ import cn.fek12.evaluation.model.entity.SubjectEntity;
 import cn.fek12.evaluation.model.entity.TextbookChildEntity;
 import cn.fek12.evaluation.presenter.MicroLessonPagePresenter;
 import cn.fek12.evaluation.utils.FastDFSUtil;
-import cn.fek12.evaluation.view.activity.FullScreenVideoPlayActivity;
 import cn.fek12.evaluation.view.activity.MicroLessonMoreActivity;
 import cn.fek12.evaluation.view.activity.MicrolessonVideoPlayActivity;
-import cn.fek12.evaluation.view.activity.SpecialVideoActivity;
 import cn.fek12.evaluation.view.adapter.VideoItemSection;
 import cn.fek12.evaluation.view.widget.MultipleStatusView;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
@@ -61,7 +54,7 @@ public class MicroLessonPageFragment extends BaseFragment<MicroLessonPagePresent
         mTypePage = typePage;
     }
 
-    public void setLists(List<ChildSectionEntity> grades,List<SubjectEntity.DataBean> subjects,List<TextbookChildEntity> textBooks,List<ChildSectionEntity> semesters){
+    public void setLists(List<ChildSectionEntity> grades, List<SubjectEntity.DataBean> subjects, List<TextbookChildEntity> textBooks, List<ChildSectionEntity> semesters){
         gradeList = grades;
         subjectList = subjects;
         textBookList = textBooks;

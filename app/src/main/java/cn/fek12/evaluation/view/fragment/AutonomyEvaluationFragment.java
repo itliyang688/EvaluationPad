@@ -148,7 +148,7 @@ public class AutonomyEvaluationFragment extends BaseFragment<AutonomyEvaluationP
     private List<ChildSectionEntity> semesterList;
     private String createPaperJson;
 
-    public void setLists(List<ChildSectionEntity> grades,List<SubjectEntity.DataBean> subjects,List<TextbookChildEntity> textBooks,List<ChildSectionEntity> semesters,String type,String name){
+    public void setLists(List<ChildSectionEntity> grades, List<SubjectEntity.DataBean> subjects, List<TextbookChildEntity> textBooks, List<ChildSectionEntity> semesters, String type, String name){
         gradeList = grades;
         subjectList = subjects;
         textBookList = textBooks;
@@ -640,7 +640,7 @@ public class AutonomyEvaluationFragment extends BaseFragment<AutonomyEvaluationP
         topicEntity.setPtype(pType);
         topicEntity.setPaperName(paperName);
         topicEntity.setSubjectName(subjectName);
-        topicEntity.setUserId(MyApplication.getMyApplication().getUserId());
+        topicEntity.setUserId(MyApplication.getMyApp().getUserId());
         topicEntity.setWay(topicType);
         topicEntity.setGrade(gradeId);
         topicEntity.setSemester(semesterId);
@@ -648,7 +648,7 @@ public class AutonomyEvaluationFragment extends BaseFragment<AutonomyEvaluationP
         topicEntity.setTextbook(textbookId);
         createPaperJson = new Gson().toJson(topicEntity);
 
-        mPresenter.checkPaperName(getContext(),paperName,MyApplication.getMyApplication().getUserId());
+        mPresenter.checkPaperName(getContext(),paperName,MyApplication.getMyApp().getUserId());
     }
 
     private void queryTopic() {

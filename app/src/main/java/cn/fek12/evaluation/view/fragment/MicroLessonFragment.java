@@ -30,14 +30,12 @@ import cn.fek12.evaluation.model.entity.SubjectEntity;
 import cn.fek12.evaluation.model.entity.TextbookChildEntity;
 import cn.fek12.evaluation.model.entity.TextbookEntity;
 import cn.fek12.evaluation.presenter.MicroLessonPresenter;
-import cn.fek12.evaluation.view.activity.MenuDialogActivity;
 import cn.fek12.evaluation.view.activity.MicroLessonTreeActivity;
 import cn.fek12.evaluation.view.activity.TreeViewDialogActivity;
 import cn.fek12.evaluation.view.adapter.DictionaryChildSection;
 import cn.fek12.evaluation.view.adapter.DictionaryParentSection;
 import cn.fek12.evaluation.view.adapter.DictionarySubjectSection;
 import cn.fek12.evaluation.view.adapter.DictionaryTagChildSection;
-import cn.fek12.evaluation.view.widget.CustomViewPager;
 import cn.fek12.evaluation.view.widget.MultipleStatusView;
 import cn.fek12.evaluation.view.widget.NoScrollViewPager;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
@@ -179,7 +177,7 @@ public class MicroLessonFragment extends BaseFragment<MicroLessonPresenter> impl
         BaseFragment baseFragment = (BaseFragment) adapter.getItem(currentItme);
         if (baseFragment instanceof MicroLessonPageFragment) {
             MicroLessonPageFragment fragment = (MicroLessonPageFragment) baseFragment;
-            fragment.queryIndexPagerData(gradeId, semesterId, subjectId, textbookId, MyApplication.getMyApplication().getUserId());
+            fragment.queryIndexPagerData(gradeId, semesterId, subjectId, textbookId, MyApplication.getMyApp().getUserId());
             fragment.setLists(gradeList,subjectList,textBookList,semesterList);
         }
     }

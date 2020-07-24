@@ -105,7 +105,7 @@ public abstract class PrefUtilsData {
         }
 
         public static void userClear() {
-            sUserSharedPreferences.edit().clear().apply();
+            sUserSharedPreferences.edit().clear().commit();
         }
     }
 

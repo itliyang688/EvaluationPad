@@ -81,7 +81,7 @@ public class PromoteFragment extends BaseFragment<PresentationPresenter> impleme
                         textbook = textbookId;
                         userType = type;
                         multipleStatusView.showLoading();
-                        mPresenter.queryAWeek(getContext(), grade, semester, subject, textbook,  MyApplication.getMyApplication().getUserId(), userType);
+                        mPresenter.queryAWeek(getContext(), grade, semester, subject, textbook,  MyApplication.getMyApp().getUserId(), userType);
                     }
                 });
                 //popupWindow.setClippingEnabled(false);
@@ -106,14 +106,14 @@ public class PromoteFragment extends BaseFragment<PresentationPresenter> impleme
         public void onLoadMore(final TwinklingRefreshLayout refreshLayout) {
             isLoadMore = true;
             currentPage += 1;
-            mPresenter.queryEarlier(getContext(), grade, semester, subject, textbook,  MyApplication.getMyApplication().getUserId(), userType, String.valueOf(currentPage), pageSize);
+            mPresenter.queryEarlier(getContext(), grade, semester, subject, textbook,  MyApplication.getMyApp().getUserId(), userType, String.valueOf(currentPage), pageSize);
         }
 
         @Override
         public void onRefresh(final TwinklingRefreshLayout refreshLayout) {
             isLoadMore = false;
             currentPage = 1;
-            mPresenter.queryAWeek(getContext(), grade, semester, subject, textbook,  MyApplication.getMyApplication().getUserId(), userType);
+            mPresenter.queryAWeek(getContext(), grade, semester, subject, textbook,  MyApplication.getMyApp().getUserId(), userType);
         }
     };
 
@@ -138,7 +138,7 @@ public class PromoteFragment extends BaseFragment<PresentationPresenter> impleme
     @Override
     protected void onLoadDataRemote() {
         multipleStatusView.showLoading();
-        mPresenter.queryAWeek(getContext(), grade, semester, subject, textbook,  MyApplication.getMyApplication().getUserId(), userType);
+        mPresenter.queryAWeek(getContext(), grade, semester, subject, textbook,  MyApplication.getMyApp().getUserId(), userType);
     }
 
     @Override
@@ -176,7 +176,7 @@ public class PromoteFragment extends BaseFragment<PresentationPresenter> impleme
                 }
             }));
         }
-        mPresenter.queryEarlier(getContext(), grade, semester, subject, textbook,  MyApplication.getMyApplication().getUserId(), userType, String.valueOf(currentPage), pageSize);
+        mPresenter.queryEarlier(getContext(), grade, semester, subject, textbook,  MyApplication.getMyApp().getUserId(), userType, String.valueOf(currentPage), pageSize);
     }
 
     @Override
@@ -225,7 +225,7 @@ public class PromoteFragment extends BaseFragment<PresentationPresenter> impleme
         currentPage = 1;
         leftAdapter.removeAllSections();
         /**一周或三天报告请求失败还要去请求较早的报告*/
-        mPresenter.queryEarlier(getContext(), grade, semester, subject, textbook,  MyApplication.getMyApplication().getUserId(), userType, String.valueOf(currentPage), pageSize);
+        mPresenter.queryEarlier(getContext(), grade, semester, subject, textbook,  MyApplication.getMyApp().getUserId(), userType, String.valueOf(currentPage), pageSize);
     }
 
     @Override
@@ -250,7 +250,7 @@ public class PromoteFragment extends BaseFragment<PresentationPresenter> impleme
         leftAdapter.addSection("threeDays", new PresentationAweekItemSection(1,null, getContext(), "近三天",null));
         leftAdapter.addSection("aweek", new PresentationAweekItemSection(1,null, getContext(), "一周内", null));
         /**一周或三天报告请求失败还要去请求较早的报告*/
-        mPresenter.queryEarlier(getContext(), grade, semester, subject, textbook,  MyApplication.getMyApplication().getUserId(), userType, String.valueOf(currentPage), pageSize);
+        mPresenter.queryEarlier(getContext(), grade, semester, subject, textbook,  MyApplication.getMyApp().getUserId(), userType, String.valueOf(currentPage), pageSize);
     }
 
     @Override

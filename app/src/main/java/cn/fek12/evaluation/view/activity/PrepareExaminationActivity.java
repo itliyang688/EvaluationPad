@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fek12.basic.base.BaseActivity;
-import com.google.gson.Gson;
 import com.lcodecore.tkrefreshlayout.Footer.BottomProgressView;
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
@@ -23,25 +22,16 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.application.MyApplication;
-import cn.fek12.evaluation.impl.IMicroLessonTree;
 import cn.fek12.evaluation.impl.IPrepareExamination;
-import cn.fek12.evaluation.model.entity.ContainListEntity;
 import cn.fek12.evaluation.model.entity.MicrolessonVideoEntity;
-import cn.fek12.evaluation.model.entity.SemesterEntity;
-import cn.fek12.evaluation.model.entity.SubjectEntity;
 import cn.fek12.evaluation.model.entity.SubjectModel;
-import cn.fek12.evaluation.model.entity.TextbookEntity;
 import cn.fek12.evaluation.model.entity.TreeDataEntity;
-import cn.fek12.evaluation.model.entity.VideoMoreListEntity;
 import cn.fek12.evaluation.model.holder.AutoTreeChildItemHolder;
 import cn.fek12.evaluation.model.holder.TreeParentItemHolder;
-import cn.fek12.evaluation.presenter.MicroLessonTreePresenter;
 import cn.fek12.evaluation.presenter.PrepareExaminationPresenter;
 import cn.fek12.evaluation.utils.FastDFSUtil;
-import cn.fek12.evaluation.view.adapter.EvaluationDetailsSubjectSection;
 import cn.fek12.evaluation.view.adapter.PrepareExaminationSubjectSection;
 import cn.fek12.evaluation.view.adapter.PrimarySchoolVideoAdapter;
-import cn.fek12.evaluation.view.adapter.VideoAdapter;
 import cn.fek12.evaluation.view.widget.MultipleStatusView;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 
@@ -119,7 +109,7 @@ public class PrepareExaminationActivity extends BaseActivity<PrepareExaminationP
 
     private void initData(){
         loadView.showLoading();
-        mPresenter.queryPaperList(this,subjectId,checkId,MyApplication.getMyApplication().getUserId(),String.valueOf(currentPage),pageSize);
+        mPresenter.queryPaperList(this,subjectId,checkId,MyApplication.getMyApp().getUserId(),String.valueOf(currentPage),pageSize);
     }
     private RefreshListenerAdapter refreshListenerAdapter = new RefreshListenerAdapter() {
         @Override

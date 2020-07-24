@@ -29,6 +29,7 @@ import cn.fek12.evaluation.view.widget.MultipleStatusView;
 public class SubjectAllPopupWindow extends PopupWindow {
     private Context mContext;
     private View mMenuView;
+    private View viewEmpty;
     private LinearLayout llContain;
     private MultipleStatusView loadView;
     private OnSelectItmeListener mOnSelectItmeListener = null;
@@ -45,6 +46,7 @@ public class SubjectAllPopupWindow extends PopupWindow {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mMenuView = inflater.inflate(R.layout.subject_pupup_layout, null);
         llContain = mMenuView.findViewById(R.id.llContain);
+        viewEmpty = mMenuView.findViewById(R.id.viewEmpty);
         loadView = mMenuView.findViewById(R.id.loadView);
 
         // 设置SelectPicPopupWindow的View
@@ -71,6 +73,10 @@ public class SubjectAllPopupWindow extends PopupWindow {
         });
 
         querySubjectList();
+    }
+
+    public void viewEmptyHide(){
+        viewEmpty.setVisibility(View.GONE);
     }
 
     public void querySubjectList() {

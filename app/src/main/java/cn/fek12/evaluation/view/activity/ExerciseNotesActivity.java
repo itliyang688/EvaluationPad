@@ -8,9 +8,7 @@ import com.fek12.basic.base.BaseActivity;
 import com.flyco.tablayout.SlidingTabLayout;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import cn.fek12.evaluation.R;
@@ -59,7 +57,7 @@ public class ExerciseNotesActivity extends BaseActivity<ExerciseNotesPresenter> 
     @Override
     protected void onLoadData() {
         loadView.showLoading();
-        mPresenter.getYears(getContext(), MyApplication.getMyApplication().getUserId());
+        mPresenter.getYears(getContext(), MyApplication.getMyApp().getUserId());
     }
 
     @Override

@@ -117,7 +117,7 @@ public class PrimarySchoolSynchroVideoActivity extends BaseActivity<SynchroVideo
 
     private void initData() {
         loadView.showLoading();
-        mPresenter.queryPaperList(this, gradeId, semesterId, subjectId, textbookId, checkId,MyApplication.getMyApplication().getUserId(), String.valueOf(currentPage), String.valueOf(12));
+        mPresenter.queryPaperList(this, gradeId, semesterId, subjectId, textbookId, checkId,MyApplication.getMyApp().getUserId(), String.valueOf(currentPage), String.valueOf(12));
     }
 
     private RefreshListenerAdapter refreshListenerAdapter = new RefreshListenerAdapter() {
@@ -142,7 +142,7 @@ public class PrimarySchoolSynchroVideoActivity extends BaseActivity<SynchroVideo
             public int getSpanSize(int position) {
                 if (leftAdapter.getSectionItemViewType(position) == SectionedRecyclerViewAdapter.VIEW_TYPE_HEADER) {
                     return 10;
-                } else if (position == tagPos + 2) {
+                } else if (tagPos != 0 && position == tagPos + 2) {
                     return 10;
                 } else {
                     return 1;
@@ -318,7 +318,7 @@ public class PrimarySchoolSynchroVideoActivity extends BaseActivity<SynchroVideo
                 semesterId = String.valueOf(semesterList.get(pos).getId());
                 /**请求知识树*/
                 checkId = null;
-                mPresenter.initTreeData(PrimarySchoolSynchroVideoActivity.this, paperType, gradeId, semesterId, subjectId, textbookId, MyApplication.getMyApplication().getUserId());
+                mPresenter.initTreeData(PrimarySchoolSynchroVideoActivity.this, paperType, gradeId, semesterId, subjectId, textbookId, MyApplication.getMyApp().getUserId());
                 /**请求页面数据*/
                 isLoadMore = false;
                 currentPage = 1;
@@ -431,7 +431,7 @@ public class PrimarySchoolSynchroVideoActivity extends BaseActivity<SynchroVideo
             leftAdapter.notifyDataSetChanged();
             /**请求知识树*/
             checkId = null;
-            mPresenter.initTreeData(PrimarySchoolSynchroVideoActivity.this, paperType, gradeId, semesterId, subjectId, textbookId, MyApplication.getMyApplication().getUserId());
+            mPresenter.initTreeData(PrimarySchoolSynchroVideoActivity.this, paperType, gradeId, semesterId, subjectId, textbookId, MyApplication.getMyApp().getUserId());
             /**请求页面数据*/
             isLoadMore = false;
             currentPage = 1;
@@ -464,7 +464,7 @@ public class PrimarySchoolSynchroVideoActivity extends BaseActivity<SynchroVideo
 
         /**请求知识树*/
         checkId = null;
-        mPresenter.initTreeData(PrimarySchoolSynchroVideoActivity.this, paperType, gradeId, semesterId, subjectId, textbookId, MyApplication.getMyApplication().getUserId());
+        mPresenter.initTreeData(PrimarySchoolSynchroVideoActivity.this, paperType, gradeId, semesterId, subjectId, textbookId, MyApplication.getMyApp().getUserId());
         /**请求页面数据*/
         isLoadMore = false;
         currentPage = 1;
@@ -484,7 +484,7 @@ public class PrimarySchoolSynchroVideoActivity extends BaseActivity<SynchroVideo
         }
         /**请求知识树*/
         checkId = null;
-        mPresenter.initTreeData(PrimarySchoolSynchroVideoActivity.this, paperType, gradeId, semesterId, subjectId, textbookId, MyApplication.getMyApplication().getUserId());
+        mPresenter.initTreeData(PrimarySchoolSynchroVideoActivity.this, paperType, gradeId, semesterId, subjectId, textbookId, MyApplication.getMyApp().getUserId());
         /**请求页面数据*/
         isLoadMore = false;
         currentPage = 1;

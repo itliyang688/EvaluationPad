@@ -95,7 +95,7 @@ public class FullScreenVideoPlayActivity extends BaseActivity<SpeciaVideoPlayPre
                     }else{
                         tag = "0";
                     }
-                    mPresenter.collection(FullScreenVideoPlayActivity.this,cacheKey,String.valueOf(videoType),String.valueOf(videoId),tag, MyApplication.getMyApplication().getUserId());
+                    mPresenter.collection(FullScreenVideoPlayActivity.this,cacheKey,String.valueOf(videoType),String.valueOf(videoId),tag, MyApplication.getMyApp().getUserId());
                     break;
             }
         }
@@ -139,7 +139,7 @@ public class FullScreenVideoPlayActivity extends BaseActivity<SpeciaVideoPlayPre
     protected void onPause() {
         if(currentPos > 0 || isEnd.equals("1")){
             mPresenter.schedule(FullScreenVideoPlayActivity.this,cacheKey,structLayKey,String.valueOf(currentPos),
-                    String.valueOf(videoType),String.valueOf(videoId), MyApplication.getMyApplication().getUserId(),typePage,isEnd);
+                    String.valueOf(videoType),String.valueOf(videoId), MyApplication.getMyApp().getUserId(),typePage,isEnd);
         }
         super.onPause();
     }

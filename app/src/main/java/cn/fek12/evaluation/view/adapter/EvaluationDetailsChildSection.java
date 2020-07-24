@@ -48,6 +48,9 @@ public class EvaluationDetailsChildSection extends Section {
     }
     @Override
     public int getContentItemsTotal() {
+        if(mList == null || mList.size() == 0){
+            return 0;
+        }
         return mList.size();
     }
 

@@ -27,13 +27,11 @@ import cn.fek12.evaluation.application.MyApplication;
 import cn.fek12.evaluation.impl.IRiseMiddleSchool;
 import cn.fek12.evaluation.model.entity.MicrolessonVideoEntity;
 import cn.fek12.evaluation.model.entity.TreeDataEntity;
-import cn.fek12.evaluation.model.entity.VideoMoreListEntity;
 import cn.fek12.evaluation.model.holder.AutoTreeChildItemHolder;
 import cn.fek12.evaluation.model.holder.TreeParentItemHolder;
 import cn.fek12.evaluation.presenter.RiseMiddleSchoolPresenter;
 import cn.fek12.evaluation.utils.FastDFSUtil;
 import cn.fek12.evaluation.view.adapter.PrimarySchoolVideoAdapter;
-import cn.fek12.evaluation.view.adapter.VideoAdapter;
 import cn.fek12.evaluation.view.widget.MultipleStatusView;
 
 /**
@@ -98,7 +96,7 @@ public class CompositionTreasureVideoActivity extends BaseActivity<RiseMiddleSch
 
     private void initData() {
         loadView.showLoading();
-        mPresenter.queryVideoList(CompositionTreasureVideoActivity.this,"5",checkId,MyApplication.getMyApplication().getUserId(),String.valueOf(currentPage),"12");
+        mPresenter.queryVideoList(CompositionTreasureVideoActivity.this,"5",checkId,MyApplication.getMyApp().getUserId(),String.valueOf(currentPage),"12");
     }
 
     private RefreshListenerAdapter refreshListenerAdapter = new RefreshListenerAdapter() {

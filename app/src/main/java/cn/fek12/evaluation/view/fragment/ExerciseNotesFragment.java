@@ -83,7 +83,7 @@ public class ExerciseNotesFragment extends BaseFragment<ExercisePagePresenter> i
     @Override
     public void expand(int group, ExpandableRecyclerView.GroupViewHolder viewHolder) {
         showLoading();
-        mPresenter.getPracticeList(getContext(), MyApplication.getMyApplication().getUserId(),structId,mList.get(group).getGroup());
+        mPresenter.getPracticeList(getContext(), MyApplication.getMyApp().getUserId(),structId,mList.get(group).getGroup());
         this.group = group;
         this.viewHolder = viewHolder;
     }

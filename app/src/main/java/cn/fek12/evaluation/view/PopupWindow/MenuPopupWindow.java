@@ -21,7 +21,6 @@ import cn.fek12.evaluation.base.BaseObserver;
 import cn.fek12.evaluation.ent.ApiRetrofit;
 import cn.fek12.evaluation.ent.RxHelper;
 import cn.fek12.evaluation.model.entity.ChildSectionEntity;
-import cn.fek12.evaluation.model.entity.DictionaryListResp;
 import cn.fek12.evaluation.model.entity.GradeDictionaryListEntity;
 import cn.fek12.evaluation.model.entity.SemesterEntity;
 import cn.fek12.evaluation.model.entity.SubjectEntity;
@@ -163,7 +162,7 @@ public class MenuPopupWindow extends PopupWindow {
 			public int getSpanSize(int position) {
 				if (leftAdapter.getSectionItemViewType(position) == SectionedRecyclerViewAdapter.VIEW_TYPE_HEADER) {
 					return 3;
-				} else if (position == tagPos + 3) {
+				} else if (tagPos != 0 && position == tagPos + 3) {
 					return 3;
 				} else {
 					return 1;

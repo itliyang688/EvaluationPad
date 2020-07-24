@@ -20,7 +20,6 @@ import cn.fek12.evaluation.application.MyApplication;
 import cn.fek12.evaluation.impl.IVideoPlayList;
 import cn.fek12.evaluation.model.config.Configs;
 import cn.fek12.evaluation.model.entity.CollectionEntity;
-import cn.fek12.evaluation.model.entity.CommonEntity;
 import cn.fek12.evaluation.model.entity.RelevantVideoListEntity;
 import cn.fek12.evaluation.presenter.VideoPlayListPresenter;
 import cn.fek12.evaluation.utils.FastDFSUtil;
@@ -70,7 +69,7 @@ public class VideoPlayListActivity extends BaseActivity<VideoPlayListPresenter> 
     @Override
     protected void onLoadData() {
         multipleStatusView.showLoading();
-        mPresenter.videoList(getContext(), subjectCategoryId, MyApplication.getMyApplication().getUserId());
+        mPresenter.videoList(getContext(), subjectCategoryId, MyApplication.getMyApp().getUserId());
     }
 
     @Override
@@ -134,7 +133,7 @@ public class VideoPlayListActivity extends BaseActivity<VideoPlayListPresenter> 
                     } else {
                         tag = "0";
                     }
-                    mPresenter.collection(VideoPlayListActivity.this,String.valueOf(videoBean.getVideoId()),tag, MyApplication.getMyApplication().getUserId());
+                    mPresenter.collection(VideoPlayListActivity.this,String.valueOf(videoBean.getVideoId()),tag, MyApplication.getMyApp().getUserId());
                     break;
             }
         }
@@ -144,7 +143,7 @@ public class VideoPlayListActivity extends BaseActivity<VideoPlayListPresenter> 
     protected void onPause() {
         long currentPos = jzVideo.getCurrentPositionWhenPlaying();
         if(currentPos > 0 || isEnd.equals("1")){
-            mPresenter.schedule(VideoPlayListActivity.this, String.valueOf(currentPos),subjectCategoryId, String.valueOf(videoBean.getVideoId()), MyApplication.getMyApplication().getUserId());
+            mPresenter.schedule(VideoPlayListActivity.this, String.valueOf(currentPos),subjectCategoryId, String.valueOf(videoBean.getVideoId()), MyApplication.getMyApp().getUserId());
         }
         super.onPause();
     }
@@ -206,7 +205,7 @@ public class VideoPlayListActivity extends BaseActivity<VideoPlayListPresenter> 
 
     @OnClick(R.id.llClick)
     public void onViewClicked() {
-        String url = Configs.SMALLWORK + "userId=" + MyApplication.getMyApplication().getUserId() + "&subjectCategoryId=" + subjectCategoryId;
+        String url = Configs.SMALLWORK + "userId=" + MyApplication.getMyApp().getUserId() + "&subjectCategoryId=" + subjectCategoryId;
         Intent intent = new Intent(VideoPlayListActivity.this, CommonWebViewActivity.class);
         intent.putExtra("webUrl",url);
         startActivity(intent);

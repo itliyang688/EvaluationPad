@@ -1,6 +1,5 @@
 package cn.fek12.evaluation.view.fragment;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -14,7 +13,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
-import com.fek12.basic.base.BaseActivity;
 import com.fek12.basic.base.BaseFragment;
 import com.google.gson.Gson;
 
@@ -50,7 +48,6 @@ import cn.fek12.evaluation.view.adapter.DictionaryChildSection;
 import cn.fek12.evaluation.view.adapter.DictionaryParentSection;
 import cn.fek12.evaluation.view.adapter.DictionarySubjectSection;
 import cn.fek12.evaluation.view.adapter.DictionaryTagChildSection;
-import cn.fek12.evaluation.view.widget.CustomViewPager;
 import cn.fek12.evaluation.view.widget.MultipleStatusView;
 import cn.fek12.evaluation.view.widget.NoScrollViewPager;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
@@ -81,7 +78,7 @@ public class EvaluationListFragment extends BaseFragment<EvaluationListPresenter
     private List<Fragment> fragments = new ArrayList<>();
     private MyPagerAdapter adapter;
     private List<PaperTypeListResp.DataBean> mTitleData;
-    private int tagPos;
+    private int tagPos = 0;
     private List<ChildSectionEntity> gradeList;
     private List<SubjectEntity.DataBean> subjectList;
     private List<TextbookChildEntity> textBookList;
@@ -138,10 +135,11 @@ public class EvaluationListFragment extends BaseFragment<EvaluationListPresenter
     @Override
     public void onResume() {
         super.onResume();
-        if(mTitleData != null && mViewPager.getCurrentItem() != mTitleData.size() - 1){
+        mViewPager.setCurrentItem(0);
+        /*if(mTitleData != null && mViewPager.getCurrentItem() != mTitleData.size() - 1){
             mViewPager.setCurrentItem(0);
-        }
-        emptyCheck();
+        }*/
+        //emptyCheck();
         if(mViewPager.getCurrentItem() == 0){
             updateContent(mViewPager.getCurrentItem());
         }
@@ -184,7 +182,7 @@ public class EvaluationListFragment extends BaseFragment<EvaluationListPresenter
             public int getSpanSize(int position) {
                 if (leftAdapter.getSectionItemViewType(position) == SectionedRecyclerViewAdapter.VIEW_TYPE_HEADER) {
                     return 3;
-                } else if (position == tagPos + 3) {
+                } else if (tagPos != 0 && position == tagPos + 3) {
                     return 3;
                 } else {
                     return 1;
@@ -456,12 +454,12 @@ public class EvaluationListFragment extends BaseFragment<EvaluationListPresenter
             BaseFragment baseFragment = (BaseFragment) adapter.getItem(mViewPager.getCurrentItem());
             if (baseFragment instanceof EvaluationIndexPaperFragment) {
                 EvaluationIndexPaperFragment fragment = (EvaluationIndexPaperFragment) baseFragment;
-                fragment.queryIndexPagerData(gradeId, semesterId, subjectId, textbookId, mTitleData.get(pos).getId(), MyApplication.getMyApplication().getUserId());
+                fragment.queryIndexPagerData(gradeId, semesterId, subjectId, textbookId, mTitleData.get(pos).getId(), MyApplication.getMyApp().getUserId());
                 fragment.setLists(gradeList,subjectList,textBookList,semesterList);
             }else if(baseFragment instanceof AutonomyEvaluationFragment){
                 int currentItme = mViewPager.getCurrentItem();
                 AutonomyEvaluationFragment fragment = (AutonomyEvaluationFragment) baseFragment;
-                fragment.queryTreeData(gradeId,semesterId,subjectId,textbookId,mTitleData.get(currentItme).getValue(), MyApplication.getMyApplication().getUserId());
+                fragment.queryTreeData(gradeId,semesterId,subjectId,textbookId,mTitleData.get(currentItme).getValue(), MyApplication.getMyApp().getUserId());
                 fragment.setLists(gradeList,subjectList,textBookList,semesterList,mTitleData.get(currentItme).getId(),subjectName);
             }
         }

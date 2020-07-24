@@ -11,11 +11,8 @@ import butterknife.BindView;
 import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.application.MyApplication;
 import cn.fek12.evaluation.impl.IMicrolessVideoPlay;
-import cn.fek12.evaluation.impl.ISpeciaVideoPlay;
 import cn.fek12.evaluation.model.entity.CollectionEntity;
-import cn.fek12.evaluation.model.entity.CommonEntity;
 import cn.fek12.evaluation.presenter.MicrolessonVideoPlayPresenter;
-import cn.fek12.evaluation.presenter.SpeciaVideoPlayPresenter;
 import cn.fek12.evaluation.view.widget.MyJzvdStd;
 import cn.jzvd.Jzvd;
 
@@ -88,7 +85,7 @@ public class MicrolessonVideoPlayActivity extends BaseActivity<MicrolessonVideoP
                     }else{
                         tag = "0";
                     }
-                    mPresenter.collection(MicrolessonVideoPlayActivity.this,String.valueOf(videoId),tag, MyApplication.getMyApplication().getUserId());
+                    mPresenter.collection(MicrolessonVideoPlayActivity.this,String.valueOf(videoId),tag, MyApplication.getMyApp().getUserId());
                     break;
             }
         }
@@ -131,7 +128,7 @@ public class MicrolessonVideoPlayActivity extends BaseActivity<MicrolessonVideoP
     @Override
     protected void onPause() {
         if(currentPos > 0){
-            mPresenter.addOrUpdateVideoPlayCount(MicrolessonVideoPlayActivity.this,String.valueOf(currentPos),MyApplication.getMyApplication().getUserId(),videoId);
+            mPresenter.addOrUpdateVideoPlayCount(MicrolessonVideoPlayActivity.this,String.valueOf(currentPos),MyApplication.getMyApp().getUserId(),videoId);
         }
         super.onPause();
     }

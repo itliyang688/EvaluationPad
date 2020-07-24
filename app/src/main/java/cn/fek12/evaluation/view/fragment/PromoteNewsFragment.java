@@ -100,7 +100,7 @@ public class PromoteNewsFragment extends BaseFragment<PresentationPresenter> imp
                         textbook = textbookId;
                         userType = type;
                         multipleStatusView.showLoading();
-                        mPresenter.queryAWeek(getContext(), grade, semester, subject, textbook, MyApplication.getMyApplication().getUserId(), userType);
+                        mPresenter.queryAWeek(getContext(), grade, semester, subject, textbook, MyApplication.getMyApp().getUserId(), userType);
                     }
                 });
                 //popupWindow.setClippingEnabled(false);
@@ -125,14 +125,14 @@ public class PromoteNewsFragment extends BaseFragment<PresentationPresenter> imp
         public void onLoadMore(final TwinklingRefreshLayout refreshLayout) {
             isLoadMore = true;
             currentPage += 1;
-            mPresenter.queryEarlier(getContext(), grade, semester, subject, textbook, MyApplication.getMyApplication().getUserId(), userType, String.valueOf(currentPage), pageSize);
+            mPresenter.queryEarlier(getContext(), grade, semester, subject, textbook, MyApplication.getMyApp().getUserId(), userType, String.valueOf(currentPage), pageSize);
         }
 
         @Override
         public void onRefresh(final TwinklingRefreshLayout refreshLayout) {
             isLoadMore = false;
             currentPage = 1;
-            mPresenter.queryAWeek(getContext(), grade, semester, subject, textbook, MyApplication.getMyApplication().getUserId(), userType);
+            mPresenter.queryAWeek(getContext(), grade, semester, subject, textbook, MyApplication.getMyApp().getUserId(), userType);
         }
 
         @Override
@@ -212,7 +212,7 @@ public class PromoteNewsFragment extends BaseFragment<PresentationPresenter> imp
     @Override
     protected void onLoadDataRemote() {
         multipleStatusView.showLoading();
-        mPresenter.queryAWeek(getContext(), grade, semester, subject, textbook, MyApplication.getMyApplication().getUserId(), userType);
+        mPresenter.queryAWeek(getContext(), grade, semester, subject, textbook, MyApplication.getMyApp().getUserId(), userType);
     }
 
     @Override
@@ -235,7 +235,7 @@ public class PromoteNewsFragment extends BaseFragment<PresentationPresenter> imp
         if (aweeklist != null && aweeklist.size() > 0) {
             multipleStatusView.showContent();
         }
-        mPresenter.queryEarlier(getContext(), grade, semester, subject, textbook, MyApplication.getMyApplication().getUserId(), userType, String.valueOf(currentPage), pageSize);
+        mPresenter.queryEarlier(getContext(), grade, semester, subject, textbook, MyApplication.getMyApp().getUserId(), userType, String.valueOf(currentPage), pageSize);
     }
 
     @Override
@@ -303,7 +303,7 @@ public class PromoteNewsFragment extends BaseFragment<PresentationPresenter> imp
         isLoadMore = false;
         currentPage = 1;
         /**一周或三天报告请求失败还要去请求较早的报告*/
-        mPresenter.queryEarlier(getContext(), grade, semester, subject, textbook, MyApplication.getMyApplication().getUserId(), userType, String.valueOf(currentPage), pageSize);
+        mPresenter.queryEarlier(getContext(), grade, semester, subject, textbook, MyApplication.getMyApp().getUserId(), userType, String.valueOf(currentPage), pageSize);
     }
 
     @Override
@@ -324,7 +324,7 @@ public class PromoteNewsFragment extends BaseFragment<PresentationPresenter> imp
         isLoadMore = false;
         currentPage = 1;
         /**一周或三天报告请求失败还要去请求较早的报告*/
-        mPresenter.queryEarlier(getContext(), grade, semester, subject, textbook, MyApplication.getMyApplication().getUserId(), userType, String.valueOf(currentPage), pageSize);
+        mPresenter.queryEarlier(getContext(), grade, semester, subject, textbook, MyApplication.getMyApp().getUserId(), userType, String.valueOf(currentPage), pageSize);
     }
 
     @Override

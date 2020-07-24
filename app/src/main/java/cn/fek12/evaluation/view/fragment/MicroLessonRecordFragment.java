@@ -16,20 +16,16 @@ import com.fek12.basic.utils.toast.ToastUtils;
 
 import org.zakariya.stickyheaders.StickyHeaderLayoutManager;
 
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.application.MyApplication;
 import cn.fek12.evaluation.impl.IMicroLessonRecord;
 import cn.fek12.evaluation.model.entity.CollectionListEntity;
-import cn.fek12.evaluation.model.entity.CommonEntity;
 import cn.fek12.evaluation.presenter.MicroLessonRecordPresenter;
 import cn.fek12.evaluation.utils.AppUtils;
 import cn.fek12.evaluation.utils.FastDFSUtil;
 import cn.fek12.evaluation.view.PopupWindow.SubjectAllPopupWindow;
-import cn.fek12.evaluation.view.PopupWindow.SubjectPopupWindow;
 import cn.fek12.evaluation.view.activity.MicrolessonVideoPlayActivity;
 import cn.fek12.evaluation.view.adapter.MicroLessonRecordAdapter;
 import cn.fek12.evaluation.view.widget.MultipleStatusView;
@@ -98,13 +94,13 @@ public class MicroLessonRecordFragment extends BaseFragment<MicroLessonRecordPre
                 if(TextUtils.isEmpty(subject)){
                     subject = "undefined";
                 }
-                mPresenter.microLessonList(getContext(), MyApplication.getMyApplication().getUserId(), subject);
+                mPresenter.microLessonList(getContext(), MyApplication.getMyApp().getUserId(), subject);
             } else {//我的收藏
                 if(!TextUtils.isEmpty(subject) && subject.equals("undefined")){
                     subject = "";
                 }
                 titleName.setText("我的收藏");
-                mPresenter.collectionList(getContext(), MyApplication.getMyApplication().getUserId(), subject);
+                mPresenter.collectionList(getContext(), MyApplication.getMyApp().getUserId(), subject);
             }
         }
     }
@@ -148,7 +144,7 @@ public class MicroLessonRecordFragment extends BaseFragment<MicroLessonRecordPre
     public void loadCollectionSuc() {
         ToastUtils.popUpToast("已取消收藏");
         multipleStatusView.showLoading();
-        mPresenter.collectionList(getContext(), MyApplication.getMyApplication().getUserId(), subject);
+        mPresenter.collectionList(getContext(), MyApplication.getMyApp().getUserId(), subject);
     }
 
     @Override
@@ -175,7 +171,7 @@ public class MicroLessonRecordFragment extends BaseFragment<MicroLessonRecordPre
 
     @Override
     public void onItemClick(String videoId) {
-        mPresenter.collection(getContext(), videoId, "0",  MyApplication.getMyApplication().getUserId());
+        mPresenter.collection(getContext(), videoId, "0",  MyApplication.getMyApp().getUserId());
     }
 
     @Override
@@ -210,6 +206,7 @@ public class MicroLessonRecordFragment extends BaseFragment<MicroLessonRecordPre
                 collectionList();
             }
         });
+        subjectPopupWindow.viewEmptyHide();
         AppUtils.fitPopupWindowOverStatusBar(subjectPopupWindow, true);
         ivArrow.setImageResource(R.mipmap.rise_icon);
         subjectPopupWindow.showAsDropDown(llSubject, 0, 0,Gravity.RIGHT);
