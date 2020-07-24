@@ -176,14 +176,14 @@ public class MicroLessonRecordFragment extends BaseFragment<MicroLessonRecordPre
 
     @Override
     public void onVideoPlay(CollectionListEntity.DataBean.VideoBean videoBean) {
-        String path = "";
+        /*String path = "";
         try {
             path = FastDFSUtil.generateSourceUrl(videoBean.getVideoUrl());
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
         Intent intent = new Intent(mContext, MicrolessonVideoPlayActivity.class);
-        intent.putExtra("pathUrl",path);
+        intent.putExtra("pathUrl",videoBean.getVideoUrl());
         intent.putExtra("videoName",videoBean.getVideoName());
         intent.putExtra("videoId",videoBean.getVideoId());
         intent.putExtra("imgUrl",videoBean.getImgUrl());

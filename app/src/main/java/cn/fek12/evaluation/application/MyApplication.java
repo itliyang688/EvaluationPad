@@ -50,8 +50,8 @@ public class MyApplication extends BaseApplication {
     }
 
     public String getUserId() {
-        return PrefUtilsData.getUserId();
-        //return userId;
+        //return PrefUtilsData.getUserId();
+        return userId;
     }
 
 

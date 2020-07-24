@@ -159,14 +159,14 @@ public class CommonVideoActivity extends BaseActivity<CommonVideoPresenter> impl
 
     @Override
     public void onItemClick(int position) {
-        String path = "";
+        /*String path = "";
         try {
             path = FastDFSUtil.generateSourceUrl(mList.get(position).getVideoUrl());
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
         Intent intent = new Intent(CommonVideoActivity.this,MicrolessonVideoPlayActivity.class);
-        intent.putExtra("pathUrl",path);
+        intent.putExtra("pathUrl",mList.get(position).getVideoUrl());
         intent.putExtra("videoName",mList.get(position).getVideoName());
         intent.putExtra("videoId",mList.get(position).getVideoId());
         intent.putExtra("imgUrl",mList.get(position).getImgUrl());

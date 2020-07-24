@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.fek12.evaluation.R;
+import cn.fek12.evaluation.application.MyApplication;
 import cn.fek12.evaluation.model.entity.RelevantVideoListEntity;
 import cn.fek12.evaluation.utils.FastDFSUtil;
 import cn.fek12.evaluation.utils.VideoUtils;
@@ -95,6 +96,7 @@ public class RelevantVideoAdapter extends RecyclerView.Adapter<RelevantVideoAdap
             tvSubject.setText(mList.get(position).getSubject());
             tvTextbook.setText(mList.get(position).getTextbookName());
             tvPlayNumber.setText(String.valueOf(mList.get(position).getPlayCount()));
+            Glide.with(MyApplication.getApp()).load(mList.get(position).getImgUrl()).placeholder(R.mipmap.empty_bg).error(R.mipmap.empty_bg).into(ivCover);
             /*ivCover.post(new Runnable() {
                 @Override
                 public void run() {

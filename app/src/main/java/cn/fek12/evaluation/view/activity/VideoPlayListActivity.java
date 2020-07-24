@@ -78,15 +78,15 @@ public class VideoPlayListActivity extends BaseActivity<VideoPlayListPresenter> 
         if (entry != null) {
             if (entry.getData() != null && entry.getData().getVideo() != null) {
                 videoBean = entry.getData().getVideo();
-                String path = null;
+                /*String path = null;
                 try {
                     path = FastDFSUtil.generateSourceUrl(videoBean.getVideoUrl());
                 } catch (Exception e) {
                     e.printStackTrace();
-                }
+                }*/
 
                 jzVideo.seekToInAdvance = videoBean.getPlayScheduleTime();
-                jzVideo.setUp(path, videoBean.getVideoName());
+                jzVideo.setUp(videoBean.getVideoUrl(), videoBean.getVideoName());
                 isCollection = videoBean.getIsCollection();
                 jzVideo.ivExtend.setImageResource(isCollection == 0 ? R.mipmap.collection_video_normal : R.mipmap.collection_video_check);
                 jzVideo.ivExtend.setOnClickListener(onClickListener);
