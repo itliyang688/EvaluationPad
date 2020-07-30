@@ -51,7 +51,7 @@ public class MicrolessonVideoPlayActivity extends BaseActivity<MicrolessonVideoP
         playScheduleTime = intent.getLongExtra("playScheduleTime",0);
         isCollection = intent.getIntExtra("isCollection",0);
 
-        //String path = "http://192.168.0.46/group1/M00/00/00/wKgALl23kwyAMozOAOBSBYftCKo270.mp4?token=2cc8cea563f06bc61576893cb5d8e542";
+        //String path = "http://res.51jxpj.cn/group1/M00/01/CD/wKgo0F8iP3KAM9cMAlOxL3yPwT4824.mp4?token=3b1a840fa85c4bd60ab5a20ba534b55a&ts=1596081630";
         //String path1 = "http://vfx.mtime.cn/Video/2019/03/19/mp4/190319222227698228.mp4";
         myJzvdStd.setUp(pathUrl,videoName);
         myJzvdStd.seekToInAdvance = playScheduleTime;

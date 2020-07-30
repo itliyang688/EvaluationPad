@@ -27,6 +27,7 @@ import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.application.MyApplication;
 import cn.fek12.evaluation.model.config.Configs;
 import cn.fek12.evaluation.utils.AppUtils;
+import cn.fek12.evaluation.utils.DisUtil;
 import cn.fek12.evaluation.view.PopupWindow.SubjectAllPopupWindow;
 import cn.fek12.evaluation.view.dialog.SelectDateDialog;
 import cn.fek12.evaluation.view.jsinterface.JavaScriptinterface;
@@ -168,10 +169,15 @@ public class TopicWrongRecordPageFragment extends BaseFragment {
                         //webView.reload(); //刷新
                     }
                 });
+
                 AppUtils.fitPopupWindowOverStatusBar(subjectPopupWindow, true);
                 ivArrow.setImageResource(R.mipmap.rise_icon);
-                //subjectPopupWindow.showAsDropDown(llContainSubject, -155, 0);
-                subjectPopupWindow.showAtLocation(llSubject,Gravity.CLIP_VERTICAL,-20,0);
+                //subjectPopupWindow.showAsDropDown(llContainSubject);
+                int tv_width = llContainSubject.getWidth();//获取对应的控件view宽度px值
+                int pop_width = DisUtil.dp2px(getContext(),150);
+                int width = (tv_width - pop_width) / 2;//获取x轴偏移量px
+                subjectPopupWindow.showAsDropDown(llContainSubject, width, 0);//设置x轴偏移量：注意单位为px
+                //subjectPopupWindow.showAtLocation(llSubject,Gravity.CENTER_VERTICAL, DisUtil.dp2px(getContext(),-10),0);
                 subjectPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
                     @Override
                     public void onDismiss() {

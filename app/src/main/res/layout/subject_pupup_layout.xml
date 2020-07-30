@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="@dimen/dp_160"
+    android:layout_width="@dimen/dp_150"
     android:layout_height="wrap_content"
     android:orientation="vertical">
     <View
         android:id="@+id/viewEmpty"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_20"/>
+        android:layout_height="@dimen/dp_1"/>
     <cn.fek12.evaluation.view.widget.MultipleStatusView
         android:id="@+id/loadView"
-        android:layout_width="@dimen/dp_160"
+        android:layout_width="@dimen/dp_150"
         android:layout_height="@dimen/dp_311"
         android:background="@mipmap/subject_bg"
         android:visibility="visible">

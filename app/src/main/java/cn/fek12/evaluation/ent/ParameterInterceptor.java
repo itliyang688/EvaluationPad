@@ -3,6 +3,7 @@ package cn.fek12.evaluation.ent;
 import java.io.IOException;
 import java.util.Date;
 
+import cn.fek12.evaluation.model.sharedPreferences.PrefUtilsData;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.Request;
@@ -21,6 +22,7 @@ public class ParameterInterceptor implements Interceptor {
         //添加请求参数，此处是以豆瓣api为例，下面会贴出
         HttpUrl url=original.url().newBuilder()
                 .addQueryParameter("t", String.valueOf(new Date().getTime() / 1000))
+                .addQueryParameter("token", PrefUtilsData.getToken())
                 .build();
         //添加请求头
         Request request = original.newBuilder()

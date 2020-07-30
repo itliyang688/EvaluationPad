@@ -208,6 +208,14 @@ public class PromoteNewsFragment extends BaseFragment<PresentationPresenter> imp
         adapter.bindToRecyclerView(recycler);
     }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser && multipleStatusView != null) {
+            multipleStatusView.showLoading();
+            mPresenter.queryAWeek(getContext(), grade, semester, subject, textbook, MyApplication.getMyApp().getUserId(), userType);
+        }
+    }
 
     @Override
     protected void onLoadDataRemote() {

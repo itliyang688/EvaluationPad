@@ -29,6 +29,7 @@ import cn.fek12.evaluation.impl.ICurriculemRecord;
 import cn.fek12.evaluation.model.entity.CurriculumEntity;
 import cn.fek12.evaluation.presenter.CurriculumRecordPresenter;
 import cn.fek12.evaluation.utils.AppUtils;
+import cn.fek12.evaluation.utils.DisUtil;
 import cn.fek12.evaluation.utils.FastDFSUtil;
 import cn.fek12.evaluation.view.PopupWindow.SubjectAllPopupWindow;
 import cn.fek12.evaluation.view.activity.MicrolessonVideoPlayActivity;
@@ -217,8 +218,12 @@ public class CurriculumRecordFragment extends BaseFragment<CurriculumRecordPrese
 
                 AppUtils.fitPopupWindowOverStatusBar(subjectPopupWindow, true);
                 ivArrow.setImageResource(R.mipmap.rise_icon);
-                //subjectPopupWindow.showAsDropDown(llContainSubject, -155, 0);e
-                subjectPopupWindow.showAtLocation(llSubject, Gravity.CENTER_VERTICAL,0,0);
+                int tv_width = llContainSubject.getWidth();//获取对应的控件view宽度px值
+                int pop_width = DisUtil.dp2px(getContext(),150);
+                int width = (tv_width - pop_width) / 2;//获取x轴偏移量px
+                subjectPopupWindow.showAsDropDown(llContainSubject, width, 0);//设置x轴偏移量：注意单位为px
+                //subjectPopupWindow.showAsDropDown(llContainSubject, -155, 0);
+                //subjectPopupWindow.showAtLocation(llContainSubject, Gravity.CENTER_VERTICAL,0,0);
                 subjectPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
                     @Override
                     public void onDismiss() {

@@ -2,6 +2,7 @@ package cn.fek12.evaluation.ent;
 
 import cn.fek12.evaluation.model.entity.AWeekEntity;
 import cn.fek12.evaluation.model.entity.AssessmentIndexPaperResp;
+import cn.fek12.evaluation.model.entity.AuthEntity;
 import cn.fek12.evaluation.model.entity.CheckPaperNameEntity;
 import cn.fek12.evaluation.model.entity.CollectionEntity;
 import cn.fek12.evaluation.model.entity.CollectionListEntity;
@@ -357,16 +358,15 @@ public interface ApiServer {
             @Field("videoId") String videoId);
 
     /**小学同步视频*/
-    @FormUrlEncoded
-    @POST("nocVideo/querySyncVideoPage")
-    Observable<MicrolessonVideoEntity> querySyncVideoPage(@Field("gradeId") String grade,
-                                                  @Field("secId") String secId,
-                                                  @Field("subId") String subId,
-                                                  @Field("versionId") String versionId,
-                                                  @Field("knowledgeId") String knowledgeId,
-                                                  @Field("userId") String userId,
-                                                  @Field("current")String current,
-                                                  @Field("size")String size);
+    @GET("nocVideo/querySyncVideoPage")
+    Observable<MicrolessonVideoEntity> querySyncVideoPage(@Query("gradeId") String grade,
+                                                  @Query("secId") String secId,
+                                                  @Query("subId") String subId,
+                                                  @Query("versionId") String versionId,
+                                                  @Query("knowledgeId") String knowledgeId,
+                                                  @Query("userId") String userId,
+                                                  @Query("current")String current,
+                                                  @Query("size")String size);
 
     /**
      * 获取左侧知识树
@@ -400,6 +400,13 @@ public interface ApiServer {
      */
     @GET("nocVideoCoursePack/getBkCoursePackSubList/{type}")
     Observable<SubjectModel> getBkCoursePackSubList(@Path("type") String type);
+
+    /**
+     * auth认证
+     */
+    @FormUrlEncoded
+    @POST("auth/uauth")
+    Observable<AuthEntity> uauth(@Field("userId") String userId);
 
 }
 

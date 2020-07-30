@@ -79,6 +79,10 @@ public class SubjectAllPopupWindow extends PopupWindow {
         viewEmpty.setVisibility(View.GONE);
     }
 
+    public View getMenuView(){
+        return mMenuView;
+    }
+
     public void querySubjectList() {
         ApiRetrofit.getInstance().getApiService().getNocSubjectInfoList()
                 .compose(RxHelper.observableIO2Main(mContext))

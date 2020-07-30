@@ -24,6 +24,7 @@ android {
             sourceCompatibility JavaVersion.VERSION_1_8
             targetCompatibility JavaVersion.VERSION_1_8
         }
+        //multiDexEnabled true
     }
     buildTypes {
         release {
@@ -91,4 +92,5 @@ dependencies {
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.2'
     implementation project(path: ':xclChartsLib')
     implementation project(path: ':expandablerecyclerview')
+    implementation 'com.liulishuo.filedownloader:library:1.7.7'
 }

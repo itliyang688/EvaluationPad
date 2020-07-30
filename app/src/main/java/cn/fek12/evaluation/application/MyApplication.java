@@ -14,6 +14,8 @@ import com.fek12.basic.utils.toast.ToastUtils;
 import com.future_education.module_login.IUserData;
 import com.future_education.module_login.OnUserDataUpdateListener;
 import com.google.gson.Gson;
+import com.liulishuo.filedownloader.FileDownloader;
+import com.liulishuo.filedownloader.connection.FileDownloadUrlConnection;
 
 import java.util.concurrent.TimeUnit;
 
@@ -33,21 +35,22 @@ public class MyApplication extends BaseApplication {
     private static final int DEFAULT_TIMEOUT = 30;
     //private String userId = "413";
     //private String userId = "5a5a4534-0392-416a-9170-c923f563ca00";
-    private String userId = "c73a79c5-622b-4d81-81bc-e862f45694cc";
+    //private String userId = "c73a79c5-622b-4d81-81bc-e862f45694cc";
+    //private String userId = "007c5d38-1bbe-40bb-b50d-20ad5559bfc6";
+    private String userId = "024b1bb5-86f4-490f-8a18-b0c53893a30d";
     //private String userId = "00fb8e64-04af-4d8d-84dd-467390ad7000";
     private static final String TAG = "AIDL_Log";
     private IUserData iUserData;
     private boolean connected;
+    private boolean serviceIsSuc = false;
     @Override
     public void onCreate() {
         super.onCreate();
         myApp = this;
         bindService();
-        //loadUserInfo();
-        //int hight = AppUtils.getNavigationBarHeight(getApplicationContext());
-        //int hight1 = AppUtils.getStatusBarHeight(getApplicationContext());
-        //Log.e("hight::::::",hight+"-------"+hight1);
+        initFileDownloader();
     }
+
 
     public String getUserId() {
         //return PrefUtilsData.getUserId();
@@ -63,12 +66,14 @@ public class MyApplication extends BaseApplication {
         return myApp;
     }
 
-    private void bindService() {
-        Intent intent = new Intent();
-        intent.setPackage("com.future_education.launcher");
-        intent.setAction("com.future_education.launcher.aidlService");
-        boolean isSuc = bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
-        Log.d(TAG, "bindService: "+ isSuc);
+    public void bindService() {
+        if(!serviceIsSuc){
+            Intent intent = new Intent();
+            intent.setPackage("com.future_education.launcher");
+            intent.setAction("com.future_education.launcher.aidlService");
+            serviceIsSuc = bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+            Log.d(TAG, "bindService: "+ serviceIsSuc);
+        }
     }
 
     private ServiceConnection serviceConnection = new ServiceConnection() {
@@ -161,6 +166,19 @@ public class MyApplication extends BaseApplication {
                     .build();
         }
         return mOkHttpClient;
+    }
+
+    private void initFileDownloader(){
+        FileDownloader.setupOnApplicationOnCreate(this)
+                .connectionCreator(new FileDownloadUrlConnection
+                        .Creator(new FileDownloadUrlConnection.Configuration()
+                        .connectTimeout(15_000) // set connection timeout.
+                        .readTimeout(15_000) // set read timeout.
+                ))
+                .connectionCountAdapter((downloadId, url, path, totalLength) -> {
+                    return 1;//下载文件块数是1,解决偶现的下载任务停止问题。
+                })
+                .commit();
     }
 
     /**读取本地用户信息*/

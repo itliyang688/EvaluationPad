@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="@dimen/dp_376"
+        android:layout_height="@dimen/dp_345">
+        <LinearLayout
+            android:id="@+id/llContain"
+            android:layout_width="@dimen/dp_376"
+            android:layout_height="@dimen/dp_345"
+            android:background="@mipmap/upgrade_bg"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="版本提示更新"
+                android:textSize="@dimen/sp_17"
+                android:layout_gravity="center"
+                android:textStyle="bold"
+                android:layout_marginTop="@dimen/dp_161"
+                android:textColor="@color/color_404040"/>
+
+            <TextView
+                android:id="@+id/tvVersion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_81"
+                android:layout_marginTop="@dimen/dp_15"
+                android:textColor="@color/color_404040"
+                android:textSize="@dimen/sp_14"
+                android:text="新版本 1.0.2"/>
+            <TextView
+                android:id="@+id/tvExplain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_81"
+                android:layout_marginTop="@dimen/dp_15"
+                android:layout_marginRight="@dimen/dp_140"
+                android:textColor="@color/color_404040"
+                android:textSize="@dimen/sp_10"
+                android:text="优化部分功能，提升课程体验。"/>
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/dp_8"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/tvSubmit"
+                android:layout_width="@dimen/dp_205"
+                android:layout_height="@dimen/dp_33"
+                android:textColor="@color/color_FFFFFF"
+                android:textSize="@dimen/sp_15"
+                android:gravity="center"
+                android:text="立即更新"
+                android:background="@mipmap/update_submit"/>
+            <TextView
+                android:id="@+id/tvCancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_5"
+                android:padding="@dimen/dp_5"
+                android:text="稍后再说"
+                android:textSize="@dimen/sp_15"
+                android:textColor="@color/color_333"/>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/colseDialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/dp_10"
+        android:padding="@dimen/dp_10">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@mipmap/cancel_upgrade"/>
+    </RelativeLayout>
+
+</LinearLayout>

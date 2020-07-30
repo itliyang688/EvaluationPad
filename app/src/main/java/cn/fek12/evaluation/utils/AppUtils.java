@@ -1,13 +1,17 @@
 package cn.fek12.evaluation.utils;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupWindow;
+
+import androidx.core.content.FileProvider;
 
 import com.fek12.basic.utils.baseUtils.BaseAppUtils;
 
@@ -177,5 +181,36 @@ public class AppUtils {
 
         return false;
     }
+
+    /**
+     * 安装APK
+     * @param file
+     */
+    public static void installAPK(File file, Context context) {
+
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
+        }else {
+            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            Uri uri = FileProvider.getUriForFile(context, context.getPackageName() + ".updatefileprovider", file);
+            intent.setDataAndType(uri, "application/vnd.android.package-archive");
+            //intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        }
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
+        /*try {
+            Thread.sleep(2000);
+            System.exit(0);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }*/
+        /*Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setDataAndType(Uri.fromFile(file),"application/vnd.android.package-archive");
+        context.startActivity(intent);
+        android.os.Process.killProcess(android.os.Process.myPid());*/
+    }
+
 
 }

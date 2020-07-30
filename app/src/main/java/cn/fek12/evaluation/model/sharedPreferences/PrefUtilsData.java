@@ -21,6 +21,14 @@ public abstract class PrefUtilsData {
         SP.putString(PrefConstants.USERID, userId);
     }
 
+    public static String getToken() {
+        return SP.getString(PrefConstants.TOKEN, "");
+    }
+
+    public static void setToken(String token) {
+        SP.putString(PrefConstants.TOKEN, token);
+    }
+
     public static String getPer_level() {
         return SP.getString(PrefConstants.PER_LEVEL, "");
     }

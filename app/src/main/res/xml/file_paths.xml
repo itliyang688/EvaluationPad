@@ -1,10 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--<paths>
+        <external-cache-path name="external-cache-path" path="/." />
+    </paths>-->
+    <!--<paths>
+        &lt;!&ndash;<external-path
+            name="files_root"
+            path="/storage/emulated/0/Android/data/com.jdfund/cache/56cf48f10e4cf6043fbf53bbbc4009e3.apk" />&ndash;&gt;
+
+        <files-path name="files-path" path="/." />
+        <cache-path name="cache-path" path="/." />
+        <external-path name="external-path" path="/." />
+        <external-files-path name="external-files-path" path="/." />
+        <external-cache-path name="external-cache-path" path="/." />
+    </paths>-->
     <paths>
-        <external-path
-            path=""
-            name="camera_photos"
-            />
-        <external-cache-path name="UpdateHandlerFilePath" path="." />
+        <root-path name="root" path="" />
+        <files-path name="files" path="" />
+        <cache-path name="cache" path="" />
+        <external-path name="external" path="" />
+        <external-files-path name="external_file_path" path="" />
+        <external-cache-path name="external_cache_path" path="" />
     </paths>
 </resources>

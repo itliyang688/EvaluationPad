@@ -1,16 +1,8 @@
 package cn.fek12.evaluation.view.activity;
 
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
-import android.os.IBinder;
-import android.os.RemoteException;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -25,8 +17,10 @@ import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.future_education.module_login.IUserData;
-import com.google.gson.Gson;
+import com.liulishuo.filedownloader.BaseDownloadTask;
+import com.liulishuo.filedownloader.util.FileDownloadUtils;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -34,18 +28,21 @@ import java.util.TimerTask;
 import butterknife.BindView;
 import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.application.MyApplication;
-import cn.fek12.evaluation.model.entity.StudentInfoEntity;
+import cn.fek12.evaluation.impl.IMain;
 import cn.fek12.evaluation.model.entity.TabEntity;
 import cn.fek12.evaluation.model.sharedPreferences.PrefUtilsData;
+import cn.fek12.evaluation.presenter.MainPresenter;
+import cn.fek12.evaluation.presenter.SpeciaVideoPlayPresenter;
 import cn.fek12.evaluation.utils.AppUtils;
+import cn.fek12.evaluation.utils.download.DownloadUtils;
+import cn.fek12.evaluation.view.dialog.UpgradeDialog;
 import cn.fek12.evaluation.view.fragment.EvaluationContainerFragment;
 import cn.fek12.evaluation.view.fragment.MicroLessonContainerFragment;
-import cn.fek12.evaluation.view.fragment.MicroLessonFragment;
 import cn.fek12.evaluation.view.fragment.PresentationNewsFragment;
 import cn.fek12.evaluation.view.fragment.PromoteNewsFragment;
 import cn.fek12.evaluation.view.fragment.RecordFragment;
 
-public class MainActivity extends BaseActivity implements BackFragmentInterface {
+public class MainActivity extends BaseActivity<MainPresenter> implements BackFragmentInterface, IMain.View {
     private static boolean isExit = false;
     private static final String TAG = "AIDL_Log";
     private IUserData iUserData;
@@ -71,7 +68,26 @@ public class MainActivity extends BaseActivity implements BackFragmentInterface 
     }
 
     @Override
-    protected void onInitView() {
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        MyApplication.getMyApp().bindService();
+    }
+
+
+    /**用户认证成功*/
+    @Override
+    public void loadSuc(String token) {
+        PrefUtilsData.setToken(token);
+        initView();
+    }
+    /**用户认证失败*/
+    @Override
+    public void loadFail(String msg) {
+        ToastUtils.popUpToast("用户认证失败");
+        initView();
+    }
+
+    private void initView(){
         for (int i = 0; i < mTitles.length; i++) {
             mTabEntities.add(new TabEntity(mTitles[i], mIconSelectIds[i], mIconUnselectIds[i]));
         }
@@ -86,10 +102,45 @@ public class MainActivity extends BaseActivity implements BackFragmentInterface 
         viewPage.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
         viewPage.setOffscreenPageLimit(5);
 
+        UpgradeDialog upgradeDialog = new UpgradeDialog(this, new UpgradeDialog.OnSelectItemListener() {
+            @Override
+            public void onUpgrade(String url) {
+                String apkUrl = "http://cdn.llsapp.com/android/LLS-v4.0-595-20160908-143200.apk";
+                String singleFileSaveName = "evaluation_pad.apk";
+                String mSinglePath = FileDownloadUtils.getDefaultSaveRootPath()+ File.separator+"Evaluation"
+                        +File.separator+singleFileSaveName;
+                String mSaveFolder = FileDownloadUtils.getDefaultSaveRootPath()+File.separator+"Evaluation";
+                //AppUtils.installAPK(new File(mSinglePath),MainActivity.this);
+                new DownloadUtils().startDownLoadFileSingle(apkUrl, mSinglePath, mSaveFolder,new DownloadUtils.FileDownLoaderCallBack() {
+                    @Override
+                    public void downLoadCompleted(BaseDownloadTask task) {
+                        Log.d("MainActivity","blockComplete taskId:"+task.getId()+",filePath:"+task.getPath()+",fileName:"+task.getFilename()+",speed:"+task.getSpeed()+",isReuse:"+task.reuse());
+                    }
+
+                    @Override
+                    public void downLoadError(BaseDownloadTask task, Throwable e) {
+                        Log.d("MainActivity","error taskId:"+task.getId()+",e:"+e.getLocalizedMessage());
+                    }
+
+                    @Override
+                    public void downLoadProgress(String progress) {
+                        Log.d("MainActivity",progress);
+                    }
+                });
+            }
+        });
+
+        upgradeDialog.show();
+    }
+
+    @Override
+    protected void onInitView() {
+        initView();
     }
 
     @Override
     protected void onLoadData() {
+        //mPresenter.uauth(MainActivity.this,MyApplication.getMyApp().getUserId());
     }
 
     @Override
@@ -181,6 +232,11 @@ public class MainActivity extends BaseActivity implements BackFragmentInterface 
         }
     }
 
+    @Override
+    protected MainPresenter onInitLogicImpl() {
+        return new MainPresenter(this);
+    }
+
     private void exit() {
         if(!isExit) {
            isExit = true;
@@ -199,6 +255,10 @@ public class MainActivity extends BaseActivity implements BackFragmentInterface 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        MyApplication.getMyApp().unbindService();
+        try {
+            MyApplication.getMyApp().unbindService();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }
