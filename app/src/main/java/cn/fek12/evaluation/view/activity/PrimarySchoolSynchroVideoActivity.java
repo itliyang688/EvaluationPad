@@ -104,14 +104,13 @@ public class PrimarySchoolSynchroVideoActivity extends BaseActivity<SynchroVideo
         recyclerView.setLayoutManager(manager);
         recyclerView.setAdapter(videoAdapter);
 
-        refreshLayout.setEnableLoadmore(false);
         refreshLayout.setOnRefreshListener(refreshListenerAdapter);
         BottomProgressView bottomProgressView = new BottomProgressView(this);
         bottomProgressView.setAnimatingColor(this.getResources().getColor(R.color.app_bg));
         refreshLayout.setBottomView(bottomProgressView);
 
-        refreshLayout.setEnableLoadmore(false);
-        refreshLayout.setEnableRefresh(false);
+        //refreshLayout.setEnableLoadmore(false);
+        //refreshLayout.setEnableRefresh(false);
         initData();
     }
 
@@ -125,12 +124,14 @@ public class PrimarySchoolSynchroVideoActivity extends BaseActivity<SynchroVideo
         public void onLoadMore(final TwinklingRefreshLayout refreshLayout) {
             isLoadMore = true;
             currentPage += 1;
+            mPresenter.queryPaperList(PrimarySchoolSynchroVideoActivity.this, gradeId, semesterId, subjectId, textbookId, checkId,MyApplication.getMyApp().getUserId(), String.valueOf(currentPage), String.valueOf(12));
         }
 
         @Override
         public void onRefresh(final TwinklingRefreshLayout refreshLayout) {
             isLoadMore = false;
             currentPage = 1;
+            mPresenter.queryPaperList(PrimarySchoolSynchroVideoActivity.this, gradeId, semesterId, subjectId, textbookId, checkId,MyApplication.getMyApp().getUserId(), String.valueOf(currentPage), String.valueOf(12));
         }
     };
 

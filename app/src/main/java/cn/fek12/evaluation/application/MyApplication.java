@@ -49,6 +49,7 @@ public class MyApplication extends BaseApplication {
         myApp = this;
         bindService();
         initFileDownloader();
+
     }
 
 
@@ -143,7 +144,7 @@ public class MyApplication extends BaseApplication {
         }
     };
 
-    private void clearData(){
+    public void clearData(){
         PrefUtilsData.userClear();
     }
 

@@ -85,17 +85,17 @@ public class CompositionTreasureVideoActivity extends BaseActivity<RiseMiddleSch
         refreshLayout.setBottomView(bottomProgressView);
 
         refreshLayout.setEnableLoadmore(false);
-        refreshLayout.setEnableRefresh(false);
+        //refreshLayout.setEnableRefresh(false);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        loadView.showLoading();
         initData();
     }
 
     private void initData() {
-        loadView.showLoading();
         mPresenter.queryVideoList(CompositionTreasureVideoActivity.this,"5",checkId,MyApplication.getMyApp().getUserId(),String.valueOf(currentPage),"12");
     }
 
@@ -104,12 +104,14 @@ public class CompositionTreasureVideoActivity extends BaseActivity<RiseMiddleSch
         public void onLoadMore(final TwinklingRefreshLayout refreshLayout) {
             isLoadMore = true;
             currentPage += 1;
+            initData();
         }
 
         @Override
         public void onRefresh(final TwinklingRefreshLayout refreshLayout) {
             isLoadMore = false;
             currentPage = 1;
+            initData();
         }
     };
 

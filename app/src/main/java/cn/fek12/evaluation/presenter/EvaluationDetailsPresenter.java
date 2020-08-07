@@ -121,8 +121,8 @@ public class EvaluationDetailsPresenter extends BasePresenter<IEvaluationDetails
     }
 
     @Override
-    public void queryPaperList(Context context, String grade, String subject, String textbook, String semester, String ptype, String userId, String userType, String currentPage,String knowledge,String paperListType) {
-        ApiRetrofit.getInstance().getApiService().queryPaperList(grade,semester,subject,textbook,userId,ptype,userType,knowledge,paperListType,currentPage)
+    public void queryPaperList(Context context, String grade, String subject, String textbook, String semester, String ptype, String userId, String userType, String currentPage,String pageSize,String knowledge,String paperListType) {
+        ApiRetrofit.getInstance().getApiService().queryPaperList(grade,semester,subject,textbook,userId,ptype,userType,knowledge,paperListType,currentPage,pageSize)
                 .compose(RxHelper.observableIO2Main(context))
                 .subscribe(new BaseObserver<EvaluationListEntity>() {
 

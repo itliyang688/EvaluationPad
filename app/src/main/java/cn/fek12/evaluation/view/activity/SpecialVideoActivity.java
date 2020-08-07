@@ -71,7 +71,7 @@ public class SpecialVideoActivity extends BaseActivity<SpeciaVideoPlayPresenter>
         structLayKey = intent.getStringExtra("structLayKey");
         videoType = intent.getIntExtra("videoType",0);
         videoId = intent.getIntExtra("videoId",0);
-        playScheduleTime = intent.getLongExtra("playScheduleTime",0);
+        playScheduleTime = intent.getIntExtra("playScheduleTime",0);
         isCollection = intent.getIntExtra("isCollection",0);
         tvChapter.setText(chapter);
         tvDescribe.setText(describe);

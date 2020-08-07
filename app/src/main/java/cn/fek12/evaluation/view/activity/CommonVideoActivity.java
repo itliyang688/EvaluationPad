@@ -93,23 +93,26 @@ public class CommonVideoActivity extends BaseActivity<CommonVideoPresenter> impl
         public void onLoadMore(final TwinklingRefreshLayout refreshLayout) {
             isLoadMore = true;
             currentPage += 1;
-            mPresenter.queryVideoList(CommonVideoActivity.this,String.valueOf(coursePackType),"", MyApplication.getMyApp().getUserId(),String.valueOf(currentPage),"12");
+            initData();
         }
 
         @Override
         public void onRefresh(final TwinklingRefreshLayout refreshLayout) {
             isLoadMore = false;
             currentPage = 1;
-            mPresenter.queryVideoList(CommonVideoActivity.this,String.valueOf(coursePackType),"", MyApplication.getMyApp().getUserId(),String.valueOf(currentPage),"12");
-        }
+            initData();
+         }
     };
 
     @Override
     protected void onResume() {
         super.onResume();
         loadView.showLoading();
-        mPresenter.queryVideoList(CommonVideoActivity.this,String.valueOf(coursePackType),"", MyApplication.getMyApp().getUserId(),String.valueOf(currentPage),"12");
+        initData();
+    }
 
+    private void  initData(){
+        mPresenter.queryVideoList(CommonVideoActivity.this,String.valueOf(coursePackType),"", MyApplication.getMyApp().getUserId(),String.valueOf(currentPage),"12");
     }
 
     @Override

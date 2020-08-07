@@ -24,15 +24,18 @@ public class UpgradeDialog extends Dialog implements View.OnClickListener {
     RelativeLayout colseDialog;
     private Context mContext;
     private OnSelectItemListener mOnSelectItemListener;
+    private int isMust;
 
     public interface OnSelectItemListener {
-        void onUpgrade(String url);
+        void onUpgrade();
+        void finishActivity();
     }
 
-    public UpgradeDialog(@NonNull Context context, OnSelectItemListener onSelectItemListener) {
+    public UpgradeDialog(@NonNull Context context,int isMust, OnSelectItemListener onSelectItemListener) {
         super(context, R.style.dialog_anim);
         this.mOnSelectItemListener = onSelectItemListener;
         this.mContext = context;
+        this.isMust = isMust;
     }
 
     @Override
@@ -52,7 +55,11 @@ public class UpgradeDialog extends Dialog implements View.OnClickListener {
         setContentView(view);
         //按空白处不能取消动画
         setCanceledOnTouchOutside(false);
-        setCancelable(true);
+        if(isMust == 0){
+            setCancelable(false);
+        }else{
+            setCancelable(true);
+        }
     }
 
     @Override
@@ -60,12 +67,18 @@ public class UpgradeDialog extends Dialog implements View.OnClickListener {
         switch (view.getId()) {
             case R.id.tvSubmit:
                 if(mOnSelectItemListener != null){
-                    mOnSelectItemListener.onUpgrade("");
+                    mOnSelectItemListener.onUpgrade();
                 }
+                this.dismiss();
                 break;
             case R.id.tvCancel:
             case R.id.colseDialog:
                 this.dismiss();
+                if(isMust == 0){
+                    if(mOnSelectItemListener != null){
+                        mOnSelectItemListener.finishActivity();
+                    }
+                }
                 break;
         }
     }

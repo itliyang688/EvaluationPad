@@ -81,6 +81,7 @@ public class MicroLessonTreeActivity extends BaseActivity<MicroLessonTreePresent
     private List<MicrolessonVideoEntity.DataBean.RecordsBean> mList;
 
     private int currentPage = 1;
+    private String pageSize = "20";
     private boolean isLoadMore = false;
     private String paperType;
 
@@ -106,7 +107,7 @@ public class MicroLessonTreeActivity extends BaseActivity<MicroLessonTreePresent
         textBookList = containListEntity.getTextBookList();
         semesterList = containListEntity.getSemesterList();
 
-        //tagPos = gradeList.size() + subjectList.size();
+        tagPos = gradeList.size() + subjectList.size();
 
         initLeftRecycler();
         initLabelAdapter();
@@ -130,43 +131,52 @@ public class MicroLessonTreeActivity extends BaseActivity<MicroLessonTreePresent
         bottomProgressView.setAnimatingColor(this.getResources().getColor(R.color.app_bg));
         refreshLayout.setBottomView(bottomProgressView);
 
-        refreshLayout.setEnableLoadmore(false);
-        refreshLayout.setEnableRefresh(false);
+        //refreshLayout.setEnableLoadmore(false);
+        //refreshLayout.setEnableRefresh(false);
         initData();
     }
 
     private void initData(){
         loadView.showLoading();
-        mPresenter.queryPaperList(this, gradeId, semesterId, subjectId, textbookId, checkId,MyApplication.getMyApp().getUserId(), String.valueOf(currentPage), String.valueOf(12));
+        mPresenter.queryPaperList(this, gradeId, semesterId, subjectId, textbookId, checkId,MyApplication.getMyApp().getUserId(), String.valueOf(currentPage), pageSize);
     }
     private RefreshListenerAdapter refreshListenerAdapter = new RefreshListenerAdapter() {
         @Override
         public void onLoadMore(final TwinklingRefreshLayout refreshLayout) {
             isLoadMore = true;
             currentPage += 1;
+            mPresenter.queryPaperList(MicroLessonTreeActivity.this, gradeId, semesterId, subjectId, textbookId, checkId,MyApplication.getMyApp().getUserId(), String.valueOf(currentPage), pageSize);
         }
 
         @Override
         public void onRefresh(final TwinklingRefreshLayout refreshLayout) {
             isLoadMore = false;
             currentPage = 1;
+            mPresenter.queryPaperList(MicroLessonTreeActivity.this, gradeId, semesterId, subjectId, textbookId, checkId,MyApplication.getMyApp().getUserId(), String.valueOf(currentPage), pageSize);
         }
     };
 
     private void initLeftRecycler() {
-        if(gradeList != null && gradeList.size() > 0){
+        /*if(gradeList != null && gradeList.size() > 0){
             tagPos = gradeList.size();
-        }
+        }*/
         leftAdapter = new SectionedRecyclerViewAdapter();
         GridLayoutManager manager = new GridLayoutManager(getContext(), 12);
         manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
-                if (leftAdapter.getSectionItemViewType(position) == SectionedRecyclerViewAdapter.VIEW_TYPE_HEADER) {
+                /*if (leftAdapter.getSectionItemViewType(position) == SectionedRecyclerViewAdapter.VIEW_TYPE_HEADER) {
                     return 12;
                 }else if (tagPos != 0 && position == tagPos + 1) {
                     return 12;
                 } else if (tagPos != 0 && position == tagPos + 3) {
+                    return 12;
+                }  else {
+                    return 1;
+                }*/
+                if (leftAdapter.getSectionItemViewType(position) == SectionedRecyclerViewAdapter.VIEW_TYPE_HEADER) {
+                    return 12;
+                }else if (tagPos != 0 && position == tagPos + 2) {
                     return 12;
                 }  else {
                     return 1;
@@ -318,16 +328,7 @@ public class MicroLessonTreeActivity extends BaseActivity<MicroLessonTreePresent
             childEntity.setName(dataBeans.getName());
             tagList.add(childEntity);
         }
-        leftAdapter.addSection("subject", new EvaluationDetailsTagSection(getContext(), tagList, subjectId, new EvaluationDetailsTagSection.OnSelectItmeListener() {
-            @Override
-            public void onSelectItme(int pos) {
-                subjectId = String.valueOf(subjectList.get(pos).getId());
-                leftAdapter.getAdapterForSection("subject").notifyAllItemsChanged("payloads");
-
-                mPresenter.queryTextBookList(getContext(),gradeId,subjectId);
-            }
-        }));
-        /*leftAdapter.addSection("subject", new EvaluationDetailsSubjectSection(subjectList, subjectId, new EvaluationDetailsSubjectSection.OnSelectItmeListener() {
+        /*leftAdapter.addSection("subject", new EvaluationDetailsTagSection(getContext(), tagList, subjectId, new EvaluationDetailsTagSection.OnSelectItmeListener() {
             @Override
             public void onSelectItme(int pos) {
                 subjectId = String.valueOf(subjectList.get(pos).getId());
@@ -336,6 +337,15 @@ public class MicroLessonTreeActivity extends BaseActivity<MicroLessonTreePresent
                 mPresenter.queryTextBookList(getContext(),gradeId,subjectId);
             }
         }));*/
+        leftAdapter.addSection("subject", new EvaluationDetailsSubjectSection(subjectList, subjectId, new EvaluationDetailsSubjectSection.OnSelectItmeListener() {
+            @Override
+            public void onSelectItme(int pos) {
+                subjectId = String.valueOf(subjectList.get(pos).getId());
+                leftAdapter.getAdapterForSection("subject").notifyAllItemsChanged("payloads");
+
+                mPresenter.queryTextBookList(getContext(),gradeId,subjectId);
+            }
+        }));
 
         leftAdapter.addSection("textbook", new EvaluationDetailsTagSection(getContext(), textBookList, textbookId, new EvaluationDetailsTagSection.OnSelectItmeListener() {
             @Override
@@ -419,7 +429,7 @@ public class MicroLessonTreeActivity extends BaseActivity<MicroLessonTreePresent
         subjectList = entry.getData();
         if (subjectList != null && subjectList.size() > 0) {
             loadView.showContent();
-            //tagPos = gradeList.size() + subjectList.size();
+            tagPos = gradeList.size() + subjectList.size();
             subjectId = String.valueOf(subjectList.get(0).getId());
 
             EvaluationDetailsSubjectSection subjectSection = (EvaluationDetailsSubjectSection) leftAdapter.getSection("subject");

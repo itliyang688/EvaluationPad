@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/EvaluationPad.iml" filepath="$PROJECT_DIR$/EvaluationPad.iml" group="EvaluationPad" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="EvaluationPad/app" />
+      <module fileurl="file://$PROJECT_DIR$/basic/basic.iml" filepath="$PROJECT_DIR$/basic/basic.iml" group="EvaluationPad/basic" />
+      <module fileurl="file://$PROJECT_DIR$/calendar/calendar.iml" filepath="$PROJECT_DIR$/calendar/calendar.iml" group="EvaluationPad/calendar" />
+      <module fileurl="file://$PROJECT_DIR$/expandablerecyclerview/expandablerecyclerview.iml" filepath="$PROJECT_DIR$/expandablerecyclerview/expandablerecyclerview.iml" group="EvaluationPad/expandablerecyclerview" />
+      <module fileurl="file://$PROJECT_DIR$/jiaozivideoplayer/jiaozivideoplayer.iml" filepath="$PROJECT_DIR$/jiaozivideoplayer/jiaozivideoplayer.iml" group="EvaluationPad/jiaozivideoplayer" />
+      <module fileurl="file://$PROJECT_DIR$/stickyheaders/stickyheaders.iml" filepath="$PROJECT_DIR$/stickyheaders/stickyheaders.iml" group="EvaluationPad/stickyheaders" />
+      <module fileurl="file://$PROJECT_DIR$/tagLibrary/tagLibrary.iml" filepath="$PROJECT_DIR$/tagLibrary/tagLibrary.iml" group="EvaluationPad/tagLibrary" />
+      <module fileurl="file://$PROJECT_DIR$/viewpagerlib/viewpagerlib.iml" filepath="$PROJECT_DIR$/viewpagerlib/viewpagerlib.iml" group="EvaluationPad/viewpagerlib" />
+      <module fileurl="file://$PROJECT_DIR$/xclChartsLib/xclChartsLib.iml" filepath="$PROJECT_DIR$/xclChartsLib/xclChartsLib.iml" group="EvaluationPad/xclChartsLib" />
+    </modules>
+  </component>
+</project>

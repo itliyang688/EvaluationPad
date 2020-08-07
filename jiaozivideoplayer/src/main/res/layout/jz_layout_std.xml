@@ -179,10 +179,20 @@
         </LinearLayout>
     </RelativeLayout>
 
+    <!--<ProgressBar
+        android:id="@+id/loading"
+        android:layout_width="@dimen/jz_start_button_w_h_normal"
+        android:layout_height="@dimen/jz_start_button_w_h_normal"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:indeterminateDrawable="@drawable/jz_loading"
+        android:visibility="invisible" />-->
     <ProgressBar
         android:id="@+id/loading"
         android:layout_width="@dimen/jz_start_button_w_h_normal"
         android:layout_height="@dimen/jz_start_button_w_h_normal"
+        android:indeterminateTint="#06BB86"
+        android:indeterminateTintMode="src_atop"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:indeterminateDrawable="@drawable/jz_loading"

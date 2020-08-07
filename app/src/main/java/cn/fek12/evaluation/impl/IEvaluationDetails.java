@@ -17,7 +17,7 @@ public interface IEvaluationDetails {
     void querySubjectList(Context context, String grade);
     void queryTextBookList(Context context, String grade, String subject);
     void querySemesterList(Context context, String grade, String subject, String textbook);
-    void queryPaperList(Context context, String grade, String subject, String textbook,String semester,String ptype,String userId,String userType ,String currentPage,String knowledge,String paperListType);
+    void queryPaperList(Context context, String grade, String subject, String textbook,String semester,String ptype,String userId,String userType ,String currentPage,String pageSize,String knowledge,String paperListType);
     interface View extends BaseView {
         void loadTreeSuc(TreeDataEntity entry);
         void loadPaperListSuc(EvaluationListEntity entry);

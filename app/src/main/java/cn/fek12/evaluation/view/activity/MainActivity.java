@@ -1,7 +1,7 @@
 package cn.fek12.evaluation.view.activity;
 
 import android.content.Intent;
-import android.util.Log;
+import android.os.Bundle;
 import android.view.MotionEvent;
 
 import androidx.fragment.app.Fragment;
@@ -26,21 +26,26 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.application.MyApplication;
 import cn.fek12.evaluation.impl.IMain;
 import cn.fek12.evaluation.model.entity.TabEntity;
+import cn.fek12.evaluation.model.entity.UpdateApkEntity;
 import cn.fek12.evaluation.model.sharedPreferences.PrefUtilsData;
 import cn.fek12.evaluation.presenter.MainPresenter;
-import cn.fek12.evaluation.presenter.SpeciaVideoPlayPresenter;
 import cn.fek12.evaluation.utils.AppUtils;
+import cn.fek12.evaluation.utils.DialogUtils;
+import cn.fek12.evaluation.utils.LoadViewUtils;
 import cn.fek12.evaluation.utils.download.DownloadUtils;
+import cn.fek12.evaluation.view.dialog.ProgressDialog;
 import cn.fek12.evaluation.view.dialog.UpgradeDialog;
 import cn.fek12.evaluation.view.fragment.EvaluationContainerFragment;
 import cn.fek12.evaluation.view.fragment.MicroLessonContainerFragment;
 import cn.fek12.evaluation.view.fragment.PresentationNewsFragment;
 import cn.fek12.evaluation.view.fragment.PromoteNewsFragment;
 import cn.fek12.evaluation.view.fragment.RecordFragment;
+import cn.fek12.evaluation.view.widget.NumberProgressBar;
 
 public class MainActivity extends BaseActivity<MainPresenter> implements BackFragmentInterface, IMain.View {
     private static boolean isExit = false;
@@ -73,21 +78,57 @@ public class MainActivity extends BaseActivity<MainPresenter> implements BackFra
         MyApplication.getMyApp().bindService();
     }
 
+    @Override
+    protected void onInitView() {
+        //initView();
+        //String apkUrl = "http://cdn.llsapp.com/android/LLS-v4.0-595-20160908-143200.apk";
+        //showUpgradeDialog(0,apkUrl);
+    }
 
-    /**用户认证成功*/
+    @Override
+    protected void onLoadData() {
+        DialogUtils.showDialog(LoadViewUtils.getLoadingView(MainActivity.this));
+        int versionCode = AppUtils.getVersionCode(MainActivity.this);
+        mPresenter.uauth(MainActivity.this,MyApplication.getMyApp().getUserId());
+        mPresenter.chechUpdate(MainActivity.this,String.valueOf(versionCode));
+    }
+
+    /**
+     * 用户认证成功
+     */
     @Override
     public void loadSuc(String token) {
+        DialogUtils.removeDialog(MainActivity.this);
         PrefUtilsData.setToken(token);
         initView();
     }
-    /**用户认证失败*/
+
+    /**
+     * 用户认证失败
+     */
     @Override
     public void loadFail(String msg) {
+        DialogUtils.removeDialog(MainActivity.this);
         ToastUtils.popUpToast("用户认证失败");
         initView();
     }
 
-    private void initView(){
+    @Override
+    public void checkUpdateSuc(UpdateApkEntity entity) {
+        if(entity != null && entity.getData() != null){
+            String apkUrl = "http://cdn.llsapp.com/android/LLS-v4.0-595-20160908-143200.apk";
+            //String apkUrl = entity.getData().getResourceUrl();
+            int isMust = entity.getData().getIsMust();
+            showUpgradeDialog(1,apkUrl);
+        }
+    }
+
+    @Override
+    public void checkUpdateFail() {
+
+    }
+
+    private void initView() {
         for (int i = 0; i < mTitles.length; i++) {
             mTabEntities.add(new TabEntity(mTitles[i], mIconSelectIds[i], mIconUnselectIds[i]));
         }
@@ -101,46 +142,53 @@ public class MainActivity extends BaseActivity<MainPresenter> implements BackFra
         initCommonTabLayout();
         viewPage.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
         viewPage.setOffscreenPageLimit(5);
+    }
 
-        UpgradeDialog upgradeDialog = new UpgradeDialog(this, new UpgradeDialog.OnSelectItemListener() {
+    private void showUpgradeDialog(int isMust,String resourceUrl){
+        UpgradeDialog upgradeDialog = new UpgradeDialog(this, isMust,new UpgradeDialog.OnSelectItemListener() {
             @Override
-            public void onUpgrade(String url) {
-                String apkUrl = "http://cdn.llsapp.com/android/LLS-v4.0-595-20160908-143200.apk";
+            public void onUpgrade() {
+                uploadPictureProgress();
                 String singleFileSaveName = "evaluation_pad.apk";
-                String mSinglePath = FileDownloadUtils.getDefaultSaveRootPath()+ File.separator+"Evaluation"
-                        +File.separator+singleFileSaveName;
-                String mSaveFolder = FileDownloadUtils.getDefaultSaveRootPath()+File.separator+"Evaluation";
+                String mSinglePath = FileDownloadUtils.getDefaultSaveRootPath() + File.separator + "Evaluation"
+                        + File.separator + singleFileSaveName;
+                String mSaveFolder = FileDownloadUtils.getDefaultSaveRootPath() + File.separator + "Evaluation";
                 //AppUtils.installAPK(new File(mSinglePath),MainActivity.this);
-                new DownloadUtils().startDownLoadFileSingle(apkUrl, mSinglePath, mSaveFolder,new DownloadUtils.FileDownLoaderCallBack() {
+                new DownloadUtils().startDownLoadFileSingle(resourceUrl, mSinglePath, mSaveFolder, new DownloadUtils.FileDownLoaderCallBack() {
                     @Override
                     public void downLoadCompleted(BaseDownloadTask task) {
-                        Log.d("MainActivity","blockComplete taskId:"+task.getId()+",filePath:"+task.getPath()+",fileName:"+task.getFilename()+",speed:"+task.getSpeed()+",isReuse:"+task.reuse());
+                        progressDialog.dismiss();
+                        AppUtils.installAPK(new File(mSinglePath),MainActivity.this);
                     }
 
                     @Override
                     public void downLoadError(BaseDownloadTask task, Throwable e) {
-                        Log.d("MainActivity","error taskId:"+task.getId()+",e:"+e.getLocalizedMessage());
+                        progressDialog.dismiss();
+                        ToastUtils.popUpToast("下载失败...");
                     }
 
                     @Override
                     public void downLoadProgress(String progress) {
-                        Log.d("MainActivity",progress);
+                        bnp.setProgress(Integer.valueOf(progress));
                     }
                 });
+            }
+
+            @Override
+            public void finishActivity() {
+                MainActivity.this.finish();
             }
         });
 
         upgradeDialog.show();
     }
 
-    @Override
-    protected void onInitView() {
-        initView();
-    }
-
-    @Override
-    protected void onLoadData() {
-        //mPresenter.uauth(MainActivity.this,MyApplication.getMyApp().getUserId());
+    private ProgressDialog progressDialog;
+    private NumberProgressBar bnp;
+    private void uploadPictureProgress(){
+        progressDialog = new ProgressDialog(MainActivity.this);
+        progressDialog.show();
+        bnp = progressDialog.getBnp();
     }
 
     @Override
@@ -165,6 +213,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements BackFra
 
         return super.dispatchTouchEvent(event);
     }
+
     private void initCommonTabLayout() {
         commonTabLayout.setTabData(mTabEntities);
         commonTabLayout.setOnTabSelectListener(new OnTabSelectListener() {
@@ -211,6 +260,12 @@ public class MainActivity extends BaseActivity<MainPresenter> implements BackFra
         this.baseFragment = baseFragment;
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ButterKnife.bind(this);
+    }
+
     private class MyPagerAdapter extends FragmentPagerAdapter {
         public MyPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -238,26 +293,28 @@ public class MainActivity extends BaseActivity<MainPresenter> implements BackFra
     }
 
     private void exit() {
-        if(!isExit) {
-           isExit = true;
+        if (!isExit) {
+            isExit = true;
             ToastUtils.popUpToast("在按一次退出程序");
             new Timer().schedule(new TimerTask() {
-                 @Override
+                @Override
                 public void run() {
                     isExit = false;
-                                     }
-             }, 2000);
-                     } else {
-                        finish();
-                     }
-             }
+                }
+            }, 2000);
+        } else {
+            finish();
+        }
+    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        /**退出清空及解绑服务*/
+        MyApplication.getMyApp().clearData();
         try {
             MyApplication.getMyApp().unbindService();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

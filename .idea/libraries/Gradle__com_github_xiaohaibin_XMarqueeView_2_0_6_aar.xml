@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="Gradle: com.github.xiaohaibin:XMarqueeView:2.0.6@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/8783b177d3d1c6b96875ced172946f06/jetified-XMarqueeView-2.0.6/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/8783b177d3d1c6b96875ced172946f06/jetified-XMarqueeView-2.0.6/res" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.xiaohaibin/XMarqueeView/2.0.6/2350d1a563d6652a74f6969513eceeb1ffe093fe/XMarqueeView-2.0.6-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.xiaohaibin/XMarqueeView/2.0.6/a385383b6ee575d03308ece6c6ea89f89a53a6bc/XMarqueeView-2.0.6-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

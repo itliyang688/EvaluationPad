@@ -76,7 +76,7 @@ public class MicroLessonMoreActivity extends BaseActivity<MicroLessonMorePresent
     private List<MicroLessonPageEnetity.DataBean.RecordsBean> mList;
 
     private int currentPage = 1;
-    private String pageSize = "20";
+    private String pageSize = "21";
     private boolean isLoadMore = false;
 
     @Override
@@ -102,7 +102,7 @@ public class MicroLessonMoreActivity extends BaseActivity<MicroLessonMorePresent
         textBookList = containListEntity.getTextBookList();
         semesterList = containListEntity.getSemesterList();
 
-        //tagPos = gradeList.size() + subjectList.size();
+        tagPos = gradeList.size() + subjectList.size();
 
         initLeftRecycler();
         initLabelAdapter();
@@ -120,8 +120,8 @@ public class MicroLessonMoreActivity extends BaseActivity<MicroLessonMorePresent
         bottomProgressView.setAnimatingColor(this.getResources().getColor(R.color.app_bg));
         refreshLayout.setBottomView(bottomProgressView);
 
-        refreshLayout.setEnableLoadmore(false);
-        refreshLayout.setEnableRefresh(false);
+        //refreshLayout.setEnableLoadmore(false);
+        //refreshLayout.setEnableRefresh(false);
 
         initData();
     }
@@ -136,19 +136,21 @@ public class MicroLessonMoreActivity extends BaseActivity<MicroLessonMorePresent
         public void onLoadMore(final TwinklingRefreshLayout refreshLayout) {
             isLoadMore = true;
             currentPage += 1;
+            mPresenter.moreVideoList(MicroLessonMoreActivity.this,gradeId,subjectId,semesterId,textbookId,String.valueOf(clickPos),MyApplication.getMyApp().getUserId(),String.valueOf(currentPage),pageSize);
         }
 
         @Override
         public void onRefresh(final TwinklingRefreshLayout refreshLayout) {
             isLoadMore = false;
             currentPage = 1;
+            mPresenter.moreVideoList(MicroLessonMoreActivity.this,gradeId,subjectId,semesterId,textbookId,String.valueOf(clickPos),MyApplication.getMyApp().getUserId(),String.valueOf(currentPage),pageSize);
         }
     };
 
     private void initLeftRecycler() {
-        if(gradeList != null && gradeList.size() > 0){
+        /*if(gradeList != null && gradeList.size() > 0){
             tagPos = gradeList.size();
-        }
+        }*/
         leftAdapter = new SectionedRecyclerViewAdapter();
         GridLayoutManager manager = new GridLayoutManager(getContext(), 12);
         manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
@@ -156,11 +158,9 @@ public class MicroLessonMoreActivity extends BaseActivity<MicroLessonMorePresent
             public int getSpanSize(int position) {
                 if (leftAdapter.getSectionItemViewType(position) == SectionedRecyclerViewAdapter.VIEW_TYPE_HEADER) {
                     return 12;
-                }else if (tagPos != 0 && position == tagPos + 1) {
+                }else if (tagPos != 0 && position == tagPos + 2) {
                     return 12;
-                } else if (tagPos != 0 && position == tagPos + 3) {
-                    return 12;
-                } else {
+                }else {
                     return 1;
                 }
             }
@@ -181,7 +181,7 @@ public class MicroLessonMoreActivity extends BaseActivity<MicroLessonMorePresent
             }
         }));
 
-        List<TextbookChildEntity> tagList = new ArrayList<>();
+        /*List<TextbookChildEntity> tagList = new ArrayList<>();
         for(SubjectEntity.DataBean dataBeans : subjectList){
             TextbookChildEntity childEntity = new TextbookChildEntity();
             childEntity.setId(dataBeans.getId());
@@ -196,8 +196,8 @@ public class MicroLessonMoreActivity extends BaseActivity<MicroLessonMorePresent
 
                 mPresenter.queryTextBookList(getContext(),gradeId,subjectId);
             }
-        }));
-        /*leftAdapter.addSection("subject", new EvaluationDetailsSubjectSection(subjectList, subjectId, new EvaluationDetailsSubjectSection.OnSelectItmeListener() {
+        }));*/
+        leftAdapter.addSection("subject", new EvaluationDetailsSubjectSection(subjectList, subjectId, new EvaluationDetailsSubjectSection.OnSelectItmeListener() {
             @Override
             public void onSelectItme(int pos) {
                 subjectId = String.valueOf(subjectList.get(pos).getId());
@@ -205,7 +205,7 @@ public class MicroLessonMoreActivity extends BaseActivity<MicroLessonMorePresent
 
                 mPresenter.queryTextBookList(getContext(), gradeId, subjectId);
             }
-        }));*/
+        }));
 
         leftAdapter.addSection("textbook", new EvaluationDetailsTagSection(getContext(), textBookList, textbookId, new EvaluationDetailsTagSection.OnSelectItmeListener() {
             @Override
@@ -284,7 +284,7 @@ public class MicroLessonMoreActivity extends BaseActivity<MicroLessonMorePresent
         subjectList = entry.getData();
         if (subjectList != null && subjectList.size() > 0) {
             loadView.showContent();
-            //tagPos = gradeList.size() + subjectList.size();
+            tagPos = gradeList.size() + subjectList.size();
             subjectId = String.valueOf(subjectList.get(0).getId());
 
             EvaluationDetailsSubjectSection subjectSection = (EvaluationDetailsSubjectSection) leftAdapter.getSection("subject");

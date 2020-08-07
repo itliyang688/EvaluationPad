@@ -19,8 +19,8 @@ public class ParameterInterceptor implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request original = chain.request();
-        //添加请求参数，此处是以豆瓣api为例，下面会贴出
-        HttpUrl url=original.url().newBuilder()
+        //添加请求参数
+        /*HttpUrl url=original.url().newBuilder()
                 .addQueryParameter("t", String.valueOf(new Date().getTime() / 1000))
                 .addQueryParameter("token", PrefUtilsData.getToken())
                 .build();
@@ -28,7 +28,12 @@ public class ParameterInterceptor implements Interceptor {
         Request request = original.newBuilder()
                 .method(original.method(), original.body())
                 .url(url)
-                .build();
+                .build();*/
+
+        Request.Builder requestBuilder = original.newBuilder()
+                .header("t", String.valueOf(new Date().getTime() / 1000))
+                .header("token", PrefUtilsData.getToken());
+        Request request = requestBuilder.build();
         return chain.proceed(request);
     }
 }

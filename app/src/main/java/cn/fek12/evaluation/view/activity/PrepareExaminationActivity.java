@@ -98,8 +98,8 @@ public class PrepareExaminationActivity extends BaseActivity<PrepareExaminationP
         bottomProgressView.setAnimatingColor(this.getResources().getColor(R.color.app_bg));
         refreshLayout.setBottomView(bottomProgressView);
 
-        refreshLayout.setEnableLoadmore(false);
-        refreshLayout.setEnableRefresh(false);
+        //refreshLayout.setEnableLoadmore(false);
+        //refreshLayout.setEnableRefresh(false);
     }
 
     private void initTree(){
@@ -116,12 +116,14 @@ public class PrepareExaminationActivity extends BaseActivity<PrepareExaminationP
         public void onLoadMore(final TwinklingRefreshLayout refreshLayout) {
             isLoadMore = true;
             currentPage += 1;
+            mPresenter.queryPaperList(PrepareExaminationActivity.this,subjectId,checkId,MyApplication.getMyApp().getUserId(),String.valueOf(currentPage),pageSize);
         }
 
         @Override
         public void onRefresh(final TwinklingRefreshLayout refreshLayout) {
             isLoadMore = false;
             currentPage = 1;
+            mPresenter.queryPaperList(PrepareExaminationActivity.this,subjectId,checkId,MyApplication.getMyApp().getUserId(),String.valueOf(currentPage),pageSize);
         }
     };
 

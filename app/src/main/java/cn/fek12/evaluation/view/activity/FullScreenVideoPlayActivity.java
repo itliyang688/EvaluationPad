@@ -56,7 +56,7 @@ public class FullScreenVideoPlayActivity extends BaseActivity<SpeciaVideoPlayPre
         videoType = intent.getIntExtra("videoType",0);
         typePage = intent.getIntExtra("typePage",0);
         videoId = intent.getIntExtra("videoId",0);
-        playScheduleTime = intent.getLongExtra("playScheduleTime",0);
+        playScheduleTime = intent.getIntExtra("playScheduleTime",0);
         isCollection = intent.getIntExtra("isCollection",0);
 
         //String path = "http://192.168.0.46/group1/M00/00/00/wKgALl23kwyAMozOAOBSBYftCKo270.mp4?token=2cc8cea563f06bc61576893cb5d8e542";

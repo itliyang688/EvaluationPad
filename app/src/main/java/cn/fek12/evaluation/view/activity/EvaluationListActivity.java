@@ -68,6 +68,7 @@ public class EvaluationListActivity extends BaseActivity<EvaluationDetailsPresen
     private List<ChildSectionEntity> semesterList;
 
     private int currentPage = 1;
+    private String pageSize = "30";
     private boolean isLoadMore = false;
     private String ptype;
     private String userType;
@@ -98,7 +99,7 @@ public class EvaluationListActivity extends BaseActivity<EvaluationDetailsPresen
         textBookList = containListEntity.getTextBookList();
         semesterList = containListEntity.getSemesterList();
 
-        //tagPos = gradeList.size() + subjectList.size();
+        tagPos = gradeList.size() + subjectList.size();
 
         initLeftRecycler();
         initLabelAdapter();
@@ -115,7 +116,7 @@ public class EvaluationListActivity extends BaseActivity<EvaluationDetailsPresen
         refreshLayout.setBottomView(bottomProgressView);
 
         loadView.showLoading();
-        mPresenter.queryPaperList(this,gradeId,subjectId,textbookId,semesterId,ptype,MyApplication.getMyApp().getUserId(),userType,String.valueOf(currentPage),checkId,paperListType);
+        mPresenter.queryPaperList(this,gradeId,subjectId,textbookId,semesterId,ptype,MyApplication.getMyApp().getUserId(),userType,String.valueOf(currentPage),pageSize,checkId,paperListType);
     }
 
     private RefreshListenerAdapter refreshListenerAdapter = new RefreshListenerAdapter() {
@@ -123,21 +124,21 @@ public class EvaluationListActivity extends BaseActivity<EvaluationDetailsPresen
         public void onLoadMore(final TwinklingRefreshLayout refreshLayout) {
             isLoadMore = true;
             currentPage += 1;
-            mPresenter.queryPaperList(EvaluationListActivity.this,gradeId,subjectId,textbookId,semesterId,ptype,MyApplication.getMyApp().getUserId(),userType,String.valueOf(currentPage),checkId,paperListType);
+            mPresenter.queryPaperList(EvaluationListActivity.this,gradeId,subjectId,textbookId,semesterId,ptype,MyApplication.getMyApp().getUserId(),userType,String.valueOf(currentPage),pageSize,checkId,paperListType);
         }
 
         @Override
         public void onRefresh(final TwinklingRefreshLayout refreshLayout) {
             isLoadMore = false;
             currentPage = 1;
-            mPresenter.queryPaperList(EvaluationListActivity.this,gradeId,subjectId,textbookId,semesterId,ptype,MyApplication.getMyApp().getUserId(),userType,String.valueOf(currentPage),checkId,paperListType);
+            mPresenter.queryPaperList(EvaluationListActivity.this,gradeId,subjectId,textbookId,semesterId,ptype,MyApplication.getMyApp().getUserId(),userType,String.valueOf(currentPage),pageSize,checkId,paperListType);
         }
     };
 
     private void initLeftRecycler() {
-        if(gradeList != null && gradeList.size() > 0){
+        /*if(gradeList != null && gradeList.size() > 0){
             tagPos = gradeList.size();
-        }
+        }*/
         leftAdapter = new SectionedRecyclerViewAdapter();
         GridLayoutManager manager = new GridLayoutManager(getContext(), 12);
         manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
@@ -145,13 +146,20 @@ public class EvaluationListActivity extends BaseActivity<EvaluationDetailsPresen
             public int getSpanSize(int position) {
                 if (leftAdapter.getSectionItemViewType(position) == SectionedRecyclerViewAdapter.VIEW_TYPE_HEADER) {
                     return 12;
+                } else if (tagPos != 0 && position == tagPos + 2) {
+                    return 12;
+                } else {
+                    return 1;
+                }
+                /*if (leftAdapter.getSectionItemViewType(position) == SectionedRecyclerViewAdapter.VIEW_TYPE_HEADER) {
+                    return 12;
                 }else if (tagPos != 0 && position == tagPos + 1) {
                     return 12;
                 } else if (tagPos != 0 && position == tagPos + 3) {
                     return 12;
                 } else {
                     return 1;
-                }
+                }*/
             }
         });
         leftRecycler.setLayoutManager(manager);
@@ -177,17 +185,7 @@ public class EvaluationListActivity extends BaseActivity<EvaluationDetailsPresen
             childEntity.setName(dataBeans.getName());
             tagList.add(childEntity);
         }
-        leftAdapter.addSection("subject", new EvaluationDetailsTagSection(getContext(), tagList, subjectId, new EvaluationDetailsTagSection.OnSelectItmeListener() {
-            @Override
-            public void onSelectItme(int pos) {
-                subjectId = String.valueOf(subjectList.get(pos).getId());
-                leftAdapter.getAdapterForSection("subject").notifyAllItemsChanged("payloads");
-
-                mPresenter.queryTextBookList(getContext(),gradeId,subjectId);
-            }
-        }));
-
-        /*leftAdapter.addSection("subject", new EvaluationDetailsSubjectSection(subjectList, subjectId, new EvaluationDetailsSubjectSection.OnSelectItmeListener() {
+        /*leftAdapter.addSection("subject", new EvaluationDetailsTagSection(getContext(), tagList, subjectId, new EvaluationDetailsTagSection.OnSelectItmeListener() {
             @Override
             public void onSelectItme(int pos) {
                 subjectId = String.valueOf(subjectList.get(pos).getId());
@@ -196,6 +194,16 @@ public class EvaluationListActivity extends BaseActivity<EvaluationDetailsPresen
                 mPresenter.queryTextBookList(getContext(),gradeId,subjectId);
             }
         }));*/
+
+        leftAdapter.addSection("subject", new EvaluationDetailsSubjectSection(subjectList, subjectId, new EvaluationDetailsSubjectSection.OnSelectItmeListener() {
+            @Override
+            public void onSelectItme(int pos) {
+                subjectId = String.valueOf(subjectList.get(pos).getId());
+                leftAdapter.getAdapterForSection("subject").notifyAllItemsChanged("payloads");
+
+                mPresenter.queryTextBookList(getContext(),gradeId,subjectId);
+            }
+        }));
 
         leftAdapter.addSection("textbook", new EvaluationDetailsTagSection(getContext(), textBookList, textbookId, new EvaluationDetailsTagSection.OnSelectItmeListener() {
             @Override
@@ -217,7 +225,7 @@ public class EvaluationListActivity extends BaseActivity<EvaluationDetailsPresen
                 isLoadMore = false;
                 currentPage = 1;
                 loadView.showLoading();
-                mPresenter.queryPaperList(EvaluationListActivity.this,gradeId,subjectId,textbookId,semesterId,ptype,MyApplication.getMyApp().getUserId(),userType,String.valueOf(currentPage),checkId,paperListType);
+                mPresenter.queryPaperList(EvaluationListActivity.this,gradeId,subjectId,textbookId,semesterId,ptype,MyApplication.getMyApp().getUserId(),userType,String.valueOf(currentPage),pageSize,checkId,paperListType);
             }
         }));
         leftAdapter.notifyDataSetChanged();
@@ -277,7 +285,7 @@ public class EvaluationListActivity extends BaseActivity<EvaluationDetailsPresen
         subjectList = entry.getData();
         if (subjectList != null && subjectList.size() > 0) {
             loadView.showContent();
-            //tagPos = gradeList.size() + subjectList.size();
+            tagPos = gradeList.size() + subjectList.size();
             subjectId = String.valueOf(subjectList.get(0).getId());
 
             EvaluationDetailsSubjectSection subjectSection = (EvaluationDetailsSubjectSection) leftAdapter.getSection("subject");
@@ -309,7 +317,7 @@ public class EvaluationListActivity extends BaseActivity<EvaluationDetailsPresen
             isLoadMore = false;
             currentPage = 1;
             loadView.showLoading();
-            mPresenter.queryPaperList(EvaluationListActivity.this,gradeId,subjectId,textbookId,semesterId,ptype,MyApplication.getMyApp().getUserId(),userType,String.valueOf(currentPage),checkId,paperListType);
+            mPresenter.queryPaperList(EvaluationListActivity.this,gradeId,subjectId,textbookId,semesterId,ptype,MyApplication.getMyApp().getUserId(),userType,String.valueOf(currentPage),pageSize,checkId,paperListType);
 
         }
     }
@@ -340,7 +348,7 @@ public class EvaluationListActivity extends BaseActivity<EvaluationDetailsPresen
         isLoadMore = false;
         currentPage = 1;
         loadView.showLoading();
-        mPresenter.queryPaperList(EvaluationListActivity.this,gradeId,subjectId,textbookId,semesterId,ptype,MyApplication.getMyApp().getUserId(),userType,String.valueOf(currentPage),checkId,paperListType);
+        mPresenter.queryPaperList(EvaluationListActivity.this,gradeId,subjectId,textbookId,semesterId,ptype,MyApplication.getMyApp().getUserId(),userType,String.valueOf(currentPage),pageSize,checkId,paperListType);
 
     }
 
@@ -358,7 +366,7 @@ public class EvaluationListActivity extends BaseActivity<EvaluationDetailsPresen
         isLoadMore = false;
         currentPage = 1;
         loadView.showLoading();
-        mPresenter.queryPaperList(EvaluationListActivity.this,gradeId,subjectId,textbookId,semesterId,ptype,MyApplication.getMyApp().getUserId(),userType,String.valueOf(currentPage),checkId,paperListType);
+        mPresenter.queryPaperList(EvaluationListActivity.this,gradeId,subjectId,textbookId,semesterId,ptype,MyApplication.getMyApp().getUserId(),userType,String.valueOf(currentPage),pageSize,checkId,paperListType);
 
     }
 

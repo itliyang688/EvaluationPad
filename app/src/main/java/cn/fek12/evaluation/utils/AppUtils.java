@@ -2,6 +2,8 @@ package cn.fek12.evaluation.utils;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Build;
@@ -37,6 +39,24 @@ import java.util.Date;
  * @CreateDate: 2019/11/2 17:41
  */
 public class AppUtils {
+
+    /**
+     * 得到当前软件的版本号
+     */
+    public static int getVersionCode(Context context) {
+        // 包的的管理器
+        PackageManager pm = context.getPackageManager();
+        // 得到功能清单文件
+        try {
+            PackageInfo packInfo = pm.getPackageInfo(context.getPackageName(), 0);
+            int currentVersionCode = packInfo.versionCode; // 版本号
+            //return packInfo.versionName;//版本名称
+            return currentVersionCode;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
 
     public static void fitPopupWindowOverStatusBar(PopupWindow mPopupWindow, boolean needFullScreen) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

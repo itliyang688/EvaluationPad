@@ -147,7 +147,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/dp_6"
-                        android:text="选择知识点"
+                        android:text="同步学习"
                         android:textColor="@color/color_333"
                         android:textSize="@dimen/sp_12" />
                 </LinearLayout>

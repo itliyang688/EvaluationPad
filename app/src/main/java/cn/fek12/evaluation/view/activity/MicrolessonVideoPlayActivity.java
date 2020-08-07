@@ -48,7 +48,7 @@ public class MicrolessonVideoPlayActivity extends BaseActivity<MicrolessonVideoP
         videoName = intent.getStringExtra("videoName");
         imgUrl = intent.getStringExtra("imgUrl");
         videoId = intent.getStringExtra("videoId");
-        playScheduleTime = intent.getLongExtra("playScheduleTime",0);
+        playScheduleTime = intent.getIntExtra("playScheduleTime",0);
         isCollection = intent.getIntExtra("isCollection",0);
 
         //String path = "http://res.51jxpj.cn/group1/M00/01/CD/wKgo0F8iP3KAM9cMAlOxL3yPwT4824.mp4?token=3b1a840fa85c4bd60ab5a20ba534b55a&ts=1596081630";

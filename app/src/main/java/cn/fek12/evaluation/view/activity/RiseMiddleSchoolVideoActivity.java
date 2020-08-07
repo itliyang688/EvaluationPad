@@ -106,8 +106,6 @@ public class RiseMiddleSchoolVideoActivity extends BaseActivity<RiseMiddleSchool
         bottomProgressView.setAnimatingColor(this.getResources().getColor(R.color.app_bg));
         refreshLayout.setBottomView(bottomProgressView);
 
-        refreshLayout.setEnableLoadmore(false);
-        refreshLayout.setEnableRefresh(false);
     }
 
     @Override
@@ -131,12 +129,14 @@ public class RiseMiddleSchoolVideoActivity extends BaseActivity<RiseMiddleSchool
         public void onLoadMore(final TwinklingRefreshLayout refreshLayout) {
             isLoadMore = true;
             currentPage += 1;
+            mPresenter.queryVideoList(RiseMiddleSchoolVideoActivity.this,selectType,checkId,MyApplication.getMyApp().getUserId(),String.valueOf(currentPage),"12");
         }
 
         @Override
         public void onRefresh(final TwinklingRefreshLayout refreshLayout) {
             isLoadMore = false;
             currentPage = 1;
+            mPresenter.queryVideoList(RiseMiddleSchoolVideoActivity.this,selectType,checkId,MyApplication.getMyApp().getUserId(),String.valueOf(currentPage),"12");
         }
     };
 

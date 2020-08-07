@@ -29,6 +29,7 @@ import cn.fek12.evaluation.model.entity.TestRecordEntity;
 import cn.fek12.evaluation.model.entity.TextbookEntity;
 import cn.fek12.evaluation.model.entity.TopicCountEntity;
 import cn.fek12.evaluation.model.entity.TreeDataEntity;
+import cn.fek12.evaluation.model.entity.UpdateApkEntity;
 import cn.fek12.evaluation.model.entity.VideoMoreListEntity;
 import cn.fek12.evaluation.model.entity.YearMonthEntity;
 import io.reactivex.Observable;
@@ -201,7 +202,8 @@ public interface ApiServer {
                                                     @Field("userType") String userType,
                                                     @Field("knowledge") String knowledge,
                                                     @Field("paperListType") String paperListType,
-                                                    @Field("currentPage") String currentPage);
+                                                    @Field("currentPage") String currentPage,
+                                                    @Field("pageSize") String pageSize);
 
     @FormUrlEncoded
     @POST("independent/paperList")
@@ -407,6 +409,10 @@ public interface ApiServer {
     @FormUrlEncoded
     @POST("auth/uauth")
     Observable<AuthEntity> uauth(@Field("userId") String userId);
+
+    /***带分页的微课模块*/
+    @GET("nocPadVersion/checkPadVersionByCode")
+    Observable<UpdateApkEntity> checkPadVersionByCode(@Query("versionCode") String versionCode);
 
 }
 

@@ -13,6 +13,7 @@ import cn.fek12.evaluation.impl.ICommonVideo;
 import cn.fek12.evaluation.impl.IMain;
 import cn.fek12.evaluation.model.entity.AuthEntity;
 import cn.fek12.evaluation.model.entity.MicrolessonVideoEntity;
+import cn.fek12.evaluation.model.entity.UpdateApkEntity;
 
 /**
  * @ProjectName: EvaluationPad
@@ -44,6 +45,27 @@ public class MainPresenter extends BasePresenter<IMain.View> implements IMain {
                     @Override
                     public void onError(String msg) {
                         infoView.loadFail(msg);
+                    }
+                });
+    }
+
+    @Override
+    public void chechUpdate(Context context, String versionCode) {
+        ApiRetrofit.getInstance().getApiService().checkPadVersionByCode(versionCode)
+                .compose(RxHelper.observableIO2Main(context))
+                .subscribe(new BaseObserver<UpdateApkEntity>() {
+                    @Override
+                    public void onSuccess(UpdateApkEntity entry) {
+                        if(entry.getState().equals("0")){
+                            infoView.checkUpdateSuc(entry);
+                        }else{
+                            infoView.checkUpdateFail();
+                        }
+                    }
+
+                    @Override
+                    public void onError(String msg) {
+                        infoView.checkUpdateFail();
                     }
                 });
     }
