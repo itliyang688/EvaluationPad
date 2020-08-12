@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.webkit.JavascriptInterface;
 
+import com.fek12.basic.utils.toast.ToastUtils;
+
 import cn.fek12.evaluation.application.MyApplication;
 import cn.fek12.evaluation.model.config.Configs;
 import cn.fek12.evaluation.model.sharedPreferences.PrefUtilsData;
@@ -59,7 +61,7 @@ public class JavaScriptinterface {
     @JavascriptInterface
     public void personal_report(String paperResultId) {
         PrefUtilsData.setPaperResultIdCache(paperResultId);
-        String url = Configs.PERSONAL_REPORT+"userId="+MyApplication.getMyApp().getUserId()+"&paperResultId="+paperResultId;
+        String url = Configs.PERSONAL_REPORT+"userId="+MyApplication.getMyApp().getUserId()+"&paperResultId="+paperResultId+"&token="+PrefUtilsData.getToken();
         Intent intent = new Intent(mContext, PersonalReportWebViewActivity.class);
         intent.putExtra("webUrl",url);
         mContext.startActivity(intent);
@@ -93,6 +95,16 @@ public class JavaScriptinterface {
     }
 
     /**
+     * JS调用获取token数据
+     */
+    @JavascriptInterface
+    public String getTokenData() {
+        return PrefUtilsData.getToken();
+    }
+
+    /**
+
+    /**
      * 提醒弹出框
      */
     @JavascriptInterface
@@ -107,5 +119,14 @@ public class JavaScriptinterface {
     @JavascriptInterface
     public void closePage() {
         AnswerWebViewActivity.get().finish();
+    }
+
+    /**
+     * 报告提交成功调用
+     */
+    @JavascriptInterface
+    public void reportRefresh() {
+        PrefUtilsData.setIsReportRefresh(true);
+        PrefUtilsData.setIsPromoteRefresh(true);
     }
 }

@@ -22,6 +22,7 @@ import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.application.MyApplication;
 import cn.fek12.evaluation.impl.IMicroLessonRecord;
 import cn.fek12.evaluation.model.entity.CollectionListEntity;
+import cn.fek12.evaluation.model.sharedPreferences.PrefUtilsData;
 import cn.fek12.evaluation.presenter.MicroLessonRecordPresenter;
 import cn.fek12.evaluation.utils.AppUtils;
 import cn.fek12.evaluation.utils.FastDFSUtil;
@@ -75,39 +76,38 @@ public class MicroLessonRecordFragment extends BaseFragment<MicroLessonRecordPre
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         this.isVisibleToUser = isVisibleToUser;
-        if (isVisibleToUser && adapter == null) {
-            recyclerView.setLayoutManager(new StickyHeaderLayoutManager());
-            adapter = new MicroLessonRecordAdapter(mPageType, getContext());
-            adapter.setOnItemClickListener(this);
-            recyclerView.setAdapter(adapter);
+        if (isVisibleToUser && adapter != null) {
+            if(PrefUtilsData.getIsCollectionRefresh() || PrefUtilsData.getIsPlayCountRefresh()){
+                collectionList();
+            }
         }
-
-        collectionList();
     }
 
     private void collectionList() {
-        if (isVisibleToUser) {
-
-            multipleStatusView.showLoading();
-            if (mPageType == 1) {//微课学习
-                titleName.setText("微课学习");
-                if(TextUtils.isEmpty(subject)){
-                    subject = "undefined";
-                }
-                mPresenter.microLessonList(getContext(), MyApplication.getMyApp().getUserId(), subject);
-            } else {//我的收藏
-                if(!TextUtils.isEmpty(subject) && subject.equals("undefined")){
-                    subject = "";
-                }
-                titleName.setText("我的收藏");
-                mPresenter.collectionList(getContext(), MyApplication.getMyApp().getUserId(), subject);
+        multipleStatusView.showLoading();
+        if (mPageType == 1) {//微课学习
+            PrefUtilsData.setIsPlayCountRefresh(false);
+            titleName.setText("微课学习");
+            if(TextUtils.isEmpty(subject)){
+                subject = "undefined";
             }
+            mPresenter.microLessonList(getContext(), MyApplication.getMyApp().getUserId(), subject);
+        } else {//我的收藏
+            PrefUtilsData.setIsCollectionRefresh(false);
+            if(!TextUtils.isEmpty(subject) && subject.equals("undefined")){
+                subject = "";
+            }
+            titleName.setText("我的收藏");
+            mPresenter.collectionList(getContext(), MyApplication.getMyApp().getUserId(), subject);
         }
     }
 
     @Override
     protected void onInitView(Bundle savedInstanceState) {
-
+        recyclerView.setLayoutManager(new StickyHeaderLayoutManager());
+        adapter = new MicroLessonRecordAdapter(mPageType, getContext());
+        adapter.setOnItemClickListener(this);
+        recyclerView.setAdapter(adapter);
     }
 
     @Override

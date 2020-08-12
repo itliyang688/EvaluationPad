@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 
 import com.fek12.basic.R;
 import com.fek12.basic.application.BaseApplication;
+import com.fek12.basic.utils.immersion.BarHide;
 import com.fek12.basic.utils.immersion.ImmersionBar;
 import com.fek12.basic.utils.toast.ToastUtils;
 import com.fek12.basic.view.dialog.MyDialog;

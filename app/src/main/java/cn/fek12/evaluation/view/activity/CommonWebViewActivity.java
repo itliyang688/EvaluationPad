@@ -34,7 +34,7 @@ public class CommonWebViewActivity extends BaseActivity {
 
     @Override
     public int setLayoutResource() {
-        return R.layout.small_webview_activity;
+        return R.layout.continue_webview_activity;
     }
 
     @Override
@@ -52,7 +52,7 @@ public class CommonWebViewActivity extends BaseActivity {
         //webView.setInitialScale(50);
         webSettings.setLoadWithOverviewMode(true);
         webView.setBackgroundColor(0);
-        webView.getBackground().setAlpha(0);
+        //webView.getBackground().setAlpha(0);
         webView.setWebChromeClient(new WebChromeClient());
         webView.addJavascriptInterface(new JavaScriptinterface(getContext()), "android");
         //String url = "http://192.168.0.46/noc/html/SmallWork.html";

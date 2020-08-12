@@ -3,10 +3,36 @@
     android:id="@+id/rl_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="false"
     android:background="@color/white">
 
-    <ImageView
+    <!--<ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@mipmap/splash_icon" />
+        android:background="@mipmap/splash_icon" />-->
+    <pl.droidsonroids.gif.GifImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@mipmap/splash_gif"/>
+
+    <RelativeLayout
+        android:id="@+id/rlBack"
+        android:layout_width="@dimen/dp_52"
+        android:layout_height="@dimen/dp_22"
+        android:layout_alignParentRight="true"
+        android:background="@mipmap/goback_btn_bg"
+        android:layout_marginTop="@dimen/dp_25"
+        android:layout_marginRight="@dimen/dp_25">
+
+        <TextView
+            android:id="@+id/tvTimeKeeping"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textColor="@color/color_333"
+            android:background="@color/transparent"
+            android:textSize="@dimen/sp_10"
+            android:text="跳过 5s"/>
+    </RelativeLayout>
 </RelativeLayout>

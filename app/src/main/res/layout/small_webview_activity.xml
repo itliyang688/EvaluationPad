@@ -1,34 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/main_bg"
     android:orientation="vertical">
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@drawable/main_bg"
+        android:layout_marginTop="@dimen/dp_25">
+
         <cn.fek12.evaluation.view.widget.NoRollWebView
             android:id="@+id/webView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/transparent"/>
+            android:layout_height="match_parent" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/titleView"
         android:layout_width="@dimen/dp_60"
-        android:layout_marginTop="@dimen/dp_3"
         android:layout_height="@dimen/dp_54"
+        android:layout_marginTop="@dimen/dp_25"
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="@color/transparent"
+        android:visibility="visible"
         tools:ignore="MissingConstraints">
+
         <ImageView
             android:id="@+id/iv_left_back"
-            android:layout_width="@dimen/dp_34"
-            android:layout_height="@dimen/dp_34"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_6"
             android:background="@drawable/title_btn_color_selector"
             android:src="@drawable/ic_toolbar_left_back"
             android:visibility="invisible" />
     </LinearLayout>
 
+    <ImageView
+        android:id="@+id/imgBg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@mipmap/splash_png"
+        android:visibility="visible" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

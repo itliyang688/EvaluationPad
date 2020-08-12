@@ -1,19 +1,29 @@
 package cn.fek12.evaluation.view.fragment;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.fek12.basic.base.BaseFragment;
 import com.lcodecore.tkrefreshlayout.Footer.BottomProgressView;
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 
+import org.zakariya.stickyheaders.OnStickyChangeListener;
+import org.zakariya.stickyheaders.StickyHeadContainer;
+import org.zakariya.stickyheaders.StickyItemDecoration;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -22,13 +32,13 @@ import cn.fek12.evaluation.application.MyApplication;
 import cn.fek12.evaluation.model.entity.AWeekEntity;
 import cn.fek12.evaluation.model.entity.EarlierEntity;
 import cn.fek12.evaluation.model.entity.PresentationEntity;
+import cn.fek12.evaluation.model.sharedPreferences.PrefUtilsData;
 import cn.fek12.evaluation.presenter.PresentationPresenter;
 import cn.fek12.evaluation.utils.AppUtils;
 import cn.fek12.evaluation.view.PopupWindow.MenuPopupWindow;
 import cn.fek12.evaluation.view.activity.ConqueredActivity;
-import cn.fek12.evaluation.view.adapter.PresentationAweekItemSection;
+import cn.fek12.evaluation.view.adapter.PresentationNewsAdapter;
 import cn.fek12.evaluation.view.widget.MultipleStatusView;
-import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 
 /**
  * @ProjectName: EvaluationPad
@@ -46,7 +56,15 @@ public class PromoteFragment extends BaseFragment<PresentationPresenter> impleme
     MultipleStatusView multipleStatusView;
     @BindView(R.id.rooView)
     LinearLayout rooView;
-    private SectionedRecyclerViewAdapter leftAdapter;
+    @BindView(R.id.ivIcon)
+    ImageView ivIcon;
+    @BindView(R.id.header)
+    TextView header;
+    @BindView(R.id.rlContain)
+    RelativeLayout rlContain;
+    //private SectionedRecyclerViewAdapter leftAdapter;
+    //private Presentation1Adapter adapter;
+    private PresentationNewsAdapter adapter;
     private MenuPopupWindow popupWindow;
     private boolean isLoadMore = false;
     private String grade = null;
@@ -59,10 +77,12 @@ public class PromoteFragment extends BaseFragment<PresentationPresenter> impleme
     private List<PresentationEntity> daylist;
     private List<PresentationEntity> aweeklist;
     private List<PresentationEntity> earlierList;
+    @BindView(R.id.shc_pictrues)
+    StickyHeadContainer stickyHeadContainer;
 
     @Override
     protected int getLayoutResource() {
-        return R.layout.promoter_fragment;
+        return R.layout.promoter_news_fragment;
     }
 
     @Override
@@ -72,7 +92,7 @@ public class PromoteFragment extends BaseFragment<PresentationPresenter> impleme
             public void onClick(View view) {
                 popupWindow = new MenuPopupWindow(getActivity(), new MenuPopupWindow.OnSelectItmeListener() {
                     @Override
-                    public void onSelectItme(String gradeId, String semesterId, String subjectId, String textbookId,String type) {
+                    public void onSelectItme(String gradeId, String semesterId, String subjectId, String textbookId, String type) {
                         isLoadMore = false;
                         currentPage = 1;
                         grade = gradeId;
@@ -81,7 +101,7 @@ public class PromoteFragment extends BaseFragment<PresentationPresenter> impleme
                         textbook = textbookId;
                         userType = type;
                         multipleStatusView.showLoading();
-                        mPresenter.queryAWeek(getContext(), grade, semester, subject, textbook,  MyApplication.getMyApp().getUserId(), userType);
+                        mPresenter.queryAWeek(getContext(), grade, semester, subject, textbook, MyApplication.getMyApp().getUserId(), userType);
                     }
                 });
                 //popupWindow.setClippingEnabled(false);
@@ -95,9 +115,9 @@ public class PromoteFragment extends BaseFragment<PresentationPresenter> impleme
         refreshLayout.setOnRefreshListener(refreshListenerAdapter);
         BottomProgressView bottomProgressView = new BottomProgressView(getActivity());
         bottomProgressView.setAnimatingColor(this.getResources().getColor(R.color.app_bg));
-        //LoadingView loadingView = new LoadingView(getActivity());
-        //refreshLayout.setHeaderView(progressView);
         refreshLayout.setBottomView(bottomProgressView);
+        refreshLayout.setOverScrollRefreshShow(false);
+        refreshLayout.setOverScrollHeight(0);
         initLeftRecycler();
     }
 
@@ -106,39 +126,103 @@ public class PromoteFragment extends BaseFragment<PresentationPresenter> impleme
         public void onLoadMore(final TwinklingRefreshLayout refreshLayout) {
             isLoadMore = true;
             currentPage += 1;
-            mPresenter.queryEarlier(getContext(), grade, semester, subject, textbook,  MyApplication.getMyApp().getUserId(), userType, String.valueOf(currentPage), pageSize);
+            mPresenter.queryEarlier(getContext(), grade, semester, subject, textbook, MyApplication.getMyApp().getUserId(), userType, String.valueOf(currentPage), pageSize);
         }
 
         @Override
         public void onRefresh(final TwinklingRefreshLayout refreshLayout) {
             isLoadMore = false;
             currentPage = 1;
-            mPresenter.queryAWeek(getContext(), grade, semester, subject, textbook,  MyApplication.getMyApp().getUserId(), userType);
+            mPresenter.queryAWeek(getContext(), grade, semester, subject, textbook, MyApplication.getMyApp().getUserId(), userType);
+        }
+
+        @Override
+        public void onPullingDown(TwinklingRefreshLayout refreshLayout, float fraction) {
+            stickyHeadContainer.reset();
+            stickyHeadContainer.setVisibility(View.INVISIBLE);
+            super.onPullingDown(refreshLayout, fraction);
+
         }
     };
 
+
     private void initLeftRecycler() {
-        leftAdapter = new SectionedRecyclerViewAdapter();
-        GridLayoutManager manager = new GridLayoutManager(getContext(), 6);
-        manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+
+        StickyItemDecoration stickyItemDecoration = new StickyItemDecoration(stickyHeadContainer, PresentationEntity.PICTURE_TITLE);
+        stickyItemDecoration.setOnStickyChangeListener(new OnStickyChangeListener() {
             @Override
-            public int getSpanSize(int position) {
-                if (leftAdapter.getSectionItemViewType(position) == SectionedRecyclerViewAdapter.VIEW_TYPE_HEADER) {
-                    return 6;
-                } else {
-                    return 1;
+            public void onScrollable(int offset) {
+                stickyHeadContainer.scrollChild(offset);
+                stickyHeadContainer.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onInVisible() {
+                stickyHeadContainer.reset();
+                stickyHeadContainer.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        stickyHeadContainer.setDataCallback(new StickyHeadContainer.DataCallback() {
+            @Override
+            public void onDataChange(int pos) {
+                List<PresentationEntity> listModels = adapter.getData();
+                if (listModels.size() > pos) {
+                    if(listModels.get(pos).getTitleType() == 1){
+                        header.setText("近三天");
+                        header.setTextColor(Color.parseColor("#6B400D"));
+                        ivIcon.setImageResource(R.mipmap.three_days_icon);
+                        rlContain.setBackgroundResource(R.drawable.bg_three_days_header);
+                    }else if(listModels.get(pos).getTitleType() == 2){
+                        header.setText("近一周");
+                        header.setTextColor(Color.parseColor("#188C6A"));
+                        ivIcon.setImageResource(R.mipmap.aweek_icon);
+                        rlContain.setBackgroundResource(R.drawable.bg_aweek_header);
+                    }else if(listModels.get(pos).getTitleType() == 3){
+                        header.setText("较早");
+                        header.setTextColor(Color.parseColor("#753C09"));
+                        ivIcon.setImageResource(R.mipmap.earlier);
+                        rlContain.setBackgroundResource(R.drawable.bg_earlier_header);
+                    }
                 }
             }
         });
+        adapter = new PresentationNewsAdapter(null, PresentationNewsAdapter.PROMOTE);
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                PresentationEntity entity = (PresentationEntity) adapter.getItem(position);
+                if(entity.getTitleType() == 0){
+                    Intent intent = new Intent(mContext, ConqueredActivity.class);
+                    intent.putExtra("paperResultId",String.valueOf(entity.getPaperResultId()));
+                    mContext.startActivity(intent);
+                }
+            }
+        });
+        GridLayoutManager manager = new GridLayoutManager(getContext(), 6);
         recycler.setLayoutManager(manager);
-        recycler.setAdapter(leftAdapter);
+        recycler.addItemDecoration(stickyItemDecoration);
+        //SpaceDecoration spaceDecoration = new SpaceDecoration(DisUtil.dp2px(mContext, 10));
+        //spaceDecoration.setPaddingStart(false);
+        //recycler.addItemDecoration(spaceDecoration);
+        recycler.setAdapter(adapter);
+        adapter.bindToRecyclerView(recycler);
     }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser && multipleStatusView != null && PrefUtilsData.getIsPromoteRefresh()) {
+            PrefUtilsData.setIsPromoteRefresh(false);
+            multipleStatusView.showLoading();
+            mPresenter.queryAWeek(getContext(), grade, semester, subject, textbook, MyApplication.getMyApp().getUserId(), userType);
+        }
+    }
 
     @Override
     protected void onLoadDataRemote() {
         multipleStatusView.showLoading();
-        mPresenter.queryAWeek(getContext(), grade, semester, subject, textbook,  MyApplication.getMyApp().getUserId(), userType);
+        mPresenter.queryAWeek(getContext(), grade, semester, subject, textbook, MyApplication.getMyApp().getUserId(), userType);
     }
 
     @Override
@@ -153,79 +237,83 @@ public class PromoteFragment extends BaseFragment<PresentationPresenter> impleme
 
     @Override
     public void loadAWeekSuc(AWeekEntity entry) {
-        leftAdapter.removeAllSections();
         daylist = entry.getData().getDay();
         if (daylist != null && daylist.size() > 0) {
             multipleStatusView.showContent();
-            leftAdapter.addSection("threeDays", new PresentationAweekItemSection(2,daylist, getContext(), "近三天", new PresentationAweekItemSection.OnSelectItmeListener() {
-                @Override
-                public void onSelectItme(int pos) {
-                    int paperResultId = daylist.get(pos).getPaperResultId();
-                    startConquered(paperResultId);
-                }
-            }));
         }
         aweeklist = entry.getData().getWeek();
         if (aweeklist != null && aweeklist.size() > 0) {
             multipleStatusView.showContent();
-            leftAdapter.addSection("aweek", new PresentationAweekItemSection(2,aweeklist, getContext(), "一周内", new PresentationAweekItemSection.OnSelectItmeListener() {
-                @Override
-                public void onSelectItme(int pos) {
-                    int paperResultId = aweeklist.get(pos).getPaperResultId();
-                    startConquered(paperResultId);
-                }
-            }));
         }
-        mPresenter.queryEarlier(getContext(), grade, semester, subject, textbook,  MyApplication.getMyApp().getUserId(), userType, String.valueOf(currentPage), pageSize);
+        mPresenter.queryEarlier(getContext(), grade, semester, subject, textbook, MyApplication.getMyApp().getUserId(), userType, String.valueOf(currentPage), pageSize);
     }
 
     @Override
     public void loadEarlierSuc(EarlierEntity entry) {
         EarlierEntity.DataBean.PageInfoBean pageInfoBean = entry.getData().getPage_info();
         earlierList = entry.getData().getPapers();
-        if(pageInfoBean.getTotalCount() == 0){
+        if (pageInfoBean.getTotalCount() == 0) {
             isEmpty();
             return;
         }
         multipleStatusView.showContent();
-        if(pageInfoBean.getTotalPage() > currentPage){
+        if (pageInfoBean.getTotalPage() > currentPage) {
             refreshLayout.setEnableLoadmore(true);
-        }else{
+        } else {
             refreshLayout.setEnableLoadmore(false);
         }
-        if(earlierList != null && earlierList.size() > 0){
-            if(isLoadMore){
-                PresentationAweekItemSection itemSection = (PresentationAweekItemSection) leftAdapter.getSection("earlier");
-                itemSection.updateAndAddList(earlierList,isLoadMore);
-                //leftAdapter.getAdapterForSection("earlier").notifyAllItemsChanged("payloads");
-            }else{
-                leftAdapter.addSection("earlier", new PresentationAweekItemSection( 2, earlierList, getContext(), "较早", new PresentationAweekItemSection.OnSelectItmeListener() {
-                            @Override
-                            public void onSelectItme(int pos) {
-                                int paperResultId = earlierList.get(pos).getPaperResultId();
-                                startConquered(paperResultId);
-                            }
-                        }));
+        List<PresentationEntity> presentationModels = new ArrayList<>();
+        if (earlierList != null && earlierList.size() > 0) {
+            if (isLoadMore) {
+                adapter.notifyChanged(earlierList, isLoadMore);
+            } else {
+                //添加标题
+                PresentationEntity title = new PresentationEntity();
+                title.setType(PresentationEntity.PICTURE_TITLE);
+                title.setTitleType(1);
+                presentationModels.add(title);
+                if (daylist != null && daylist.size() > 0) {
+                    for (PresentationEntity model : daylist) {
+                        //添加数据
+                        presentationModels.add(model);
+                    }
+                }
+
+                //添加标题
+                PresentationEntity title2 = new PresentationEntity();
+                title2.setType(PresentationEntity.PICTURE_TITLE);
+                title2.setTitleType(2);
+                presentationModels.add(title2);
+                if (aweeklist != null && aweeklist.size() > 0) {
+                    for (PresentationEntity model : aweeklist) {
+                        //添加数据
+                        presentationModels.add(model);
+                    }
+                }
+
+                //添加标题
+                PresentationEntity title3 = new PresentationEntity();
+                title3.setType(PresentationEntity.PICTURE_TITLE);
+                title3.setTitleType(3);
+                presentationModels.add(title3);
+                for (PresentationEntity model : earlierList) {
+                    //添加数据
+                    presentationModels.add(model);
+                }
+
+                adapter.notifyChanged(presentationModels, isLoadMore);
             }
         }
-        leftAdapter.notifyDataSetChanged();
         refreshLayout.finishLoadmore();
         refreshLayout.finishRefreshing();
-    }
-
-    private void startConquered(int paperResultId){
-        Intent intent = new Intent(getContext(), ConqueredActivity.class);
-        intent.putExtra("paperResultId",String.valueOf(paperResultId));
-        startActivity(intent);
     }
 
     @Override
     public void loadAWeekFail(String msg) {
         isLoadMore = false;
         currentPage = 1;
-        leftAdapter.removeAllSections();
         /**一周或三天报告请求失败还要去请求较早的报告*/
-        mPresenter.queryEarlier(getContext(), grade, semester, subject, textbook,  MyApplication.getMyApp().getUserId(), userType, String.valueOf(currentPage), pageSize);
+        mPresenter.queryEarlier(getContext(), grade, semester, subject, textbook, MyApplication.getMyApp().getUserId(), userType, String.valueOf(currentPage), pageSize);
     }
 
     @Override
@@ -236,21 +324,17 @@ public class PromoteFragment extends BaseFragment<PresentationPresenter> impleme
     @Override
     public void loadAWeekEmpty() {
         multipleStatusView.showEmpty();
-        if(daylist != null){
+        if (daylist != null) {
             daylist.clear();
         }
-        if(aweeklist != null){
+        if (aweeklist != null) {
             aweeklist.clear();
         }
 
         isLoadMore = false;
         currentPage = 1;
-        leftAdapter.removeAllSections();
-        leftAdapter.notifyDataSetChanged();
-        leftAdapter.addSection("threeDays", new PresentationAweekItemSection(1,null, getContext(), "近三天",null));
-        leftAdapter.addSection("aweek", new PresentationAweekItemSection(1,null, getContext(), "一周内", null));
         /**一周或三天报告请求失败还要去请求较早的报告*/
-        mPresenter.queryEarlier(getContext(), grade, semester, subject, textbook,  MyApplication.getMyApp().getUserId(), userType, String.valueOf(currentPage), pageSize);
+        mPresenter.queryEarlier(getContext(), grade, semester, subject, textbook, MyApplication.getMyApp().getUserId(), userType, String.valueOf(currentPage), pageSize);
     }
 
     @Override
@@ -263,18 +347,44 @@ public class PromoteFragment extends BaseFragment<PresentationPresenter> impleme
         isEmpty();
     }
 
-    private void isEmpty(){
+    private void isEmpty() {
+        List<PresentationEntity> presentationModels = new ArrayList<>();
         boolean isEmpty = false;
-        if(daylist != null && daylist.size() > 0){
+        //添加标题
+        PresentationEntity title = new PresentationEntity();
+        title.setType(1);
+        title.setTitleType(1);
+        presentationModels.add(title);
+        if (daylist != null && daylist.size() > 0) {
             isEmpty = true;
+            for (PresentationEntity model : daylist) {
+                //添加数据
+                presentationModels.add(model);
+            }
         }
-        if(aweeklist != null && aweeklist.size() > 0){
+
+        //添加标题
+        PresentationEntity title2 = new PresentationEntity();
+        title2.setType(1);
+        title2.setTitleType(2);
+        presentationModels.add(title2);
+        if (aweeklist != null && aweeklist.size() > 0) {
             isEmpty = true;
+            for (PresentationEntity model : aweeklist) {
+                //添加数据
+                presentationModels.add(model);
+            }
         }
-        if(!isEmpty){
+
+        //添加标题
+        PresentationEntity title3 = new PresentationEntity();
+        title3.setType(1);
+        title3.setTitleType(3);
+        presentationModels.add(title3);
+        if (!isEmpty) {
             multipleStatusView.showEmpty();
-        }else{
-            leftAdapter.addSection("earlier", new PresentationAweekItemSection( 1, null, getContext(), "较早",null));
+        } else {
+            adapter.notifyChanged(presentationModels, isLoadMore);
         }
         refreshLayout.finishLoadmore();
         refreshLayout.finishRefreshing();

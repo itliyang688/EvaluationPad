@@ -1,6 +1,9 @@
 package cn.fek12.evaluation.view.activity;
 
 import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -9,14 +12,21 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.fek12.basic.base.BaseActivity;
+import com.fek12.basic.utils.toast.ToastUtils;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.application.MyApplication;
+import cn.fek12.evaluation.impl.IMain;
 import cn.fek12.evaluation.model.config.Configs;
+import cn.fek12.evaluation.model.entity.UpdateApkEntity;
+import cn.fek12.evaluation.model.sharedPreferences.PrefUtilsData;
+import cn.fek12.evaluation.presenter.MainPresenter;
 import cn.fek12.evaluation.view.jsinterface.JavaScriptinterface;
 import cn.fek12.evaluation.view.widget.NoRollWebView;
+import pl.droidsonroids.gif.GifImageView;
 
 /**
  * @ProjectName: EvaluationPad
@@ -25,13 +35,16 @@ import cn.fek12.evaluation.view.widget.NoRollWebView;
  * @Description:
  * @CreateDate: 2019/11/15 17:17
  */
-public class RemedialPracticeWebActivity extends BaseActivity {
+public class RemedialPracticeWebActivity extends BaseActivity<MainPresenter> implements IMain.View {
     @BindView(R.id.webView)
     NoRollWebView webView;
     @BindView(R.id.iv_left_back)
     ImageView ivLeftBack;
     @BindView(R.id.titleView)
     LinearLayout titleView;
+    @BindView(R.id.imgBg)
+    ImageView imgBg;
+
     private String subjectCategoryId;
 
     @Override
@@ -40,9 +53,45 @@ public class RemedialPracticeWebActivity extends BaseActivity {
     }
 
     @Override
-    protected void onInitView() {
-        Intent intent = getIntent();
+    protected MainPresenter onInitLogicImpl() {
+        return new MainPresenter(this);
+    }
+
+    @Override
+    protected boolean getFitsSystemWindows() {
+        return false;
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
         subjectCategoryId = intent.getStringExtra("subjectCategoryId");
+        String url = Configs.SMALLWORK + "userId=" + MyApplication.getMyApp().getUserId() + "&subjectCategoryNum=" + subjectCategoryId;
+        webView.loadUrl(url);
+    }
+
+
+    @Override
+    protected void onInitView() {
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                imgBg.setVisibility(View.INVISIBLE);
+
+            }
+        }, 2000);//2秒后执行Runnable中的run方法
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mPresenter.uauth(RemedialPracticeWebActivity.this, MyApplication.getMyApp().getUserId());
+            }
+        }, 1000);//2秒后执行Runnable中的run方法
+
+        subjectCategoryId = getIntent().getStringExtra("subjectCategoryId");
+    }
+
+    private void initWebView() {
         WebSettings webSettings = webView.getSettings();
         // 不使用缓存：
         webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
@@ -60,7 +109,7 @@ public class RemedialPracticeWebActivity extends BaseActivity {
         //String url = "http://192.168.0.46/noc/html/SmallWork.html";
         //String url = "http://192.168.0.46/noc/html/SmallWork.html?userId=" + MyApplication.getMyApplication().getUserId() + "&subjectCategoryId=" + subjectCategoryId;
         //String url = "http://218.245.6.132:11111/html/SmallWork.html?userId=" + MyApplication.getMyApplication().getUserId() + "&subjectCategoryId=" + subjectCategoryId;
-        showLoading();
+        //showLoading();
         String url = Configs.SMALLWORK + "userId=" + MyApplication.getMyApp().getUserId() + "&subjectCategoryNum=" + subjectCategoryId;
         webView.loadUrl(url);
 
@@ -71,9 +120,10 @@ public class RemedialPracticeWebActivity extends BaseActivity {
                 view.loadUrl(url);
                 return true;
             }
+
             @Override
-            public void onPageFinished(WebView view,String url){
-                hideLoading();
+            public void onPageFinished(WebView view, String url) {
+                //hideLoading();
             }
         });
     }
@@ -86,5 +136,47 @@ public class RemedialPracticeWebActivity extends BaseActivity {
     @OnClick(R.id.titleView)
     public void onViewClicked() {
         finish();
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ButterKnife.bind(this);
+    }
+
+    @Override
+    public void loadSuc(String token) {
+        PrefUtilsData.setToken(token);
+        initWebView();
+    }
+
+    @Override
+    public void loadFail(String msg) {
+
+    }
+
+    @Override
+    public void checkUpdateSuc(UpdateApkEntity entity) {
+
+    }
+
+    @Override
+    public void checkUpdateFail() {
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(MainActivity.get() == null){
+            /**退出清空及解绑服务*/
+            MyApplication.getMyApp().clearData();
+            try {
+                MyApplication.getMyApp().unbindService();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            System.exit(0);
+        }
     }
 }

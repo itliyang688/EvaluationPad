@@ -2,6 +2,8 @@ package cn.fek12.evaluation.view.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -29,6 +31,7 @@ import cn.fek12.evaluation.model.config.Configs;
 import cn.fek12.evaluation.utils.AppUtils;
 import cn.fek12.evaluation.utils.DisUtil;
 import cn.fek12.evaluation.view.PopupWindow.SubjectAllPopupWindow;
+import cn.fek12.evaluation.view.activity.TestWebViewActivity;
 import cn.fek12.evaluation.view.dialog.SelectDateDialog;
 import cn.fek12.evaluation.view.jsinterface.JavaScriptinterface;
 import cn.fek12.evaluation.view.widget.MultipleStatusView;
@@ -75,6 +78,7 @@ public class TopicWrongRecordPageFragment extends BaseFragment {
     @Override
     protected void onInitView(Bundle savedInstanceState) {
         //loadView.showEmpty();
+        getContext().startActivity(new Intent(getContext(), TestWebViewActivity.class));
         WebSettings webSettings = webView.getSettings();
         // 不使用缓存：
         webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);

@@ -10,8 +10,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/dp_20"
-            android:layout_marginRight="@dimen/dp_20"
-            android:background="@color/white"/>
+            android:layout_marginRight="@dimen/dp_30"
+            android:background="#FDFEFE"/>
         <FrameLayout
             android:id="@+id/rootView"
             android:layout_width="match_parent"

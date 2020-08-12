@@ -8,6 +8,10 @@ public interface PrefConstants {
     public static final String PREF_NAME = "config";
     String BANNERCACHE = "bannerCache";
     String USERID = "userId";
+    String REPORTREFRESH = "reportRefresh";
+    String COLLECTION = "isCollectionRefresh";
+    String PLAYCOUNTREFRESH = "isPlayCountRefresh";
+    String PROMOTEREFRESH = "promoteRefresh";
     String TOKEN = "token";
     String PER_LEVEL = "per_level";
     String ANALYSIS = "analysis";

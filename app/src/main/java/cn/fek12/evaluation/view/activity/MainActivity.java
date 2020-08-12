@@ -2,6 +2,8 @@ package cn.fek12.evaluation.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.MotionEvent;
 
 import androidx.fragment.app.Fragment;
@@ -42,8 +44,8 @@ import cn.fek12.evaluation.view.dialog.ProgressDialog;
 import cn.fek12.evaluation.view.dialog.UpgradeDialog;
 import cn.fek12.evaluation.view.fragment.EvaluationContainerFragment;
 import cn.fek12.evaluation.view.fragment.MicroLessonContainerFragment;
-import cn.fek12.evaluation.view.fragment.PresentationNewsFragment;
-import cn.fek12.evaluation.view.fragment.PromoteNewsFragment;
+import cn.fek12.evaluation.view.fragment.ReportFragment;
+import cn.fek12.evaluation.view.fragment.PromoteFragment;
 import cn.fek12.evaluation.view.fragment.RecordFragment;
 import cn.fek12.evaluation.view.widget.NumberProgressBar;
 
@@ -67,6 +69,11 @@ public class MainActivity extends BaseActivity<MainPresenter> implements BackFra
             R.mipmap.ic_bottom_evaluation_checked, R.mipmap.ic_bottom_report_checked,
             R.mipmap.ic_bottom_micro_class_checked, R.mipmap.ic_bottom_advance_checked, R.mipmap.ic_bottom_record_checked};
 
+    private static MainActivity mainActivity;
+    public static MainActivity get() {
+        return mainActivity != null ? mainActivity : null;
+    }
+
     @Override
     public int setLayoutResource() {
         return R.layout.activity_main;
@@ -80,6 +87,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements BackFra
 
     @Override
     protected void onInitView() {
+        mainActivity = MainActivity.this;
         //initView();
         //String apkUrl = "http://cdn.llsapp.com/android/LLS-v4.0-595-20160908-143200.apk";
         //showUpgradeDialog(0,apkUrl);
@@ -116,10 +124,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements BackFra
     @Override
     public void checkUpdateSuc(UpdateApkEntity entity) {
         if(entity != null && entity.getData() != null){
-            String apkUrl = "http://cdn.llsapp.com/android/LLS-v4.0-595-20160908-143200.apk";
-            //String apkUrl = entity.getData().getResourceUrl();
-            int isMust = entity.getData().getIsMust();
-            showUpgradeDialog(1,apkUrl);
+            showUpgradeDialog(entity);
         }
     }
 
@@ -133,28 +138,35 @@ public class MainActivity extends BaseActivity<MainPresenter> implements BackFra
             mTabEntities.add(new TabEntity(mTitles[i], mIconSelectIds[i], mIconUnselectIds[i]));
         }
         mFragments.add(new EvaluationContainerFragment());
-        mFragments.add(new PresentationNewsFragment());
+        mFragments.add(new ReportFragment());
         //mFragments.add(new MicroLessonFragment());
         mFragments.add(new MicroLessonContainerFragment());
         //mFragments.add(new PrimarySchoolVideoFragment());
-        mFragments.add(new PromoteNewsFragment());
+        mFragments.add(new PromoteFragment());
         mFragments.add(new RecordFragment());
         initCommonTabLayout();
         viewPage.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
         viewPage.setOffscreenPageLimit(5);
     }
 
-    private void showUpgradeDialog(int isMust,String resourceUrl){
+    private void showUpgradeDialog(UpdateApkEntity entity){
+        String apkUrl = entity.getData().getResourceUrl();
+        //String apkUrl = "http://cdn.llsapp.com/android/LLS-v4.0-595-20160908-143200.apk";
+        int isMust = entity.getData().getIsMust();
         UpgradeDialog upgradeDialog = new UpgradeDialog(this, isMust,new UpgradeDialog.OnSelectItemListener() {
             @Override
             public void onUpgrade() {
+                if (TextUtils.isEmpty(apkUrl) || !Patterns.WEB_URL.matcher(apkUrl.toString()).matches()) {
+                    ToastUtils.popUpToast("下载失败..");
+                    return;
+                }
                 uploadPictureProgress();
                 String singleFileSaveName = "evaluation_pad.apk";
                 String mSinglePath = FileDownloadUtils.getDefaultSaveRootPath() + File.separator + "Evaluation"
                         + File.separator + singleFileSaveName;
                 String mSaveFolder = FileDownloadUtils.getDefaultSaveRootPath() + File.separator + "Evaluation";
                 //AppUtils.installAPK(new File(mSinglePath),MainActivity.this);
-                new DownloadUtils().startDownLoadFileSingle(resourceUrl, mSinglePath, mSaveFolder, new DownloadUtils.FileDownLoaderCallBack() {
+                new DownloadUtils().startDownLoadFileSingle(apkUrl, mSinglePath, mSaveFolder, new DownloadUtils.FileDownLoaderCallBack() {
                     @Override
                     public void downLoadCompleted(BaseDownloadTask task) {
                         progressDialog.dismiss();
@@ -179,8 +191,9 @@ public class MainActivity extends BaseActivity<MainPresenter> implements BackFra
                 MainActivity.this.finish();
             }
         });
-
         upgradeDialog.show();
+        upgradeDialog.setViewData(entity.getData().getVersionName(),entity.getData().getVersionContent());
+
     }
 
     private ProgressDialog progressDialog;
@@ -317,5 +330,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements BackFra
         } catch (Exception e) {
             e.printStackTrace();
         }
+        System.exit(0);
     }
 }

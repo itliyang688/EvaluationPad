@@ -69,7 +69,7 @@
             android:name=".view.activity.EvaluationListActivity"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".view.activity.WebViewActivity"
+            android:name=".view.activity.TestWebViewActivity"
             android:theme="@style/TransparentTheme"
             android:screenOrientation="landscape" />
 
@@ -108,6 +108,8 @@
         <activity
             android:name=".view.activity.RemedialPracticeWebActivity"
             android:exported="true"
+            android:theme="@style/LauncherWebTheme"
+            android:launchMode="singleTask"
             android:screenOrientation="landscape" >
             <intent-filter>
                 <!-- 自定义action -->

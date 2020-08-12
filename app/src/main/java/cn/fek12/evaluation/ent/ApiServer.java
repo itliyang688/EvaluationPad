@@ -133,7 +133,7 @@ public interface ApiServer {
     @FormUrlEncoded
     @POST("promote/addCourseRecord")
     Observable<CommonEntity> addCourseRecord(@Field("playScheduleTime") String playScheduleTime,
-                                      @Field("subjectCategoryId ") String subjectCategoryId,
+                                      @Field("subjectCategoryId") String subjectCategoryId,
                                       @Field("videoId") String videoId,
                                       @Field("userId") String userId);
 

@@ -62,6 +62,11 @@ public class UpgradeDialog extends Dialog implements View.OnClickListener {
         }
     }
 
+    public void setViewData(String versionName,String explain){
+        tvVersion.setText("新版本 "+versionName);
+        tvExplain.setText(explain);
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {

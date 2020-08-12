@@ -27,6 +27,7 @@ import cn.fek12.evaluation.model.entity.StudentInfoEntity;
 import cn.fek12.evaluation.model.entity.UserInfoEntity;
 import cn.fek12.evaluation.model.sharedPreferences.PrefUtilsData;
 import cn.fek12.evaluation.utils.AppUtils;
+import cn.fek12.evaluation.view.adapter.ConqueredAdapter;
 import okhttp3.OkHttpClient;
 
 public class MyApplication extends BaseApplication {
@@ -34,15 +35,15 @@ public class MyApplication extends BaseApplication {
     private static OkHttpClient mOkHttpClient;
     private static final int DEFAULT_TIMEOUT = 30;
     //private String userId = "413";
-    //private String userId = "5a5a4534-0392-416a-9170-c923f563ca00";
-    //private String userId = "c73a79c5-622b-4d81-81bc-e862f45694cc";
+    private String userId = "0037ee10-686e-44fb-b3f7-9d816f7bfab4";
     //private String userId = "007c5d38-1bbe-40bb-b50d-20ad5559bfc6";
-    private String userId = "024b1bb5-86f4-490f-8a18-b0c53893a30d";
+    //private String userId = "024b1bb5-86f4-490f-8a18-b0c53893a30d";
     //private String userId = "00fb8e64-04af-4d8d-84dd-467390ad7000";
     private static final String TAG = "AIDL_Log";
     private IUserData iUserData;
     private boolean connected;
     private boolean serviceIsSuc = false;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -54,8 +55,8 @@ public class MyApplication extends BaseApplication {
 
 
     public String getUserId() {
-        //return PrefUtilsData.getUserId();
-        return userId;
+        return PrefUtilsData.getUserId();
+        //return userId;
     }
 
 
@@ -88,7 +89,6 @@ public class MyApplication extends BaseApplication {
                     StudentInfoEntity entity = new Gson().fromJson(studentInfo, StudentInfoEntity.class);
                     PrefUtilsData.setUserId(entity.getPer_id());
                     PrefUtilsData.setPer_level(String.valueOf(entity.getPer_level()));
-
                     //如果不使用通知功能，以下代码不是必须的
                     iUserData.registerListener(onUserDataUpdateListener);
                 } catch (Exception e) {
@@ -115,6 +115,7 @@ public class MyApplication extends BaseApplication {
             }
         }
         unbindService(serviceConnection);
+        serviceIsSuc = false;
     }
 
     /**如果登陆信息和学生信息发生变化退出程序*/

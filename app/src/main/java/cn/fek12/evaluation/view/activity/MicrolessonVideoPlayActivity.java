@@ -2,9 +2,11 @@ package cn.fek12.evaluation.view.activity;
 
 import android.content.Intent;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.fek12.basic.base.BaseActivity;
+import com.fek12.basic.utils.string.StringUtils;
 import com.fek12.basic.utils.toast.ToastUtils;
 
 import butterknife.BindView;
@@ -12,6 +14,7 @@ import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.application.MyApplication;
 import cn.fek12.evaluation.impl.IMicrolessVideoPlay;
 import cn.fek12.evaluation.model.entity.CollectionEntity;
+import cn.fek12.evaluation.model.sharedPreferences.PrefUtilsData;
 import cn.fek12.evaluation.presenter.MicrolessonVideoPlayPresenter;
 import cn.fek12.evaluation.view.widget.MyJzvdStd;
 import cn.jzvd.Jzvd;
@@ -31,6 +34,7 @@ public class MicrolessonVideoPlayActivity extends BaseActivity<MicrolessonVideoP
     private String videoName;
     private String imgUrl;
     private String videoId;
+    private String subjectCategoryId;
     private long playScheduleTime;
     private int isCollection;
     private String isEnd = "0";
@@ -48,6 +52,7 @@ public class MicrolessonVideoPlayActivity extends BaseActivity<MicrolessonVideoP
         videoName = intent.getStringExtra("videoName");
         imgUrl = intent.getStringExtra("imgUrl");
         videoId = intent.getStringExtra("videoId");
+        subjectCategoryId = intent.getStringExtra("subjectCategoryId");
         playScheduleTime = intent.getIntExtra("playScheduleTime",0);
         isCollection = intent.getIntExtra("isCollection",0);
 
@@ -56,7 +61,10 @@ public class MicrolessonVideoPlayActivity extends BaseActivity<MicrolessonVideoP
         myJzvdStd.setUp(pathUrl,videoName);
         myJzvdStd.seekToInAdvance = playScheduleTime;
         myJzvdStd.gotoScreenFullscreen();
-
+        //设置容器内播放器高,解决黑边（视频全屏）
+        myJzvdStd.setVideoImageDisplayType(myJzvdStd.VIDEO_IMAGE_DISPLAY_TYPE_FILL_PARENT);
+        //将缩略图的scaleType设置为FIT_XY（图片全屏）
+        myJzvdStd.thumbImageView.setScaleType(ImageView.ScaleType.FIT_XY);
         Glide.with(MyApplication.getApp()).load(imgUrl).into(myJzvdStd.thumbImageView);
         myJzvdStd.ivExtend.setImageResource(isCollection == 0 ? R.mipmap.collection_video_normal : R.mipmap.collection_video_check);
         myJzvdStd.backButton.setOnClickListener(onClickListener);
@@ -106,6 +114,7 @@ public class MicrolessonVideoPlayActivity extends BaseActivity<MicrolessonVideoP
 
     @Override
     public void loadCollectionSuc(CollectionEntity entry) {
+        PrefUtilsData.setIsCollectionRefresh(true);
         if(tag.equals("0")){
             isCollection = 0;
             ToastUtils.popUpToast("已取消");
@@ -128,7 +137,11 @@ public class MicrolessonVideoPlayActivity extends BaseActivity<MicrolessonVideoP
     @Override
     protected void onPause() {
         if(currentPos > 0){
-            mPresenter.addOrUpdateVideoPlayCount(MicrolessonVideoPlayActivity.this,String.valueOf(currentPos),MyApplication.getMyApp().getUserId(),videoId);
+            if(StringUtils.isEmpty(subjectCategoryId)){
+                mPresenter.addOrUpdateVideoPlayCount(MicrolessonVideoPlayActivity.this,String.valueOf(currentPos),MyApplication.getMyApp().getUserId(),videoId);
+            }else{
+                mPresenter.schedule(MicrolessonVideoPlayActivity.this, String.valueOf(currentPos),subjectCategoryId, videoId, MyApplication.getMyApp().getUserId());
+            }
         }
         super.onPause();
     }

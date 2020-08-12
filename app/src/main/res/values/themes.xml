@@ -26,10 +26,10 @@
         <item name="windowNoTitle">true</item>
         <!-- 无默认 ActionBar -->
         <item name="windowActionBar">true</item>
-        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimary">@color/app_bg</item>
         <item name="android:windowBackground">@drawable/main_bg</item>
-        <item name="android:statusBarColor" tools:ignore="NewApi">@color/white</item>
-        <item name="android:windowLightStatusBar" tools:ignore="NewApi">true</item>
+        <item name="android:statusBarColor" tools:ignore="NewApi">@color/transparent</item>
+        <item name="android:windowLightStatusBar" tools:ignore="NewApi">false</item>
     </style>
 
     <style name="AppTheme.Transparent" parent="AppTheme">
@@ -39,9 +39,14 @@
     </style>
 
     <style name="LauncherTheme" parent="AppTheme">
-        <item name="android:background">@mipmap/splash_icon</item>
+        <item name="android:background">@mipmap/splash_png</item>
         <!--<item name="android:background">@color/white</item>-->
     </style>
+    <style name="LauncherWebTheme" parent="AppTheme">
+        <item name="android:background">@color/white</item>
+        <!--<item name="android:background">@mipmap/splash_png</item>-->
+    </style>
+
 
     <style name="AppTheme.Light" parent="AppTheme">
         <item name="android:windowBackground">@color/white</item>

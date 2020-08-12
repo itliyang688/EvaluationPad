@@ -14,6 +14,7 @@ import cn.fek12.evaluation.impl.IMicrolessVideoPlay;
 import cn.fek12.evaluation.impl.ISpeciaVideoPlay;
 import cn.fek12.evaluation.model.entity.CollectionEntity;
 import cn.fek12.evaluation.model.entity.CommonEntity;
+import cn.fek12.evaluation.model.sharedPreferences.PrefUtilsData;
 
 /**
  * @ProjectName: EvaluationPad
@@ -37,7 +38,7 @@ public class MicrolessonVideoPlayPresenter extends BasePresenter<IMicrolessVideo
                     public void onSuccess(CollectionEntity entry) {
 
                         if (entry != null){
-
+                            PrefUtilsData.setIsPlayCountRefresh(true);
                         }
                     }
 
@@ -69,4 +70,25 @@ public class MicrolessonVideoPlayPresenter extends BasePresenter<IMicrolessVideo
                     }
                 });
     }
+
+    @Override
+    public void schedule(Context context, String playScheduleTime, String subjectCategoryId,String videoId, String userId) {
+        ApiRetrofit.getInstance().getApiService().addCourseRecord(playScheduleTime,subjectCategoryId,videoId,userId)
+                .compose(RxHelper.observableIO2Main(context))
+                .subscribe(new BaseObserver<CommonEntity>() {
+
+                    @Override
+                    public void onSuccess(CommonEntity entry) {
+                        if(entry.getState().equals("0")){
+                        }else{
+                        }
+                    }
+
+                    @Override
+                    public void onError(String msg) {
+                        Log.e("onError",msg);
+                    }
+                });
+    }
+
 }

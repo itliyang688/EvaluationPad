@@ -349,7 +349,8 @@ public class MiddleSchoolVideoFragment extends BaseFragment<MicroLessonPresenter
                 //mViewPager.setCurrentItem(position);
                 if(position == 1){
                     //String titleName = currentItme==1? "同步视频":"专题视频";
-                    String value = position==1? "SWEETOWN":"SPECIAL";
+                    //String value = position==1? "SWEETOWN":"SPECIAL";
+                    String value = "SYNCHRO";
                     startContainActivityIntent("",value,position, MicroLessonTreeActivity.class);
                 }else {
                     startActivityIntent(String.valueOf(position), PrepareExaminationActivity.class);

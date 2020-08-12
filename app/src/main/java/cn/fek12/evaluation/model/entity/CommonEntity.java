@@ -17,15 +17,15 @@ public class CommonEntity implements Serializable {
      * message : 成功
      */
 
-    private boolean data;
+    private String data;
     private String state;
     private String message;
 
-    public boolean getData() {
+    public String getData() {
         return data;
     }
 
-    public void setData(boolean data) {
+    public void setData(String data) {
         this.data = data;
     }
 

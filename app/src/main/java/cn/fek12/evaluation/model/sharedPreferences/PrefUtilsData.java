@@ -21,6 +21,38 @@ public abstract class PrefUtilsData {
         SP.putString(PrefConstants.USERID, userId);
     }
 
+    public static boolean getIsReportRefresh() {
+        return SP.getBoolean(PrefConstants.REPORTREFRESH, false);
+    }
+
+    public static void setIsReportRefresh(boolean isRefresh) {
+        SP.putBoolean(PrefConstants.REPORTREFRESH, isRefresh);
+    }
+
+    public static boolean getIsPromoteRefresh() {
+        return SP.getBoolean(PrefConstants.PROMOTEREFRESH, false);
+    }
+
+    public static void setIsPromoteRefresh(boolean isRefresh) {
+        SP.putBoolean(PrefConstants.PROMOTEREFRESH, isRefresh);
+    }
+
+    public static boolean getIsCollectionRefresh() {
+        return SP.getBoolean(PrefConstants.COLLECTION, false);
+    }
+
+    public static void setIsCollectionRefresh(boolean isRefresh) {
+        SP.putBoolean(PrefConstants.COLLECTION, isRefresh);
+    }
+
+    public static boolean getIsPlayCountRefresh() {
+        return SP.getBoolean(PrefConstants.PLAYCOUNTREFRESH, false);
+    }
+
+    public static void setIsPlayCountRefresh(boolean isRefresh) {
+        SP.putBoolean(PrefConstants.PLAYCOUNTREFRESH, isRefresh);
+    }
+
     public static String getToken() {
         return SP.getString(PrefConstants.TOKEN, "");
     }

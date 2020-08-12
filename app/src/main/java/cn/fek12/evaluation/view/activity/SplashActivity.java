@@ -1,17 +1,20 @@
 package cn.fek12.evaluation.view.activity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.os.Handler;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.fek12.basic.base.BaseActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.fek12.evaluation.R;
 
 /**
@@ -25,6 +28,9 @@ public class SplashActivity extends BaseActivity {
 
     @BindView(R.id.rl_root)
     RelativeLayout rlRoot;
+    @BindView(R.id.tvTimeKeeping)
+    TextView tvTimeKeeping;
+    private CountDownTimer timer;
 
     @Override
     public int setLayoutResource() {
@@ -34,15 +40,35 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void onInitView() {
         //animationView(rlRoot);
-        Handler handler = new Handler();
+        timer = new CountDownTimer(6000, 1000) {
+            @SuppressLint("DefaultLocale")
+            @Override
+            public void onTick(long millisUntilFinished) {
+                tvTimeKeeping.setText("跳过 "+millisUntilFinished / 1000 + "s");
+            }
+
+            @Override
+            public void onFinish() {
+                startActivity(MainActivity.class);
+                finish();
+            }
+        };
+        timer.start();
+
+        /*Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 startActivity(MainActivity.class);
                 finish();
             }
-        }, 2000);//2秒后执行Runnable中的run方法
+        }, 3000);*///2秒后执行Runnable中的run方法
 
+    }
+
+    @Override
+    protected boolean getFitsSystemWindows() {
+        return true;
     }
 
     @Override
@@ -100,5 +126,31 @@ public class SplashActivity extends BaseActivity {
         });
 
         view.startAnimation(set);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ButterKnife.bind(this);
+    }
+
+    @OnClick(R.id.rlBack)
+    public void onViewClicked() {
+        cancle();
+        startActivity(MainActivity.class);
+        finish();
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        cancle();
+    }
+
+    public void cancle() {
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+        }
     }
 }

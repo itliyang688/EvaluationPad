@@ -92,7 +92,7 @@ public class DownloadUtils {
 
         @Override
         protected void warn(BaseDownloadTask task) {
-
+            Log.d("DownloadTask","warn taskId:"+task.getId());
         }
     };
 

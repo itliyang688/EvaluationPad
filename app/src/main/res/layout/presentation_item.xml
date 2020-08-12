@@ -24,7 +24,9 @@
         android:layout_height="@dimen/dp_33"
         android:textColor="@color/color_333"
         android:layout_marginTop="@dimen/dp_6"
-        android:text="五年级随堂测试报告法师打发打发斯蒂芬"
+        android:lines="2"
+        android:ellipsize="end"
+        android:text=""
         android:textSize="@dimen/sp_12"/>
     <TextView
         android:id="@+id/tvSubject"
