@@ -126,7 +126,9 @@ public class JavaScriptinterface {
      */
     @JavascriptInterface
     public void reportRefresh() {
+        //ToastUtils.popUpToast("调用成功");
         PrefUtilsData.setIsReportRefresh(true);
         PrefUtilsData.setIsPromoteRefresh(true);
+        PrefUtilsData.setIsEvaluationRefresh(true);
     }
 }

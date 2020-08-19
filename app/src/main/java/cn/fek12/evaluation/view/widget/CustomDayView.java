@@ -67,7 +67,7 @@ public class CustomDayView extends DayView {
         }
     }
 
-    private void renderSelect(State state) {
+    /*private void renderSelect(State state) {
         if (state == State.SELECT) {
             if(select == 0){
                 select = 1;
@@ -82,14 +82,28 @@ public class CustomDayView extends DayView {
             selectedBackground.setVisibility(GONE);
             dateTv.setTextColor(Color.parseColor("#111111"));
         }
+    }*/
+
+
+    private void renderSelect(State state) {
+        if (state == State.SELECT) {
+            selectedBackground.setVisibility(VISIBLE);
+            dateTv.setTextColor(Color.WHITE);
+        } else if (state == State.NEXT_MONTH || state == State.PAST_MONTH) {
+            selectedBackground.setVisibility(GONE);
+            dateTv.setTextColor(Color.parseColor("#d5d5d5"));
+        } else {
+            selectedBackground.setVisibility(GONE);
+            dateTv.setTextColor(Color.parseColor("#111111"));
+        }
     }
 
     private void renderToday(CalendarDate date) {
         if (date != null) {
             if (date.equals(today)) {
-                //dateTv.setText("今");
-                dateTv.setText(date.day + "");
-                todayBackground.setVisibility(GONE);
+                dateTv.setText("今");
+                //dateTv.setText(date.day + "");
+                todayBackground.setVisibility(VISIBLE);
             } else {
                 dateTv.setText(date.day + "");
                 todayBackground.setVisibility(GONE);

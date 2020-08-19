@@ -1,6 +1,7 @@
 package cn.fek12.evaluation.view.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Patterns;
@@ -18,6 +19,8 @@ import com.fek12.basic.utils.toast.ToastUtils;
 import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
+import com.flyco.tablayout.utils.UnreadMsgUtils;
+import com.flyco.tablayout.widget.MsgView;
 import com.future_education.module_login.IUserData;
 import com.liulishuo.filedownloader.BaseDownloadTask;
 import com.liulishuo.filedownloader.util.FileDownloadUtils;
@@ -38,6 +41,7 @@ import cn.fek12.evaluation.model.sharedPreferences.PrefUtilsData;
 import cn.fek12.evaluation.presenter.MainPresenter;
 import cn.fek12.evaluation.utils.AppUtils;
 import cn.fek12.evaluation.utils.DialogUtils;
+import cn.fek12.evaluation.utils.DisUtil;
 import cn.fek12.evaluation.utils.LoadViewUtils;
 import cn.fek12.evaluation.utils.download.DownloadUtils;
 import cn.fek12.evaluation.view.dialog.ProgressDialog;
@@ -227,6 +231,11 @@ public class MainActivity extends BaseActivity<MainPresenter> implements BackFra
         return super.dispatchTouchEvent(event);
     }
 
+    protected int dp2px(float dp) {
+        final float scale = MainActivity.this.getResources().getDisplayMetrics().density;
+        return (int) (dp * scale + 0.5f);
+    }
+
     private void initCommonTabLayout() {
         commonTabLayout.setTabData(mTabEntities);
         commonTabLayout.setOnTabSelectListener(new OnTabSelectListener() {
@@ -252,6 +261,11 @@ public class MainActivity extends BaseActivity<MainPresenter> implements BackFra
             @Override
             public void onPageSelected(int position) {
                 commonTabLayout.setCurrentTab(position);
+                if(position != 3){
+                    setUnread(1);
+                }else{
+                    commonTabLayout.hideMsg(3);
+                }
                 //enlargeAndreduction(position,true);
                 //enlargeAndreduction(previousPos,false);
                 //previousPos = position;
@@ -265,6 +279,18 @@ public class MainActivity extends BaseActivity<MainPresenter> implements BackFra
 
         viewPage.setCurrentItem(0);
         //enlargeAndreduction(previousPos,true);
+    }
+
+    //设置未读消息提示
+    private void setUnread(int num){
+        //设置红点
+        //commonTabLayout.showDot(2);
+        //设置未读消息背景
+        commonTabLayout.showMsg(3, num);
+        commonTabLayout.setMsgMargin(3, -28 , -2);
+        if(num == 0){
+            UnreadMsgUtils.setSize(commonTabLayout.getMsgView(3),20);
+        }
     }
 
 

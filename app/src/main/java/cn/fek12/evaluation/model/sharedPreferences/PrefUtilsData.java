@@ -37,6 +37,14 @@ public abstract class PrefUtilsData {
         SP.putBoolean(PrefConstants.PROMOTEREFRESH, isRefresh);
     }
 
+    public static boolean getIsEvaluationRefresh() {
+        return SP.getBoolean(PrefConstants.EVALUATIONREFRESH, false);
+    }
+
+    public static void setIsEvaluationRefresh(boolean isRefresh) {
+        SP.putBoolean(PrefConstants.EVALUATIONREFRESH, isRefresh);
+    }
+
     public static boolean getIsCollectionRefresh() {
         return SP.getBoolean(PrefConstants.COLLECTION, false);
     }

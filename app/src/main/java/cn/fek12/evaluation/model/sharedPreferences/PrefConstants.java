@@ -12,6 +12,7 @@ public interface PrefConstants {
     String COLLECTION = "isCollectionRefresh";
     String PLAYCOUNTREFRESH = "isPlayCountRefresh";
     String PROMOTEREFRESH = "promoteRefresh";
+    String EVALUATIONREFRESH = "evaluationRefresh";
     String TOKEN = "token";
     String PER_LEVEL = "per_level";
     String ANALYSIS = "analysis";

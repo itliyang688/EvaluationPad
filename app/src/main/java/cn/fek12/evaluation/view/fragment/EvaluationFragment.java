@@ -108,7 +108,8 @@ public class EvaluationFragment extends BaseFragment<EvaluationPresenter> implem
     @Override
     public void onResume() {
         super.onResume();
-        if(adapter != null && recommendList != null){
+        if(adapter != null && recommendList != null && PrefUtilsData.getIsEvaluationRefresh()){
+            PrefUtilsData.setIsEvaluationRefresh(false);
             isRefreshtBanner = false;
             multipleStatusView.showLoading();
             mPresenter.initEvaluation(getContext(), MyApplication.getMyApp().getUserId(),PrefUtilsData.getPer_level());
@@ -139,7 +140,8 @@ public class EvaluationFragment extends BaseFragment<EvaluationPresenter> implem
         loopViewpagerMz.setPageListener(pageBean, R.layout.evaluation_list_item_banner, new PageHelperListener<HomeEvaluationDeta.DataBean.BannerBean>() {
             @Override
             public void getItemView(View view, HomeEvaluationDeta.DataBean.BannerBean data) {
-                RoundImageView image = view.findViewById(R.id.image);
+                //RoundImageView image = view.findViewById(R.id.image);
+                ImageView image = view.findViewById(R.id.image);
                 Glide.with(getContext()).load(data.getImageUrl()).into(image);
                 //Glide.with(getContext()).load(data.getImageUrl()).placeholder(R.mipmap.empty_bg).error(R.mipmap.empty_bg).into(image);
             }

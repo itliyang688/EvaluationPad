@@ -65,7 +65,7 @@ public class SelectDateDialog extends Dialog {
         tvCheckDate = view.findViewById(R.id.tvCheckDate);
         btnConfirm = view.findViewById(R.id.btnConfirm);
         setContentView(view);
-        //按空白处不能取消动画
+        //按空白处取消动画
         setCanceledOnTouchOutside(true);
         setCancelable(true);
         tvCheckDate.setText(titleName);
@@ -74,13 +74,14 @@ public class SelectDateDialog extends Dialog {
             @Override
             public void onClick(View view) {
                 if(mOnSelectItemDateListener != null){
-                    mOnSelectItemDateListener.onDateItme(tvCheckDate.getText().toString());
+                    //mOnSelectItemDateListener.onDateItme(tvCheckDate.getText().toString());
+                    mOnSelectItemDateListener.onDateItme(selectDate.getYear()+"-"+selectDate.getMonth()+"-"+selectDate.getDay());
                     dismiss();
                 }
             }
         });
-        btnConfirm.setClickable(false);
-        btnConfirm.setTextColor(Color.parseColor("#d5d5d5"));
+        //btnConfirm.setClickable(false);
+        //btnConfirm.setTextColor(Color.parseColor("#d5d5d5"));
 
         currentDate = new CalendarDate();
         selectDate = new CalendarDate();
