@@ -223,15 +223,15 @@ public class AutonomyEvaluationListActivity extends BaseActivity<AutonomyEvaluat
     @Override
     public void loadPaperListSuc(EvaluationListEntity entry) {
         EvaluationListEntity.DataBean.PageInfoBean pageInfoBean = entry.getData().getPage_info();
-        List<EvaluationListEntity.DataBean.PapersBean> list = entry.getData().getPapers();
         if (pageInfoBean.getTotalCount() == 0) {
             loadView.showEmpty();
             return;
         }
+        List<EvaluationListEntity.DataBean.PapersBean> papers = entry.getData().getPapers();
         if (isLoadMore) {
-            mList.addAll(entry.getData().getPapers());
+            mList.addAll(papers);
         } else {
-            mList = entry.getData().getPapers();
+            mList = papers;
         }
         loadView.showContent();
         if (pageInfoBean.getTotalPage() > currentPage) {
@@ -240,7 +240,7 @@ public class AutonomyEvaluationListActivity extends BaseActivity<AutonomyEvaluat
             refreshLayout.setEnableLoadmore(false);
         }
         if (mList != null && mList.size() > 0) {
-            evaluationAdapter.notifyChanged(mList, isLoadMore);
+            evaluationAdapter.notifyChanged(papers, isLoadMore);
             if (!isLoadMore) {
                 recyclerView.smoothScrollToPosition(0);
             }

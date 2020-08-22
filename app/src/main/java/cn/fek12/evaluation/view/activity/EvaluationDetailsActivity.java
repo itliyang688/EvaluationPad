@@ -424,7 +424,7 @@ public class EvaluationDetailsActivity extends BaseActivity<EvaluationDetailsPre
             refreshLayout.setEnableLoadmore(false);
         }
         if(mList != null && mList.size() > 0){
-            evaluationAdapter.notifyChanged(mList,isLoadMore);
+            evaluationAdapter.notifyChanged(entry.getData().getPapers(),isLoadMore);
             if(!isLoadMore){
                 recyclerView.smoothScrollToPosition(0);
             }

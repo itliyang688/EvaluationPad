@@ -257,7 +257,7 @@ public class MicroLessonMoreActivity extends BaseActivity<MicroLessonMorePresent
         }
 
         if(mList != null && mList.size() > 0){
-            videoAdapter.notifyChanged(mList,isLoadMore);
+            videoAdapter.notifyChanged(entry.getData().getRecords(),isLoadMore);
         }
         refreshLayout.finishLoadmore();
         refreshLayout.finishRefreshing();

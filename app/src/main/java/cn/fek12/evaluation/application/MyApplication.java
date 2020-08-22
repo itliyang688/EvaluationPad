@@ -35,7 +35,8 @@ public class MyApplication extends BaseApplication {
     private static OkHttpClient mOkHttpClient;
     private static final int DEFAULT_TIMEOUT = 30;
     //private String userId = "413";
-    private String userId = "0037ee10-686e-44fb-b3f7-9d816f7bfab4";
+    private String userId = "852A467A-CFBC-C88F-CE35-3F628A6942FB";
+    //private String userId = "0037ee10-686e-44fb-b3f7-9d816f7bfab4";
     //private String userId = "007c5d38-1bbe-40bb-b50d-20ad5559bfc6";
     //private String userId = "024b1bb5-86f4-490f-8a18-b0c53893a30d";
     //private String userId = "00fb8e64-04af-4d8d-84dd-467390ad7000";
@@ -55,8 +56,8 @@ public class MyApplication extends BaseApplication {
 
 
     public String getUserId() {
-        return PrefUtilsData.getUserId();
-        //return userId;
+        //return PrefUtilsData.getUserId();
+        return userId;
     }
 
 

@@ -1,11 +1,11 @@
 package cn.fek12.evaluation.view.activity;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.MotionEvent;
+import android.widget.RelativeLayout;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -20,7 +20,6 @@ import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.flyco.tablayout.utils.UnreadMsgUtils;
-import com.flyco.tablayout.widget.MsgView;
 import com.future_education.module_login.IUserData;
 import com.liulishuo.filedownloader.BaseDownloadTask;
 import com.liulishuo.filedownloader.util.FileDownloadUtils;
@@ -47,15 +46,18 @@ import cn.fek12.evaluation.utils.download.DownloadUtils;
 import cn.fek12.evaluation.view.dialog.ProgressDialog;
 import cn.fek12.evaluation.view.dialog.UpgradeDialog;
 import cn.fek12.evaluation.view.fragment.EvaluationContainerFragment;
+import cn.fek12.evaluation.view.fragment.LearningSituationFragment;
 import cn.fek12.evaluation.view.fragment.MicroLessonContainerFragment;
-import cn.fek12.evaluation.view.fragment.ReportFragment;
 import cn.fek12.evaluation.view.fragment.PromoteFragment;
 import cn.fek12.evaluation.view.fragment.RecordFragment;
+import cn.fek12.evaluation.view.fragment.ReportFragment;
 import cn.fek12.evaluation.view.widget.NumberProgressBar;
 
 public class MainActivity extends BaseActivity<MainPresenter> implements BackFragmentInterface, IMain.View {
     private static boolean isExit = false;
     private static final String TAG = "AIDL_Log";
+    @BindView(R.id.rootView)
+    RelativeLayout rootView;
     private IUserData iUserData;
     private boolean connected;
     private BaseFragment baseFragment;
@@ -74,6 +76,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements BackFra
             R.mipmap.ic_bottom_micro_class_checked, R.mipmap.ic_bottom_advance_checked, R.mipmap.ic_bottom_record_checked};
 
     private static MainActivity mainActivity;
+
     public static MainActivity get() {
         return mainActivity != null ? mainActivity : null;
     }
@@ -90,8 +93,14 @@ public class MainActivity extends BaseActivity<MainPresenter> implements BackFra
     }
 
     @Override
+    protected boolean getFitsSystemWindows() {
+        return false;
+    }
+
+    @Override
     protected void onInitView() {
         mainActivity = MainActivity.this;
+        viewPage.setPadding(0,AppUtils.getStatusBarHeight(MainActivity.this),0,0);
         //initView();
         //String apkUrl = "http://cdn.llsapp.com/android/LLS-v4.0-595-20160908-143200.apk";
         //showUpgradeDialog(0,apkUrl);
@@ -101,8 +110,8 @@ public class MainActivity extends BaseActivity<MainPresenter> implements BackFra
     protected void onLoadData() {
         DialogUtils.showDialog(LoadViewUtils.getLoadingView(MainActivity.this));
         int versionCode = AppUtils.getVersionCode(MainActivity.this);
-        mPresenter.uauth(MainActivity.this,MyApplication.getMyApp().getUserId());
-        mPresenter.chechUpdate(MainActivity.this,String.valueOf(versionCode));
+        mPresenter.uauth(MainActivity.this, MyApplication.getMyApp().getUserId());
+        mPresenter.chechUpdate(MainActivity.this, String.valueOf(versionCode));
     }
 
     /**
@@ -127,7 +136,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements BackFra
 
     @Override
     public void checkUpdateSuc(UpdateApkEntity entity) {
-        if(entity != null && entity.getData() != null){
+        if (entity != null && entity.getData() != null) {
             showUpgradeDialog(entity);
         }
     }
@@ -146,18 +155,19 @@ public class MainActivity extends BaseActivity<MainPresenter> implements BackFra
         //mFragments.add(new MicroLessonFragment());
         mFragments.add(new MicroLessonContainerFragment());
         //mFragments.add(new PrimarySchoolVideoFragment());
-        mFragments.add(new PromoteFragment());
+        //mFragments.add(new PromoteFragment());
+        mFragments.add(new LearningSituationFragment());
         mFragments.add(new RecordFragment());
         initCommonTabLayout();
         viewPage.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
         viewPage.setOffscreenPageLimit(5);
     }
 
-    private void showUpgradeDialog(UpdateApkEntity entity){
+    private void showUpgradeDialog(UpdateApkEntity entity) {
         String apkUrl = entity.getData().getResourceUrl();
         //String apkUrl = "http://cdn.llsapp.com/android/LLS-v4.0-595-20160908-143200.apk";
         int isMust = entity.getData().getIsMust();
-        UpgradeDialog upgradeDialog = new UpgradeDialog(this, isMust,new UpgradeDialog.OnSelectItemListener() {
+        UpgradeDialog upgradeDialog = new UpgradeDialog(this, isMust, new UpgradeDialog.OnSelectItemListener() {
             @Override
             public void onUpgrade() {
                 if (TextUtils.isEmpty(apkUrl) || !Patterns.WEB_URL.matcher(apkUrl.toString()).matches()) {
@@ -174,7 +184,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements BackFra
                     @Override
                     public void downLoadCompleted(BaseDownloadTask task) {
                         progressDialog.dismiss();
-                        AppUtils.installAPK(new File(mSinglePath),MainActivity.this);
+                        AppUtils.installAPK(new File(mSinglePath), MainActivity.this);
                     }
 
                     @Override
@@ -196,13 +206,14 @@ public class MainActivity extends BaseActivity<MainPresenter> implements BackFra
             }
         });
         upgradeDialog.show();
-        upgradeDialog.setViewData(entity.getData().getVersionName(),entity.getData().getVersionContent());
+        upgradeDialog.setViewData(entity.getData().getVersionName(), entity.getData().getVersionContent());
 
     }
 
     private ProgressDialog progressDialog;
     private NumberProgressBar bnp;
-    private void uploadPictureProgress(){
+
+    private void uploadPictureProgress() {
         progressDialog = new ProgressDialog(MainActivity.this);
         progressDialog.show();
         bnp = progressDialog.getBnp();
@@ -261,10 +272,12 @@ public class MainActivity extends BaseActivity<MainPresenter> implements BackFra
             @Override
             public void onPageSelected(int position) {
                 commonTabLayout.setCurrentTab(position);
-                if(position != 3){
+                if (position != 3) {
+                    rootView.setBackgroundColor(getContext().getResources().getColor(R.color.transparent));
                     setUnread(1);
-                }else{
-                    commonTabLayout.hideMsg(3);
+                } else {
+                    rootView.setBackgroundResource(R.mipmap.learning_situation_bg);
+                    commonTabLayout.hideMsg(position);
                 }
                 //enlargeAndreduction(position,true);
                 //enlargeAndreduction(previousPos,false);
@@ -282,14 +295,14 @@ public class MainActivity extends BaseActivity<MainPresenter> implements BackFra
     }
 
     //设置未读消息提示
-    private void setUnread(int num){
+    private void setUnread(int num) {
         //设置红点
         //commonTabLayout.showDot(2);
         //设置未读消息背景
         commonTabLayout.showMsg(3, num);
-        commonTabLayout.setMsgMargin(3, -28 , -2);
-        if(num == 0){
-            UnreadMsgUtils.setSize(commonTabLayout.getMsgView(3),20);
+        commonTabLayout.setMsgMargin(3, -28, -2);
+        if (num == 0) {
+            UnreadMsgUtils.setSize(commonTabLayout.getMsgView(3), 20);
         }
     }
 

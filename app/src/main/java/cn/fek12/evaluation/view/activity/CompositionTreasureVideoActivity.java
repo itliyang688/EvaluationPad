@@ -284,10 +284,11 @@ public class CompositionTreasureVideoActivity extends BaseActivity<RiseMiddleSch
 
     @Override
     public void loadVideoSuc(MicrolessonVideoEntity entry) {
+        List<MicrolessonVideoEntity.DataBean.RecordsBean> recordsBeans = entry.getData().getRecords();
         if(isLoadMore){
-            mList.addAll(entry.getData().getRecords());
+            mList.addAll(recordsBeans);
         }else{
-            mList = entry.getData().getRecords();
+            mList = recordsBeans;
         }
         if(entry.getData().getPages() == 0){
             loadView.showEmpty();
@@ -301,7 +302,7 @@ public class CompositionTreasureVideoActivity extends BaseActivity<RiseMiddleSch
         }
 
         if(mList != null && mList.size() > 0){
-            videoAdapter.notifyChanged(mList,isLoadMore);
+            videoAdapter.notifyChanged(recordsBeans,isLoadMore);
         }
         refreshLayout.finishLoadmore();
         refreshLayout.finishRefreshing();

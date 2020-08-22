@@ -11,12 +11,14 @@ import cn.fek12.evaluation.model.entity.ConqueredEntity;
 import cn.fek12.evaluation.model.entity.CurriculumEntity;
 import cn.fek12.evaluation.model.entity.EarlierEntity;
 import cn.fek12.evaluation.model.entity.EvaluationListEntity;
+import cn.fek12.evaluation.model.entity.ExaminationEntity;
 import cn.fek12.evaluation.model.entity.GradeDictionaryListEntity;
 import cn.fek12.evaluation.model.entity.HomeEvaluationDeta;
 import cn.fek12.evaluation.model.entity.MicroLessonEnetity;
 import cn.fek12.evaluation.model.entity.MicroLessonPageEnetity;
 import cn.fek12.evaluation.model.entity.MicrolessonVideoEntity;
 import cn.fek12.evaluation.model.entity.PaperTypeListResp;
+import cn.fek12.evaluation.model.entity.PlanVideoEntity;
 import cn.fek12.evaluation.model.entity.PracticeListEntity;
 import cn.fek12.evaluation.model.entity.RecordsEntitiy;
 import cn.fek12.evaluation.model.entity.RelevantVideoListEntity;
@@ -413,6 +415,14 @@ public interface ApiServer {
     /***带分页的微课模块*/
     @GET("nocPadVersion/checkPadVersionByCode")
     Observable<UpdateApkEntity> checkPadVersionByCode(@Query("versionCode") String versionCode);
+
+    /***学情本周计划*/
+    @GET("studyPlan/querWeekStudyPlanVideoList")
+    Observable<PlanVideoEntity> querWeekStudyPlanVideoList(@Query("userId") String userId, @Query("subjectId") String subjectId);
+
+    /***学情作业考试*/
+    @GET("task/queryTaskPage")
+    Observable<ExaminationEntity> queryTaskPage(@Query("userId") String userId, @Query("subjectId") String subjectId, @Query("taskType") String taskType, @Query("startDate") String startDate, @Query("endDate") String endDate, @Query("current") String current, @Query("size") String size);
 
 }
 

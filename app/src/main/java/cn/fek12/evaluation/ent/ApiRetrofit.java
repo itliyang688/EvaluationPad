@@ -13,8 +13,8 @@ public class ApiRetrofit {
     //public static String mBaseUrl = "http://192.168.0.220:11111/";
     //public static String mBaseUrl = "http://218.245.6.132:11111/";
     //public static String mBaseUrl = "http://121.37.254.233:8080/";
-    public static String mBaseUrl = "http://api.51jxpj.cn/";
-    //public static String mBaseUrl = "http://218.245.6.132:11113/";
+    //public static String mBaseUrl = "http://api.51jxpj.cn/";
+    public static String mBaseUrl = "http://218.245.6.132:11113/";
     //public static String mBaseUrl = "http://192.168.0.197:11113/";
     //public static String mBaseUrl = "http://192.168.0.46/noc/";
 

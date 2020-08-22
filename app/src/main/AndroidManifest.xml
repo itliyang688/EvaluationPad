@@ -164,6 +164,12 @@
         <activity
             android:name=".view.activity.PrepareExaminationActivity"
             android:screenOrientation="landscape" />
+        <activity
+            android:name=".view.activity.PlanForTheWeekActivity"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".view.activity.MoreTasKSetActivity"
+            android:screenOrientation="landscape" />
     </application>
 
 </manifest>

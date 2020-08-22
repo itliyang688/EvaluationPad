@@ -180,15 +180,11 @@ public class CommonVideoActivity extends BaseActivity<CommonVideoPresenter> impl
 
     @Override
     public void loadVideoSuc(MicrolessonVideoEntity entry) {
-        if(isLoadMore){
-            mList.addAll(entry.getData().getRecords());
-        }else{
-            mList = entry.getData().getRecords();
-        }
         if(entry.getData().getPages() == 0){
             loadView.showEmpty();
             return;
         }
+        List<MicrolessonVideoEntity.DataBean.RecordsBean> recordsBeans = entry.getData().getRecords();
         loadView.showContent();
         if(entry.getData().getPages() > currentPage){
             refreshLayout.setEnableLoadmore(true);
@@ -196,8 +192,13 @@ public class CommonVideoActivity extends BaseActivity<CommonVideoPresenter> impl
             refreshLayout.setEnableLoadmore(false);
         }
 
-        if(mList != null && mList.size() > 0){
-            commonVideoAdapter.notifyChanged(mList,isLoadMore);
+        if(recordsBeans != null && recordsBeans.size() > 0){
+            commonVideoAdapter.notifyChanged(recordsBeans,isLoadMore);
+            if(isLoadMore){
+                mList.addAll(recordsBeans);
+            }else{
+                mList = recordsBeans;
+            }
         }
         refreshLayout.finishLoadmore();
         refreshLayout.finishRefreshing();
