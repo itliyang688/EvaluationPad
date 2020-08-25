@@ -92,7 +92,7 @@ public class RiseMiddleSchoolVideoActivity extends BaseActivity<RiseMiddleSchool
         /**请求知识树*/
         checkId = null;
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        //recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         videoAdapter = new PrimarySchoolVideoAdapter(RiseMiddleSchoolVideoActivity.this);
         videoAdapter.setOnItemClickListener(this);
         GridLayoutManager manager = new GridLayoutManager(getContext(), 4);

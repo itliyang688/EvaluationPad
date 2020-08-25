@@ -190,16 +190,31 @@
             android:gravity="center"
             android:orientation="vertical">
 
+            <pl.droidsonroids.gif.GifImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/start_the_exam" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llClick6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/dp_22"
+            android:gravity="center"
+            android:orientation="vertical">
+
             <ImageView
                 android:layout_width="@dimen/dp_30"
                 android:layout_height="@dimen/dp_30"
-                android:src="@mipmap/start_the_exam" />
+                android:src="@mipmap/eview_icon" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_10"
-                android:text="马上考试"
+                android:text="等待审阅"
                 android:textColor="@color/color_333"
                 android:textSize="@dimen/sp_10" />
         </LinearLayout>

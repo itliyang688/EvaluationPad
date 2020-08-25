@@ -107,7 +107,7 @@ public class MicroLessonMoreActivity extends BaseActivity<MicroLessonMorePresent
         initLeftRecycler();
         initLabelAdapter();
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        //recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         videoAdapter = new VideoAdapter(MicroLessonMoreActivity.this);
         videoAdapter.setOnItemClickListener(this);
         GridLayoutManager manager = new GridLayoutManager(getContext(), 7);

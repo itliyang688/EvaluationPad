@@ -88,6 +88,7 @@ public class SelectDateDialog extends Dialog {
         String year = currentDate.getYear() + "年";
         String month = currentDate.getMonth() + "月";
         tvPageDate.setText(year+month);
+        tvCheckDate.setText(selectDate.getYear()+"-"+selectDate.getMonth()+"-"+selectDate.getDay());
 
         initCalendarView();
 

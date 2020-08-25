@@ -20,6 +20,7 @@ import cn.fek12.evaluation.model.entity.MicrolessonVideoEntity;
 import cn.fek12.evaluation.model.entity.PaperTypeListResp;
 import cn.fek12.evaluation.model.entity.PlanVideoEntity;
 import cn.fek12.evaluation.model.entity.PracticeListEntity;
+import cn.fek12.evaluation.model.entity.PromoteRecommedVideoEntity;
 import cn.fek12.evaluation.model.entity.RecordsEntitiy;
 import cn.fek12.evaluation.model.entity.RelevantVideoListEntity;
 import cn.fek12.evaluation.model.entity.SemesterEntity;
@@ -27,9 +28,11 @@ import cn.fek12.evaluation.model.entity.SubjectEntity;
 import cn.fek12.evaluation.model.entity.SubjectModel;
 import cn.fek12.evaluation.model.entity.SubjectsEntity;
 import cn.fek12.evaluation.model.entity.SubjectsObsoleteEntity;
+import cn.fek12.evaluation.model.entity.TaskNumEntity;
 import cn.fek12.evaluation.model.entity.TestRecordEntity;
 import cn.fek12.evaluation.model.entity.TextbookEntity;
 import cn.fek12.evaluation.model.entity.TopicCountEntity;
+import cn.fek12.evaluation.model.entity.TrainListEntity;
 import cn.fek12.evaluation.model.entity.TreeDataEntity;
 import cn.fek12.evaluation.model.entity.UpdateApkEntity;
 import cn.fek12.evaluation.model.entity.VideoMoreListEntity;
@@ -324,11 +327,22 @@ public interface ApiServer {
      */
     @GET("/practice/months/{userId}")
     Observable<YearMonthEntity> getYears(@Path("userId") String userId);
+
+    /**
+     * 更多强化训练获取月份
+     */
+    @GET("/taskDrill/months/{userId}")
+    Observable<YearMonthEntity> getTaskDrillYears(@Path("userId") String userId);
     /**
      * 获取每日记录
      */
     @GET("/practice/list/{userId}/{structId}/{date}")
     Observable<PracticeListEntity> getPracticeList(@Path("userId") String userId, @Path("structId") String structId, @Path("date") String date);
+    /**
+     * 获取强化训练每日记录
+     */
+    @GET("taskDrill/list/{userId}/{date}")
+    Observable<TrainListEntity> getTrainList(@Path("userId") String userId, @Path("date") String date);
 
     /**
      * 微课小学模块
@@ -420,9 +434,19 @@ public interface ApiServer {
     @GET("studyPlan/querWeekStudyPlanVideoList")
     Observable<PlanVideoEntity> querWeekStudyPlanVideoList(@Query("userId") String userId, @Query("subjectId") String subjectId);
 
+    /***查询作业考试任务数量*/
+    @GET("task/getUntreatedTaskNumByUserId")
+    Observable<TaskNumEntity> getUntreatedTaskNumByUserId(@Query("userId") String userId);
+
     /***学情作业考试*/
     @GET("task/queryTaskPage")
-    Observable<ExaminationEntity> queryTaskPage(@Query("userId") String userId, @Query("subjectId") String subjectId, @Query("taskType") String taskType, @Query("startDate") String startDate, @Query("endDate") String endDate, @Query("current") String current, @Query("size") String size);
+    Observable<ExaminationEntity> queryTaskPage(@Query("userId") String userId, @Query("subjectId") String subjectId, @Query("taskType") String taskType, @Query("startDate") String startDate, @Query("endDate") String endDate, @Query("status") String status,@Query("current") String current, @Query("size") String size);
 
+    /***根据用户获取学科*/
+    @GET("nocSubject/getStuSubjectByUserId")
+    Observable<SubjectModel> getStuSubjectByUserId(@Query("userId") String userId);
+    /***提升视频推荐*/
+    @GET("studyPlan/getPromoteRecommedVideo")
+    Observable<PromoteRecommedVideoEntity> getPromoteRecommedVideo(@Query("userId") String userId,@Query("current") String current,@Query("size") String size);
 }
 

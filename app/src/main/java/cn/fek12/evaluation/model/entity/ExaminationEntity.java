@@ -121,13 +121,31 @@ public class ExaminationEntity implements Serializable {
             private int taskId;
             private String subjectName;
             private int taskType;
-            private Object imgUrl;
+            private String imgUrl;
             private String title;
             private int status;
             private int taskStatus;
             private String createDate;
             private String drillId;
+            private String drillStatus;
+            private String qrId;
             private String betweenDateStr;
+
+            public String getDrillStatus() {
+                return drillStatus;
+            }
+
+            public void setDrillStatus(String drillStatus) {
+                this.drillStatus = drillStatus;
+            }
+
+            public String getQrId() {
+                return qrId;
+            }
+
+            public void setQrId(String qrId) {
+                this.qrId = qrId;
+            }
 
             public int getTaskId() {
                 return taskId;
@@ -153,11 +171,11 @@ public class ExaminationEntity implements Serializable {
                 this.taskType = taskType;
             }
 
-            public Object getImgUrl() {
+            public String getImgUrl() {
                 return imgUrl;
             }
 
-            public void setImgUrl(Object imgUrl) {
+            public void setImgUrl(String imgUrl) {
                 this.imgUrl = imgUrl;
             }
 

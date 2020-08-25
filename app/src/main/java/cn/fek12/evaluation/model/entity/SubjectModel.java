@@ -48,6 +48,15 @@ public class SubjectModel {
         private int id;
         private String subId;
         private String subName;
+        private int tagColor;
+
+        public int getTagColor() {
+            return tagColor;
+        }
+
+        public void setTagColor(int tagColor) {
+            this.tagColor = tagColor;
+        }
 
         public int getId() {
             return id;

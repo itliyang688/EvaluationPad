@@ -7,19 +7,19 @@
     android:orientation="vertical"
     xmlns:zhy="http://schemas.android.com/apk/res-auto">
     <RelativeLayout
-        android:layout_width="@dimen/dp_119"
-        android:layout_height="@dimen/dp_93">
+        android:layout_width="@dimen/dp_140"
+        android:layout_height="@dimen/dp_109">
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_12"
-            android:layout_marginLeft="@dimen/dp_11">
+            android:layout_marginLeft="@dimen/dp_12">
 
             <cn.fek12.evaluation.view.widget.RoundImageView
                 android:id="@+id/ivCover"
-                android:layout_width="@dimen/dp_100"
-                android:layout_height="@dimen/dp_75"
+                android:layout_width="@dimen/dp_120"
+                android:layout_height="@dimen/dp_90"
                 android:background="@mipmap/mathematics_icon"
                 android:scaleType="centerCrop"
                 zhy:borderRadius="10dp"
@@ -31,14 +31,14 @@
                 android:src="@mipmap/players_icon1" />
         </RelativeLayout>
         <ImageView
-            android:layout_width="@dimen/dp_119"
-            android:layout_height="@dimen/dp_93"
-            android:background="@mipmap/cover_video_bg"/>
+            android:layout_width="@dimen/dp_140"
+            android:layout_height="@dimen/dp_109"
+            android:background="@mipmap/cover_video_bg1"/>
     </RelativeLayout>
 
     <TextView
         android:id="@+id/tvName"
-        android:layout_width="@dimen/dp_100"
+        android:layout_width="@dimen/dp_120"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_5"
         android:layout_marginLeft="@dimen/dp_11"
@@ -46,10 +46,10 @@
         android:ellipsize="end"
         android:text="五年级随堂测试报告法五年级随堂测试报告法五年级随堂测试报告法"
         android:textColor="@color/color_333"
-        android:textSize="@dimen/sp_8" />
+        android:textSize="@dimen/sp_10" />
 
     <LinearLayout
-        android:layout_width="@dimen/dp_100"
+        android:layout_width="@dimen/dp_120"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_3"
         android:layout_marginLeft="@dimen/dp_11"
@@ -64,11 +64,11 @@
             android:layout_weight="1"
             android:text="2018-07-06"
             android:textColor="@color/color_999"
-            android:textSize="@dimen/sp_7" />
+            android:textSize="@dimen/sp_9" />
 
         <ImageView
-            android:layout_width="@dimen/dp_8"
-            android:layout_height="@dimen/dp_8"
+            android:layout_width="@dimen/dp_11"
+            android:layout_height="@dimen/dp_11"
             android:src="@mipmap/players_number_icon" />
 
         <TextView
@@ -79,6 +79,6 @@
             android:layout_marginLeft="@dimen/dp_2"
             android:text="1006"
             android:textColor="@color/app_bg"
-            android:textSize="@dimen/sp_7" />
+            android:textSize="@dimen/sp_9" />
     </LinearLayout>
 </LinearLayout>

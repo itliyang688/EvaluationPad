@@ -13,6 +13,7 @@ import cn.fek12.evaluation.impl.ICommonVideo;
 import cn.fek12.evaluation.impl.IMain;
 import cn.fek12.evaluation.model.entity.AuthEntity;
 import cn.fek12.evaluation.model.entity.MicrolessonVideoEntity;
+import cn.fek12.evaluation.model.entity.TaskNumEntity;
 import cn.fek12.evaluation.model.entity.UpdateApkEntity;
 
 /**
@@ -66,6 +67,27 @@ public class MainPresenter extends BasePresenter<IMain.View> implements IMain {
                     @Override
                     public void onError(String msg) {
                         infoView.checkUpdateFail();
+                    }
+                });
+    }
+
+    @Override
+    public void queryTaskNumByUserId(Context context, String userId) {
+        ApiRetrofit.getInstance().getApiService().getUntreatedTaskNumByUserId(userId)
+                .compose(RxHelper.observableIO2Main(context))
+                .subscribe(new BaseObserver<TaskNumEntity>() {
+                    @Override
+                    public void onSuccess(TaskNumEntity entry) {
+                        if(entry.getState().equals("0")){
+                            infoView.loadTaskNumSuc(entry);
+                        }else{
+                            infoView.loadTaskNumEmpty();
+                        }
+                    }
+
+                    @Override
+                    public void onError(String msg) {
+                        infoView.loadTaskNumEmpty();
                     }
                 });
     }

@@ -170,6 +170,10 @@
         <activity
             android:name=".view.activity.MoreTasKSetActivity"
             android:screenOrientation="landscape" />
+
+        <activity
+            android:name=".view.activity.TrainExerciseNotesActivity"
+            android:screenOrientation="landscape" />
     </application>
 
 </manifest>

@@ -13,6 +13,7 @@ import cn.fek12.evaluation.impl.ILearningSituation;
 import cn.fek12.evaluation.impl.IMoreTaskSet;
 import cn.fek12.evaluation.model.entity.ExaminationEntity;
 import cn.fek12.evaluation.model.entity.PlanVideoEntity;
+import cn.fek12.evaluation.model.entity.SubjectModel;
 
 /**
  * @ProjectName: EvaluationPad
@@ -28,8 +29,8 @@ public class MoreTaskSetPresenter extends BasePresenter<IMoreTaskSet.View> imple
     }
 
     @Override
-    public void queryTaskPage(Context context, String userId, String subjectId, String taskType, String startDate, String endDate, String current, String size) {
-        ApiRetrofit.getInstance().getApiService().queryTaskPage(userId,subjectId,taskType,startDate,endDate,current,size)
+    public void queryTaskPage(Context context, String userId, String subjectId, String taskType, String startDate, String endDate,String status, String current, String size) {
+        ApiRetrofit.getInstance().getApiService().queryTaskPage(userId,subjectId,taskType,startDate,endDate,status,current,size)
                 .compose(RxHelper.observableIO2Main(context))
                 .subscribe(new BaseObserver<ExaminationEntity>() {
 
@@ -46,6 +47,29 @@ public class MoreTaskSetPresenter extends BasePresenter<IMoreTaskSet.View> imple
                     @Override
                     public void onError(String msg) {
                         infoView.loadExaminationEmpty();
+                    }
+                });
+    }
+
+    @Override
+    public void getStuSubjectByUserId(Context context, String userId) {
+        ApiRetrofit.getInstance().getApiService().getStuSubjectByUserId(userId)
+                .compose(RxHelper.observableIO2Main(context))
+                .subscribe(new BaseObserver<SubjectModel>() {
+
+                    @Override
+                    public void onSuccess(SubjectModel entry) {
+                        if(entry.getState().equals("0") && entry.getData() != null
+                                 && entry.getData().size() > 0){
+                            infoView.loadSubjectSuc(entry);
+                        }else{
+                            infoView.loadSubjectEmpty();
+                        }
+                    }
+
+                    @Override
+                    public void onError(String msg) {
+                        infoView.loadSubjectEmpty();
                     }
                 });
     }

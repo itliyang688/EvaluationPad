@@ -85,7 +85,7 @@ public class PrepareExaminationActivity extends BaseActivity<PrepareExaminationP
         /**请求学科*/
         mPresenter.querySubjectList(this,paperType);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        //recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         videoAdapter = new PrimarySchoolVideoAdapter(PrepareExaminationActivity.this);
         videoAdapter.setOnItemClickListener(this);
         GridLayoutManager manager = new GridLayoutManager(getContext(), 5);

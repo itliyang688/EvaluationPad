@@ -26,7 +26,7 @@ public class MoreTaskSetAdapter extends RecyclerView.Adapter<MoreTaskSetAdapter.
     private List<ExaminationEntity.DataBean.RecordsBean> mList = new ArrayList();
 
     public interface OnItemClickListener {
-        void onItemClick(int position);
+        void onItemButClick(int taskStatus,int position);
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
@@ -62,14 +62,6 @@ public class MoreTaskSetAdapter extends RecyclerView.Adapter<MoreTaskSetAdapter.
 
     @Override
     public void onBindViewHolder(MoreTaskSetAdapter.EvaluationHolder holder, final int position) {
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(mOnItemClickListener != null){
-                    mOnItemClickListener.onItemClick(position);
-                }
-            }
-        });
         holder.setData(position);
     }
 
@@ -88,6 +80,7 @@ public class MoreTaskSetAdapter extends RecyclerView.Adapter<MoreTaskSetAdapter.
         private LinearLayout llClick3;
         private LinearLayout llClick4;
         private LinearLayout llClick5;
+        private LinearLayout llClick6;
 
         public EvaluationHolder(View itemView) {
             super(itemView);
@@ -104,6 +97,7 @@ public class MoreTaskSetAdapter extends RecyclerView.Adapter<MoreTaskSetAdapter.
             llClick3 = this.itemView.findViewById(R.id.llClick3);
             llClick4 = this.itemView.findViewById(R.id.llClick4);
             llClick5 = this.itemView.findViewById(R.id.llClick5);
+            llClick6 = this.itemView.findViewById(R.id.llClick6);
         }
         int clickTaskStatus;
         public void setData(final int position) {
@@ -115,62 +109,54 @@ public class MoreTaskSetAdapter extends RecyclerView.Adapter<MoreTaskSetAdapter.
 
             switch (taskStatus){
                 case 0://去做作业
-                    setViewVisibility(View.VISIBLE,View.GONE,View.GONE,View.GONE,View.GONE,View.GONE);
-                    llClick0.setOnClickListener(onClickListener);
+                    setViewVisibility(View.VISIBLE,View.GONE,View.GONE,View.GONE,View.GONE,View.GONE,View.GONE);
+                    setOnClickListener(llClick0,0,position);
                     break;
                 case 1://补交作业
-                    setViewVisibility(View.GONE,View.VISIBLE,View.GONE,View.GONE,View.GONE,View.GONE);
-                    llClick1.setOnClickListener(onClickListener);
+                    setViewVisibility(View.GONE,View.VISIBLE,View.GONE,View.GONE,View.GONE,View.GONE,View.GONE);
+                    setOnClickListener(llClick1,1,position);
                     break;
                 case 2://等待审阅
-                    setViewVisibility(View.GONE,View.GONE,View.GONE,View.GONE,View.GONE,View.GONE);
+                    setViewVisibility(View.GONE,View.GONE,View.GONE,View.GONE,View.GONE,View.GONE,View.VISIBLE);
                     break;
                 case 3://作业/考试完成报告生成
-                    llClick2.setOnClickListener(onClickListener);
+                    setOnClickListener(llClick2,2,position);
                     if(StringUtils.isEmpty(mList.get(position).getDrillId())){
-                        setViewVisibility(View.GONE,View.GONE,View.VISIBLE,View.GONE,View.GONE,View.GONE);
+                        setViewVisibility(View.GONE,View.GONE,View.VISIBLE,View.GONE,View.GONE,View.GONE,View.GONE);
                     }else{
-                        setViewVisibility(View.GONE,View.GONE,View.VISIBLE,View.VISIBLE,View.GONE,View.GONE);
-                        llClick3.setOnClickListener(onClickListener);
+                        setViewVisibility(View.GONE,View.GONE,View.VISIBLE,View.VISIBLE,View.GONE,View.GONE,View.GONE);
+                        setOnClickListener(llClick3,3,position);
                     }
                     break;
                 case 4://考试未开始
-                    setViewVisibility(View.GONE,View.GONE,View.GONE,View.GONE,View.VISIBLE,View.GONE);
+                    setViewVisibility(View.GONE,View.GONE,View.GONE,View.GONE,View.VISIBLE,View.GONE,View.GONE);
                     break;
                 case 5://马上开始
-                    setViewVisibility(View.GONE,View.GONE,View.GONE,View.GONE,View.GONE,View.VISIBLE);
-                    llClick5.setOnClickListener(onClickListener);
+                    setViewVisibility(View.GONE,View.GONE,View.GONE,View.GONE,View.GONE,View.VISIBLE,View.GONE);
+                    setOnClickListener(llClick5,5,position);
                     break;
             }
         }
 
-        private View.OnClickListener onClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switch (view.getId()){
-                    case R.id.llClick0://去做作业
-
-                        break;
-                    case R.id.llClick1://补交作业
-
-                        break;
-                    case R.id.llClick2://查看结果
-                        break;
-                    case R.id.llClick3://强化训练
-                        break;
-                    case R.id.llClick5://马上考试
-                        break;
+        private void setOnClickListener(LinearLayout itemButView,int taskStatus,int position){
+            itemButView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(mOnItemClickListener != null){
+                        mOnItemClickListener.onItemButClick(taskStatus,position);
+                    }
                 }
-            }
-        };
+            });
+        }
 
-        private void setViewVisibility(int isShow0,int isShow1,int isShow2,int isShow3,int isShow4,int isShow5){
+        private void setViewVisibility(int isShow0,int isShow1,int isShow2,int isShow3,int isShow4,int isShow5,int isShow6){
             llClick0.setVisibility(isShow0);
             llClick1.setVisibility(isShow1);
             llClick2.setVisibility(isShow2);
             llClick3.setVisibility(isShow3);
             llClick4.setVisibility(isShow4);
             llClick5.setVisibility(isShow5);
+            llClick6.setVisibility(isShow6);
         }
     }
 }

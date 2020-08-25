@@ -35,6 +35,7 @@ import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.application.MyApplication;
 import cn.fek12.evaluation.impl.IMain;
 import cn.fek12.evaluation.model.entity.TabEntity;
+import cn.fek12.evaluation.model.entity.TaskNumEntity;
 import cn.fek12.evaluation.model.entity.UpdateApkEntity;
 import cn.fek12.evaluation.model.sharedPreferences.PrefUtilsData;
 import cn.fek12.evaluation.presenter.MainPresenter;
@@ -122,6 +123,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements BackFra
         DialogUtils.removeDialog(MainActivity.this);
         PrefUtilsData.setToken(token);
         initView();
+        mPresenter.queryTaskNumByUserId(MainActivity.this,MyApplication.getMyApp().getUserId());
     }
 
     /**
@@ -144,6 +146,20 @@ public class MainActivity extends BaseActivity<MainPresenter> implements BackFra
     @Override
     public void checkUpdateFail() {
 
+    }
+
+    @Override
+    public void loadTaskNumSuc(TaskNumEntity entity) {
+        if(entity.getData() > 0){
+            setUnread(entity.getData());
+        }else{
+            commonTabLayout.hideMsg(3);
+        }
+    }
+
+    @Override
+    public void loadTaskNumEmpty() {
+        commonTabLayout.hideMsg(3);
     }
 
     private void initView() {
@@ -242,24 +258,23 @@ public class MainActivity extends BaseActivity<MainPresenter> implements BackFra
         return super.dispatchTouchEvent(event);
     }
 
-    protected int dp2px(float dp) {
-        final float scale = MainActivity.this.getResources().getDisplayMetrics().density;
-        return (int) (dp * scale + 0.5f);
-    }
-
     private void initCommonTabLayout() {
         commonTabLayout.setTabData(mTabEntities);
         commonTabLayout.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelect(int position) {
                 viewPage.setCurrentItem(position);
+                if (position != 3) {
+                    rootView.setBackgroundColor(getContext().getResources().getColor(R.color.transparent));
+                } else {
+                    rootView.setBackgroundResource(R.mipmap.learning_situation_bg);
+                }
+                mPresenter.queryTaskNumByUserId(MainActivity.this,MyApplication.getMyApp().getUserId());
             }
 
             @Override
             public void onTabReselect(int position) {
-                if (position == 0) {
 
-                }
             }
         });
 
@@ -272,13 +287,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements BackFra
             @Override
             public void onPageSelected(int position) {
                 commonTabLayout.setCurrentTab(position);
-                if (position != 3) {
-                    rootView.setBackgroundColor(getContext().getResources().getColor(R.color.transparent));
-                    setUnread(1);
-                } else {
-                    rootView.setBackgroundResource(R.mipmap.learning_situation_bg);
-                    commonTabLayout.hideMsg(position);
-                }
                 //enlargeAndreduction(position,true);
                 //enlargeAndreduction(previousPos,false);
                 //previousPos = position;

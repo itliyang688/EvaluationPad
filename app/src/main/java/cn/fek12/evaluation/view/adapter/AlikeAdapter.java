@@ -1,27 +1,29 @@
 package cn.fek12.evaluation.view.adapter;
 
 import android.content.Context;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.fek12.evaluation.R;
-import cn.fek12.evaluation.model.entity.MicroLessonPageEnetity;
+import cn.fek12.evaluation.application.MyApplication;
+import cn.fek12.evaluation.model.entity.PromoteRecommedVideoEntity;
 import cn.fek12.evaluation.view.widget.RoundImageView;
-import pl.droidsonroids.gif.GifImageView;
 
 
 public class AlikeAdapter extends RecyclerView.Adapter<AlikeAdapter.EvaluationHolder> {
     private OnItemClickListener mOnItemClickListener = null;
 
-    private List<MicroLessonPageEnetity.DataBean.RecordsBean> mList = new ArrayList();
+    private List<PromoteRecommedVideoEntity.DataBean.RecordsBean> mList = new ArrayList();
 
     public interface OnItemClickListener {
         void onItemClick(int position);
@@ -38,14 +40,14 @@ public class AlikeAdapter extends RecyclerView.Adapter<AlikeAdapter.EvaluationHo
         this.context = context;
     }
 
-    public void notifyChanged(List<MicroLessonPageEnetity.DataBean.RecordsBean> list) {
+    public void notifyChanged(List<PromoteRecommedVideoEntity.DataBean.RecordsBean> list) {
         mList = list;
         notifyDataSetChanged();
     }
 
     @Override
     public int getItemCount() {
-        return 3;
+        return mList.size();
     }
 
     @Override
@@ -87,6 +89,12 @@ public class AlikeAdapter extends RecyclerView.Adapter<AlikeAdapter.EvaluationHo
         }
 
         public void setData(final int position) {
+            tvName.setText(mList.get(position).getVideoName());
+            tvPlayNumber.setText(String.valueOf(mList.get(position).getPlayCount()));
+            tvTime.setText(mList.get(position).getCreateDate());
+            tvNumber.setText(String.valueOf(mList.get(position).getClassMateCount()));
+            tvNumber.setText(Html.fromHtml("本周本校 <font color='#F28504'>"+ mList.get(position).getClassMateCount() +"</font>" + " 位学生在学"));
+            Glide.with(MyApplication.getApp()).load(mList.get(position).getImgUrl()).placeholder(R.mipmap.empty_bg).error(R.mipmap.empty_bg).into(ivCover);
         }
     }
 }

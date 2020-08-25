@@ -20,10 +20,12 @@ import butterknife.OnClick;
 import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.application.MyApplication;
 import cn.fek12.evaluation.impl.IMain;
+import cn.fek12.evaluation.impl.IRemediaWeb;
 import cn.fek12.evaluation.model.config.Configs;
 import cn.fek12.evaluation.model.entity.UpdateApkEntity;
 import cn.fek12.evaluation.model.sharedPreferences.PrefUtilsData;
 import cn.fek12.evaluation.presenter.MainPresenter;
+import cn.fek12.evaluation.presenter.RemediaWebPresenter;
 import cn.fek12.evaluation.view.jsinterface.JavaScriptinterface;
 import cn.fek12.evaluation.view.widget.NoRollWebView;
 import pl.droidsonroids.gif.GifImageView;
@@ -35,7 +37,7 @@ import pl.droidsonroids.gif.GifImageView;
  * @Description:
  * @CreateDate: 2019/11/15 17:17
  */
-public class RemedialPracticeWebActivity extends BaseActivity<MainPresenter> implements IMain.View {
+public class RemedialPracticeWebActivity extends BaseActivity<RemediaWebPresenter> implements IRemediaWeb.View {
     @BindView(R.id.webView)
     NoRollWebView webView;
     @BindView(R.id.iv_left_back)
@@ -53,8 +55,8 @@ public class RemedialPracticeWebActivity extends BaseActivity<MainPresenter> imp
     }
 
     @Override
-    protected MainPresenter onInitLogicImpl() {
-        return new MainPresenter(this);
+    protected RemediaWebPresenter onInitLogicImpl() {
+        return new RemediaWebPresenter(this);
     }
 
     @Override
@@ -152,16 +154,6 @@ public class RemedialPracticeWebActivity extends BaseActivity<MainPresenter> imp
 
     @Override
     public void loadFail(String msg) {
-
-    }
-
-    @Override
-    public void checkUpdateSuc(UpdateApkEntity entity) {
-
-    }
-
-    @Override
-    public void checkUpdateFail() {
 
     }
 

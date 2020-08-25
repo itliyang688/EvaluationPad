@@ -71,7 +71,7 @@ public class CompositionTreasureVideoActivity extends BaseActivity<RiseMiddleSch
         checkId = null;
         mPresenter.initTreeData(CompositionTreasureVideoActivity.this, "5");
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        //recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         videoAdapter = new PrimarySchoolVideoAdapter(CompositionTreasureVideoActivity.this);
         videoAdapter.setOnItemClickListener(this);
         GridLayoutManager manager = new GridLayoutManager(getContext(), 4);

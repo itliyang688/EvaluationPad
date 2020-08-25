@@ -12,6 +12,7 @@ import cn.fek12.evaluation.ent.RxHelper;
 import cn.fek12.evaluation.impl.ILearningSituation;
 import cn.fek12.evaluation.model.entity.ExaminationEntity;
 import cn.fek12.evaluation.model.entity.PlanVideoEntity;
+import cn.fek12.evaluation.model.entity.PromoteRecommedVideoEntity;
 
 /**
  * @ProjectName: EvaluationPad
@@ -50,12 +51,30 @@ public class LearningSituationPresenter extends BasePresenter<ILearningSituation
 
     @Override
     public void getPromoteRecommedVideo(Context context, String userId, String current, String size) {
+        ApiRetrofit.getInstance().getApiService().getPromoteRecommedVideo(userId,current,size)
+                .compose(RxHelper.observableIO2Main(context))
+                .subscribe(new BaseObserver<PromoteRecommedVideoEntity>() {
 
+                    @Override
+                    public void onSuccess(PromoteRecommedVideoEntity entry) {
+                        if(entry.getState().equals("0") && entry.getData() != null && entry.getData().getRecords() != null
+                                && entry.getData().getRecords().size() > 0){
+                            infoView.loadPromoteRecommedVideoSuc(entry);
+                        }else{
+                            infoView.loadPromoteRecommedVideoEmpty();
+                        }
+                    }
+
+                    @Override
+                    public void onError(String msg) {
+                        infoView.loadPromoteRecommedVideoEmpty();
+                    }
+                });
     }
 
     @Override
     public void queryTaskPage(Context context, String userId, String current, String size) {
-        ApiRetrofit.getInstance().getApiService().queryTaskPage(userId,null,null,null,null,current,size)
+        ApiRetrofit.getInstance().getApiService().queryTaskPage(userId,null,null,null,null,null,current,size)
                 .compose(RxHelper.observableIO2Main(context))
                 .subscribe(new BaseObserver<ExaminationEntity>() {
 

@@ -2,13 +2,22 @@ package cn.fek12.evaluation.view.activity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.bumptech.glide.Glide;
 import com.fek12.basic.base.BaseActivity;
+import com.fek12.basic.utils.toast.ToastUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.fek12.evaluation.R;
+import cn.fek12.evaluation.application.MyApplication;
+import cn.fek12.evaluation.impl.IMicrolessVideoPlay;
+import cn.fek12.evaluation.model.entity.CollectionEntity;
+import cn.fek12.evaluation.model.sharedPreferences.PrefUtilsData;
+import cn.fek12.evaluation.presenter.MicrolessonVideoPlayPresenter;
 import cn.fek12.evaluation.presenter.VideoPlayListPresenter;
 import cn.fek12.evaluation.utils.AppUtils;
 import cn.fek12.evaluation.view.widget.MyJzvdStd;
@@ -21,14 +30,20 @@ import cn.jzvd.Jzvd;
  * @Description:
  * @CreateDate: 2019/11/13 17:32
  */
-public class PlanForTheWeekActivity extends BaseActivity implements MyJzvdStd.OnStateAutoComplete {
+public class PlanForTheWeekActivity extends BaseActivity<MicrolessonVideoPlayPresenter> implements MyJzvdStd.OnStateAutoComplete, IMicrolessVideoPlay.View {
     @BindView(R.id.jzVideo)
     MyJzvdStd jzVideo;
     @BindView(R.id.rootView)
     RelativeLayout rootView;
-    private String subjectCategoryId;
+    @BindView(R.id.iv_left_back)
+    ImageView ivLeftBack;
     private int isCollection;
+    private int playScheduleTime;
     private String isEnd = "0";
+    private String videoUrl;
+    private String imgUrl;
+    private String videoId;
+    private String videName;
 
     @Override
     public int setLayoutResource() {
@@ -40,7 +55,21 @@ public class PlanForTheWeekActivity extends BaseActivity implements MyJzvdStd.On
         //setEmptyTitle();
         //mViewRoot.setBackgroundResource(R.mipmap.plan_the_week_bg);
         rootView.setPadding(0, AppUtils.getStatusBarHeight(PlanForTheWeekActivity.this), 0, 0);
-        subjectCategoryId = getIntent().getStringExtra("subjectCategoryId");
+        videoUrl = getIntent().getStringExtra("videoUrl");
+        videoId = getIntent().getStringExtra("videoId");
+        imgUrl = getIntent().getStringExtra("imgUrl");
+        videName = getIntent().getStringExtra("videName");
+        isCollection = getIntent().getIntExtra("isCollection", 0);
+        playScheduleTime = getIntent().getIntExtra("playScheduleTime", 0);
+
+        jzVideo.seekToInAdvance = playScheduleTime;
+        jzVideo.setUp(videoUrl, videName);
+        jzVideo.ivExtend.setImageResource(isCollection == 0 ? R.mipmap.collection_video_normal : R.mipmap.collection_video_check);
+        jzVideo.ivExtend.setOnClickListener(onClickListener);
+        jzVideo.setOnStateAutoComplete(PlanForTheWeekActivity.this);
+        Glide.with(MyApplication.getApp()).load(imgUrl).into(jzVideo.thumbImageView);
+
+        ivLeftBack.setOnClickListener(onClickListener);
     }
 
     @Override
@@ -58,13 +87,16 @@ public class PlanForTheWeekActivity extends BaseActivity implements MyJzvdStd.On
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
+                case R.id.iv_left_back:
+                    PlanForTheWeekActivity.this.finish();
+                    break;
                 case R.id.ivExtend:
                     if (isCollection == 0) {
                         tag = "1";
                     } else {
                         tag = "0";
                     }
-                    //mPresenter.collection(PlanForTheWeekActivity.this,String.valueOf(videoBean.getVideoId()),tag, MyApplication.getMyApp().getUserId());
+                    mPresenter.collection(PlanForTheWeekActivity.this,videoId,tag, MyApplication.getMyApp().getUserId());
                     break;
             }
         }
@@ -75,7 +107,7 @@ public class PlanForTheWeekActivity extends BaseActivity implements MyJzvdStd.On
         jzVideo.goOnPlayOnPause();
         long currentPos = jzVideo.getCurrentPositionWhenPlaying();
         if (currentPos > 0 || isEnd.equals("1")) {
-            //mPresenter.schedule(PlanForTheWeekActivity.this, String.valueOf(currentPos),subjectCategoryId, String.valueOf(videoBean.getVideoId()), MyApplication.getMyApp().getUserId());
+            mPresenter.addOrUpdateVideoPlayCount(PlanForTheWeekActivity.this,String.valueOf(currentPos),MyApplication.getMyApp().getUserId(),videoId);
         }
         super.onPause();
     }
@@ -88,8 +120,8 @@ public class PlanForTheWeekActivity extends BaseActivity implements MyJzvdStd.On
 
 
     @Override
-    protected VideoPlayListPresenter onInitLogicImpl() {
-        return null;
+    protected MicrolessonVideoPlayPresenter onInitLogicImpl() {
+        return new MicrolessonVideoPlayPresenter(this);
     }
 
 
@@ -107,5 +139,27 @@ public class PlanForTheWeekActivity extends BaseActivity implements MyJzvdStd.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
+    }
+
+    @Override
+    public void loadCollectionSuc(CollectionEntity entry) {
+        PrefUtilsData.setIsCollectionRefresh(true);
+        if(tag.equals("0")){
+            isCollection = 0;
+            ToastUtils.popUpToast("已取消");
+        }else{
+            isCollection = 1;
+            ToastUtils.popUpToast("已收藏");
+        }
+        jzVideo.ivExtend.setImageResource(isCollection == 0 ? R.mipmap.collection_video_normal : R.mipmap.collection_video_check);
+    }
+
+    @Override
+    public void loadCollectionFail() {
+        if(tag.equals("0")){
+            ToastUtils.popUpToast("取消失败");
+        }else{
+            ToastUtils.popUpToast("收藏失败");
+        }
     }
 }

@@ -25,7 +25,7 @@
             android:scrollbars="none" />
     </com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout>-->
 
-    <ayalma.ir.expandablerecyclerview.ExpandableRecyclerView
+    <ayalma.ir.expandablerecyclerview.TrainExpandableRecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
