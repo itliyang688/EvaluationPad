@@ -12,13 +12,11 @@
         android:layout_height="@dimen/dp_84"
         android:orientation="horizontal">
 
-        <cn.fek12.evaluation.view.widget.RoundImageView
+        <ImageView
             android:id="@+id/ivCover"
             android:layout_width="111dp"
             android:layout_height="match_parent"
-            android:src="@mipmap/empty_bg"
-            zhy:borderRadius="10dp"
-            zhy:type="round" />
+            android:src="@mipmap/empty_bg" />
 
         <LinearLayout
             android:layout_width="@dimen/dp_150"

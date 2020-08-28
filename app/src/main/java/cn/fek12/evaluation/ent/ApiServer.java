@@ -426,7 +426,7 @@ public interface ApiServer {
     @POST("auth/uauth")
     Observable<AuthEntity> uauth(@Field("userId") String userId);
 
-    /***带分页的微课模块*/
+    /***检查更新*/
     @GET("nocPadVersion/checkPadVersionByCode")
     Observable<UpdateApkEntity> checkPadVersionByCode(@Query("versionCode") String versionCode);
 

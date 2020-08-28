@@ -32,6 +32,8 @@
             tl:tl_textSelectColor="@color/app_bg"
             tl:tl_textUnselectColor="@color/transparent"
             tl:tl_textsize="@dimen/sp_0"
+            tl:tl_iconHeight="@dimen/dp_75"
+            tl:tl_iconWidth="@dimen/dp_75"
             tl:tl_underline_color="@color/transparent"
             tl:tl_underline_height="1dp" />-->
         <com.flyco.tablayout.CommonTabLayout

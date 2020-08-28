@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <cn.fek12.evaluation.view.widget.NoRollWebView
+            android:id="@+id/webView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/transparent"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/titleView"
+        android:layout_width="@dimen/dp_60"
+        android:layout_marginTop="@dimen/dp_3"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_20"
+        tools:ignore="MissingConstraints">
+        <ImageView
+            android:id="@+id/iv_left_back"
+            android:layout_width="@dimen/dp_34"
+            android:layout_height="@dimen/dp_34"
+            android:background="@drawable/title_btn_color_selector"
+            android:visibility="visible" />
+    </LinearLayout>
+</RelativeLayout>

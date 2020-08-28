@@ -156,19 +156,24 @@
         android:id="@+id/loadView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/dp_37"
+        android:layout_marginRight="@dimen/dp_37"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginBottom="@dimen/dp_42"
         android:layerType="hardware"
         android:layout_below="@+id/llStartDate">
+        <RelativeLayout
+            android:id="@+id/rlContainView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <WebView
+        </RelativeLayout>
+       <!-- <WebView
             android:id="@+id/webView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layerType="software"
-            android:layout_marginLeft="@dimen/dp_37"
-            android:layout_marginTop="@dimen/dp_10"
-            android:layout_marginRight="@dimen/dp_37"
-            android:layout_marginBottom="@dimen/dp_40"
-            tools:ignore="WebViewLayout" />
+            tools:ignore="WebViewLayout" />-->
     </cn.fek12.evaluation.view.widget.MultipleStatusView>
 
 </RelativeLayout>

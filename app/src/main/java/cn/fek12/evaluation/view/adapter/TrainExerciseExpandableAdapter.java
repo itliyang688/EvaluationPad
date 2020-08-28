@@ -16,14 +16,10 @@ import java.util.List;
 
 import ayalma.ir.expandablerecyclerview.TrainExpandableRecyclerView;
 import cn.fek12.evaluation.R;
-import cn.fek12.evaluation.application.MyApplication;
 import cn.fek12.evaluation.model.config.Configs;
-import cn.fek12.evaluation.model.entity.ExrGroupListEntity;
-import cn.fek12.evaluation.model.entity.RecordInfoEntity;
 import cn.fek12.evaluation.model.entity.TrainEntity;
 import cn.fek12.evaluation.model.entity.TrainExrGroupListEntity;
-import cn.fek12.evaluation.model.entity.TrainListEntity;
-import cn.fek12.evaluation.view.activity.CommonWebViewActivity;
+import cn.fek12.evaluation.view.activity.CommonNewsWebViewActivity;
 
 /**
  */
@@ -105,10 +101,12 @@ public class TrainExerciseExpandableAdapter extends TrainExpandableRecyclerView.
             holder.tbAnalysis.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    /*String url = Configs.SMALL + "userId=" + MyApplication.getMyApp().getUserId() + "&subjectCategoryId=" + list.get(position).getSubjectCategoryId() + "&practiceId=" + list.get(position).getPracticeId();
-                    Intent intent = new Intent(mContext, CommonWebViewActivity.class);
+                    String url = Configs.STRENGTHENING;
+                    Intent intent = new Intent(mContext, CommonNewsWebViewActivity.class);
+                    intent.putExtra("typePage",CommonNewsWebViewActivity.ANSWER);
                     intent.putExtra("webUrl",url);
-                    mContext.startActivity(intent);*/
+                    intent.putExtra("drillId",String.valueOf(list.get(position).getDrillId()));
+                    mContext.startActivity(intent);
                 }
             });
         }else{

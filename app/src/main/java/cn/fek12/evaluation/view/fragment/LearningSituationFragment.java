@@ -24,6 +24,7 @@ import butterknife.OnClick;
 import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.application.MyApplication;
 import cn.fek12.evaluation.impl.ILearningSituation;
+import cn.fek12.evaluation.model.config.Configs;
 import cn.fek12.evaluation.model.entity.ExaminationEntity;
 import cn.fek12.evaluation.model.entity.PlanVideoEntity;
 import cn.fek12.evaluation.model.entity.PromoteRecommedVideoEntity;
@@ -34,6 +35,7 @@ import cn.fek12.evaluation.utils.DisUtil;
 import cn.fek12.evaluation.utils.LoadViewUtils;
 import cn.fek12.evaluation.view.PopupWindow.PlanVideoSubjectPopupWindow;
 import cn.fek12.evaluation.view.PopupWindow.SubjectAllPopupWindow;
+import cn.fek12.evaluation.view.activity.CommonNewsWebViewActivity;
 import cn.fek12.evaluation.view.activity.CommonVideoActivity;
 import cn.fek12.evaluation.view.activity.MicrolessonVideoPlayActivity;
 import cn.fek12.evaluation.view.activity.MoreTasKSetActivity;
@@ -85,6 +87,7 @@ public class LearningSituationFragment extends BaseFragment<LearningSituationPre
     @Override
     protected void onInitView(Bundle savedInstanceState) {
         examinationAdapter = new ExaminationAdapter(getContext());
+        examinationAdapter.setOnItemClickListener(this);
         examinationRecycler.setLayoutManager(new LinearLayoutManager(getContext()){
             @Override
             public boolean canScrollVertically() {
@@ -117,6 +120,7 @@ public class LearningSituationFragment extends BaseFragment<LearningSituationPre
     @Override
     public void onResume() {
         super.onResume();
+        mPresenter.queryTaskPage(getContext(),MyApplication.getMyApp().getUserId(),"1","3");
         mPresenter.querWeekStudyPlanVideoList(getContext(), MyApplication.getMyApp().getUserId(), subjectId);
         mPresenter.getPromoteRecommedVideo(getContext(),MyApplication.getMyApp().getUserId(),String.valueOf(current),"3");
     }
@@ -124,7 +128,6 @@ public class LearningSituationFragment extends BaseFragment<LearningSituationPre
     @Override
     protected void onLoadDataRemote() {
         //DialogUtils.showDialog(LoadViewUtils.getLoadingView(getContext()));
-        mPresenter.queryTaskPage(getContext(),MyApplication.getMyApp().getUserId(),"1","3");
     }
 
     @Override
@@ -243,20 +246,27 @@ public class LearningSituationFragment extends BaseFragment<LearningSituationPre
 
     @Override
     public void onItemButClick(int taskStatus, int position) {
+        Intent intent;
         switch (taskStatus){
             case 0://去做作业
-                ToastUtils.popUpToast("taskStatus"+taskStatus+"position"+position);
-                break;
             case 1://补交作业
-
+                intent = new Intent(getContext(), CommonNewsWebViewActivity.class);
+                intent.putExtra("typePage",CommonNewsWebViewActivity.TASKPAGE);
+                intent.putExtra("webUrl",Configs.TASK + "userId=" + MyApplication.getMyApp().getUserId() + "&taskId=" + recordList.get(position).getTaskId() + "&qrParem=" + recordList.get(position).getQrId());
+                getContext().startActivity(intent);
                 break;
             case 2://查看结果
-
+                intent = new Intent(getContext(), CommonNewsWebViewActivity.class);
+                intent.putExtra("typePage",CommonNewsWebViewActivity.TASKPAGE);
+                intent.putExtra("webUrl",Configs.LEARNING + "userId=" + MyApplication.getMyApp().getUserId() + "&taskId=" + recordList.get(position).getTaskId());
+                getContext().startActivity(intent);
                 break;
             case 3://强化训练
-
+                intent = new Intent(getContext(), CommonNewsWebViewActivity.class);
+                intent.putExtra("typePage",CommonNewsWebViewActivity.ANSWER);
+                intent.putExtra("webUrl",Configs.INTENSIVE + "userId=" + MyApplication.getMyApp().getUserId() + "&taskDrillId=" + recordList.get(position).getDrillId());
+                getContext().startActivity(intent);
                 break;
-
             case 5://马上开始
                 break;
         }

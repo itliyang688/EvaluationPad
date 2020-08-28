@@ -1,5 +1,6 @@
 package cn.fek12.evaluation.view.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
@@ -25,6 +26,7 @@ import butterknife.BindView;
 import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.model.entity.ChildSectionEntity;
 import cn.fek12.evaluation.utils.DialogUtils;
+import cn.fek12.evaluation.view.activity.TestWebViewActivity;
 import cn.fek12.evaluation.view.widget.CustomViewPager;
 import cn.fek12.evaluation.view.widget.MultipleStatusView;
 
@@ -65,6 +67,7 @@ public class RecordFragment extends BaseFragment {
     protected void onInitView(Bundle savedInstanceState) {
         setDefaultTitle("记录", false);
         initView();
+        //initAdapter();
     }
 
     @Override

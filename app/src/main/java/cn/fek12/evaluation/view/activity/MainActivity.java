@@ -309,6 +309,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements BackFra
         //设置未读消息背景
         commonTabLayout.showMsg(3, num);
         commonTabLayout.setMsgMargin(3, -28, -2);
+        //commonTabLayout.setMsgMargin(3, -25, -15);
         if (num == 0) {
             UnreadMsgUtils.setSize(commonTabLayout.getMsgView(3), 20);
         }

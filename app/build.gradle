@@ -4,8 +4,9 @@ android {
 
     signingConfigs {
         release {
-            storeFile file('../fek12.jks')
-            keyAlias = 'evaluate'
+            //storeFile file('../fek12.jks')
+            storeFile file('D:/Projects/EvaluationPad/fek12.jks')
+            keyAlias = 'evaluation'
             storePassword 'fek12000'
             keyPassword 'fek12000'
         }
@@ -30,6 +31,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
 

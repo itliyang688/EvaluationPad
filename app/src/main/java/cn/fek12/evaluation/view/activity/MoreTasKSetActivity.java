@@ -345,18 +345,27 @@ public class MoreTasKSetActivity extends BaseActivity<MoreTaskSetPresenter> impl
 
     @Override
     public void onItemButClick(int taskStatus,int position) {
+        Intent intent;
         switch (taskStatus){
             case 0://去做作业
-                ToastUtils.popUpToast("taskStatus"+taskStatus+"position"+position);
-                break;
             case 1://补交作业
-
+                intent = new Intent(MoreTasKSetActivity.this, CommonNewsWebViewActivity.class);
+                intent.putExtra("typePage",CommonNewsWebViewActivity.TASKPAGE);
+                intent.putExtra("webUrl",Configs.TASK + "userId=" + MyApplication.getMyApp().getUserId() + "&taskId=" + mList.get(position).getTaskId() + "&qrParem=" + mList.get(position).getQrId());
+                MoreTasKSetActivity.this.startActivity(intent);
                 break;
             case 2://查看结果
-
+                intent = new Intent(MoreTasKSetActivity.this, CommonNewsWebViewActivity.class);
+                intent.putExtra("typePage",CommonNewsWebViewActivity.TASKPAGE);
+                intent.putExtra("webUrl",Configs.LEARNING + "userId=" + MyApplication.getMyApp().getUserId() + "&taskId=" + mList.get(position).getTaskId());
+                MoreTasKSetActivity.this.startActivity(intent);
                 break;
             case 3://强化训练
-
+                intent = new Intent(MoreTasKSetActivity.this, CommonNewsWebViewActivity.class);
+                intent.putExtra("typePage",CommonNewsWebViewActivity.ANSWER);
+                intent.putExtra("webUrl",Configs.INTENSIVE + "userId=" + MyApplication.getMyApp().getUserId() + "&taskDrillId=" + mList.get(position).getDrillId());
+                intent.putExtra("drillId",String.valueOf(mList.get(position).getDrillId()));
+                MoreTasKSetActivity.this.startActivity(intent);
                 break;
 
             case 5://马上开始

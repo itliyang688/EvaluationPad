@@ -10,12 +10,14 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.fek12.basic.utils.string.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.fek12.evaluation.R;
+import cn.fek12.evaluation.application.MyApplication;
 import cn.fek12.evaluation.model.entity.ExaminationEntity;
 import cn.fek12.evaluation.model.entity.MicroLessonPageEnetity;
 import cn.fek12.evaluation.view.widget.RoundImageView;
@@ -74,7 +76,7 @@ public class ExaminationAdapter extends RecyclerView.Adapter<ExaminationAdapter.
         private TextView tvData;
         private TextView tvSubject;
         private TextView tvState;
-        private RoundImageView ivCover;
+        private ImageView ivCover;
         private GifImageView gifView;
         private LinearLayout llClick0;
         private LinearLayout llClick1;
@@ -107,6 +109,7 @@ public class ExaminationAdapter extends RecyclerView.Adapter<ExaminationAdapter.
             tvState.setText(mList.get(position).getBetweenDateStr());
             tvSubject.setText(mList.get(position).getSubjectName());
             tvData.setText("发布时间："+mList.get(position).getCreateDate());
+            Glide.with(MyApplication.getApp()).load(mList.get(position).getImgUrl()).placeholder(R.mipmap.empty_bg).error(R.mipmap.empty_bg).into(ivCover);
             int taskStatus = mList.get(position).getTaskStatus();
 
             switch (taskStatus){

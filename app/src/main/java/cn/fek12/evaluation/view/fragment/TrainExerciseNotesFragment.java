@@ -13,14 +13,9 @@ import ayalma.ir.expandablerecyclerview.TrainExpandableRecyclerView;
 import butterknife.BindView;
 import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.application.MyApplication;
-import cn.fek12.evaluation.impl.ITrainExercisePage;
-import cn.fek12.evaluation.model.entity.ExrGroupListEntity;
-import cn.fek12.evaluation.model.entity.PracticeListEntity;
 import cn.fek12.evaluation.model.entity.TrainExrGroupListEntity;
 import cn.fek12.evaluation.model.entity.TrainListEntity;
-import cn.fek12.evaluation.presenter.ExercisePagePresenter;
 import cn.fek12.evaluation.presenter.TrainExercisePagePresenter;
-import cn.fek12.evaluation.view.adapter.ExerciseExpandableAdapter;
 import cn.fek12.evaluation.view.adapter.TrainExerciseExpandableAdapter;
 
 /**

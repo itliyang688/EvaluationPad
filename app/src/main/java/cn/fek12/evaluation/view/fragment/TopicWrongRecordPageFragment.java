@@ -2,13 +2,12 @@ package cn.fek12.evaluation.view.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -17,6 +16,7 @@ import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.fek12.basic.base.BaseFragment;
@@ -44,7 +44,7 @@ import cn.fek12.evaluation.view.widget.MultipleStatusView;
  * @CreateDate: 2019/11/8 17:38
  */
 public class TopicWrongRecordPageFragment extends BaseFragment {
-    @BindView(R.id.webView)
+    //@BindView(R.id.webView)
     WebView webView;
     @BindView(R.id.loadView)
     MultipleStatusView loadView;
@@ -64,6 +64,8 @@ public class TopicWrongRecordPageFragment extends BaseFragment {
     ImageView ivArrow;
     @BindView(R.id.llContainSubject)
     LinearLayout llContainSubject;
+    @BindView(R.id.rlContainView)
+    RelativeLayout rlContainView;
     private String startDate = "";
     private String endDate = "";
     private String subject = "";
@@ -74,9 +76,7 @@ public class TopicWrongRecordPageFragment extends BaseFragment {
         return R.layout.topic_worng_page_fragment;
     }
 
-    @SuppressLint("ClickableViewAccessibility")
-    @Override
-    protected void onInitView(Bundle savedInstanceState) {
+    public void initViewData() {
         //loadView.showEmpty();
         getContext().startActivity(new Intent(getContext(), TestWebViewActivity.class));
         WebSettings webSettings = webView.getSettings();
@@ -90,17 +90,7 @@ public class TopicWrongRecordPageFragment extends BaseFragment {
         webSettings.setLoadWithOverviewMode(true);
         webView.setWebChromeClient(new WebChromeClient());
         webView.addJavascriptInterface(new JavaScriptinterface(getContext()), "android");
-        // 使WebView不可滚动
-        //webView.setOnTouchListener((v, event) -> (event.getAction() == MotionEvent.ACTION_MOVE));
-        //webView.loadUrl("http://218.245.6.132:11111/html/Record.html");
-        //webView.loadUrl("http://192.168.0.46/noc/html/Record.html");
-        //webView.loadUrl("http://192.168.0.46:11111/accurateReport/report?userId=413&paperResultId=11425");
-        //webView.loadUrl("file:///android_asset/web/Record.html");
-        //startActivity(new Intent(getContext(), WebViewActivity.class));
-        //MainActivity activity = (MainActivity) getActivity();
 
-        //String webUrl = Configs.RECORD + "userId="+MyApplication.getMyApplication().getUserId();
-        loadView.showLoading();
         String webUrl = Configs.RECORD + "userId=" + MyApplication.getMyApp().getUserId() + "&beginDate=" + startDate + "&endDate=" + endDate + "&subject=" + subject;
         webView.loadUrl(webUrl);
 
@@ -117,6 +107,21 @@ public class TopicWrongRecordPageFragment extends BaseFragment {
                 loadView.showContent();
             }
         });
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    @Override
+    protected void onInitView(Bundle savedInstanceState) {
+        loadView.showLoading();
+        rlContainView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                webView = new WebView(getContext());
+                rlContainView.addView(webView);
+                initViewData();
+            }
+        }, 300);
+
     }
 
     @Override
@@ -147,7 +152,7 @@ public class TopicWrongRecordPageFragment extends BaseFragment {
                     @Override
                     public void onDateItme(String date) {
                         if (!TextUtils.isEmpty(endDate)) {
-                            if(AppUtils.dateToTime(endDate) < AppUtils.dateToTime(date)){
+                            if (AppUtils.dateToTime(endDate) < AppUtils.dateToTime(date)) {
                                 ToastUtils.popUpToast("不能大于结束时间");
                                 return;
                             }
@@ -178,7 +183,7 @@ public class TopicWrongRecordPageFragment extends BaseFragment {
                 ivArrow.setImageResource(R.mipmap.rise_icon);
                 //subjectPopupWindow.showAsDropDown(llContainSubject);
                 int tv_width = llContainSubject.getWidth();//获取对应的控件view宽度px值
-                int pop_width = DisUtil.dp2px(getContext(),150);
+                int pop_width = DisUtil.dp2px(getContext(), 150);
                 int width = (tv_width - pop_width) / 2;//获取x轴偏移量px
                 subjectPopupWindow.showAsDropDown(llContainSubject, width, 0);//设置x轴偏移量：注意单位为px
                 //subjectPopupWindow.showAtLocation(llSubject,Gravity.CENTER_VERTICAL, DisUtil.dp2px(getContext(),-10),0);
@@ -204,7 +209,7 @@ public class TopicWrongRecordPageFragment extends BaseFragment {
                 SelectDateDialog endDateDialog = new SelectDateDialog(getContext(), "选择结束日期", new SelectDateDialog.OnSelectItemDateListener() {
                     @Override
                     public void onDateItme(String date) {
-                        if(AppUtils.dateToTime(date) < AppUtils.dateToTime(startDate)){
+                        if (AppUtils.dateToTime(date) < AppUtils.dateToTime(startDate)) {
                             ToastUtils.popUpToast("不能小于开始时间");
                             return;
                         }
@@ -221,10 +226,10 @@ public class TopicWrongRecordPageFragment extends BaseFragment {
 
     /**
      * 设置添加屏幕的背景透明度
+     *
      * @param bgAlpha
      */
-    public void backgroundAlpha(float bgAlpha)
-    {
+    public void backgroundAlpha(float bgAlpha) {
         activity = (Activity) mContext;
         WindowManager.LayoutParams lp = activity.getWindow().getAttributes();
         lp.alpha = bgAlpha; //0.0-1.0
