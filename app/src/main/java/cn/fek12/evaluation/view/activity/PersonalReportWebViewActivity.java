@@ -1,6 +1,7 @@
 package cn.fek12.evaluation.view.activity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -41,6 +42,10 @@ public class PersonalReportWebViewActivity extends BaseActivity {
         Intent intent = getIntent();
         webUrl = intent.getStringExtra("webUrl");
         WebSettings webSettings = webView.getSettings();
+        // android 5.0及以上默认不支持Mixed Content
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE);
+        }
         // 不使用缓存：
         webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
         //如果访问的页面中要与Javascript交互，则webview必须设置支持Javascript

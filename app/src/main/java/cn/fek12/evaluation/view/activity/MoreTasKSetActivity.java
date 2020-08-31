@@ -349,6 +349,7 @@ public class MoreTasKSetActivity extends BaseActivity<MoreTaskSetPresenter> impl
         switch (taskStatus){
             case 0://去做作业
             case 1://补交作业
+            case 5://马上开始
                 intent = new Intent(MoreTasKSetActivity.this, CommonNewsWebViewActivity.class);
                 intent.putExtra("typePage",CommonNewsWebViewActivity.TASKPAGE);
                 intent.putExtra("webUrl",Configs.TASK + "userId=" + MyApplication.getMyApp().getUserId() + "&taskId=" + mList.get(position).getTaskId() + "&qrParem=" + mList.get(position).getQrId());
@@ -367,8 +368,11 @@ public class MoreTasKSetActivity extends BaseActivity<MoreTaskSetPresenter> impl
                 intent.putExtra("drillId",String.valueOf(mList.get(position).getDrillId()));
                 MoreTasKSetActivity.this.startActivity(intent);
                 break;
-
-            case 5://马上开始
+            case 4://强化训练解析
+                intent = new Intent(MoreTasKSetActivity.this, CommonNewsWebViewActivity.class);
+                intent.putExtra("typePage",CommonNewsWebViewActivity.ANSWER);
+                intent.putExtra("webUrl",Configs.STRENGTHENING + "taskDrillId=" + mList.get(position).getDrillId());
+                MoreTasKSetActivity.this.startActivity(intent);
                 break;
         }
     }

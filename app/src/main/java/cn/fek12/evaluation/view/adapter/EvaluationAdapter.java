@@ -40,11 +40,10 @@ public class EvaluationAdapter extends RecyclerView.Adapter<EvaluationAdapter.Ev
     }
 
     public void notifyChanged(List<EvaluationListEntity.DataBean.PapersBean> list,boolean isAdd) {
-        if(isAdd){
-            mList.addAll(list);
-        }else{
-            mList = list;
+        if(!isAdd){
+            mList.clear();
         }
+        mList.addAll(list);
         notifyDataSetChanged();
     }
 

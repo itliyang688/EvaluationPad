@@ -228,19 +228,19 @@ public class AutonomyEvaluationListActivity extends BaseActivity<AutonomyEvaluat
             return;
         }
         List<EvaluationListEntity.DataBean.PapersBean> papers = entry.getData().getPapers();
-        if (isLoadMore) {
-            mList.addAll(papers);
-        } else {
-            mList = papers;
-        }
         loadView.showContent();
         if (pageInfoBean.getTotalPage() > currentPage) {
             refreshLayout.setEnableLoadmore(true);
         } else {
             refreshLayout.setEnableLoadmore(false);
         }
-        if (mList != null && mList.size() > 0) {
+        if (papers != null && papers.size() > 0) {
             evaluationAdapter.notifyChanged(papers, isLoadMore);
+            if (isLoadMore) {
+                mList.addAll(papers);
+            } else {
+                mList = papers;
+            }
             if (!isLoadMore) {
                 recyclerView.smoothScrollToPosition(0);
             }

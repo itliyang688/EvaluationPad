@@ -69,6 +69,14 @@ public abstract class PrefUtilsData {
         SP.putString(PrefConstants.TOKEN, token);
     }
 
+    public static int getRemindNum() {
+        return SP.getInt(PrefConstants.REMINDNUM, 0);
+    }
+
+    public static void setRemindNum(int num) {
+        SP.putInt(PrefConstants.REMINDNUM, num);
+    }
+
     public static String getPer_level() {
         return SP.getString(PrefConstants.PER_LEVEL, "");
     }

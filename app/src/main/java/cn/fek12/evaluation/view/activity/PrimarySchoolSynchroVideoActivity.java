@@ -356,11 +356,6 @@ public class PrimarySchoolSynchroVideoActivity extends BaseActivity<SynchroVideo
 
     @Override
     public void loadVideoTreeListSuc(MicrolessonVideoEntity entry) {
-        if(isLoadMore){
-            mList.addAll(entry.getData().getRecords());
-        }else{
-            mList = entry.getData().getRecords();
-        }
         if(entry.getData().getPages() == 0){
             loadView.showEmpty();
             return;
@@ -372,8 +367,13 @@ public class PrimarySchoolSynchroVideoActivity extends BaseActivity<SynchroVideo
             refreshLayout.setEnableLoadmore(false);
         }
 
-        if(mList != null && mList.size() > 0){
-            videoAdapter.notifyChanged(mList,isLoadMore);
+        if(entry.getData().getRecords() != null && entry.getData().getRecords().size() > 0){
+            videoAdapter.notifyChanged(entry.getData().getRecords(),isLoadMore);
+            if(isLoadMore){
+                mList.addAll(entry.getData().getRecords());
+            }else{
+                mList = entry.getData().getRecords();
+            }
         }
         refreshLayout.finishLoadmore();
         refreshLayout.finishRefreshing();

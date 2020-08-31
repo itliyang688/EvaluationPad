@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.fek12.basic.utils.string.StringUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,9 +82,13 @@ public class TrainExerciseExpandableAdapter extends TrainExpandableRecyclerView.
     @Override
     public void onBindGroupViewHolder(TrainExpandableRecyclerView.SimpleGroupViewHolder holder, int group) {
         super.onBindGroupViewHolder(holder, group);
-        String groups[] = getGroupItem(group).split("\\.");
-        String groupName = groups[1]+"月" + groups[2] + "日";
-        holder.setText(groupName);
+        if(!StringUtils.isEmpty(getGroupItem(group))){
+            String groups[] = getGroupItem(group).split("\\.");
+            if(groups != null && groups.length > 0){
+                String groupName = groups[1]+"月" + groups[2] + "日";
+                holder.setText(groupName);
+            }
+        }
     }
 
     @Override
@@ -101,11 +107,9 @@ public class TrainExerciseExpandableAdapter extends TrainExpandableRecyclerView.
             holder.tbAnalysis.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    String url = Configs.STRENGTHENING;
                     Intent intent = new Intent(mContext, CommonNewsWebViewActivity.class);
                     intent.putExtra("typePage",CommonNewsWebViewActivity.ANSWER);
-                    intent.putExtra("webUrl",url);
-                    intent.putExtra("drillId",String.valueOf(list.get(position).getDrillId()));
+                    intent.putExtra("webUrl",Configs.STRENGTHENING + "taskDrillId=" + list.get(position).getDrillId());
                     mContext.startActivity(intent);
                 }
             });

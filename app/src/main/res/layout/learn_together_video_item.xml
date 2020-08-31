@@ -48,7 +48,7 @@
 
             <TextView
                 android:id="@+id/tvName"
-                android:layout_width="92dp"
+                android:layout_width="@dimen/dp_120"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_11"
                 android:ellipsize="end"
@@ -58,7 +58,7 @@
                 android:textSize="@dimen/sp_10" />
 
             <LinearLayout
-                android:layout_width="@dimen/dp_100"
+                android:layout_width="@dimen/dp_120"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_2"
                 android:layout_marginLeft="@dimen/dp_11"
@@ -109,7 +109,7 @@
             android:textSize="@dimen/sp_12"
             android:textColor="@color/color_333"
             android:layout_marginLeft="@dimen/dp_41"
-            android:layout_marginBottom="@dimen/dp_19"
+            android:layout_marginBottom="@dimen/dp_18"
             android:text="本周本校 36 位学生在学"/>
     </RelativeLayout>
 

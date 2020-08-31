@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -80,6 +81,10 @@ public class TopicWrongRecordPageFragment extends BaseFragment {
         //loadView.showEmpty();
         getContext().startActivity(new Intent(getContext(), TestWebViewActivity.class));
         WebSettings webSettings = webView.getSettings();
+        // android 5.0及以上默认不支持Mixed Content
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE);
+        }
         // 不使用缓存：
         webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
         //如果访问的页面中要与Javascript交互，则webview必须设置支持Javascript

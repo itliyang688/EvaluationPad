@@ -56,11 +56,20 @@ public class PlanVideoEntity implements Serializable {
         private String videoName;
         private String videoUrl;
         private String imgUrl;
+        private String knowledgeId;
         private int palyCount;
         private int length;
         private String createDate;
         private int playScheduleTime;
         private int isCollection;
+
+        public String getKnowledgeId() {
+            return knowledgeId;
+        }
+
+        public void setKnowledgeId(String knowledgeId) {
+            this.knowledgeId = knowledgeId;
+        }
 
         public String getVideoId() {
             return videoId;

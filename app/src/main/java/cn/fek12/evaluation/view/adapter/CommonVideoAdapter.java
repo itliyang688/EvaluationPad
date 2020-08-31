@@ -36,11 +36,10 @@ public class CommonVideoAdapter extends RecyclerView.Adapter<CommonVideoAdapter.
     }
 
     public void notifyChanged(List<MicrolessonVideoEntity.DataBean.RecordsBean> list,boolean isAdd) {
-        if(isAdd){
-            mList.addAll(list);
-        }else{
-            mList = list;
+        if(!isAdd){
+            mList.clear();
         }
+        mList.addAll(list);
         notifyDataSetChanged();
     }
 

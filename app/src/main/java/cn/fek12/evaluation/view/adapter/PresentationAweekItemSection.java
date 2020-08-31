@@ -50,11 +50,10 @@ public class PresentationAweekItemSection extends Section {
         mOnSelectItmeListener = onSelectItmeListener;
     }
     public void updateAndAddList(List<PresentationEntity> list,boolean isAdd){
-        if(isAdd){
-            mList.addAll(list);
-        }else{
-            mList = list;
+        if(!isAdd){
+            mList.clear();
         }
+        mList.addAll(list);
     }
     @Override
     public int getContentItemsTotal() {

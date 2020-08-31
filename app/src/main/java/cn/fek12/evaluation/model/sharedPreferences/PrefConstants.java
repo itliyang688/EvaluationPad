@@ -9,6 +9,7 @@ public interface PrefConstants {
     String BANNERCACHE = "bannerCache";
     String USERID = "userId";
     String REPORTREFRESH = "reportRefresh";
+    String REMINDNUM = "remindNum";
     String COLLECTION = "isCollectionRefresh";
     String PLAYCOUNTREFRESH = "isPlayCountRefresh";
     String PROMOTEREFRESH = "promoteRefresh";

@@ -39,11 +39,10 @@ public class CurriculumRecordAdapter extends RecyclerView.Adapter<CurriculumReco
     }
 
     public void notifyChanged(List<CurriculumEntity.DataBean.VideosBean> list,boolean isAdd) {
-        if(isAdd){
-            mList.addAll(list);
-        }else{
-            mList = list;
+        if(!isAdd){
+            mList.clear();
         }
+        mList.addAll(list);
         notifyDataSetChanged();
     }
 

@@ -129,8 +129,12 @@ public class ExaminationAdapter extends RecyclerView.Adapter<ExaminationAdapter.
                     if(StringUtils.isEmpty(mList.get(position).getDrillId())){
                         setViewVisibility(View.GONE,View.GONE,View.VISIBLE,View.GONE,View.GONE,View.GONE,View.GONE);
                     }else{
+                        if(mList.get(position).getDrillStatus().equals("1")){
+                            setOnClickListener(llClick3,4,position);
+                        }else{
+                            setOnClickListener(llClick3,3,position);
+                        }
                         setViewVisibility(View.GONE,View.GONE,View.VISIBLE,View.VISIBLE,View.GONE,View.GONE,View.GONE);
-                        setOnClickListener(llClick3,3,position);
                     }
                     break;
                 case 4://考试未开始

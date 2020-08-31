@@ -92,6 +92,8 @@ public class CompositionTreasureVideoActivity extends BaseActivity<RiseMiddleSch
     protected void onResume() {
         super.onResume();
         loadView.showLoading();
+        isLoadMore = false;
+        currentPage = 1;
         initData();
     }
 
@@ -301,7 +303,7 @@ public class CompositionTreasureVideoActivity extends BaseActivity<RiseMiddleSch
             refreshLayout.setEnableLoadmore(false);
         }
 
-        if(mList != null && mList.size() > 0){
+        if(recordsBeans != null && recordsBeans.size() > 0){
             videoAdapter.notifyChanged(recordsBeans,isLoadMore);
         }
         refreshLayout.finishLoadmore();

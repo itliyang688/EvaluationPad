@@ -28,6 +28,7 @@ import cn.fek12.evaluation.model.config.Configs;
 import cn.fek12.evaluation.model.entity.ExaminationEntity;
 import cn.fek12.evaluation.model.entity.PlanVideoEntity;
 import cn.fek12.evaluation.model.entity.PromoteRecommedVideoEntity;
+import cn.fek12.evaluation.model.sharedPreferences.PrefUtilsData;
 import cn.fek12.evaluation.presenter.LearningSituationPresenter;
 import cn.fek12.evaluation.utils.AppUtils;
 import cn.fek12.evaluation.utils.DialogUtils;
@@ -115,6 +116,14 @@ public class LearningSituationFragment extends BaseFragment<LearningSituationPre
             }
         });
         alikeRecycler.setAdapter(alikeAdapter);
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser && PrefUtilsData.getRemindNum() > 0 && examinationAdapter != null) {
+            mPresenter.queryTaskPage(getContext(),MyApplication.getMyApp().getUserId(),"1","3");
+        }
     }
 
     @Override
@@ -224,6 +233,7 @@ public class LearningSituationFragment extends BaseFragment<LearningSituationPre
     public void onPlanItemClick(int position) {
         Intent intent = new Intent(getContext(), PlanForTheWeekActivity.class);
         intent.putExtra("imgUrl",planList.get(position).getImgUrl());
+        intent.putExtra("knowledgeId",planList.get(position).getKnowledgeId());
         intent.putExtra("videoId",planList.get(position).getVideoId());
         intent.putExtra("videName",planList.get(position).getVideoName());
         intent.putExtra("videoUrl",planList.get(position).getVideoUrl());
@@ -250,6 +260,7 @@ public class LearningSituationFragment extends BaseFragment<LearningSituationPre
         switch (taskStatus){
             case 0://去做作业
             case 1://补交作业
+            case 5://马上开始
                 intent = new Intent(getContext(), CommonNewsWebViewActivity.class);
                 intent.putExtra("typePage",CommonNewsWebViewActivity.TASKPAGE);
                 intent.putExtra("webUrl",Configs.TASK + "userId=" + MyApplication.getMyApp().getUserId() + "&taskId=" + recordList.get(position).getTaskId() + "&qrParem=" + recordList.get(position).getQrId());
@@ -267,7 +278,11 @@ public class LearningSituationFragment extends BaseFragment<LearningSituationPre
                 intent.putExtra("webUrl",Configs.INTENSIVE + "userId=" + MyApplication.getMyApp().getUserId() + "&taskDrillId=" + recordList.get(position).getDrillId());
                 getContext().startActivity(intent);
                 break;
-            case 5://马上开始
+            case 4://强化训练解析
+                intent = new Intent(getContext(), CommonNewsWebViewActivity.class);
+                intent.putExtra("typePage",CommonNewsWebViewActivity.ANSWER);
+                intent.putExtra("webUrl",Configs.STRENGTHENING + "taskDrillId=" + recordList.get(position).getDrillId());
+                getContext().startActivity(intent);
                 break;
         }
     }

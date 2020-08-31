@@ -44,11 +44,10 @@ public class MoreTaskSetAdapter extends RecyclerView.Adapter<MoreTaskSetAdapter.
     }
 
     public void notifyChanged(List<ExaminationEntity.DataBean.RecordsBean> list,boolean isAdd) {
-        if(isAdd){
-            mList.addAll(list);
-        }else{
-            mList = list;
+        if(!isAdd){
+            mList.clear();
         }
+        mList.addAll(list);
         notifyDataSetChanged();
     }
 
@@ -128,8 +127,12 @@ public class MoreTaskSetAdapter extends RecyclerView.Adapter<MoreTaskSetAdapter.
                     if(StringUtils.isEmpty(mList.get(position).getDrillId())){
                         setViewVisibility(View.GONE,View.GONE,View.VISIBLE,View.GONE,View.GONE,View.GONE,View.GONE);
                     }else{
+                        if(mList.get(position).getDrillStatus().equals("1")){
+                            setOnClickListener(llClick3,4,position);
+                        }else{
+                            setOnClickListener(llClick3,3,position);
+                        }
                         setViewVisibility(View.GONE,View.GONE,View.VISIBLE,View.VISIBLE,View.GONE,View.GONE,View.GONE);
-                        setOnClickListener(llClick3,3,position);
                     }
                     break;
                 case 4://考试未开始

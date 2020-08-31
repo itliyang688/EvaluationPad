@@ -1,7 +1,9 @@
 package cn.fek12.evaluation.view.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -11,14 +13,13 @@ import com.fek12.basic.utils.toast.ToastUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.application.MyApplication;
 import cn.fek12.evaluation.impl.IMicrolessVideoPlay;
+import cn.fek12.evaluation.model.config.Configs;
 import cn.fek12.evaluation.model.entity.CollectionEntity;
 import cn.fek12.evaluation.model.sharedPreferences.PrefUtilsData;
 import cn.fek12.evaluation.presenter.MicrolessonVideoPlayPresenter;
-import cn.fek12.evaluation.presenter.VideoPlayListPresenter;
 import cn.fek12.evaluation.utils.AppUtils;
 import cn.fek12.evaluation.view.widget.MyJzvdStd;
 import cn.jzvd.Jzvd;
@@ -37,6 +38,8 @@ public class PlanForTheWeekActivity extends BaseActivity<MicrolessonVideoPlayPre
     RelativeLayout rootView;
     @BindView(R.id.iv_left_back)
     ImageView ivLeftBack;
+    @BindView(R.id.practiceBtn)
+    Button practiceBtn;
     private int isCollection;
     private int playScheduleTime;
     private String isEnd = "0";
@@ -44,6 +47,7 @@ public class PlanForTheWeekActivity extends BaseActivity<MicrolessonVideoPlayPre
     private String imgUrl;
     private String videoId;
     private String videName;
+    private String knowledgeId;
 
     @Override
     public int setLayoutResource() {
@@ -57,6 +61,7 @@ public class PlanForTheWeekActivity extends BaseActivity<MicrolessonVideoPlayPre
         rootView.setPadding(0, AppUtils.getStatusBarHeight(PlanForTheWeekActivity.this), 0, 0);
         videoUrl = getIntent().getStringExtra("videoUrl");
         videoId = getIntent().getStringExtra("videoId");
+        knowledgeId = getIntent().getStringExtra("knowledgeId");
         imgUrl = getIntent().getStringExtra("imgUrl");
         videName = getIntent().getStringExtra("videName");
         isCollection = getIntent().getIntExtra("isCollection", 0);
@@ -70,6 +75,7 @@ public class PlanForTheWeekActivity extends BaseActivity<MicrolessonVideoPlayPre
         Glide.with(MyApplication.getApp()).load(imgUrl).into(jzVideo.thumbImageView);
 
         ivLeftBack.setOnClickListener(onClickListener);
+        practiceBtn.setOnClickListener(onClickListener);
     }
 
     @Override
@@ -90,13 +96,19 @@ public class PlanForTheWeekActivity extends BaseActivity<MicrolessonVideoPlayPre
                 case R.id.iv_left_back:
                     PlanForTheWeekActivity.this.finish();
                     break;
+                case R.id.practiceBtn:
+                    String url = Configs.SMALLWORK + "userId=" + MyApplication.getMyApp().getUserId() + "&subjectCategoryId=" + knowledgeId;
+                    Intent intent = new Intent(PlanForTheWeekActivity.this, CommonWebViewActivity.class);
+                    intent.putExtra("webUrl",url);
+                    startActivity(intent);
+                    break;
                 case R.id.ivExtend:
                     if (isCollection == 0) {
                         tag = "1";
                     } else {
                         tag = "0";
                     }
-                    mPresenter.collection(PlanForTheWeekActivity.this,videoId,tag, MyApplication.getMyApp().getUserId());
+                    mPresenter.collection(PlanForTheWeekActivity.this, videoId, tag, MyApplication.getMyApp().getUserId());
                     break;
             }
         }
@@ -107,7 +119,7 @@ public class PlanForTheWeekActivity extends BaseActivity<MicrolessonVideoPlayPre
         jzVideo.goOnPlayOnPause();
         long currentPos = jzVideo.getCurrentPositionWhenPlaying();
         if (currentPos > 0 || isEnd.equals("1")) {
-            mPresenter.addOrUpdateVideoPlayCount(PlanForTheWeekActivity.this,String.valueOf(currentPos),MyApplication.getMyApp().getUserId(),videoId);
+            mPresenter.addOrUpdateVideoPlayCount(PlanForTheWeekActivity.this, String.valueOf(currentPos), MyApplication.getMyApp().getUserId(), videoId);
         }
         super.onPause();
     }
@@ -144,10 +156,10 @@ public class PlanForTheWeekActivity extends BaseActivity<MicrolessonVideoPlayPre
     @Override
     public void loadCollectionSuc(CollectionEntity entry) {
         PrefUtilsData.setIsCollectionRefresh(true);
-        if(tag.equals("0")){
+        if (tag.equals("0")) {
             isCollection = 0;
             ToastUtils.popUpToast("已取消");
-        }else{
+        } else {
             isCollection = 1;
             ToastUtils.popUpToast("已收藏");
         }
@@ -156,9 +168,9 @@ public class PlanForTheWeekActivity extends BaseActivity<MicrolessonVideoPlayPre
 
     @Override
     public void loadCollectionFail() {
-        if(tag.equals("0")){
+        if (tag.equals("0")) {
             ToastUtils.popUpToast("取消失败");
-        }else{
+        } else {
             ToastUtils.popUpToast("收藏失败");
         }
     }

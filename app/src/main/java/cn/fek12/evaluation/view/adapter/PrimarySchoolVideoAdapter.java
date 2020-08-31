@@ -42,11 +42,10 @@ public class PrimarySchoolVideoAdapter extends RecyclerView.Adapter<PrimarySchoo
     }
 
     public void notifyChanged(List<MicrolessonVideoEntity.DataBean.RecordsBean> list, boolean isAdd) {
-        if(isAdd){
-            mList.addAll(list);
-        }else{
-            mList = list;
+        if(!isAdd){
+            mList.clear();
         }
+        mList.addAll(list);
         notifyDataSetChanged();
     }
 

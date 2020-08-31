@@ -1,7 +1,10 @@
 package cn.fek12.evaluation.view.activity;
 
 import android.content.Intent;
+import android.net.http.SslError;
+import android.os.Build;
 import android.os.Bundle;
+import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -64,6 +67,10 @@ public class CommonNewsWebViewActivity extends BaseActivity {
             ivLeftBack.setImageResource(R.mipmap.task1_back_icon);
         }
         WebSettings webSettings = webView.getSettings();
+        // android 5.0及以上默认不支持Mixed Content
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE);
+        }
         // 不使用缓存：
         webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
         //如果访问的页面中要与Javascript交互，则webview必须设置支持Javascript
@@ -91,6 +98,13 @@ public class CommonNewsWebViewActivity extends BaseActivity {
             @Override
             public void onPageFinished(WebView view, String url) {
                 hideLoading();
+            }
+            @Override
+            public void onReceivedSslError(WebView view,
+                                           SslErrorHandler handler, SslError error) {
+                // handler.cancel();// Android默认的处理方式
+                handler.proceed();// 接受所有网站的证书
+                // handleMessage(Message msg);// 进行其他处理
             }
         });
     }
