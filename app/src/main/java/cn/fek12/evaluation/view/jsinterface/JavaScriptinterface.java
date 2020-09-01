@@ -56,7 +56,7 @@ public class JavaScriptinterface {
     }
 
     /**
-     * 与js交互时用到的方法，在js里直接调用的,打开个人精准报告
+     * 与js交互时用到的方法，在js里直接调用的,打开测评个人精准报告
      */
     @JavascriptInterface
     public void personal_report(String paperResultId) {
@@ -68,7 +68,20 @@ public class JavaScriptinterface {
     }
 
     /**
-     * JS调用关闭个人精准报告
+     * 打开作业考试个人精准报告
+     */
+    @JavascriptInterface
+    public void taskPersonalReport(String paperResultId) {
+        PrefUtilsData.setPaperResultIdCache(paperResultId);
+        String url = Configs.TCHACCURATEREPORT+"userId="+MyApplication.getMyApp().getUserId()+"&paperResultId="+paperResultId+"&token="+PrefUtilsData.getToken();
+        Intent intent = new Intent(mContext, PersonalReportWebViewActivity.class);
+        intent.putExtra("webUrl",url);
+        mContext.startActivity(intent);
+    }
+
+
+    /**
+     * JS调用获取返回值
      */
     @JavascriptInterface
     public String returnData() {

@@ -82,7 +82,7 @@
 
         <LinearLayout
             android:id="@+id/llClick0"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/dp_51"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:gravity="center"
@@ -96,7 +96,7 @@
 
         <LinearLayout
             android:id="@+id/llClick1"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/dp_51"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/dp_22"
@@ -112,10 +112,10 @@
 
         <LinearLayout
             android:id="@+id/llClick2"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/dp_51"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/dp_22"
+            android:layout_marginLeft="@dimen/dp_12"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -135,10 +135,10 @@
 
         <LinearLayout
             android:id="@+id/llClick3"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/dp_51"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/dp_22"
+            android:layout_marginLeft="@dimen/dp_12"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -158,10 +158,10 @@
 
         <LinearLayout
             android:id="@+id/llClick4"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/dp_51"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/dp_22"
+            android:layout_marginLeft="@dimen/dp_12"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -181,10 +181,10 @@
 
         <LinearLayout
             android:id="@+id/llClick5"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/dp_51"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/dp_22"
+            android:layout_marginLeft="@dimen/dp_12"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -196,10 +196,10 @@
 
         <LinearLayout
             android:id="@+id/llClick6"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/dp_51"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/dp_22"
+            android:layout_marginLeft="@dimen/dp_12"
             android:gravity="center"
             android:orientation="vertical">
 

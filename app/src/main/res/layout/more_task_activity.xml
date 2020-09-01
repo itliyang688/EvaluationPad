@@ -303,7 +303,7 @@
             android:layout_marginLeft="@dimen/dp_38"
             android:layout_marginTop="@dimen/dp_30"
             android:layout_marginBottom="@dimen/dp_35"
-            android:layout_marginRight="@dimen/dp_31"
+            android:layout_marginRight="@dimen/dp_26"
             app:tr_head_height="100dp"
             app:tr_wave_height="180dp">
 

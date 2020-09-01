@@ -26,5 +26,6 @@ public class Configs {
     public static final String STRENGTHENING = WEB_BASE_URL + "html/Strengthening.html?";//强化训练解析
     public static final String TASK = WEB_BASE_URL + "html/task.html?";//作业或考试
     public static final String LEARNING = WEB_BASE_URL + "html/Learning.html?";//查看结果
-    public static final String PERSONAL_REPORT = WEB_BASE_URL + "accurateReport/report?";//个人报告
+    public static final String PERSONAL_REPORT = WEB_BASE_URL + "accurateReport/report?";//测评个人报告
+    public static final String TCHACCURATEREPORT = WEB_BASE_URL + "tchaccurateReport/report?";//作业考试个人报告
 }
