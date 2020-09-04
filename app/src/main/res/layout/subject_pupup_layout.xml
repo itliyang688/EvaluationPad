@@ -10,7 +10,7 @@
     <cn.fek12.evaluation.view.widget.MultipleStatusView
         android:id="@+id/loadView"
         android:layout_width="@dimen/dp_150"
-        android:layout_height="@dimen/dp_311"
+        android:layout_height="@dimen/dp_261"
         android:background="@mipmap/subject_bg"
         android:visibility="visible">
         <!--android:background="@mipmap/subjtct_layout_bg"-->

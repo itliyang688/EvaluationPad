@@ -74,25 +74,30 @@ public class AlikeAdapter extends RecyclerView.Adapter<AlikeAdapter.EvaluationHo
         private View itemView;
         private RoundImageView ivCover;
         private TextView tvName;
-        private TextView tvTime;
-        private TextView tvPlayNumber;
+        //private TextView tvTime;
+        //private TextView tvPlayNumber;
+        private TextView tvLearned;
         private TextView tvNumber;
+        private TextView tvCollection;
 
         public EvaluationHolder(View itemView) {
             super(itemView);
             this.itemView = itemView;
             tvName = this.itemView.findViewById(R.id.tvName);
-            tvPlayNumber = this.itemView.findViewById(R.id.tvPlayNumber);
-            tvTime = this.itemView.findViewById(R.id.tvTime);
+            //tvPlayNumber = this.itemView.findViewById(R.id.tvPlayNumber);
+            //tvTime = this.itemView.findViewById(R.id.tvTime);
             tvNumber = this.itemView.findViewById(R.id.tvNumber);
+            tvCollection = this.itemView.findViewById(R.id.tvCollection);
+            tvLearned = this.itemView.findViewById(R.id.tvLearned);
             ivCover = this.itemView.findViewById(R.id.ivCover);
         }
 
         public void setData(final int position) {
+            tvCollection.setText("收藏："+mList.get(position).getIsCollection());
+            tvLearned.setText("已学："+mList.get(position).getPlayCount());
             tvName.setText(mList.get(position).getVideoName());
-            tvPlayNumber.setText(String.valueOf(mList.get(position).getPlayCount()));
-            tvTime.setText(mList.get(position).getCreateDate());
-            tvNumber.setText(String.valueOf(mList.get(position).getClassMateCount()));
+            //tvPlayNumber.setText(String.valueOf(mList.get(position).getPlayCount()));
+            //tvTime.setText(mList.get(position).getCreateDate());
             tvNumber.setText(Html.fromHtml("本周本校 <font color='#F28504'>"+ mList.get(position).getClassMateCount() +"</font>" + " 位学生在学"));
             Glide.with(MyApplication.getApp()).load(mList.get(position).getImgUrl()).placeholder(R.mipmap.empty_bg).error(R.mipmap.empty_bg).into(ivCover);
         }

@@ -205,7 +205,7 @@ public class MicroLessonRecordFragment extends BaseFragment<MicroLessonRecordPre
                 }
                 collectionList();
             }
-        });
+        },0);
         subjectPopupWindow.viewEmptyHide();
         AppUtils.fitPopupWindowOverStatusBar(subjectPopupWindow, true);
         ivArrow.setImageResource(R.mipmap.rise_icon);

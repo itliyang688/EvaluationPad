@@ -214,7 +214,7 @@ public class CurriculumRecordFragment extends BaseFragment<CurriculumRecordPrese
                         }
                         mPresenter.courseRecord(getContext(), startDate, endDate, subject, MyApplication.getMyApp().getUserId(), String.valueOf(currentPage));
                     }
-                });
+                },0);
 
                 AppUtils.fitPopupWindowOverStatusBar(subjectPopupWindow, true);
                 ivArrow.setImageResource(R.mipmap.rise_icon);

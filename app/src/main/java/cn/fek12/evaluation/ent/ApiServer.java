@@ -24,6 +24,7 @@ import cn.fek12.evaluation.model.entity.PromoteRecommedVideoEntity;
 import cn.fek12.evaluation.model.entity.RecordsEntitiy;
 import cn.fek12.evaluation.model.entity.RelevantVideoListEntity;
 import cn.fek12.evaluation.model.entity.SemesterEntity;
+import cn.fek12.evaluation.model.entity.SourceEntity;
 import cn.fek12.evaluation.model.entity.SubjectEntity;
 import cn.fek12.evaluation.model.entity.SubjectModel;
 import cn.fek12.evaluation.model.entity.SubjectsEntity;
@@ -321,6 +322,12 @@ public interface ApiServer {
      */
     @GET("nocSubject/getNocSubjectInfoList")
     Observable<SubjectsEntity> getNocSubjectInfoList();
+
+    /**
+     * 来源
+     */
+    @POST("wrongTopic/wrongTopicOrigin")
+    Observable<SourceEntity> wrongTopicOrigin();
 
     /**
      * 获取月份

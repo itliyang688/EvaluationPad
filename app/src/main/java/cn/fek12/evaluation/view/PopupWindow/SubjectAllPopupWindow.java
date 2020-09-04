@@ -15,6 +15,7 @@ import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.base.BaseObserver;
 import cn.fek12.evaluation.ent.ApiRetrofit;
 import cn.fek12.evaluation.ent.RxHelper;
+import cn.fek12.evaluation.model.entity.SourceEntity;
 import cn.fek12.evaluation.model.entity.SubjectsEntity;
 import cn.fek12.evaluation.model.entity.SubjectsObsoleteEntity;
 import cn.fek12.evaluation.view.widget.MultipleStatusView;
@@ -33,12 +34,14 @@ public class SubjectAllPopupWindow extends PopupWindow {
     private LinearLayout llContain;
     private MultipleStatusView loadView;
     private OnSelectItmeListener mOnSelectItmeListener = null;
+    private int requestType = 0;
 
     public interface OnSelectItmeListener {
         void onSelectItme(String subjectId, String subjectName);
     }
 
-    public SubjectAllPopupWindow(Context context, OnSelectItmeListener onSelectItmeListener){
+    public SubjectAllPopupWindow(Context context, OnSelectItmeListener onSelectItmeListener,int requestType){
+        this.requestType = requestType;
         this.mContext = context;
         this.mOnSelectItmeListener = onSelectItmeListener;
 
@@ -72,7 +75,12 @@ public class SubjectAllPopupWindow extends PopupWindow {
             }
         });
 
-        querySubjectList();
+        if(requestType == 0){
+            querySubjectList();
+        }else{
+            querySourceList();
+        }
+
     }
 
     public void viewEmptyHide(){
@@ -81,6 +89,47 @@ public class SubjectAllPopupWindow extends PopupWindow {
 
     public View getMenuView(){
         return mMenuView;
+    }
+
+    public void querySourceList() {
+        ApiRetrofit.getInstance().getApiService().wrongTopicOrigin()
+                .compose(RxHelper.observableIO2Main(mContext))
+                .subscribe(new BaseObserver<SourceEntity>() {
+
+                    @Override
+                    public void onSuccess(SourceEntity entry) {
+                        if(entry.getState().equals("0")){
+                            llContain.removeAllViews();
+                            SourceEntity.DataBean dataBean = new SourceEntity.DataBean();
+                            dataBean.setOrigin("ALL");
+                            dataBean.setName("全部");
+                            List<SourceEntity.DataBean> mList = entry.getData();
+                            mList.add(0,dataBean);
+
+                            for(int i = 0; i < mList.size(); i++){
+                                View viewItem = LayoutInflater.from(mContext).inflate(R.layout.subject_itme, null);
+                                TextView tvName = viewItem.findViewById(R.id.tvName);
+                                tvName.setText(mList.get(i).getName());
+                                int finalI = i;
+                                viewItem.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        tvName.setTextColor(mContext.getResources().getColor(R.color.white));
+                                        if(mOnSelectItmeListener != null){
+                                            mOnSelectItmeListener.onSelectItme(String.valueOf(mList.get(finalI).getOrigin()),mList.get(finalI).getName());
+                                        }
+                                        dismiss();
+                                    }
+                                });
+                                llContain.addView(viewItem);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(String msg) {
+                    }
+                });
     }
 
     public void querySubjectList() {

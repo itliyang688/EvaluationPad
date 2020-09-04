@@ -128,7 +128,7 @@ public class TestChartRecordFragment extends BaseFragment<TestCharRecordPresente
                         mSubjectId = subjectId;
                         mPresenter.requestData(getContext(), mSubjectId, MyApplication.getMyApp().getUserId());
                     }
-                });
+                },0);
                 AppUtils.fitPopupWindowOverStatusBar(subjectPopupWindow, true);
                 ivArrow.setImageResource(R.mipmap.rise_icon);
                 subjectPopupWindow.showAsDropDown(llContainSubject, -90, 0);

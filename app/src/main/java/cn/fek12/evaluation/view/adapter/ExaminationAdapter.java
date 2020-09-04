@@ -73,6 +73,7 @@ public class ExaminationAdapter extends RecyclerView.Adapter<ExaminationAdapter.
 
         private View itemView;
         private TextView tvName;
+        private TextView tvResult;
         private TextView tvData;
         private TextView tvSubject;
         private TextView tvState;
@@ -91,6 +92,7 @@ public class ExaminationAdapter extends RecyclerView.Adapter<ExaminationAdapter.
             this.itemView = itemView;
             tvName = this.itemView.findViewById(R.id.tvName);
             tvSubject = this.itemView.findViewById(R.id.tvSubject);
+            tvResult = this.itemView.findViewById(R.id.tvResult);
             tvData = this.itemView.findViewById(R.id.tvData);
             tvState = this.itemView.findViewById(R.id.tvState);
             ivCover = this.itemView.findViewById(R.id.ivCover);
@@ -125,6 +127,11 @@ public class ExaminationAdapter extends RecyclerView.Adapter<ExaminationAdapter.
                     setViewVisibility(View.GONE,View.GONE,View.GONE,View.GONE,View.GONE,View.GONE,View.VISIBLE);
                     break;
                 case 3://作业/考试完成报告生成
+                    if(mList.get(position).getTaskType() == 1){//作业
+                        tvResult.setText("作业结果");
+                    }else{//考试
+                        tvResult.setText("考试结果");
+                    }
                     setOnClickListener(llClick2,2,position);
                     if(StringUtils.isEmpty(mList.get(position).getDrillId())){
                         setViewVisibility(View.GONE,View.GONE,View.VISIBLE,View.GONE,View.GONE,View.GONE,View.GONE);

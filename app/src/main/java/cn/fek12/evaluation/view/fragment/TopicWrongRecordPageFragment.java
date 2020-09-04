@@ -8,7 +8,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -67,9 +66,18 @@ public class TopicWrongRecordPageFragment extends BaseFragment {
     LinearLayout llContainSubject;
     @BindView(R.id.rlContainView)
     RelativeLayout rlContainView;
+    @BindView(R.id.tvSource)
+    TextView tvSource;
+    @BindView(R.id.ivArrow1)
+    ImageView ivArrow1;
+    @BindView(R.id.llContainSource)
+    LinearLayout llContainSource;
+    @BindView(R.id.llSource)
+    LinearLayout llSource;
     private String startDate = "";
     private String endDate = "";
     private String subject = "";
+    private String source = "";
     private SubjectAllPopupWindow subjectPopupWindow;
 
     @Override
@@ -96,7 +104,7 @@ public class TopicWrongRecordPageFragment extends BaseFragment {
         webView.setWebChromeClient(new WebChromeClient());
         webView.addJavascriptInterface(new JavaScriptinterface(getContext()), "android");
 
-        String webUrl = Configs.RECORD + "userId=" + MyApplication.getMyApp().getUserId() + "&beginDate=" + startDate + "&endDate=" + endDate + "&subject=" + subject;
+        String webUrl = Configs.RECORD + "userId=" + MyApplication.getMyApp().getUserId() + "&beginDate=" + startDate + "&endDate=" + endDate + "&subject=" + subject + "&source=" + source;
         webView.loadUrl(webUrl);
 
         webView.setWebViewClient(new WebViewClient() {
@@ -149,7 +157,7 @@ public class TopicWrongRecordPageFragment extends BaseFragment {
         return false;
     }
 
-    @OnClick({R.id.llStartDate, R.id.llSubject, R.id.llEndDate})
+    @OnClick({R.id.llStartDate, R.id.llSource, R.id.llSubject, R.id.llEndDate})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.llStartDate:
@@ -161,7 +169,7 @@ public class TopicWrongRecordPageFragment extends BaseFragment {
                                 ToastUtils.popUpToast("不能大于结束时间");
                                 return;
                             }
-                            String webUrl = Configs.RECORD + "userId=" + MyApplication.getMyApp().getUserId() + "&beginDate=" + startDate + "&endDate=" + endDate + "&subject=" + subject;
+                            String webUrl = Configs.RECORD + "userId=" + MyApplication.getMyApp().getUserId() + "&beginDate=" + startDate + "&endDate=" + endDate + "&subject=" + subject + "&source=" + source;
                             webView.loadUrl(webUrl);
                         }
                         startDate = date;
@@ -170,27 +178,52 @@ public class TopicWrongRecordPageFragment extends BaseFragment {
                 });
                 startDateDialog.show();
                 break;
-            case R.id.llSubject:
+            case R.id.llSource:
                 subjectPopupWindow = new SubjectAllPopupWindow(getContext(), new SubjectAllPopupWindow.OnSelectItmeListener() {
                     @Override
                     public void onSelectItme(String subjectId, String subjectName) {
                         //loadView.showLoading();
-                        tvSubject.setText(subjectName);
-                        subject = subjectId.equals("0") ? "" : subjectId;
-                        String webUrl = Configs.RECORD + "userId=" + MyApplication.getMyApp().getUserId() + "&beginDate=" + startDate + "&endDate=" + endDate + "&subject=" + subject;
+                        tvSource.setText(subjectName);
+                        source = subjectId.equals("ALL") ? "" : subjectId;
+                        String webUrl = Configs.RECORD + "userId=" + MyApplication.getMyApp().getUserId() + "&beginDate=" + startDate + "&endDate=" + endDate + "&subject=" + subject + "&source=" + source;
                         webView.loadUrl(webUrl);
                         //webView.loadUrl("http://192.168.0.46/noc/html/ErrorRework.html");
                         //webView.reload(); //刷新
                     }
+                },1);
+
+                AppUtils.fitPopupWindowOverStatusBar(subjectPopupWindow, true);
+                ivArrow1.setImageResource(R.mipmap.rise_icon);
+                int width = (llContainSource.getWidth() - DisUtil.dp2px(getContext(), 150)) / 2;//获取x轴偏移量px
+                subjectPopupWindow.showAsDropDown(llContainSource, width, 0);//设置x轴偏移量：注意单位为px
+                subjectPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                    @Override
+                    public void onDismiss() {
+                        ivArrow1.setImageResource(R.mipmap.lower_icon);
+                    }
                 });
+
+                subjectPopupWindow.setFocusable(true);
+                subjectPopupWindow.setBackgroundDrawable(new BitmapDrawable());
+                break;
+            case R.id.llSubject:
+                subjectPopupWindow = new SubjectAllPopupWindow(getContext(), new SubjectAllPopupWindow.OnSelectItmeListener() {
+                    @Override
+                    public void onSelectItme(String subjectId, String subjectName) {
+                        tvSubject.setText(subjectName);
+                        subject = subjectId.equals("0") ? "" : subjectId;
+                        String webUrl = Configs.RECORD + "userId=" + MyApplication.getMyApp().getUserId() + "&beginDate=" + startDate + "&endDate=" + endDate + "&subject=" + subject + "&source=" + source;
+                        webView.loadUrl(webUrl);
+                    }
+                },0);
 
                 AppUtils.fitPopupWindowOverStatusBar(subjectPopupWindow, true);
                 ivArrow.setImageResource(R.mipmap.rise_icon);
                 //subjectPopupWindow.showAsDropDown(llContainSubject);
                 int tv_width = llContainSubject.getWidth();//获取对应的控件view宽度px值
                 int pop_width = DisUtil.dp2px(getContext(), 150);
-                int width = (tv_width - pop_width) / 2;//获取x轴偏移量px
-                subjectPopupWindow.showAsDropDown(llContainSubject, width, 0);//设置x轴偏移量：注意单位为px
+                int widthD = (tv_width - pop_width) / 2;//获取x轴偏移量px
+                subjectPopupWindow.showAsDropDown(llContainSubject, widthD, 0);//设置x轴偏移量：注意单位为px
                 //subjectPopupWindow.showAtLocation(llSubject,Gravity.CENTER_VERTICAL, DisUtil.dp2px(getContext(),-10),0);
                 subjectPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
                     @Override
@@ -203,8 +236,6 @@ public class TopicWrongRecordPageFragment extends BaseFragment {
                 subjectPopupWindow.setFocusable(true);
                 subjectPopupWindow.setBackgroundDrawable(new BitmapDrawable());
                 //backgroundAlpha(0.5f);
-
-
                 break;
             case R.id.llEndDate:
                 if (TextUtils.isEmpty(startDate)) {
@@ -220,7 +251,7 @@ public class TopicWrongRecordPageFragment extends BaseFragment {
                         }
                         endDate = date;
                         tvEndDate.setText(date);
-                        String webUrl = Configs.RECORD + "userId=" + MyApplication.getMyApp().getUserId() + "&beginDate=" + startDate + "&endDate=" + endDate + "&subject=" + subject;
+                        String webUrl = Configs.RECORD + "userId=" + MyApplication.getMyApp().getUserId() + "&beginDate=" + startDate + "&endDate=" + endDate + "&subject=" + subject + "&source=" + source;
                         webView.loadUrl(webUrl);
                     }
                 });
