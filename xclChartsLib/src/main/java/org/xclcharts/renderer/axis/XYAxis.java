@@ -57,7 +57,7 @@ public class XYAxis extends Axis {
 	private int mTickMarksLength = 10;
 	
 	//刻度标记与轴的间距
-	private int mTickLabelMargin = 30;
+	private int mTickLabelMargin = 24;
 		
 	protected boolean mShowAxisLineStyle = true;
 	

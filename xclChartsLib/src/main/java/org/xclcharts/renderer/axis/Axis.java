@@ -77,7 +77,7 @@ public class Axis {
 			mPaintTickMarks = new Paint();
 			mPaintTickMarks.setColor(Color.BLACK);	
 			mPaintTickMarks.setStrokeWidth(3);
-			mPaintTickMarks.setAntiAlias(true);		
+			mPaintTickMarks.setAntiAlias(true);
 		}
 	}
 	

@@ -94,7 +94,7 @@ public class BarChartView extends ChartView{
 			//chart.getDataAxis().setAxisMax(155);
 			chart.getDataAxis().setAxisMin(0);
 			chart.getDataAxis().setAxisSteps(5);
-
+			chart.getDataAxis().getTickLabelPaint().setTextSize(22f);
 
 			//指隔多少个轴刻度(即细刻度)后为主刻度
 			chart.getDataAxis().setDetailModeSteps(5);
@@ -106,6 +106,7 @@ public class BarChartView extends ChartView{
 			chart.getPlotGrid().hideVerticalLines();
 			chart.getCategoryAxis().hideTickMarks();
 			chart.getCategoryAxis().hideAxisLine();
+			chart.getCategoryAxis().getTickLabelPaint().setTextSize(22f);
 			//背景网格
 			//chart.getPlotGrid().showHorizontalLines();
 
@@ -121,9 +122,7 @@ public class BarChartView extends ChartView{
 
 			//隐藏Key
 			chart.getPlotLegend().hide();
-
 			chart.getClipExt().setExtTop(150.f);
-
 			//柱形和标签居中方式
 			chart.setBarCenterStyle(XEnum.BarCenterStyle.TICKMARKS);
 			//定义数据轴标签显示格式

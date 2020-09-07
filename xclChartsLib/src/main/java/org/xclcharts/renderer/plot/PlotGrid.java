@@ -69,7 +69,7 @@ public class PlotGrid {
 		{
 			mPaintEvenBgColor = new Paint();
 			mPaintEvenBgColor.setStyle(Style.FILL);						
-			mPaintEvenBgColor.setColor(Color.rgb(239, 239, 239)); 					
+			mPaintEvenBgColor.setColor(Color.rgb(239, 239, 239));
 			mPaintEvenBgColor.setAntiAlias(true);
 		}
 	}

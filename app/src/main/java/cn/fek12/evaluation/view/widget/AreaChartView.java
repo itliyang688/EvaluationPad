@@ -46,6 +46,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import cn.fek12.evaluation.R;
+
 
 /**
  * @ClassName AreaChart01View
@@ -101,6 +103,7 @@ public class AreaChartView extends ChartView {
 				chart.getDataAxis().setAxisMax(100);
 				//数据轴刻度间隔
 				chart.getDataAxis().setAxisSteps(10);
+				chart.getDataAxis().getTickLabelPaint().setTextSize(22f);
 				
 				//网格
 				chart.getPlotGrid().showHorizontalLines();
@@ -116,7 +119,8 @@ public class AreaChartView extends ChartView {
 				chart.getDataAxis().hideAxisLine();
 				chart.getDataAxis().hideTickMarks();			
 				chart.getCategoryAxis().hideAxisLine();
-				chart.getCategoryAxis().hideTickMarks();				
+				chart.getCategoryAxis().hideTickMarks();
+				chart.getCategoryAxis().getTickLabelPaint().setTextSize(22f);
 
 				//透明度
 				chart.setAreaAlpha(200);
@@ -164,11 +168,13 @@ public class AreaChartView extends ChartView {
 	
 	public void chartDataSet(List<Double> dataSeries3,LinkedList<String> mLabels){
 
+		/*AreaData line3 = new AreaData("",dataSeries3,
+				Color.rgb(246, 134, 31),Color.rgb(213, 198, 126));*/
 		AreaData line3 = new AreaData("",dataSeries3,
-				Color.rgb(246, 134, 31),Color.rgb(213, 198, 126));
+				Color.rgb(248, 104, 70),Color.rgb(213, 198, 126));
 
 		//设置线上每点对应标签的颜色
-		line3.getDotLabelPaint().setColor(Color.RED);
+		line3.getDotLabelPaint().setColor(Color.parseColor("#F86846"));
 		//设置点标签
 		line3.setLabelVisible(true);
 		//设置线上每点对应标签的颜色

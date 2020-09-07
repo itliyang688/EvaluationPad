@@ -93,8 +93,11 @@ public class AlikeAdapter extends RecyclerView.Adapter<AlikeAdapter.EvaluationHo
         }
 
         public void setData(final int position) {
-            tvCollection.setText("收藏："+mList.get(position).getIsCollection());
-            tvLearned.setText("已学："+mList.get(position).getPlayCount());
+            //tvCollection.setText("收藏："+mList.get(position).getIsCollection());
+            //tvLearned.setText("已学："+mList.get(position).getPlayCount());
+            tvCollection.setText(Html.fromHtml("<font color='#F28504'>"+ mList.get(position).getIsCollection() +"</font>" + " 人已学"));
+            tvLearned.setText(Html.fromHtml("<font color='#F28504'>"+ mList.get(position).getPlayCount() +"</font>" + " 人收藏"));
+
             tvName.setText(mList.get(position).getVideoName());
             //tvPlayNumber.setText(String.valueOf(mList.get(position).getPlayCount()));
             //tvTime.setText(mList.get(position).getCreateDate());

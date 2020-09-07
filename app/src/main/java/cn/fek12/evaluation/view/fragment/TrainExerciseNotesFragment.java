@@ -40,7 +40,7 @@ public class TrainExerciseNotesFragment extends BaseFragment<TrainExercisePagePr
 
     @Override
     protected int getLayoutResource() {
-        return R.layout.exercise_notes_fragment;
+        return R.layout.train_exercise_notes_fragment;
     }
 
     @Override
