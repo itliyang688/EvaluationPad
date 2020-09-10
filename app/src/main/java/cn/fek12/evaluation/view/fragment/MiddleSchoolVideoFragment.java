@@ -353,7 +353,11 @@ public class MiddleSchoolVideoFragment extends BaseFragment<MicroLessonPresenter
                     String value = "SYNCHRO";
                     startContainActivityIntent("",value,position, MicroLessonTreeActivity.class);
                 }else {
-                    startActivityIntent(String.valueOf(position), PrepareExaminationActivity.class);
+                    if(position == 2){
+                        startActivityIntent("1", PrepareExaminationActivity.class);
+                    }else if(position == 3){
+                        startActivityIntent("2", PrepareExaminationActivity.class);
+                    }
                 }
             }
 

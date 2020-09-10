@@ -36,13 +36,8 @@ public class MyApplication extends BaseApplication {
     private static final int DEFAULT_TIMEOUT = 30;
     //private String userId = "413";
     //private String userId = "8a236697-cd63-45e5-b502-823de2dec1ba";//yanglaoshi
-    private String userId = "60e3c667-f1c0-4d2d-bf2f-6c259db7cb78";
-    //private String userId = "0654e29b-1dc5-4147-beb9-6396592d8ff9";
-    //private String userId = "852A467A-CFBC-C88F-CE35-3F628A6942FB";
-    //private String userId = "0037ee10-686e-44fb-b3f7-9d816f7bfab4";
-    //private String userId = "007c5d38-1bbe-40bb-b50d-20ad5559bfc6";
-    //private String userId = "024b1bb5-86f4-490f-8a18-b0c53893a30d";
-    //private String userId = "00fb8e64-04af-4d8d-84dd-467390ad7000";
+    //private String userId = "094ed121-cc66-46d1-892a-0be39da5b206";
+    private String userId = "8a236697-cd63-45e5-b502-823de2dec1ba";
     private static final String TAG = "AIDL_Log";
     private IUserData iUserData;
     private boolean connected;
