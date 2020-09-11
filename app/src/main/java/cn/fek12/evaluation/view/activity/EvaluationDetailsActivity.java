@@ -283,19 +283,35 @@ public class EvaluationDetailsActivity extends BaseActivity<EvaluationDetailsPre
                 String parentId = treeItem.parentId;
                 String name = treeItem.text;
                 isFocusTreeNode(node,true);
+
+                if (selectNode != null) {
+                    isFocusTreeNode(selectNode, false);
+                }
                 if (!id.equals(checkId)) {
+                    checkId = id;
+                    selectNode = node;
+                }else{
+                    checkId = "";
+                    selectNode = null;
+                }
+                /**请求数据*/
+                isLoadMore = false;
+                currentPage = 1;
+                mPresenter.queryPaperList(EvaluationDetailsActivity.this,gradeId,subjectId,textbookId,semesterId,ptype,MyApplication.getMyApp().getUserId(),userType,String.valueOf(currentPage),pageSize,checkId,null);
+
+                /*if (!id.equals(checkId)) {
                     if(selectNode != null){
                         isFocusTreeNode(selectNode,false);
                     }
 
                     checkId = id;
                     selectNode = node;
-                    /**请求数据*/
+                    *//**请求数据*//*
                     isLoadMore = false;
                     currentPage = 1;
                     loadView.showLoading();
                     mPresenter.queryPaperList(EvaluationDetailsActivity.this,gradeId,subjectId,textbookId,semesterId,ptype,MyApplication.getMyApp().getUserId(),userType,String.valueOf(currentPage),pageSize,checkId,null);
-                }
+                }*/
             }
         });
     }

@@ -28,9 +28,11 @@
     </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/dp_90"
         android:layout_marginLeft="@dimen/dp_10"
         android:layout_marginTop="@dimen/dp_10"
+        android:paddingTop="@dimen/dp_2"
+        android:gravity="center_vertical"
         android:layout_toRightOf="@+id/rlContain"
         android:orientation="vertical">
         <TextView
@@ -38,7 +40,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/color_333"
-            android:paddingTop="@dimen/dp_6"
             android:lines="1"
             android:ellipsize="end"
             android:text="五年级随堂测试报告"
@@ -57,7 +58,7 @@
             android:textSize="@dimen/sp_9"/>
         <TextView
             android:id="@+id/tvSemester"
-            android:layout_width="@dimen/dp_100"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/color_999"
             android:layout_marginTop="@dimen/dp_5"

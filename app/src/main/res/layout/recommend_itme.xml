@@ -11,7 +11,7 @@
     <cn.fek12.evaluation.view.widget.RoundImageView
         android:id="@+id/ivSubject"
         android:layout_width="@dimen/dp_108"
-        android:layout_height="@dimen/dp_80"
+        android:layout_height="@dimen/dp_81"
         zhy:borderRadius="10dp"
         android:scaleType="centerCrop"
         zhy:type="round"
@@ -19,7 +19,7 @@
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/dp_78"
+        android:layout_height="@dimen/dp_80"
         android:layout_weight="1"
         android:gravity="center_vertical"
         android:layout_marginLeft="@dimen/dp_10"
