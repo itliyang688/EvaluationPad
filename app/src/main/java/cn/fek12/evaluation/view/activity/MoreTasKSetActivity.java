@@ -131,6 +131,11 @@ public class MoreTasKSetActivity extends BaseActivity<MoreTaskSetPresenter> impl
     @Override
     protected void onLoadData() {
         mPresenter.getStuSubjectByUserId(getContext(),MyApplication.getMyApp().getUserId());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         initData();
     }
 

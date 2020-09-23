@@ -38,6 +38,7 @@ public class MyApplication extends BaseApplication {
     //private String userId = "8a236697-cd63-45e5-b502-823de2dec1ba";//yanglaoshi
     //private String userId = "094ed121-cc66-46d1-892a-0be39da5b206";
     private String userId = "8a236697-cd63-45e5-b502-823de2dec1ba";
+    //private String userId = "ece5924a-a24d-4f01-a9e6-5ff25fc8be56";
     private static final String TAG = "AIDL_Log";
     private IUserData iUserData;
     private boolean connected;
