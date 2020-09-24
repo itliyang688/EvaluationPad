@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fek12.basic.base.BaseFragment;
-import com.fek12.basic.utils.toast.ToastUtils;
 
 import java.util.List;
 
@@ -24,7 +23,7 @@ import butterknife.OnClick;
 import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.application.MyApplication;
 import cn.fek12.evaluation.impl.ILearningSituation;
-import cn.fek12.evaluation.model.config.Configs;
+import cn.fek12.evaluation.model.config.HtmlConfigs;
 import cn.fek12.evaluation.model.entity.ExaminationEntity;
 import cn.fek12.evaluation.model.entity.PlanVideoEntity;
 import cn.fek12.evaluation.model.entity.PromoteRecommedVideoEntity;
@@ -33,11 +32,8 @@ import cn.fek12.evaluation.presenter.LearningSituationPresenter;
 import cn.fek12.evaluation.utils.AppUtils;
 import cn.fek12.evaluation.utils.DialogUtils;
 import cn.fek12.evaluation.utils.DisUtil;
-import cn.fek12.evaluation.utils.LoadViewUtils;
 import cn.fek12.evaluation.view.PopupWindow.PlanVideoSubjectPopupWindow;
-import cn.fek12.evaluation.view.PopupWindow.SubjectAllPopupWindow;
 import cn.fek12.evaluation.view.activity.CommonNewsWebViewActivity;
-import cn.fek12.evaluation.view.activity.CommonVideoActivity;
 import cn.fek12.evaluation.view.activity.MicrolessonVideoPlayActivity;
 import cn.fek12.evaluation.view.activity.MoreTasKSetActivity;
 import cn.fek12.evaluation.view.activity.PlanForTheWeekActivity;
@@ -263,25 +259,25 @@ public class LearningSituationFragment extends BaseFragment<LearningSituationPre
             case 5://马上开始
                 intent = new Intent(getContext(), CommonNewsWebViewActivity.class);
                 intent.putExtra("typePage",CommonNewsWebViewActivity.TASKPAGE);
-                intent.putExtra("webUrl",Configs.TASK + "userId=" + MyApplication.getMyApp().getUserId() + "&taskId=" + recordList.get(position).getTaskId() + "&qrParem=" + recordList.get(position).getQrId());
+                intent.putExtra("webUrl", HtmlConfigs.TASK + "userId=" + MyApplication.getMyApp().getUserId() + "&taskId=" + recordList.get(position).getTaskId() + "&qrParem=" + recordList.get(position).getQrId());
                 getContext().startActivity(intent);
                 break;
             case 2://查看结果
                 intent = new Intent(getContext(), CommonNewsWebViewActivity.class);
                 intent.putExtra("typePage",CommonNewsWebViewActivity.TASKPAGE);
-                intent.putExtra("webUrl",Configs.LEARNING + "userId=" + MyApplication.getMyApp().getUserId() + "&taskId=" + recordList.get(position).getTaskId());
+                intent.putExtra("webUrl", HtmlConfigs.LEARNING + "userId=" + MyApplication.getMyApp().getUserId() + "&taskId=" + recordList.get(position).getTaskId());
                 getContext().startActivity(intent);
                 break;
             case 3://强化训练
                 intent = new Intent(getContext(), CommonNewsWebViewActivity.class);
                 intent.putExtra("typePage",CommonNewsWebViewActivity.ANSWER);
-                intent.putExtra("webUrl",Configs.INTENSIVE + "userId=" + MyApplication.getMyApp().getUserId() + "&taskDrillId=" + recordList.get(position).getDrillId());
+                intent.putExtra("webUrl", HtmlConfigs.INTENSIVE + "userId=" + MyApplication.getMyApp().getUserId() + "&taskDrillId=" + recordList.get(position).getDrillId());
                 getContext().startActivity(intent);
                 break;
             case 4://强化训练解析
                 intent = new Intent(getContext(), CommonNewsWebViewActivity.class);
                 intent.putExtra("typePage",CommonNewsWebViewActivity.ANSWER);
-                intent.putExtra("webUrl",Configs.STRENGTHENING + "taskDrillId=" + recordList.get(position).getDrillId());
+                intent.putExtra("webUrl", HtmlConfigs.STRENGTHENING + "taskDrillId=" + recordList.get(position).getDrillId());
                 getContext().startActivity(intent);
                 break;
         }

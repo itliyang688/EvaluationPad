@@ -34,6 +34,7 @@ import butterknife.ButterKnife;
 import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.application.MyApplication;
 import cn.fek12.evaluation.impl.IMain;
+import cn.fek12.evaluation.model.config.Comfigs;
 import cn.fek12.evaluation.model.entity.TabEntity;
 import cn.fek12.evaluation.model.entity.TaskNumEntity;
 import cn.fek12.evaluation.model.entity.UpdateApkEntity;
@@ -67,6 +68,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements BackFra
     ViewPager viewPage;
     @BindView(R.id.commonTabLayout)
     CommonTabLayout commonTabLayout;
+    private int typePage;
     private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
     private ArrayList<Fragment> mFragments = new ArrayList<>();
     private int[] mIconUnselectIds = {
@@ -91,6 +93,8 @@ public class MainActivity extends BaseActivity<MainPresenter> implements BackFra
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         MyApplication.getMyApp().bindService();
+        typePage = intent.getIntExtra("typePage",0);
+        openTypePage();
     }
 
     @Override
@@ -100,11 +104,9 @@ public class MainActivity extends BaseActivity<MainPresenter> implements BackFra
 
     @Override
     protected void onInitView() {
+        typePage = getIntent().getIntExtra("typePage",0);
         mainActivity = MainActivity.this;
         viewPage.setPadding(0,AppUtils.getStatusBarHeight(MainActivity.this),0,0);
-        //initView();
-        //String apkUrl = "http://cdn.llsapp.com/android/LLS-v4.0-595-20160908-143200.apk";
-        //showUpgradeDialog(0,apkUrl);
     }
 
     @Override
@@ -174,9 +176,23 @@ public class MainActivity extends BaseActivity<MainPresenter> implements BackFra
         //mFragments.add(new PromoteFragment());
         mFragments.add(new LearningSituationFragment());
         mFragments.add(new RecordFragment());
-        initCommonTabLayout();
         viewPage.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
         viewPage.setOffscreenPageLimit(5);
+        initCommonTabLayout();
+        openTypePage();
+    }
+
+    private void openTypePage(){
+        if(commonTabLayout != null && viewPage != null){
+            if(typePage == Comfigs.MICROLESSON){
+                commonTabLayout.setCurrentTab(2);
+                viewPage.setCurrentItem(2);
+            }else if(typePage == Comfigs.EVALUATION){
+                commonTabLayout.setCurrentTab(0);
+                viewPage.setCurrentItem(0);
+                EvaluationContainerFragment.get().showEvaluationListFragment();
+            }
+        }
     }
 
     private void showUpgradeDialog(UpdateApkEntity entity) {
@@ -287,9 +303,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements BackFra
             @Override
             public void onPageSelected(int position) {
                 commonTabLayout.setCurrentTab(position);
-                //enlargeAndreduction(position,true);
-                //enlargeAndreduction(previousPos,false);
-                //previousPos = position;
             }
 
             @Override
@@ -297,9 +310,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements BackFra
 
             }
         });
-
-        viewPage.setCurrentItem(0);
-        //enlargeAndreduction(previousPos,true);
     }
 
     //设置未读消息提示

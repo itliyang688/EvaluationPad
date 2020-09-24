@@ -18,11 +18,10 @@ import butterknife.OnClick;
 import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.application.MyApplication;
 import cn.fek12.evaluation.impl.IVideoPlayList;
-import cn.fek12.evaluation.model.config.Configs;
+import cn.fek12.evaluation.model.config.HtmlConfigs;
 import cn.fek12.evaluation.model.entity.CollectionEntity;
 import cn.fek12.evaluation.model.entity.RelevantVideoListEntity;
 import cn.fek12.evaluation.presenter.VideoPlayListPresenter;
-import cn.fek12.evaluation.utils.FastDFSUtil;
 import cn.fek12.evaluation.view.adapter.RelevantVideoAdapter;
 import cn.fek12.evaluation.view.widget.MultipleStatusView;
 import cn.fek12.evaluation.view.widget.MyJzvdStd;
@@ -207,7 +206,7 @@ public class VideoPlayListActivity extends BaseActivity<VideoPlayListPresenter> 
 
     @OnClick(R.id.llClick)
     public void onViewClicked() {
-        String url = Configs.SMALLWORK + "userId=" + MyApplication.getMyApp().getUserId() + "&subjectCategoryId=" + subjectCategoryId;
+        String url = HtmlConfigs.SMALLWORK + "userId=" + MyApplication.getMyApp().getUserId() + "&subjectCategoryId=" + subjectCategoryId;
         Intent intent = new Intent(VideoPlayListActivity.this, CommonWebViewActivity.class);
         intent.putExtra("webUrl",url);
         startActivity(intent);

@@ -1,6 +1,7 @@
 package cn.fek12.evaluation.view.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
@@ -31,6 +32,7 @@ public class SplashActivity extends BaseActivity {
     @BindView(R.id.tvTimeKeeping)
     TextView tvTimeKeeping;
     private CountDownTimer timer;
+    private int typePage = 0;
 
     @Override
     public int setLayoutResource() {
@@ -39,6 +41,13 @@ public class SplashActivity extends BaseActivity {
 
     @Override
     protected void onInitView() {
+        typePage = getIntent().getIntExtra("typePage",0);
+        if (MainActivity.get() != null) {
+            startActivityMain();
+            finish();
+            return;
+        }
+
         //animationView(rlRoot);
         timer = new CountDownTimer(6000, 1000) {
             @SuppressLint("DefaultLocale")
@@ -49,7 +58,7 @@ public class SplashActivity extends BaseActivity {
 
             @Override
             public void onFinish() {
-                startActivity(MainActivity.class);
+                startActivityMain();
                 finish();
             }
         };
@@ -119,7 +128,7 @@ public class SplashActivity extends BaseActivity {
             // 动画执行结束
             @Override
             public void onAnimationEnd(Animation animation) {
-                startActivity(MainActivity.class);
+                startActivityMain();
                 //检查升级
                 //checkUpdate();
             }
@@ -137,7 +146,7 @@ public class SplashActivity extends BaseActivity {
     @OnClick(R.id.rlBack)
     public void onViewClicked() {
         cancle();
-        startActivity(MainActivity.class);
+        startActivityMain();
         finish();
     }
 
@@ -152,5 +161,11 @@ public class SplashActivity extends BaseActivity {
             timer.cancel();
             timer = null;
         }
+    }
+
+    private void startActivityMain(){
+        Intent intent = new Intent(this,MainActivity.class);
+        intent.putExtra("typePage",typePage);
+        startActivity(intent);
     }
 }

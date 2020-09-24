@@ -16,7 +16,7 @@ import butterknife.ButterKnife;
 import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.application.MyApplication;
 import cn.fek12.evaluation.impl.IMicrolessVideoPlay;
-import cn.fek12.evaluation.model.config.Configs;
+import cn.fek12.evaluation.model.config.HtmlConfigs;
 import cn.fek12.evaluation.model.entity.CollectionEntity;
 import cn.fek12.evaluation.model.sharedPreferences.PrefUtilsData;
 import cn.fek12.evaluation.presenter.MicrolessonVideoPlayPresenter;
@@ -97,7 +97,7 @@ public class PlanForTheWeekActivity extends BaseActivity<MicrolessonVideoPlayPre
                     PlanForTheWeekActivity.this.finish();
                     break;
                 case R.id.practiceBtn:
-                    String url = Configs.SMALLWORK + "userId=" + MyApplication.getMyApp().getUserId() + "&subjectCategoryId=" + knowledgeId;
+                    String url = HtmlConfigs.SMALLWORK + "userId=" + MyApplication.getMyApp().getUserId() + "&subjectCategoryId=" + knowledgeId;
                     Intent intent = new Intent(PlanForTheWeekActivity.this, CommonWebViewActivity.class);
                     intent.putExtra("webUrl",url);
                     startActivity(intent);

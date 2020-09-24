@@ -26,9 +26,15 @@ public class EvaluationContainerFragment extends BaseFragment implements Evaluat
     protected int getLayoutResource() {
         return R.layout.evaluation_container;
     }
+    private static EvaluationContainerFragment containerFragment;
+
+    public static EvaluationContainerFragment get() {
+        return containerFragment != null ? containerFragment : null;
+    }
 
     @Override
     protected void onInitView(Bundle savedInstanceState) {
+        containerFragment = this;
         fragmentAll = getChildFragmentManager().findFragmentById(R.id.fragment_container);
         showEvaluationFragment();
     }

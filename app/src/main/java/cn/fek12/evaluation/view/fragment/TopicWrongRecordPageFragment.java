@@ -27,7 +27,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.application.MyApplication;
-import cn.fek12.evaluation.model.config.Configs;
+import cn.fek12.evaluation.model.config.HtmlConfigs;
 import cn.fek12.evaluation.utils.AppUtils;
 import cn.fek12.evaluation.utils.DisUtil;
 import cn.fek12.evaluation.view.PopupWindow.SubjectAllPopupWindow;
@@ -104,7 +104,7 @@ public class TopicWrongRecordPageFragment extends BaseFragment {
         webView.setWebChromeClient(new WebChromeClient());
         webView.addJavascriptInterface(new JavaScriptinterface(getContext()), "android");
 
-        String webUrl = Configs.RECORD + "userId=" + MyApplication.getMyApp().getUserId() + "&beginDate=" + startDate + "&endDate=" + endDate + "&subject=" + subject + "&source=" + source;
+        String webUrl = HtmlConfigs.RECORD + "userId=" + MyApplication.getMyApp().getUserId() + "&beginDate=" + startDate + "&endDate=" + endDate + "&subject=" + subject + "&source=" + source;
         webView.loadUrl(webUrl);
 
         webView.setWebViewClient(new WebViewClient() {
@@ -169,7 +169,7 @@ public class TopicWrongRecordPageFragment extends BaseFragment {
                                 ToastUtils.popUpToast("不能大于结束时间");
                                 return;
                             }
-                            String webUrl = Configs.RECORD + "userId=" + MyApplication.getMyApp().getUserId() + "&beginDate=" + startDate + "&endDate=" + endDate + "&subject=" + subject + "&source=" + source;
+                            String webUrl = HtmlConfigs.RECORD + "userId=" + MyApplication.getMyApp().getUserId() + "&beginDate=" + startDate + "&endDate=" + endDate + "&subject=" + subject + "&source=" + source;
                             webView.loadUrl(webUrl);
                         }
                         startDate = date;
@@ -185,7 +185,7 @@ public class TopicWrongRecordPageFragment extends BaseFragment {
                         //loadView.showLoading();
                         tvSource.setText(subjectName);
                         source = subjectId.equals("ALL") ? "" : subjectId;
-                        String webUrl = Configs.RECORD + "userId=" + MyApplication.getMyApp().getUserId() + "&beginDate=" + startDate + "&endDate=" + endDate + "&subject=" + subject + "&source=" + source;
+                        String webUrl = HtmlConfigs.RECORD + "userId=" + MyApplication.getMyApp().getUserId() + "&beginDate=" + startDate + "&endDate=" + endDate + "&subject=" + subject + "&source=" + source;
                         webView.loadUrl(webUrl);
                         //webView.loadUrl("http://192.168.0.46/noc/html/ErrorRework.html");
                         //webView.reload(); //刷新
@@ -212,7 +212,7 @@ public class TopicWrongRecordPageFragment extends BaseFragment {
                     public void onSelectItme(String subjectId, String subjectName) {
                         tvSubject.setText(subjectName);
                         subject = subjectId.equals("0") ? "" : subjectId;
-                        String webUrl = Configs.RECORD + "userId=" + MyApplication.getMyApp().getUserId() + "&beginDate=" + startDate + "&endDate=" + endDate + "&subject=" + subject + "&source=" + source;
+                        String webUrl = HtmlConfigs.RECORD + "userId=" + MyApplication.getMyApp().getUserId() + "&beginDate=" + startDate + "&endDate=" + endDate + "&subject=" + subject + "&source=" + source;
                         webView.loadUrl(webUrl);
                     }
                 },0);
@@ -251,7 +251,7 @@ public class TopicWrongRecordPageFragment extends BaseFragment {
                         }
                         endDate = date;
                         tvEndDate.setText(date);
-                        String webUrl = Configs.RECORD + "userId=" + MyApplication.getMyApp().getUserId() + "&beginDate=" + startDate + "&endDate=" + endDate + "&subject=" + subject + "&source=" + source;
+                        String webUrl = HtmlConfigs.RECORD + "userId=" + MyApplication.getMyApp().getUserId() + "&beginDate=" + startDate + "&endDate=" + endDate + "&subject=" + subject + "&source=" + source;
                         webView.loadUrl(webUrl);
                     }
                 });

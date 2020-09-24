@@ -12,23 +12,18 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.fek12.basic.base.BaseActivity;
-import com.fek12.basic.utils.toast.ToastUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.application.MyApplication;
-import cn.fek12.evaluation.impl.IMain;
 import cn.fek12.evaluation.impl.IRemediaWeb;
-import cn.fek12.evaluation.model.config.Configs;
-import cn.fek12.evaluation.model.entity.UpdateApkEntity;
+import cn.fek12.evaluation.model.config.HtmlConfigs;
 import cn.fek12.evaluation.model.sharedPreferences.PrefUtilsData;
-import cn.fek12.evaluation.presenter.MainPresenter;
 import cn.fek12.evaluation.presenter.RemediaWebPresenter;
 import cn.fek12.evaluation.view.jsinterface.JavaScriptinterface;
 import cn.fek12.evaluation.view.widget.NoRollWebView;
-import pl.droidsonroids.gif.GifImageView;
 
 /**
  * @ProjectName: EvaluationPad
@@ -68,7 +63,7 @@ public class RemedialPracticeWebActivity extends BaseActivity<RemediaWebPresente
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         subjectCategoryId = intent.getStringExtra("subjectCategoryId");
-        String url = Configs.SMALLWORK + "userId=" + MyApplication.getMyApp().getUserId() + "&subjectCategoryNum=" + subjectCategoryId;
+        String url = HtmlConfigs.SMALLWORK + "userId=" + MyApplication.getMyApp().getUserId() + "&subjectCategoryNum=" + subjectCategoryId;
         webView.loadUrl(url);
     }
 
@@ -112,7 +107,7 @@ public class RemedialPracticeWebActivity extends BaseActivity<RemediaWebPresente
         //String url = "http://192.168.0.46/noc/html/SmallWork.html?userId=" + MyApplication.getMyApplication().getUserId() + "&subjectCategoryId=" + subjectCategoryId;
         //String url = "http://218.245.6.132:11111/html/SmallWork.html?userId=" + MyApplication.getMyApplication().getUserId() + "&subjectCategoryId=" + subjectCategoryId;
         //showLoading();
-        String url = Configs.SMALLWORK + "userId=" + MyApplication.getMyApp().getUserId() + "&subjectCategoryNum=" + subjectCategoryId;
+        String url = HtmlConfigs.SMALLWORK + "userId=" + MyApplication.getMyApp().getUserId() + "&subjectCategoryNum=" + subjectCategoryId;
         webView.loadUrl(url);
 
         webView.setWebViewClient(new WebViewClient() {

@@ -16,7 +16,7 @@ import com.fek12.basic.base.BaseActivity;
 import butterknife.BindView;
 import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.application.MyApplication;
-import cn.fek12.evaluation.model.config.Configs;
+import cn.fek12.evaluation.model.config.HtmlConfigs;
 import cn.fek12.evaluation.view.jsinterface.JavaScriptinterface;
 
 /**
@@ -78,10 +78,10 @@ public class AnswerWebViewActivity extends BaseActivity {
         String url;
         if (isanswered == 0) {
             //url = "http://192.168.0.46/noc/html/index.html?userId=" + MyApplication.getMyApplication().getUserId() + "&paperId=" + paperId;
-            url = Configs.INDEX + "userId=" + MyApplication.getMyApp().getUserId() + "&paperId=" + paperId + "&titleName=" + titleName;
+            url = HtmlConfigs.INDEX + "userId=" + MyApplication.getMyApp().getUserId() + "&paperId=" + paperId + "&titleName=" + titleName;
         } else {
             //url = "http://192.168.0.46/noc/html/analyze.html?userId=" + MyApplication.getMyApplication().getUserId() + "&paperId=" + paperId + "&paperResult=" + paperResult;
-            url = Configs.ANALYZE + "userId=" + MyApplication.getMyApp().getUserId() + "&paperId=" + paperId + "&paperResult=" + paperResult + "&titleName=" + titleName;
+            url = HtmlConfigs.ANALYZE + "userId=" + MyApplication.getMyApp().getUserId() + "&paperId=" + paperId + "&paperResult=" + paperResult + "&titleName=" + titleName;
         }
         showLoading();
         webView.loadUrl(url);

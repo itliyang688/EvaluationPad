@@ -22,7 +22,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import cn.fek12.evaluation.R;
 import cn.fek12.evaluation.application.MyApplication;
-import cn.fek12.evaluation.model.config.Configs;
+import cn.fek12.evaluation.model.config.HtmlConfigs;
 import cn.fek12.evaluation.model.entity.RecordInfoEntity;
 import cn.fek12.evaluation.model.entity.TestRecordEntity;
 import cn.fek12.evaluation.presenter.TestCharRecordPresenter;
@@ -222,7 +222,7 @@ public class TestChartRecordFragment extends BaseFragment<TestCharRecordPresente
                 tbAnalysis.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        String url = Configs.SMALL + "userId=" + MyApplication.getMyApp().getUserId() + "&subjectCategoryId=" + bean.getSubjectCategoryId() + "&practiceId=" + bean.getPracticeId();
+                        String url = HtmlConfigs.SMALL + "userId=" + MyApplication.getMyApp().getUserId() + "&subjectCategoryId=" + bean.getSubjectCategoryId() + "&practiceId=" + bean.getPracticeId();
                         Intent intent = new Intent(getContext(), CommonWebViewActivity.class);
                         intent.putExtra("webUrl", url);
                         startActivity(intent);
@@ -232,7 +232,7 @@ public class TestChartRecordFragment extends BaseFragment<TestCharRecordPresente
                 tbPractice.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        String url = Configs.SMALLWORK + "userId=" + MyApplication.getMyApp().getUserId() + "&subjectCategoryId=" + bean.getSubjectCategoryId();
+                        String url = HtmlConfigs.SMALLWORK + "userId=" + MyApplication.getMyApp().getUserId() + "&subjectCategoryId=" + bean.getSubjectCategoryId();
                         Intent intent = new Intent(getContext(), CommonWebViewActivity.class);
                         intent.putExtra("webUrl", url);
                         startActivity(intent);

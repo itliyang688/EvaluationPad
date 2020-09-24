@@ -18,7 +18,7 @@ import java.util.List;
 
 import ayalma.ir.expandablerecyclerview.TrainExpandableRecyclerView;
 import cn.fek12.evaluation.R;
-import cn.fek12.evaluation.model.config.Configs;
+import cn.fek12.evaluation.model.config.HtmlConfigs;
 import cn.fek12.evaluation.model.entity.TrainEntity;
 import cn.fek12.evaluation.model.entity.TrainExrGroupListEntity;
 import cn.fek12.evaluation.view.activity.CommonNewsWebViewActivity;
@@ -109,7 +109,7 @@ public class TrainExerciseExpandableAdapter extends TrainExpandableRecyclerView.
                 public void onClick(View view) {
                     Intent intent = new Intent(mContext, CommonNewsWebViewActivity.class);
                     intent.putExtra("typePage",CommonNewsWebViewActivity.ANSWER);
-                    intent.putExtra("webUrl",Configs.STRENGTHENING + "taskDrillId=" + list.get(position).getDrillId());
+                    intent.putExtra("webUrl", HtmlConfigs.STRENGTHENING + "taskDrillId=" + list.get(position).getDrillId());
                     mContext.startActivity(intent);
                 }
             });

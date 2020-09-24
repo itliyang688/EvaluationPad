@@ -4,10 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.webkit.JavascriptInterface;
 
-import com.fek12.basic.utils.toast.ToastUtils;
-
 import cn.fek12.evaluation.application.MyApplication;
-import cn.fek12.evaluation.model.config.Configs;
+import cn.fek12.evaluation.model.config.HtmlConfigs;
 import cn.fek12.evaluation.model.sharedPreferences.PrefUtilsData;
 import cn.fek12.evaluation.utils.DialogUtils;
 import cn.fek12.evaluation.view.activity.AnswerWebViewActivity;
@@ -34,7 +32,7 @@ public class JavaScriptinterface {
     @JavascriptInterface
     public void analysis(String analy) {
         PrefUtilsData.setAnalysisCache(analy);
-        String url = Configs.WRONGRECORD;
+        String url = HtmlConfigs.WRONGRECORD;
         Intent intent = new Intent(mContext, CommonWebViewBackActivity.class);
         intent.putExtra("webUrl",url);
         mContext.startActivity(intent);
@@ -61,7 +59,7 @@ public class JavaScriptinterface {
     @JavascriptInterface
     public void personal_report(String paperResultId) {
         PrefUtilsData.setPaperResultIdCache(paperResultId);
-        String url = Configs.PERSONAL_REPORT+"userId="+MyApplication.getMyApp().getUserId()+"&paperResultId="+paperResultId+"&token="+PrefUtilsData.getToken();
+        String url = HtmlConfigs.PERSONAL_REPORT+"userId="+MyApplication.getMyApp().getUserId()+"&paperResultId="+paperResultId+"&token="+PrefUtilsData.getToken();
         Intent intent = new Intent(mContext, PersonalReportWebViewActivity.class);
         intent.putExtra("webUrl",url);
         mContext.startActivity(intent);
@@ -73,7 +71,7 @@ public class JavaScriptinterface {
     @JavascriptInterface
     public void taskPersonalReport(String paperResultId) {
         PrefUtilsData.setPaperResultIdCache(paperResultId);
-        String url = Configs.TCHACCURATEREPORT+"userId="+MyApplication.getMyApp().getUserId()+"&paperResultId="+paperResultId+"&token="+PrefUtilsData.getToken();
+        String url = HtmlConfigs.TCHACCURATEREPORT+"userId="+MyApplication.getMyApp().getUserId()+"&paperResultId="+paperResultId+"&token="+PrefUtilsData.getToken();
         Intent intent = new Intent(mContext, PersonalReportWebViewActivity.class);
         intent.putExtra("webUrl",url);
         mContext.startActivity(intent);
@@ -93,7 +91,7 @@ public class JavaScriptinterface {
      */
     @JavascriptInterface
     public void errorRework() {
-        String url = Configs.ERRORREWORK;
+        String url = HtmlConfigs.ERRORREWORK;
         Intent intent = new Intent(mContext, CommonWebViewBackActivity.class);
         intent.putExtra("webUrl",url);
         mContext.startActivity(intent);

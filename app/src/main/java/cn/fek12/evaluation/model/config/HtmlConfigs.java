@@ -7,7 +7,7 @@ package cn.fek12.evaluation.model.config;
  * @Description:
  * @CreateDate: 2019/12/18 14:00
  */
-public class Configs {
+public class HtmlConfigs {
     //public static final String WEB_BASE_URL = "http://218.245.6.132:11111/";
     //public static final String WEB_BASE_URL = "http://218.245.6.132:11113/";
     //public static final String WEB_BASE_URL = "http://121.37.254.233:8080/";
