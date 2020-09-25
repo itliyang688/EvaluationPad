@@ -537,7 +537,7 @@
                     android:layout_height="@dimen/dp_16"
                     android:background="@drawable/topic_type_bg"
                     android:gravity="center"
-                    android:text="单选题"
+                    android:text="判断题"
                     android:textColor="@color/selector_topic_text_color"
                     android:textSize="@dimen/sp_10" />
 
