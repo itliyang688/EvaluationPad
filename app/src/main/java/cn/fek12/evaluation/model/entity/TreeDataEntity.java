@@ -57,7 +57,7 @@ public class TreeDataEntity implements Serializable {
 
         private String name;
         private int orderList;
-        private int id;
+        private String id;
         private List<ChildsBeanXX> childs;
 
         public String getName() {
@@ -76,11 +76,11 @@ public class TreeDataEntity implements Serializable {
             this.orderList = orderList;
         }
 
-        public int getId() {
+        public String getId() {
             return id;
         }
 
-        public void setId(int id) {
+        public void setId(String id) {
             this.id = id;
         }
 
@@ -103,8 +103,8 @@ public class TreeDataEntity implements Serializable {
 
             private String name;
             private int orderList;
-            private int id;
-            private int parentId;
+            private String id;
+            private String parentId;
             private List<ChildsBeanX> childs;
 
             public String getName() {
@@ -123,19 +123,19 @@ public class TreeDataEntity implements Serializable {
                 this.orderList = orderList;
             }
 
-            public int getId() {
+            public String getId() {
                 return id;
             }
 
-            public void setId(int id) {
+            public void setId(String id) {
                 this.id = id;
             }
 
-            public int getParentId() {
+            public String getParentId() {
                 return parentId;
             }
 
-            public void setParentId(int parentId) {
+            public void setParentId(String parentId) {
                 this.parentId = parentId;
             }
 
@@ -158,8 +158,8 @@ public class TreeDataEntity implements Serializable {
 
                 private String name;
                 private int orderList;
-                private int id;
-                private int parentId;
+                private String id;
+                private String parentId;
                 private List<ChildsBean> childs;
 
                 public String getName() {
@@ -178,19 +178,19 @@ public class TreeDataEntity implements Serializable {
                     this.orderList = orderList;
                 }
 
-                public int getId() {
+                public String getId() {
                     return id;
                 }
 
-                public void setId(int id) {
+                public void setId(String id) {
                     this.id = id;
                 }
 
-                public int getParentId() {
+                public String getParentId() {
                     return parentId;
                 }
 
-                public void setParentId(int parentId) {
+                public void setParentId(String parentId) {
                     this.parentId = parentId;
                 }
 
@@ -212,8 +212,8 @@ public class TreeDataEntity implements Serializable {
 
                     private String name;
                     private int orderList;
-                    private int id;
-                    private int parentId;
+                    private String id;
+                    private String parentId;
 
                     public String getName() {
                         return name;
@@ -231,19 +231,19 @@ public class TreeDataEntity implements Serializable {
                         this.orderList = orderList;
                     }
 
-                    public int getId() {
+                    public String getId() {
                         return id;
                     }
 
-                    public void setId(int id) {
+                    public void setId(String id) {
                         this.id = id;
                     }
 
-                    public int getParentId() {
+                    public String getParentId() {
                         return parentId;
                     }
 
-                    public void setParentId(int parentId) {
+                    public void setParentId(String parentId) {
                         this.parentId = parentId;
                     }
                 }

@@ -212,20 +212,20 @@ public class EvaluationDetailsActivity extends BaseActivity<EvaluationDetailsPre
                                 node2.addChild(node3);
                                 /**第四级*/
                                 for (TreeDataEntity.DataBean.ChildsBeanXX.ChildsBeanX.ChildsBean childsBean : node4List) {
-                                    TreeNode file4 = new TreeNode(new AutoTreeChildItemHolder.IconTreeItem(childsBean.getName(), String.valueOf(childsBean.getId()), String.valueOf(childsBean.getParentId()))).setViewHolder(new AutoTreeChildItemHolder(getContext(),TreeParentItemHolder.ORIGINAL));
+                                    TreeNode file4 = new TreeNode(new AutoTreeChildItemHolder.IconTreeItem(childsBean.getName(), String.valueOf(childsBean.getId()), childsBean.getParentId())).setViewHolder(new AutoTreeChildItemHolder(getContext(),TreeParentItemHolder.ORIGINAL));
                                     node3.addChild(file4);
                                     nodeListenerAndUpdate(file4);
                                     defaultCheck(file4, String.valueOf(childsBean.getId()));
                                 }
                             } else {
-                                TreeNode file3 = new TreeNode(new AutoTreeChildItemHolder.IconTreeItem(childsBeanX.getName(), String.valueOf(childsBeanX.getId()), String.valueOf(childsBeanX.getParentId()))).setViewHolder(new AutoTreeChildItemHolder(getContext(),TreeParentItemHolder.ORIGINAL));
+                                TreeNode file3 = new TreeNode(new AutoTreeChildItemHolder.IconTreeItem(childsBeanX.getName(), String.valueOf(childsBeanX.getId()), childsBeanX.getParentId())).setViewHolder(new AutoTreeChildItemHolder(getContext(),TreeParentItemHolder.ORIGINAL));
                                 node2.addChild(file3);
                                 nodeListenerAndUpdate(file3);
                                 defaultCheck(file3, String.valueOf(childsBeanX.getId()));
                             }
                         }
                     } else {
-                        TreeNode file2 = new TreeNode(new AutoTreeChildItemHolder.IconTreeItem(childsBeanXX.getName(), String.valueOf(childsBeanXX.getId()), String.valueOf(childsBeanXX.getParentId()))).setViewHolder(new AutoTreeChildItemHolder(getContext(),AutoTreeChildItemHolder.ORIGINAL));
+                        TreeNode file2 = new TreeNode(new AutoTreeChildItemHolder.IconTreeItem(childsBeanXX.getName(), String.valueOf(childsBeanXX.getId()), childsBeanXX.getParentId())).setViewHolder(new AutoTreeChildItemHolder(getContext(),AutoTreeChildItemHolder.ORIGINAL));
                         node1.addChild(file2);
                         nodeListenerAndUpdate(file2);
                         defaultCheck(file2, String.valueOf(childsBeanXX.getId()));
