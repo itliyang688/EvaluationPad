@@ -11,6 +11,7 @@ public class HtmlConfigs {
     //public static final String WEB_BASE_URL = "http://218.245.6.132:11111/";
     //public static final String WEB_BASE_URL = "http://218.245.6.132:11113/";
     //public static final String WEB_BASE_URL = "http://121.37.254.233:8080/";
+    //public static final String WEB_BASE_URL = "http://139.9.74.182:9000/";
     //public static final String WEB_BASE_URL = "http://api.51jxpj.cn/";
     public static final String WEB_BASE_URL = "https://api.51jxpj.cn/";
     //public static final String WEB_BASE_URL = "http://192.168.0.234:9000/";

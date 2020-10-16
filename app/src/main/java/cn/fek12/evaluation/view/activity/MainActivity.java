@@ -3,6 +3,7 @@ package cn.fek12.evaluation.view.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.MotionEvent;
 import android.widget.RelativeLayout;

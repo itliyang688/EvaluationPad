@@ -1,7 +1,9 @@
 package cn.fek12.evaluation.view.activity;
 
 import android.content.Intent;
+import android.net.http.SslError;
 import android.os.Build;
+import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -77,6 +79,13 @@ public class CommonWebViewBackActivity extends BaseActivity {
             @Override
             public void onPageFinished(WebView view,String url){
                 hideLoading();
+            }
+            @Override
+            public void onReceivedSslError(WebView view,
+                                           SslErrorHandler handler, SslError error) {
+                // handler.cancel();// Android默认的处理方式
+                handler.proceed();// 接受所有网站的证书
+                // handleMessage(Message msg);// 进行其他处理
             }
         });
     }
