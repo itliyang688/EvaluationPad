@@ -45,6 +45,7 @@ import cn.fek12.evaluation.utils.AppUtils;
 import cn.fek12.evaluation.utils.DialogUtils;
 import cn.fek12.evaluation.utils.DisUtil;
 import cn.fek12.evaluation.utils.LoadViewUtils;
+import cn.fek12.evaluation.utils.PackageInstallUtil;
 import cn.fek12.evaluation.utils.download.DownloadUtils;
 import cn.fek12.evaluation.view.dialog.ProgressDialog;
 import cn.fek12.evaluation.view.dialog.UpgradeDialog;
@@ -217,7 +218,9 @@ public class MainActivity extends BaseActivity<MainPresenter> implements BackFra
                     @Override
                     public void downLoadCompleted(BaseDownloadTask task) {
                         progressDialog.dismiss();
-                        AppUtils.installAPK(new File(mSinglePath), MainActivity.this);
+                        //AppUtils.installAPK(new File(mSinglePath), MainActivity.this);
+                        /**静默安装*/
+                        PackageInstallUtil.installApk(MainActivity.this,mSinglePath,MainActivity.this.getPackageManager());
                     }
 
                     @Override
@@ -240,7 +243,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements BackFra
         });
         upgradeDialog.show();
         upgradeDialog.setViewData(entity.getData().getVersionName(), entity.getData().getVersionContent());
-
     }
 
     private ProgressDialog progressDialog;

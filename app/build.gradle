@@ -4,12 +4,20 @@ android {
 
     signingConfigs {
         release {
+            //storeFile file('../system_signature.keystore')
+            storeFile file('D:/Projects/EvaluationPad/system_signature.keystore')
+            storePassword '123456'
+            keyAlias 'systemkey'
+            keyPassword '123456'
+        }
+
+        /*release {
             //storeFile file('../fek12.jks')
             storeFile file('D:/Projects/EvaluationPad/fek12.jks')
             keyAlias = 'evaluation'
             storePassword 'fek12000'
             keyPassword 'fek12000'
-        }
+        }*/
     }
     compileSdkVersion rootProject.ext.android.compileSdkVersion
     buildToolsVersion rootProject.ext.android.buildToolsVersion

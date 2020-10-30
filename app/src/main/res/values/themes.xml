@@ -43,8 +43,8 @@
         <!--<item name="android:background">@color/white</item>-->
     </style>
     <style name="LauncherWebTheme" parent="AppTheme">
-        <item name="android:background">@color/white</item>
-        <!--<item name="android:background">@mipmap/splash_png</item>-->
+        <!--<item name="android:background">@color/white</item>-->
+        <item name="android:background">@mipmap/splash_png</item>
     </style>
 
 

@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Build;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.text.TextUtils;
@@ -17,6 +18,9 @@ import com.google.gson.Gson;
 import com.liulishuo.filedownloader.FileDownloader;
 import com.liulishuo.filedownloader.connection.FileDownloadUrlConnection;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.concurrent.TimeUnit;
 
 import cn.fek12.evaluation.ent.CookieReadInterceptor;
@@ -37,6 +41,7 @@ public class MyApplication extends BaseApplication {
     //private String userId = "413";
     //private String userId = "8a236697-cd63-45e5-b502-823de2dec1ba";//yanglaoshi
     private String userId = "8a236697-cd63-45e5-b502-823de2dec1ba";
+    //private String userId = "094ed121-cc66-46d1-892a-0be39da5b206";
     private static final String TAG = "AIDL_Log";
     private IUserData iUserData;
     private boolean connected;
@@ -48,13 +53,15 @@ public class MyApplication extends BaseApplication {
         myApp = this;
         bindService();
         initFileDownloader();
+        /**解决添加uid后webview报错问题*/
+        hookWebView();
 
     }
 
 
     public String getUserId() {
-        return PrefUtilsData.getUserId();
-        //return userId;
+        //return PrefUtilsData.getUserId();
+        return userId;
     }
 
 
@@ -190,6 +197,62 @@ public class MyApplication extends BaseApplication {
         UserInfoEntity entity = new Gson().fromJson(infoDete, UserInfoEntity.class);
         PrefUtilsData.setUserId(entity.getRoot().getAccount().getUserId());
         PrefUtilsData.setPer_level(String.valueOf(entity.getRoot().getAccount().getPer_level()));
+    }
+
+    public void hookWebView() {
+        int sdkInt = Build.VERSION.SDK_INT;
+        try {
+            Class<?> factoryClass = Class.forName("android.webkit.WebViewFactory");
+            Field field = factoryClass.getDeclaredField("sProviderInstance");
+            field.setAccessible(true);
+            Object sProviderInstance = field.get(null);
+            if (sProviderInstance != null) {
+                Log.i("TAG-hookWebView", "sProviderInstance isn't null");
+                return;
+            }
+
+            Method getProviderClassMethod;
+            if (sdkInt > 22) {
+                getProviderClassMethod = factoryClass.getDeclaredMethod("getProviderClass");
+            } else if (sdkInt == 22) {
+                getProviderClassMethod = factoryClass.getDeclaredMethod("getFactoryClass");
+            } else {
+                Log.i("TAG-hookWebView", "Don't need to Hook WebView");
+                return;
+            }
+            getProviderClassMethod.setAccessible(true);
+            Class<?> factoryProviderClass = (Class<?>) getProviderClassMethod.invoke(factoryClass);
+            Class<?> delegateClass = Class.forName("android.webkit.WebViewDelegate");
+            Constructor<?> delegateConstructor = delegateClass.getDeclaredConstructor();
+            delegateConstructor.setAccessible(true);
+            if (sdkInt < 26) {//低于Android O版本
+                Constructor<?> providerConstructor = factoryProviderClass.getConstructor(delegateClass);
+                if (providerConstructor != null) {
+                    providerConstructor.setAccessible(true);
+                    sProviderInstance = providerConstructor.newInstance(delegateConstructor.newInstance());
+                }
+            } else {
+                Field chromiumMethodName = factoryClass.getDeclaredField("CHROMIUM_WEBVIEW_FACTORY_METHOD");
+                chromiumMethodName.setAccessible(true);
+                String chromiumMethodNameStr = (String) chromiumMethodName.get(null);
+                if (chromiumMethodNameStr == null) {
+                    chromiumMethodNameStr = "create";
+                }
+                Method staticFactory = factoryProviderClass.getMethod(chromiumMethodNameStr, delegateClass);
+                if (staticFactory != null) {
+                    sProviderInstance = staticFactory.invoke(null, delegateConstructor.newInstance());
+                }
+            }
+
+            if (sProviderInstance != null) {
+                field.set("sProviderInstance", sProviderInstance);
+                Log.i("TAG-hookWebView", "Hook success!");
+            } else {
+                Log.i("TAG-hookWebView", "Hook failed!");
+            }
+        } catch (Throwable e) {
+            Log.w("TAG-hookWebView", e);
+        }
     }
 
 }
