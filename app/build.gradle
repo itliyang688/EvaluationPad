@@ -11,6 +11,7 @@ android {
             keyPassword '123456'
         }
 
+
         /*release {
             //storeFile file('../fek12.jks')
             storeFile file('D:/Projects/EvaluationPad/fek12.jks')
@@ -40,6 +41,14 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
+        }
+
+        uat{
+            initWith release
+            signingConfig signingConfigs.release
+        }
+        buildTypes.all { type ->
+            type.matchingFallbacks = ['release']
         }
     }
 

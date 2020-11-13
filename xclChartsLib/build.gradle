@@ -41,6 +41,12 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        uat{
+            initWith release
+        }
+        buildTypes.all { type ->
+            type.matchingFallbacks = ['release']
+        }
     }
 }
 

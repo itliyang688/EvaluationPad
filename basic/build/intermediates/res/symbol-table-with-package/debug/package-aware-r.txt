@@ -598,6 +598,7 @@ color abc_tint_switch_track
 color accent_material_dark
 color accent_material_light
 color app_bg
+color app_title
 color background_floating_material_dark
 color background_floating_material_light
 color background_material_dark
@@ -619,7 +620,10 @@ color cardview_light_background
 color cardview_shadow_end_color
 color cardview_shadow_start_color
 color colorAccent
+color color_431382
+color color_8A531D
 color color_999
+color color_EB6941
 color cpv_default_color
 color design_bottom_navigation_shadow_color
 color design_default_color_primary
@@ -964,6 +968,7 @@ dimen dp_1096
 dimen dp_1097
 dimen dp_1098
 dimen dp_1099
+dimen dp_10_5
 dimen dp_11
 dimen dp_110
 dimen dp_1100
@@ -2488,6 +2493,7 @@ drawable design_ic_visibility
 drawable design_ic_visibility_off
 drawable design_password_eye
 drawable design_snackbar_background
+drawable home_back_icon
 drawable ic_mtrl_chip_checked_black
 drawable ic_mtrl_chip_checked_circle
 drawable ic_mtrl_chip_close_circle
@@ -2630,6 +2636,7 @@ id iv_left_back
 id labeled
 id largeLabel
 id left
+id left_title
 id line
 id line1
 id line3

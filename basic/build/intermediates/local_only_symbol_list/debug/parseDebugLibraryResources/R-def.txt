@@ -23,12 +23,16 @@ attr? cpv_thickness
 bool cpv_default_anim_autostart
 bool cpv_default_is_indeterminate
 color app_bg
+color app_title
 color bg_tr_dark
 color black
 color black_16
 color blue_background
 color colorAccent
+color color_431382
+color color_8A531D
 color color_999
+color color_EB6941
 color cpv_default_color
 color gray_background
 color gray_line
@@ -148,6 +152,7 @@ dimen dp_1096
 dimen dp_1097
 dimen dp_1098
 dimen dp_1099
+dimen dp_10.5
 dimen dp_11
 dimen dp_110
 dimen dp_1100
@@ -1475,6 +1480,7 @@ dimen sp_8
 dimen sp_9
 drawable back_icon
 drawable bg_common_btn
+drawable home_back_icon
 drawable ic_toolbar_left_back
 drawable icon_loading_img_online
 drawable ktvdarenlib_global_toast_bg
@@ -1491,6 +1497,7 @@ id item_popwin_img
 id item_popwin_re
 id item_popwin_text
 id iv_left_back
+id left_title
 id ll_left_title_group
 id ll_right_title_group
 id load
